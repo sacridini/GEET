@@ -18,12 +18,11 @@
 */
 
 exports.SVM = function(image, trainingData, fieldName, kernelType) {
-
-  if (kernelType != null) {
+  var kernel = 'RBF';
+  if (kernelType !== null) {
     var kernel = kernelType;
-  } else {
-    var kernel = 'RBF';
   }
+    
 
   var training = image.sampleRegions({
     collection: trainingData, 
