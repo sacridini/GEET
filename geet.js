@@ -1,7 +1,7 @@
 /* 
   Author: Eduardo R. Lacerda
   e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.3 (Alpha)
+  Version: 0.0.4 (Alpha)
 */
 
 /*
@@ -23,7 +23,6 @@ exports.SVM = function(image, trainingData, fieldName, kernelType) {
     var kernel = kernelType;
   }
     
-
   var training = image.sampleRegions({
     collection: trainingData, 
     properties: [fieldName], 
@@ -272,3 +271,29 @@ exports.spectralIndices = function(image, sensor, index) {
       }
     }
   }
+
+  /*
+    imgEx:
+    Function to get an example image to debug or test some code. 
+
+    Usage:
+    var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+    var image = geet.imgEx();
+  */
+exports.imgEx = function() {
+  var start = ee.Date('2015-01-01');
+  var finish = ee.Date('2015-12-31');
+  var roi = ee.Geometry.Point(-43.25,-22.90);
+  var l8 = ee.ImageCollection('LANDSAT/LC8_L1T_TOA');
+  var image = ee.Image(l8
+      .filterBounds(roi)
+      .filterDate(start, finish)
+      .sort('CLOUD_COVER')
+      .first());
+       
+  Map.setCenter(-43.25,-22.90, 10);
+  Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 0.3}, 'image');
+  print(image);
+  return image;
+}
+
