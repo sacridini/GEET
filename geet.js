@@ -1,8 +1,47 @@
 /* 
   Author: Eduardo R. Lacerda
   e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.1 (Alpha)
+  Version: 0.0.2 (Alpha)
 */
+
+var COLOR = {
+  WATER: '0066ff',
+  FOREST: '009933',
+  PASTURE: '99cc00',
+  URBAN: 'ff0000',
+  SHADOW: '000000',
+  NULO: '808080'
+};
+
+/*
+  plotClass:
+  Function to plot the final classification map.
+  
+  Params:
+  (ee.Image) image - the image to process
+  (string) title - the layer title 
+  (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.
+*/
+
+exports.plotClass = function (image, title, numClasses) {
+  switch (numClasses) {
+    case 2:
+      Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.SHADOW, COLOR.NULO]}, title);
+      break;
+    case 3:
+      Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.WATER]}, title);
+      break;
+    case 4:
+      Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER]}, title);
+      break;
+    case 5:
+      Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER, COLOR.SHADOW]}, title);
+      break;
+    default:
+      print("Wrong number of classes. plotClass supports a number of classes from 2 to 5 only.");
+      break;
+  }
+}
 
 /*
   spectralIndices:
@@ -12,7 +51,7 @@
   More indices and features will be added in the future!
 
   Supported indices:
-  NDVI, NDWI, NDBI, EVI and SAVI
+  NDVI, NDWI, NDBI, NRVI, EVI and SAVI
 
   Params:
   image - the image to process
@@ -69,6 +108,27 @@ exports.spectralIndices = function(image, sensor, index) {
             print('Wrong sensor!');
           }
           break;
+        case 'NRVI':
+          if (sensor == 'L5') {
+            var i_nrvi = image.expression(
+              '(RED/NIR - 1) / (RED/NIR + 1)', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3')
+              }).rename('NRVI');
+            var newImage = image.addBands(i_nrvi);
+            return newImage;
+        } else if (sensor  == 'L8') {
+            var i_nrvi = image.expression(
+              '(RED/NIR - 1) / (RED/NIR + 1)', {
+                'NIR': image.select('B5'),
+                'RED': image.select('B4')
+              }).rename('NRVI');
+            var newImage = image.addBands(i_nrvi);
+            return newImage;
+        } else { 
+          print('Wrong sensor!');
+        }
+          break;        
         case 'EVI':
           if (sensor == 'L5') {
             var i_evi = image.expression(
@@ -122,6 +182,11 @@ exports.spectralIndices = function(image, sensor, index) {
       var i_ndvi = image.normalizedDifference(['B4','B3']).rename('NDVI');
       var i_ndwi =  image.normalizedDifference(['B2','B4']).rename('NDWI');
       var i_ndbi =  image.normalizedDifference(['B5','B4']).rename('NDBI');
+      var i_nrvi = image.expression(
+        '(RED/NIR - 1) / (RED/NIR + 1)', {
+          'NIR': image.select('B4'),
+          'RED': image.select('B3')
+        }).rename('NRVI');
       var i_evi = image.expression(
         '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
           'NIR': image.select('B4'),
@@ -140,6 +205,11 @@ exports.spectralIndices = function(image, sensor, index) {
       var i_ndvi = image.normalizedDifference(['B5','B4']).rename('NDVI');
       var i_ndwi =  image.normalizedDifference(['B3','B5']).rename('NDWI');
       var i_ndbi =  image.normalizedDifference(['B6','B5']).rename('NDBI');
+      var i_nrvi = image.expression(
+        '(RED/NIR - 1) / (RED/NIR + 1)', {
+          'NIR': image.select('B5'),
+          'RED': image.select('B4')
+        }).rename('NRVI');
       var i_evi = image.expression(
         '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
           'NIR': image.select('B5'),
