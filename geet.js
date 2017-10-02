@@ -21,6 +21,10 @@ var COLOR = {
   (ee.Image) image - the image to process
   (string) title - the layer title 
   (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  geet.plotClass(classified, 'class_final', 4);
 */
 
 exports.plotClass = function (image, title, numClasses) {
@@ -54,9 +58,9 @@ exports.plotClass = function (image, title, numClasses) {
   NDVI, NDWI, NDBI, NRVI, EVI and SAVI
 
   Params:
-  image - the image to process
-  sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8')
-  index (optional) - you can specify the index that you want
+  (ee.Image) image - the image to process
+  (string) sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8')
+  (string or string array) index (optional) - you can specify the index that you want
                      if you dont specify any index the function will create all possible indices.
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/indexGen');
