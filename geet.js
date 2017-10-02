@@ -1,9 +1,48 @@
 /* 
   Author: Eduardo R. Lacerda
   e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.2 (Alpha)
+  Version: 0.0.3 (Alpha)
 */
 
+/*
+  SVM: (TODO)
+  Function to apple SVM classification to a image.
+
+  Params:
+  (ee.Image) image - TODO
+  (ee.List) trainingData - TODO 
+  (string) fieldName - TODO
+
+  Usage:
+  TODO
+*/
+
+exports.SVM = function(image, trainingData, fieldName, kernelType) {
+
+  if (kernelType != null) {
+    var kernel = kernelType;
+  } else {
+    var kernel = 'RBF';
+  }
+
+  var training = image.sampleRegions({
+    collection: trainingData, 
+    properties: [fieldName], 
+    scale: 30
+  });
+  
+  var classifier = ee.Classifier.svm({
+    kernelType: kernel,
+    gamma: 0.5,
+    cost: 10
+  });
+  
+  var trained = classifier.train(training, fieldName); 
+  var classified = image.classify(trained);
+  return classified;
+}
+
+// COLOR OBJECT
 var COLOR = {
   WATER: '0066ff',
   FOREST: '009933',
@@ -27,7 +66,7 @@ var COLOR = {
   geet.plotClass(classified, 'class_final', 4);
 */
 
-exports.plotClass = function (image, title, numClasses) {
+exports.plotClass = function(image, title, numClasses) {
   switch (numClasses) {
     case 2:
       Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.SHADOW, COLOR.NULO]}, title);
