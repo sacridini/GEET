@@ -1,7 +1,7 @@
 /* 
   Author: Eduardo R. Lacerda
   e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.4 (Alpha)
+  Version: 0.0.5 (Alpha)
 */
 
 /*
@@ -272,19 +272,38 @@ exports.spectralIndices = function(image, sensor, index) {
     }
   }
 
-  /*
-    imgEx:
-    Function to get an example image to debug or test some code. 
+ /*
+   imgEx:
+   Function to get an example image to debug or test some code. 
 
-    Usage:
-    var geet = require('users/eduardolacerdageo/default:Functions/GEET');
-    var image = geet.imgEx();
-  */
-exports.imgEx = function() {
+   Usage:
+   var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+   var image = geet.imgEx();
+
+   TODO:
+   visualization params for SR and RAW too!
+*/
+exports.imgEx = function(collection) {
+
+  var collectionType = 'TOA';
+
+  if (collectionType !== null) {
+    collectionType = collection;
+    if (collectionType === 'RAW') {
+      collectionType = 'LANDSAT/LC8_L1T';
+    } else if (collectionType === 'TOA') {
+      collectionType = 'LANDSAT/LC8_L1T_TOA';
+    } else if (collectionType === 'SR') {
+      collectionType = 'LANDSAT/LC8_SR';
+    } else {
+      print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
+    }
+  }
+
   var start = ee.Date('2015-01-01');
   var finish = ee.Date('2015-12-31');
   var roi = ee.Geometry.Point(-43.25,-22.90);
-  var l8 = ee.ImageCollection('LANDSAT/LC8_L1T_TOA');
+  var l8 = ee.ImageCollection(collectionType);
   var image = ee.Image(l8
       .filterBounds(roi)
       .filterDate(start, finish)
