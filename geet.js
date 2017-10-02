@@ -1,7 +1,7 @@
 /* 
   Author: Eduardo R. Lacerda
   e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.6 (Alpha)
+  Version: 0.0.5 (Alpha)
 */
 
 /*
@@ -20,7 +20,7 @@
 exports.SVM = function(image, trainingData, fieldName, kernelType) {
   var kernel = 'RBF';
   if (kernelType !== null) {
-    var kernel = kernelType;
+    kernel = kernelType;
   }
     
   var training = image.sampleRegions({
@@ -38,7 +38,7 @@ exports.SVM = function(image, trainingData, fieldName, kernelType) {
   var trained = classifier.train(training, fieldName); 
   var classified = image.classify(trained);
   return classified;
-}
+};
 
 // COLOR OBJECT
 var COLOR = {
@@ -301,7 +301,7 @@ exports.imgEx = function(_collection, _year) {
   var visParams = {bands: ['B4', 'B3', 'B2'], max: 0.3};
   if (_year !== null) {
     if (_year < 2014) {
-      print("Error! Available years: 2014, 2015 or 2016.")
+      print("Error! Available years: 2014, 2015 or 2016.");
     } else {
       year = _year;
     }
