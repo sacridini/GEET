@@ -1,7 +1,7 @@
 /* 
   Author: Eduardo R. Lacerda
   e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.5 (Alpha)
+  Version: 0.0.6 (Alpha)
 */
 
 /*
@@ -273,45 +273,71 @@ exports.spectralIndices = function(image, sensor, index) {
   }
 
  /*
-   imgEx:
-   Function to get an example image to debug or test some code. 
+    imgEx:
+    Function to get an example image to debug or test some code. 
 
-   Usage:
-   var geet = require('users/eduardolacerdageo/default:Functions/GEET');
-   var image = geet.imgEx();
+    Params:
+    (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.
+    (number) year - the year of the image that you want to get.
 
-   TODO:
-   visualization params for SR and RAW too!
+    Usage:
+    var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+    var image = geet.imgEx(); // Returns a TOA image
+
+    or 
+
+    var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+    var image = geet.imgEx('SR'); // Returns a SR image
+
+    TODO:
+    visualization params for SR and RAW too!
+
+    SR Vis: min: 104, max: 1632
+    RAW Vis: min: 6809, max: 12199
 */
-exports.imgEx = function(collection) {
+exports.imgEx = function(_collection, _year) {
+  var collection = 'TOA';
+  var year = 2015;
+  var visParams = {bands: ['B4', 'B3', 'B2'], max: 0.3};
+  if (_year !== null) {
+    if (_year < 2014) {
+      print("Error! Available years: 2014, 2015 or 2016.")
+    } else {
+      year = _year;
+    }
+  }
 
-  var collectionType = 'TOA';
-
-  if (collectionType !== null) {
-    collectionType = collection;
-    if (collectionType === 'RAW') {
-      collectionType = 'LANDSAT/LC8_L1T';
-    } else if (collectionType === 'TOA') {
-      collectionType = 'LANDSAT/LC8_L1T_TOA';
-    } else if (collectionType === 'SR') {
-      collectionType = 'LANDSAT/LC8_SR';
+  if (collection !== null) {
+    collection = _collection;
+    if (collection === 'RAW') {
+      collection = 'LANDSAT/LC8_L1T';
+      visParams = {
+        bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
+      };
+    } else if (collection === 'TOA') {
+      collection = 'LANDSAT/LC8_L1T_TOA';
+    } else if (collection === 'SR') {
+      collection = 'LANDSAT/LC8_SR';
+      visParams = {
+        bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
+      };
     } else {
       print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
     }
   }
 
-  var start = ee.Date('2015-01-01');
-  var finish = ee.Date('2015-12-31');
+  var start = '-01-01';
+  var finish = '-12-31';
   var roi = ee.Geometry.Point(-43.25,-22.90);
-  var l8 = ee.ImageCollection(collectionType);
+  var l8 = ee.ImageCollection(collection);
   var image = ee.Image(l8
       .filterBounds(roi)
-      .filterDate(start, finish)
+      .filterDate(year.toString() + start, year.toString() + finish)
       .sort('CLOUD_COVER')
       .first());
        
   Map.setCenter(-43.25,-22.90, 10);
-  Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 0.3}, 'image');
+  Map.addLayer(image, visParams, 'image');
   print(image);
   return image;
 }
