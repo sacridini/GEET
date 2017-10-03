@@ -282,12 +282,12 @@ exports.spectralIndices = function(image, sensor, index) {
 
     Usage:
     var geet = require('users/eduardolacerdageo/default:Functions/GEET');
-    var image = geet.imgEx(); // Returns a TOA image
+    var image = geet.loadImg(); // Returns a TOA image
 
     or 
 
     var geet = require('users/eduardolacerdageo/default:Functions/GEET');
-    var image = geet.imgEx('SR'); // Returns a SR image
+    var image = geet.loadImg('SR'); // Returns a SR image
 
     TODO:
     visualization params for SR and RAW too!
