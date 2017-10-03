@@ -295,27 +295,23 @@ exports.spectralIndices = function(image, sensor, index) {
     SR Vis: min: 104, max: 1632
     RAW Vis: min: 6809, max: 12199
 */
-exports.loadImg = function(_collection, _year) {
-  var collection = 'TOA';
-  var year = 2015;
+exports.loadImg = function(_collection = 'TOA', _year = 2015) {
+  var collection = 'LANDSAT/LC8_L1T_TOA';
+  var year;
   var visParams = {bands: ['B4', 'B3', 'B2'], max: 0.3};
-  if (_year !== null) {
-    if (_year < 2014) {
-      print("Error! Available years: 2014, 2015 or 2016.");
-    } else {
-      year = _year;
-    }
-  }
 
-  if (collection !== null) {
-    collection = _collection;
+  if (_year < 2014 ||  _year > 2016) {
+    print("Error! Available years: 2014, 2015 or 2016.");
+   } else {
+     year = _year;
+   }
+
+  if (_collection !== 'TOA') {
     if (collection === 'RAW') {
       collection = 'LANDSAT/LC8_L1T';
       visParams = {
         bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
       };
-    } else if (collection === 'TOA') {
-      collection = 'LANDSAT/LC8_L1T_TOA';
     } else if (collection === 'SR') {
       collection = 'LANDSAT/LC8_SR';
       visParams = {
