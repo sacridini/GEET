@@ -273,7 +273,7 @@ exports.spectralIndices = function(image, sensor, index) {
   }
 
  /*
-    imgEx:
+    loadImg:
     Function to get an example image to debug or test some code. 
 
     Params:
@@ -295,7 +295,7 @@ exports.spectralIndices = function(image, sensor, index) {
     SR Vis: min: 104, max: 1632
     RAW Vis: min: 6809, max: 12199
 */
-exports.imgEx = function(_collection, _year) {
+exports.loadImg = function(_collection, _year) {
   var collection = 'TOA';
   var year = 2015;
   var visParams = {bands: ['B4', 'B3', 'B2'], max: 0.3};
