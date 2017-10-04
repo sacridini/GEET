@@ -1,12 +1,12 @@
 /* 
   Author: Eduardo R. Lacerda
   e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.5 (Alpha)
+  Version: 0.0.6 (Alpha)
 */
 
 /*
   SVM: (TODO)
-  Function to apple SVM classification to a image.
+  Function to apply SVM classification to a image.
 
   Params:
   (ee.Image) image - TODO
@@ -16,7 +16,6 @@
   Usage:
   TODO
 */
-
 exports.SVM = function(image, trainingData, fieldName, kernelType) {
   var kernel = 'RBF';
   if (kernelType !== null) {
@@ -31,7 +30,6 @@ exports.SVM = function(image, trainingData, fieldName, kernelType) {
   
   var classifier = ee.Classifier.svm({
     kernelType: kernel,
-    gamma: 0.5,
     cost: 10
   });
   
@@ -39,6 +37,34 @@ exports.SVM = function(image, trainingData, fieldName, kernelType) {
   var classified = image.classify(trained);
   return classified;
 };
+
+/*
+  CART: (TODO)
+  Function to apply CART classification to a image.
+
+  Params:
+  (ee.Image) image - TODO
+  (ee.List) trainingData - TODO 
+  (string) fieldName - TODO
+
+  Usage:
+  TODO
+*/
+exports.CART = function(image, trainingData, fieldName) {
+  var training = image.sampleRegions({
+    collection: trainingData, 
+    properties: [fieldName], 
+    scale: 30
+  });
+  
+  var classifier = ee.Classifier.cart().train({
+    features: training, 
+    classProperty: fieldName
+  });
+  
+  var classified = image.classify(classifier);
+  return classified;
+}
 
 // COLOR OBJECT
 var COLOR = {
