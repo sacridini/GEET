@@ -120,7 +120,7 @@ exports.plotClass = function(image, title, numClasses) {
   More indices and features will be added in the future!
 
   Supported indices:
-  NDVI, NDWI, NDBI, NRVI, EVI and SAVI
+  NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 
   Params:
   (ee.Image) image - the image to process
