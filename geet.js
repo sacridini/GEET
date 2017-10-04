@@ -5,7 +5,7 @@
 */
 
 /*
-  SVM: (TODO)
+  SVM:
   Function to apply SVM classification to a image.
 
   Params:
@@ -40,7 +40,7 @@ exports.SVM = function(image, trainingData, fieldName, kernelType) {
 };
 
 /*
-  CART: (TODO)
+  CART:
   Function to apply CART classification to a image.
 
   Params:
