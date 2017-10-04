@@ -9,12 +9,13 @@
   Function to apply SVM classification to a image.
 
   Params:
-  (ee.Image) image - TODO
-  (ee.List) trainingData - TODO 
-  (string) fieldName - TODO
+  (ee.Image) image - The input image to classify
+  (ee.List) trainingData - Training data (samples)  
+  (string) fieldName - The name of the column that contains the class names
 
   Usage:
-  TODO
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var imgClass = geet.SVM(image, samplesfc, landcover);
 */
 exports.SVM = function(image, trainingData, fieldName, kernelType) {
   var kernel = 'RBF';
@@ -43,12 +44,13 @@ exports.SVM = function(image, trainingData, fieldName, kernelType) {
   Function to apply CART classification to a image.
 
   Params:
-  (ee.Image) image - TODO
-  (ee.List) trainingData - TODO 
-  (string) fieldName - TODO
+  (ee.Image) image - The input image to classify
+  (ee.List) trainingData - Training data (samples) 
+  (string) fieldName - The name of the column that contains the class names
 
   Usage:
-  TODO
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var imgClass = geet.CART(image, samplesfc, landcover);
 */
 exports.CART = function(image, trainingData, fieldName) {
   var training = image.sampleRegions({
