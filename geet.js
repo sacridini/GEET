@@ -1,7 +1,7 @@
 /* 
   Author: Eduardo R. Lacerda
   e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.6 (Alpha)
+  Version: 0.0.7 (Alpha)
 */
 
 /*
@@ -244,6 +244,29 @@ exports.spectralIndices = function(image, sensor, index) {
             print('Wrong sensor!');
           }
           break;
+        case 'GOSAVI':
+          if (sensor == 'L5') {
+            var i_gosavi = image.expression(
+              '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                'NIR': image.select('B4'),
+                'GREEN': image.select('B2'),
+                'Y': 0.16
+              }).rename('GOSAVI'); 
+            var newImage = image.addBands(i_gosavi);
+            return newImage;
+          } else if (sensor == 'L8') {
+            var i_gosavi = image.expression(
+              '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                'NIR': image.select('B5'),
+                'GREEN': image.select('B3'),
+                'Y': 0.16
+              }).rename('GOSAVI');
+            var newImage = image.addBands(i_gosavi);
+            return newImage;
+          } else {
+            print('Wrong sensor!');
+          }
+          break;
       }
     } else { // END OF SWITCH 
     // Gen ALL indices
@@ -267,8 +290,14 @@ exports.spectralIndices = function(image, sensor, index) {
         'NIR': image.select('B4'),
         'RED': image.select('B3'),
         'L': 0.2
-        }).rename('SAVI'); 
-      var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi]);
+        }).rename('SAVI');
+      var i_gosavi = image.expression(
+        '(NIR - GREEN) / (NIR + GREEN + Y)', {
+        'NIR': image.select('B4'),
+        'GREEN': image.select('B2'),
+        'Y': 0.16
+        }).rename('GOSAVI');
+      var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi, i_gosavi]);
       return newImage;
     } else if (sensor == 'L8') {
       var i_ndvi = image.normalizedDifference(['B5','B4']).rename('NDVI');
@@ -290,8 +319,14 @@ exports.spectralIndices = function(image, sensor, index) {
         'NIR': image.select('B5'),
         'RED': image.select('B4'),
         'L': 0.2
-        }).rename('SAVI'); 
-      var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi]);
+        }).rename('SAVI');
+      var i_gosavi = image.expression(
+        '(NIR - GREEN) / (NIR + GREEN + Y)', {
+        'NIR': image.select('B5'),
+        'GREEN': image.select('B3'),
+        'Y': 0.16
+        }).rename('GOSAVI');
+      var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi, i_gosavi]);
       return newImage;
     } else {
       print("Wrong sensor input!");
