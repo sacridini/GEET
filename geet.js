@@ -80,17 +80,17 @@ var COLOR = {
 
 // TODO
 exports.plotRGB = function(image, title) {
-  Map.addLayer(image, {}, title);
+  Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 0.3}, title);
 }
 
 // TODO
 exports.plotNDVI = function(image, title) {
-  Map.addLayer(image, {}, title);
+  Map.addLayer(image, {min: -1, max: 1, palette: ['FF0000', '00FF00']}, title);
 }
 
 // TODO
 exports.plotNDWI = function(image, title) {
-  Map.addLayer(image, {}, title);
+  Map.addLayer(image, {min: -1, max: 1, palette: ['00FFFF', '0000FF']}, title);
 }
 
 /*
