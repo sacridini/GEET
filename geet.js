@@ -78,6 +78,21 @@ var COLOR = {
   NULO: '808080'
 };
 
+// TODO
+exports.plotRGB = function(image, title) {
+  Map.addLayer(image, {}, title);
+}
+
+// TODO
+exports.plotNDVI = function(image, title) {
+  Map.addLayer(image, {}, title);
+}
+
+// TODO
+exports.plotNDWI = function(image, title) {
+  Map.addLayer(image, {}, title);
+}
+
 /*
   plotClass:
   Function to plot the final classification map.
@@ -91,7 +106,6 @@ var COLOR = {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   geet.plotClass(classified, 'class_final', 4);
 */
-
 exports.plotClass = function(image, title, numClasses) {
   switch (numClasses) {
     case 2:
