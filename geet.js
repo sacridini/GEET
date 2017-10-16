@@ -1,7 +1,9 @@
 /* 
-  Author: Eduardo R. Lacerda
-  e-mail: eduardolacerdageo@gmail.com
-  Version: 0.0.7 (Alpha)
+  Name      : geet.js
+  Author    : Eduardo Ribeiro. Lacerda
+  e-mail    : eduardolacerdageo@gmail.com
+  Version   : 0.0.8 (Alpha)
+  Date      : 16-10-2017
 */
 
 /*
@@ -60,6 +62,37 @@ exports.CART = function(image, trainingData, fieldName) {
   });
   
   var classifier = ee.Classifier.cart().train({
+    features: training, 
+    classProperty: fieldName
+  });
+
+  var classified = image.classify(classifier);
+  return classified;
+}
+
+
+/*
+  RF:
+  Function to apply RandomForest classification to an image.
+
+  Params:
+  (ee.Image) image - The input image to classify
+  (ee.List) trainingData - Training data (samples)
+  (string) fieldName - the name of the column that contains the class names
+  (ee.Number) numOfTrees - the number of trees that the model will create
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var imgClass = geet.RF(image, samplesfc, landcover, 10);
+*/
+exports.RF = function(image, trainingData, fieldName, numOfTrees) {
+  var training = image.sampleRegions({
+    collection: trainingData, 
+    properties: [fieldName], 
+    scale: 30
+  });
+  
+  var classifier = ee.Classifier.randomForest(numOfTrees).train({
     features: training, 
     classProperty: fieldName
   });
