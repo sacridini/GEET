@@ -85,7 +85,13 @@ exports.CART = function(image, trainingData, fieldName) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.RF(image, samplesfc, landcover, 10);
 */
-exports.RF = function(image, trainingData, fieldName, numOfTrees) {
+exports.RF = function(image, trainingData, fieldName, _numOfTrees) {
+  if (_numOfTrees === undefined) {
+    var numOfTrees = 10;
+  } else {
+    numOfTrees = _numOfTrees;
+  }
+  
   var training = image.sampleRegions({
     collection: trainingData, 
     properties: [fieldName], 
@@ -132,14 +138,20 @@ exports.plotNDWI = function(image, title) {
   
   Params:
   (ee.Image) image - the image to process
-  (string) title - the layer title 
   (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.
-
+  (string) title - the layer title 
+  
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  geet.plotClass(classified, 'class_final', 4);
+  geet.plotClass(classified, 4, 'class_final');
 */
-exports.plotClass = function(image, title, numClasses) {
+exports.plotClass = function(image, numClasses, _title) {
+  if (_title === undefined) {
+    var title = 'class_final';
+  } else {
+    title = _title;
+  }
+
   switch (numClasses) {
     case 2:
       Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.SHADOW, COLOR.NULO]}, title);
