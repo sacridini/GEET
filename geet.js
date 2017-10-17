@@ -4,6 +4,13 @@
   e-mail    : eduardolacerdageo@gmail.com
   Version   : 0.0.8 (Alpha)
   Date      : 16-10-2017
+  Description: Lib to write small EE apps, or big apps with a lot less code.
+  
+  Implemented functions:
+    IO: loadImg
+    Classifiers: SVM, CART, RF
+    Visualization: plotClass, plotRGB, plotNDVI, plotNDWI
+    General Remote Sensing: spectralIndices
 */
 
 /*
@@ -16,12 +23,12 @@
   (string) fieldName - The name of the column that contains the class names
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/eduardolacerdageo/default:Functions/GEET');
   var imgClass = geet.SVM(image, samplesfc, landcover);
 */
 exports.SVM = function(image, trainingData, fieldName, kernelType) {
   var kernel = 'RBF';
-  if (kernelType !== null) {
+  if (kernelType !== undefined) {
     kernel = kernelType;
   }
     
@@ -68,7 +75,7 @@ exports.CART = function(image, trainingData, fieldName) {
 
   var classified = image.classify(classifier);
   return classified;
-}
+};
 
 
 /*
@@ -86,9 +93,8 @@ exports.CART = function(image, trainingData, fieldName) {
   var imgClass = geet.RF(image, samplesfc, landcover, 10);
 */
 exports.RF = function(image, trainingData, fieldName, _numOfTrees) {
-  if (_numOfTrees === undefined) {
-    var numOfTrees = 10;
-  } else {
+  var numOfTrees = 10;
+  if (_numOfTrees !== undefined) {
     numOfTrees = _numOfTrees;
   }
   
@@ -105,7 +111,7 @@ exports.RF = function(image, trainingData, fieldName, _numOfTrees) {
   
   var classified = image.classify(classifier);
   return classified;
-}
+};
 
 // COLOR OBJECT
 var COLOR = {
@@ -120,17 +126,17 @@ var COLOR = {
 // TODO
 exports.plotRGB = function(image, title) {
   Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 0.3}, title);
-}
+};
 
 // TODO
 exports.plotNDVI = function(image, title) {
   Map.addLayer(image, {min: -1, max: 1, palette: ['FF0000', '00FF00']}, title);
-}
+};
 
 // TODO
 exports.plotNDWI = function(image, title) {
   Map.addLayer(image, {min: -1, max: 1, palette: ['00FFFF', '0000FF']}, title);
-}
+};
 
 /*
   plotClass:
@@ -146,9 +152,8 @@ exports.plotNDWI = function(image, title) {
   geet.plotClass(classified, 4, 'class_final');
 */
 exports.plotClass = function(image, numClasses, _title) {
-  if (_title === undefined) {
-    var title = 'class_final';
-  } else {
+  var title = 'class_final';
+  if (_title !== undefined) {
     title = _title;
   }
 
@@ -169,7 +174,7 @@ exports.plotClass = function(image, numClasses, _title) {
       print("Wrong number of classes. plotClass supports a number of classes from 2 to 5 only.");
       break;
   }
-}
+};
 
 /*
   spectralIndices:
@@ -410,12 +415,6 @@ exports.spectralIndices = function(image, sensor, index) {
 
     var geet = require('users/eduardolacerdageo/default:Functions/GEET');
     var image = geet.loadImg('SR'); // Returns a SR image
-
-    TODO:
-    visualization params for SR and RAW too!
-
-    SR Vis: min: 104, max: 1632
-    RAW Vis: min: 6809, max: 12199
 */
 exports.loadImg = function(_collection, _year) {
   var collection = 'TOA';
@@ -462,5 +461,5 @@ exports.loadImg = function(_collection, _year) {
   Map.addLayer(image, visParams, 'image');
   print(image);
   return image;
-}
+};
 
