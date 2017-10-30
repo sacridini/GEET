@@ -113,6 +113,117 @@ exports.RF = function(image, trainingData, fieldName, _numOfTrees) {
   return classified;
 };
 
+/*
+  simpleNDVIChangeDetection:
+  Function to detect changes between two input images using the NDVI index 
+  and a threshold paramter. 
+  The function adds the two masked indices and return the sum of the two.
+  Its a good choice to call the plotClass function to visualize the result.
+  Ex: geet.plotClass(ndviChange, 3, 'change_detection');
+  
+  Params: 
+  (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.
+  (ee.Image) img1 = The first input image.
+  (ee.Image) img2 = The second input image.
+  (ee.Number) threshold = The number of the threshold. All the values at the 
+                          image that is gte (grater of equal) to this number 
+                          will be selected.   
+                          
+  Usage: 
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var ndviChange = geet.simpleNDVIChangeDetection('L8', image_2014, image_2015, 0.5);
+*/
+exports.simpleNDVIChangeDetection = function(sensor, img1, img2, threshold) {
+  if (sensor === 'L8') {
+    var i_ndvi_1 = img1.normalizedDifference(['B5','B4']).rename('NDVI');
+    var i_ndvi_2 = img2.normalizedDifference(['B5','B4']).rename('NDVI');
+  } else if (sensor === 'L5') {
+    var i_ndvi_1 = img1.normalizedDifference(['B4','B3']).rename('NDVI');
+    var i_ndvi_2 = img2.normalizedDifference(['B4','B3']).rename('NDVI');
+  } else {
+    print('wrong sensor. Choose between L5 or L8');
+    return;
+  }
+  var i_ndvi_1_mask = i_ndvi_1.select('NDVI').gte(threshold);
+  var i_ndvi_2_mask = i_ndvi_2.select('NDVI').gte(threshold);
+  var imgSoma = i_ndvi_1_mask.add(i_ndvi_2_mask);
+  return imgSoma;
+}
+
+/*
+  simpleNDWIChangeDetection:
+  Function to detect changes between two input images using the NDWI index 
+  and a threshold paramter. 
+  The function adds the two masked indices and return the sum of the two.
+  Its a good choice to call the plotClass function to visualize the result.
+  Ex: geet.plotClass(ndwiChange, 3, 'change_detection');
+
+  Params: 
+  (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.
+  (ee.Image) img1 = The first input image.
+  (ee.Image) img2 = The second input image.
+  (ee.Number) threshold = The number of the threshold. All the values at the 
+                          image that is gte (grater of equal) to this number 
+                          will be selected.   
+                          
+  Usage: 
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var ndwiChange = geet.simpleNDWIChangeDetection('L8', image_2014, image_2015, 0.5);
+*/
+exports.simpleNDWIChangeDetection = function(sensor, img1, img2, threshold) {
+  if (sensor === 'L8') {
+    var i_ndwi_1 = img1.normalizedDifference(['B4','B6']).rename('NDWI');
+    var i_ndwi_2 = img2.normalizedDifference(['B4','B6']).rename('NDWI');
+  } else if (sensor === 'L5') {
+    var i_ndwi_1 = img1.normalizedDifference(['B3','B5']).rename('NDWI');
+    var i_ndwi_2 = img2.normalizedDifference(['B3','B5']).rename('NDWI');
+  } else {
+    print('wrong sensor. Choose between L5 or L8');
+    return;
+  }
+  var i_ndwi_1_mask = i_ndwi_1.select('NDWI').gte(threshold);
+  var i_ndwi_2_mask = i_ndwi_2.select('NDWI').gte(threshold);
+  var imgSoma = i_ndwi_1_mask.add(i_ndwi_2_mask);
+  return imgSoma;
+}
+
+/*
+  simpleNDBIChangeDetection:
+  Function to detect changes between two input images using the NDBI index 
+  and a threshold paramter. 
+  The function adds the two masked indices and return the sum of the two.
+  Its a good choice to call the plotClass function to visualize the result.
+  Ex: geet.plotClass(ndbiChange, 3, 'change_detection');
+
+  Params: 
+  (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.
+  (ee.Image) img1 = The first input image.
+  (ee.Image) img2 = The second input image.
+  (ee.Number) threshold = The number of the threshold. All the values at the 
+                          image that is gte (grater of equal) to this number 
+                          will be selected.   
+                          
+  Usage: 
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var ndbiChange = geet.simpleNDVIChangeDetection('L8', image_2014, image_2015, 0.5);
+*/
+exports.simpleNDBIChangeDetection = function(sensor, img1, img2, threshold) {
+  if (sensor === 'L8') {
+    var i_ndbi_1 = img1.normalizedDifference(['B6','B5']).rename('NDBI');
+    var i_ndbi_2 = img2.normalizedDifference(['B6','B5']).rename('NDBI');
+  } else if (sensor === 'L5') {
+    var i_ndbi_1 = img1.normalizedDifference(['B5','B4']).rename('NDBI');
+    var i_ndbi_2 = img2.normalizedDifference(['B5','B4']).rename('NDBI');
+  } else {
+    print('wrong sensor. Choose between L5 or L8');
+    return;
+  }
+  var i_ndbi_1_mask = i_ndbi_1.select('NDBI').gte(threshold);
+  var i_ndbi_2_mask = i_ndbi_2.select('NDBI').gte(threshold);
+  var imgSoma = i_ndbi_1_mask.add(i_ndbi_2_mask);
+  return imgSoma;
+}
+
 // COLOR OBJECT
 var COLOR = {
   WATER: '0066ff',
@@ -196,7 +307,7 @@ exports.plotClass = function(image, numClasses, _title) {
   var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.
 
   or specifying the index to generate:
-  var geet = require('users/eduardolacerdageo/default:Function/indexGen');
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.
 */
 exports.spectralIndices = function(image, sensor, index) {
@@ -416,10 +527,19 @@ exports.spectralIndices = function(image, sensor, index) {
     var geet = require('users/eduardolacerdageo/default:Functions/GEET');
     var image = geet.loadImg('SR'); // Returns a SR image
 */
-exports.loadImg = function(_collection, _year) {
+exports.loadImg = function(_collection, _year, _roi) {
+  // Setup
   var collection = 'TOA';
   var year = 2015;
+  var roi = ee.Geometry.Point(-43.25,-22.90);
   var visParams = {bands: ['B4', 'B3', 'B2'], max: 0.3};
+
+  // Check roi
+  if (_roi !== undefined) {
+    roi = _roi;  
+  }
+
+  // Check year
   if (_year !== undefined) {
     if (_year < 2014 || _year > 2016) {
       print("Error! Available years: 2014, 2015 or 2016.");
@@ -428,6 +548,7 @@ exports.loadImg = function(_collection, _year) {
     }
   }
 
+  // Check collection
   if (collection !== undefined) {
     collection = _collection;
     if (collection === 'RAW') {
@@ -447,17 +568,16 @@ exports.loadImg = function(_collection, _year) {
     }
   }
 
+  // Get Image
   var start = '-01-01';
   var finish = '-12-31';
-  var roi = ee.Geometry.Point(-43.25,-22.90);
   var l8 = ee.ImageCollection(collection);
   var image = ee.Image(l8
       .filterBounds(roi)
       .filterDate(year.toString() + start, year.toString() + finish)
       .sort('CLOUD_COVER')
       .first());
-       
-  Map.setCenter(-43.25,-22.90, 10);
+  
   Map.addLayer(image, visParams, 'image');
   print(image);
   return image;
