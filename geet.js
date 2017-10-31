@@ -235,17 +235,50 @@ var COLOR = {
   NULO: '808080'
 };
 
-// TODO
+/*
+  plotRGB:
+  Function to plot a RGB image.
+
+  Params:
+  (ee.Image) image - the image to display
+  (string) title - the layer title
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  geet.plotRGB(image, 'rgb_image');
+*/
 exports.plotRGB = function(image, title) {
   Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 0.3}, title);
 };
 
-// TODO
+/*
+  plotNDVI:
+  Function to plot a NDVI image index.
+
+  Params:
+  (ee.Image) image - the image to display
+  (string) title - the layer title
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  geet.plotNDVI(ndvi, 'ndvi_image');
+*/
 exports.plotNDVI = function(image, title) {
   Map.addLayer(image, {min: -1, max: 1, palette: ['FF0000', '00FF00']}, title);
 };
 
-// TODO
+/*
+  plotNDWI:
+  Function to plot a NDWI image index.
+
+  Params:
+  (ee.Image) image - the image to display
+  (string) title - the layer title
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  geet.plotNDWI(ndwi, 'ndwi_image');
+*/
 exports.plotNDWI = function(image, title) {
   Map.addLayer(image, {min: -1, max: 1, palette: ['00FFFF', '0000FF']}, title);
 };
