@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo Ribeiro. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.8 (Alpha)
+  Version   : 0.0.9 (Alpha)
   Date      : 16-10-2017
   Description: Lib to write small EE apps, or big apps with a lot less code.
   
@@ -10,7 +10,8 @@
     IO: loadImg
     Classifiers: SVM, CART, RF
     Visualization: plotClass, plotRGB, plotNDVI, plotNDWI
-    General Remote Sensing: spectralIndices
+    General Remote Sensing: spectralIndices, simpleNDVIChangeDetection,
+                            simpleNDWIChangeDetection, simpleNDBIChangeDetection
 */
 
 /*
@@ -541,32 +542,54 @@ exports.loadImg = function(_collection, _year, _roi) {
 
   // Check year
   if (_year !== undefined) {
-    if (_year < 2014 || _year > 2016) {
-      print("Error! Available years: 2014, 2015 or 2016.");
-    } else {
-      year = _year;
-    }
+    year = _year;
+  } else {
+    print('ERRO: You need to specify the year parameter.')
   }
 
   // Check collection
-  if (collection !== undefined) {
-    collection = _collection;
-    if (collection === 'RAW') {
-      collection = 'LANDSAT/LC8_L1T';
-      visParams = {
-        bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
-      };
-    } else if (collection === 'TOA') {
-      collection = 'LANDSAT/LC8_L1T_TOA';
-    } else if (collection === 'SR') {
-      collection = 'LANDSAT/LC8_SR';
-      visParams = {
-        bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
-      };
-    } else {
-      print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
+  if (year >= 2013) {
+    if (collection !== undefined) {
+      collection = _collection;
+      if (collection === 'RAW') {
+        collection = 'LANDSAT/LC8_L1T';
+        visParams = {
+          bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
+        };
+      } else if (collection === 'TOA') {
+        collection = 'LANDSAT/LC8_L1T_TOA';
+      } else if (collection === 'SR') {
+        collection = 'LANDSAT/LC8_SR';
+        visParams = {
+          bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
+        };
+      } else {
+        print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
+      }
     }
+  } else if (year < 2013) {
+    if (collection !== undefined) {
+      collection = _collection;
+      if (collection === 'RAW') {
+        collection = 'LANDSAT/LT5_L1T';
+        visParams = {
+          bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
+        };
+      } else if (collection === 'TOA') {
+        collection = 'LANDSAT/LT5_L1T_TOA_FMASK';
+      } else if (collection === 'SR') {
+        collection = 'LANDSAT/LT5_SR';
+        visParams = {
+          bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
+        };
+      } else {
+        print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
+      }
+    }
+  } else {
+    print('ERROR: Wrong year parameter');
   }
+
 
   // Get Image
   var start = '-01-01';
