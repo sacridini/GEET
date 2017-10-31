@@ -600,7 +600,7 @@ exports.loadImg = function(_collection, _year, _roi) {
         print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
       }
     }
-  } else if (year < 2013) {
+  } else if (year < 2013 && year >= 1985) {
     if (collection !== undefined) {
       collection = _collection;
       if (collection === 'RAW') {
