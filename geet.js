@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo Ribeiro. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.9 (Alpha)
+  Version   : 0.0.10 (Alpha)
   Date      : 16-10-2017
   Description: Lib to write small EE apps, or big apps with a lot less code.
   
@@ -223,6 +223,12 @@ exports.simpleNDBIChangeDetection = function(sensor, img1, img2, threshold) {
   var i_ndbi_2_mask = i_ndbi_2.select('NDBI').gte(threshold);
   var imgSoma = i_ndbi_1_mask.add(i_ndbi_2_mask);
   return imgSoma;
+}
+
+// TODO
+exports.filterDateRange = function(imgCol, start, finish, field) {
+  var imgCol_filtered = imgCol.filter(ee.Filter.calendarRange(start, finish, field));
+  return imgCol_filtered;
 }
 
 // COLOR OBJECT
@@ -622,7 +628,6 @@ exports.loadImg = function(_collection, _year, _roi) {
   } else {
     print('ERROR: Wrong year parameter');
   }
-
 
   // Get Image
   var start = '-01-01';
