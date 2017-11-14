@@ -226,9 +226,26 @@ exports.simpleNDBIChangeDetection = function(sensor, img1, img2, threshold) {
 }
 
 // TODO
+<<<<<<< HEAD
 exports.filterDateRange = function(imgCol, start, finish, field) {
   var imgCol_filtered = imgCol.filter(ee.Filter.calendarRange(start, finish, field));
   return imgCol_filtered;
+=======
+exports.contextSynth = function(image) {
+  // Process the indices
+  var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+  var i_ndwi = image.normalizedDifference(['B4', 'B6']).rename('NDWI');
+  var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
+  var ic_idx = image.addBands([i_ndvi, i_ndwi, i_ndbi]);
+
+  // Masking
+  var i_ndvi_mask = ic_idx.select('NDVI').gte(0.4);
+  var i_ndwi_mask = ic_idx.select('NDWI').gte(0.4);
+  var i_ndbi_mask = ic_idx.select('NDBI').gte(0.4);
+
+  var resultado = i_ndvi_mask.reduce(ee.Reducer.mean());
+  print(resultado);
+>>>>>>> 872422e6acc42297dbcd0b3f5fee66d0971f8e70
 }
 
 // COLOR OBJECT
@@ -612,14 +629,17 @@ exports.loadImg = function(_collection, _year, _roi) {
       if (collection === 'RAW') {
         collection = 'LANDSAT/LT5_L1T';
         visParams = {
-          bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
+          bands: ['B3', 'B2', 'B1'], min: 6809, max: 12199
         };
       } else if (collection === 'TOA') {
         collection = 'LANDSAT/LT5_L1T_TOA_FMASK';
+        visParams = {
+          bands: ['B3', 'B2', 'B1'], max: 0.3
+        };
       } else if (collection === 'SR') {
         collection = 'LANDSAT/LT5_SR';
         visParams = {
-          bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
+          bands: ['B3', 'B2', 'B1'], min: 104, max: 1632
         };
       } else {
         print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
