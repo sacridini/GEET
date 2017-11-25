@@ -243,7 +243,7 @@ exports.texture = function(image, radius) {
 // TODO
 exports.majority = function (image, radius) {
   var majority = image.reduceNeighborhood({
-    reducer: ee.Reducer.mean(),
+    reducer: ee.Reducer.mode(),
     kernel: ee.Kernel.circle(radius),
   });
   return majority;
