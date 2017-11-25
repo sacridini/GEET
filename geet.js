@@ -134,7 +134,7 @@ exports.RF = function(image, trainingData, fieldName, _numOfTrees) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var ndviChange = geet.simpleNDVIChangeDetection('L8', image_2014, image_2015, 0.5);
 */
-exports.simpleNDVIChangeDetection = function(sensor, img1, img2, threshold) {
+exports.simpleNDVIChangeDetection = function (img1, img2, sensor, threshold) {
   if (sensor === 'L8') {
     var i_ndvi_1 = img1.normalizedDifference(['B5','B4']).rename('NDVI');
     var i_ndvi_2 = img2.normalizedDifference(['B5','B4']).rename('NDVI');
@@ -171,7 +171,7 @@ exports.simpleNDVIChangeDetection = function(sensor, img1, img2, threshold) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var ndwiChange = geet.simpleNDWIChangeDetection('L8', image_2014, image_2015, 0.5);
 */
-exports.simpleNDWIChangeDetection = function(sensor, img1, img2, threshold) {
+exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
   if (sensor === 'L8') {
     var i_ndwi_1 = img1.normalizedDifference(['B4','B6']).rename('NDWI');
     var i_ndwi_2 = img2.normalizedDifference(['B4','B6']).rename('NDWI');
@@ -208,7 +208,7 @@ exports.simpleNDWIChangeDetection = function(sensor, img1, img2, threshold) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var ndbiChange = geet.simpleNDVIChangeDetection('L8', image_2014, image_2015, 0.5);
 */
-exports.simpleNDBIChangeDetection = function(sensor, img1, img2, threshold) {
+exports.simpleNDBIChangeDetection = function (img1, img2, sensor, threshold) {
   if (sensor === 'L8') {
     var i_ndbi_1 = img1.normalizedDifference(['B6','B5']).rename('NDBI');
     var i_ndbi_2 = img2.normalizedDifference(['B6','B5']).rename('NDBI');
