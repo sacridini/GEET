@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo Ribeiro. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.10 (Alpha)
+  Version   : 0.0.11 (Alpha)
   Date      : 16-10-2017
   Description: Lib to write small EE apps, or big apps with a lot less code.
   
@@ -229,6 +229,22 @@ exports.simpleNDBIChangeDetection = function(sensor, img1, img2, threshold) {
 exports.filterDateRange = function(imgCol, start, finish, field) {
   var imgCol_filtered = imgCol.filter(ee.Filter.calendarRange(start, finish, field));
   return imgCol_filtered;
+}
+
+// TODO
+exports.texture = function(image, radius) {
+  var texture = image.reduceNeighborhood({
+    reducer: ee.Reducer.stdDev(),
+    kernel: ee.Kernel.circle(radius),
+  });
+}
+
+// TODO
+exports.majority = function (image, radius) {
+  var majority = image.reduceNeighborhood({
+    reducer: ee.Reducer.mean(),
+    kernel: ee.Kernel.circle(radius),
+  });
 }
 
 // COLOR OBJECT
