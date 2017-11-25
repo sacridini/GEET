@@ -237,6 +237,7 @@ exports.texture = function(image, radius) {
     reducer: ee.Reducer.stdDev(),
     kernel: ee.Kernel.circle(radius),
   });
+  return texture;
 }
 
 // TODO
@@ -245,6 +246,7 @@ exports.majority = function (image, radius) {
     reducer: ee.Reducer.mean(),
     kernel: ee.Kernel.circle(radius),
   });
+  return majority;
 }
 
 // COLOR OBJECT
