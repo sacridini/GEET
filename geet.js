@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo Ribeiro. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.11 (Alpha)
+  Version   : 0.0.12 (Alpha)
   Date      : 16-10-2017
   Description: Lib to write small EE apps, or big apps with a lot less code.
   
@@ -148,6 +148,7 @@ exports.simpleNDVIChangeDetection = function (img1, img2, sensor, threshold) {
   var i_ndvi_1_mask = i_ndvi_1.select('NDVI').gte(threshold);
   var i_ndvi_2_mask = i_ndvi_2.select('NDVI').gte(threshold);
   var imgSoma = i_ndvi_1_mask.add(i_ndvi_2_mask);
+  Map.addLayer(imgSoma, { min: 0, max: 2, palette: [COLOR.SHADOW, COLOR.URBAN, COLOR.PASTURE] }, 'ndvi_cd');
   return imgSoma;
 }
 
@@ -185,6 +186,7 @@ exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
   var i_ndwi_1_mask = i_ndwi_1.select('NDWI').gte(threshold);
   var i_ndwi_2_mask = i_ndwi_2.select('NDWI').gte(threshold);
   var imgSoma = i_ndwi_1_mask.add(i_ndwi_2_mask);
+  Map.addLayer(imgSoma, { min: 0, max: 2, palette: [COLOR.SHADOW, COLOR.URBAN, COLOR.PASTURE] }, 'ndwi_cd');
   return imgSoma;
 }
 
@@ -222,6 +224,7 @@ exports.simpleNDBIChangeDetection = function (img1, img2, sensor, threshold) {
   var i_ndbi_1_mask = i_ndbi_1.select('NDBI').gte(threshold);
   var i_ndbi_2_mask = i_ndbi_2.select('NDBI').gte(threshold);
   var imgSoma = i_ndbi_1_mask.add(i_ndbi_2_mask);
+  Map.addLayer(imgSoma, { min: 0, max: 2, palette: [COLOR.SHADOW, COLOR.URBAN, COLOR.PASTURE] }, 'ndbi_cd');
   return imgSoma;
 }
 
@@ -355,7 +358,7 @@ exports.plotClass = function(image, numClasses, _title) {
       Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.SHADOW, COLOR.NULO]}, title);
       break;
     case 3:
-      Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.WATER]}, title);
+      Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.WATER]}, title);
       break;
     case 4:
       Map.addLayer(image, {min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER]}, title);
@@ -680,8 +683,10 @@ exports.loadImg = function(_collection, _year, _roi) {
       .filterDate(year.toString() + start, year.toString() + finish)
       .sort('CLOUD_COVER')
       .first());
-  
-  Map.addLayer(image, visParams, 'image');
+
+  var titleName = 'title_' + year.toString;
+
+  Map.addLayer(image, visParams, titleName);
   print(image);
   return image;
 };
