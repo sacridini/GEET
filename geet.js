@@ -231,7 +231,19 @@ exports.filterDateRange = function(imgCol, start, finish, field) {
   return imgCol_filtered;
 }
 
-// TODO
+/*
+  Texture:
+  Function generate a texture filter on the image.
+
+  Params:
+  (ee.Image) image = The input image.
+  (ee.Number) radius = the radius number that defines the effect level of the filter. 
+                       Bigger numbers generalize more the result. 
+  
+   Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var texture = geet.texture(image_from_rio, 1);
+*/
 exports.texture = function(image, radius) {
   var texture = image.reduceNeighborhood({
     reducer: ee.Reducer.stdDev(),
@@ -240,7 +252,19 @@ exports.texture = function(image, radius) {
   return texture;
 }
 
-// TODO
+/*
+  Majority:
+  Function to filter the final classification image and clear the salt n' pepper effect.
+
+  Params:
+  (ee.Image) image = The input image.
+  (ee.Number) radius = the radius number that defines the effect level of the filter. 
+                       Bigger numbers generalize more the result. 
+  
+   Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var majority = geet.majority(image_from_rio, 1);
+*/
 exports.majority = function (image, radius) {
   var majority = image.reduceNeighborhood({
     reducer: ee.Reducer.mode(),
