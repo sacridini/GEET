@@ -2,9 +2,9 @@
   Name      : geet.js
   Author    : Eduardo Ribeiro. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.13 (Alpha)
+  Version   : 0.0.14 (Alpha)
   Date      : 15-01-2018
-  Description: Lib to write small EE apps, or big/complex apps with a lot less code.
+  Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
 
 /*
@@ -106,6 +106,45 @@ exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
   var classified = image.classify(classifier);
   return classified;
 };
+
+exports.kmeans = function(image, roi, _numClusters, _scale, _numPixels) {
+  if (roi === undefined) {
+    print("Error: You need to define and pass a roi as argument to collect the samples for the classfication process.")
+  } 
+  
+  if (_numClusters === undefined) {
+    var numClusters = 15;
+  } else {
+    numClusters = _numClusters;
+  }
+
+  if (_scale === undefined) {
+    var scale = 30;
+  } else {
+    scale = _scale;
+  }
+
+  if (_numPixels === undefined) {
+    var numPixels = 5000;
+  } else {
+    numPixels = _numPixels;
+  }
+
+  // Make the training dataset.
+  var training = image.sample({
+    region: roi,
+    scale: scale,
+    numPixels: numPixels
+  });
+
+  // Instantiate the clusterer and train it.
+  var clusterer = ee.Clusterer.wekaKMeans(numClusters).train(training);
+
+  // Cluster the input using the trained clusterer.
+  var result = image.cluster(clusterer);
+  Map.addLayer(result.randomVisualizer(), {}, 'clusters');
+  return result;
+}
 
 /*
   simpleNDVIChangeDetection:
