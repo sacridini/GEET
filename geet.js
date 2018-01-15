@@ -1,8 +1,8 @@
 /* 
   Name      : geet.js
-  Author    : Eduardo Ribeiro. Lacerda
+  Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.15 (Alpha)
+  Version   : 0.0.16 (Alpha)
   Date      : 15-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
@@ -127,7 +127,7 @@ exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.kmeans(image, roi, 20, 10, 6000);
 */
-exports.kmeans = function(image, roi, _numClusters, _scale, _numPixels) {
+exports.kmeans = function (image, roi, _numClusters, _scale, _numPixels) {
   if (roi === undefined) {
     print("Error: You need to define and pass a roi as argument to collect the samples for the classfication process.")
   } 
@@ -185,17 +185,20 @@ exports.kmeans = function(image, roi, _numClusters, _scale, _numPixels) {
                           
   Usage: 
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var ndviChange = geet.simpleNDVIChangeDetection('L8', image_2014, image_2015, 0.5);
+  var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);
 */
 exports.simpleNDVIChangeDetection = function (img1, img2, sensor, threshold) {
   if (sensor === 'L8') {
     var i_ndvi_1 = img1.normalizedDifference(['B5', 'B4']).rename('NDVI');
     var i_ndvi_2 = img2.normalizedDifference(['B5', 'B4']).rename('NDVI');
-  } else if (sensor === 'L5') {
+  } else if (sensor === 'L5' || sensor === 'L7') {
     var i_ndvi_1 = img1.normalizedDifference(['B4', 'B3']).rename('NDVI');
     var i_ndvi_2 = img2.normalizedDifference(['B4', 'B3']).rename('NDVI');
+  } else if (sensor === 'S2') {
+    var i_ndvi_1 = img1.normalizedDifference(['B8', 'B4']).rename('NDVI');
+    var i_ndvi_2 = img2.normalizedDifference(['B8', 'B4']).rename('NDVI');
   } else {
-    print('Error: Wrong sensor. Choose between L5 or L8');
+    print('Error: Wrong sensor. Choose between L5, L7, L8 or S2');
     return;
   }
   var i_ndvi_1_mask = i_ndvi_1.select('NDVI').gte(threshold);
@@ -223,17 +226,20 @@ exports.simpleNDVIChangeDetection = function (img1, img2, sensor, threshold) {
                           
   Usage: 
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var ndwiChange = geet.simpleNDWIChangeDetection('L8', image_2014, image_2015, 0.5);
+  var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);
 */
 exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
   if (sensor === 'L8') {
     var i_ndwi_1 = img1.normalizedDifference(['B4', 'B6']).rename('NDWI');
     var i_ndwi_2 = img2.normalizedDifference(['B4', 'B6']).rename('NDWI');
-  } else if (sensor === 'L5') {
+  } else if (sensor === 'L5' || sensor === 'L7') {
     var i_ndwi_1 = img1.normalizedDifference(['B3', 'B5']).rename('NDWI');
     var i_ndwi_2 = img2.normalizedDifference(['B3', 'B5']).rename('NDWI');
+  } else if (sensor === 'S2') {
+    var i_ndwi_1 = img1.normalizedDifference(['B4', 'B11']).rename('NDWI');
+    var i_ndwi_2 = img2.normalizedDifference(['B4', 'B11']).rename('NDWI');
   } else {
-    print('Error: Wrong sensor. Choose between L5 or L8');
+    print('Error: Wrong sensor. Choose between L5, L7, L8 or S2');
     return;
   }
   var i_ndwi_1_mask = i_ndwi_1.select('NDWI').gte(threshold);
@@ -261,17 +267,20 @@ exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
                           
   Usage: 
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var ndbiChange = geet.simpleNDVIChangeDetection('L8', image_2014, image_2015, 0.5);
+  var ndbiChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);
 */
 exports.simpleNDBIChangeDetection = function (img1, img2, sensor, threshold) {
   if (sensor === 'L8') {
     var i_ndbi_1 = img1.normalizedDifference(['B6', 'B5']).rename('NDBI');
     var i_ndbi_2 = img2.normalizedDifference(['B6', 'B5']).rename('NDBI');
-  } else if (sensor === 'L5') {
+  } else if (sensor === 'L5' || sensor === 'L7') {
     var i_ndbi_1 = img1.normalizedDifference(['B5', 'B4']).rename('NDBI');
     var i_ndbi_2 = img2.normalizedDifference(['B5', 'B4']).rename('NDBI');
+  } else if (sensor === 'S2') {
+    var i_ndbi_1 = img1.normalizedDifference(['B11', 'B8']).rename('NDBI');
+    var i_ndbi_2 = img2.normalizedDifference(['B11', 'B8']).rename('NDBI');
   } else {
-    print('Error: Wrong sensor. Choose between L5 or L8');
+    print('Error: Wrong sensor. Choose between L5, L7, L8 or S2');
     return;
   }
   var i_ndbi_1_mask = i_ndbi_1.select('NDBI').gte(threshold);
@@ -351,7 +360,7 @@ var COLOR = {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   geet.color('water');
 */
-exports.color = function(_color) {
+exports.color = function (_color) {
   var color = _color.toLowerCase(); 
   switch (color) {
     case 'water':
@@ -874,7 +883,7 @@ exports.loadImg = function (_collection, _year, _roi, _title) {
   AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
   Qcal         = Quantized and calibrated standard product pixel values (DN)
 */
-exports.toaRadiance = function(image, band) {
+exports.toaRadiance = function (image, band) {
   var band_to_toa = image.select('B' + band.toString());
   var radiance_multi_band = ee.Number(image.get('RADIANCE_MULT_BAND_' + band.toString())); // Ml
   var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
@@ -906,7 +915,7 @@ exports.toaRadiance = function(image, band) {
   Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)
   Qcal          = Quantized and calibrated standard product pixel values (DN)
 */
-exports.toaReflectance = function(image, band) {
+exports.toaReflectance = function (image, band) {
   var band_to_toa = image.select('B' + band.toString());
   var reflectance_multi_band = ee.Number(image.get('REFLECTANCE_MULT_BAND_' + band.toString())); // Mp
   var reflectance_add_band = ee.Number(image.get('REFLECTANCE_ADD_BAND_' + band.toString())); // Ap
@@ -1025,7 +1034,7 @@ exports.toaReflectanceL8 = function (image, band, _solarAngle) {
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightnessTempL5 = function(image) {
+exports.brightnessTempL5 = function (image) {
   // landsat 5 constants
   var K1 = 607.76
   var K2 = 1260.56
