@@ -2,13 +2,13 @@
   Name      : geet.js
   Author    : Eduardo Ribeiro. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.14 (Alpha)
+  Version   : 0.0.15 (Alpha)
   Date      : 15-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
 
 /*
-  SVM:
+  svm:
   Function to apply SVM classification to a image.
 
   Params:
@@ -18,7 +18,7 @@
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Functions/GEET');
-  var imgClass = geet.SVM(image, samplesfc, landcover);
+  var imgClass = geet.svm(image, samplesfc, landcover);
 */
 exports.svm = function (image, trainingData, fieldName, kernelType) {
   var kernel = 'RBF';
@@ -43,7 +43,7 @@ exports.svm = function (image, trainingData, fieldName, kernelType) {
 };
 
 /*
-  CART:
+  cart:
   Function to apply CART classification to a image.
 
   Params:
@@ -53,7 +53,7 @@ exports.svm = function (image, trainingData, fieldName, kernelType) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var imgClass = geet.CART(image, samplesfc, landcover);
+  var imgClass = geet.cart(image, samplesfc, landcover);
 */
 exports.cart = function (image, trainingData, fieldName) {
   var training = image.sampleRegions({
@@ -73,7 +73,7 @@ exports.cart = function (image, trainingData, fieldName) {
 
 
 /*
-  RF:
+  rf:
   Function to apply RandomForest classification to an image.
 
   Params:
@@ -84,7 +84,7 @@ exports.cart = function (image, trainingData, fieldName) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var imgClass = geet.RF(image, samplesfc, landcover, 10);
+  var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
 exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
   var numOfTrees = 10;
@@ -107,6 +107,26 @@ exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
   return classified;
 };
 
+/*
+  kmeans:
+  Function to apply RandomForest classification to an image.
+
+  Params:
+  (ee.Image) image - The input image to classify
+  (list) roi - Coordenates or just a polygon of the sample area
+  optional (number) _numClusters - the number of clusters that will be used. Default is 15.
+  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
+  optional (number) _numPixels - the number of pixels that the classifier will take samples from the roi.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var imgClass = geet.kmeans(image, roi);
+
+  or 
+
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var imgClass = geet.kmeans(image, roi, 20, 10, 6000);
+*/
 exports.kmeans = function(image, roi, _numClusters, _scale, _numPixels) {
   if (roi === undefined) {
     print("Error: You need to define and pass a roi as argument to collect the samples for the classfication process.")
@@ -142,6 +162,7 @@ exports.kmeans = function(image, roi, _numClusters, _scale, _numPixels) {
 
   // Cluster the input using the trained clusterer.
   var result = image.cluster(clusterer);
+  Map.addLayer(ee.Image().paint(roi, 0, 2), {}, 'roi_kmeans');
   Map.addLayer(result.randomVisualizer(), {}, 'clusters');
   return result;
 }
@@ -174,7 +195,7 @@ exports.simpleNDVIChangeDetection = function (img1, img2, sensor, threshold) {
     var i_ndvi_1 = img1.normalizedDifference(['B4', 'B3']).rename('NDVI');
     var i_ndvi_2 = img2.normalizedDifference(['B4', 'B3']).rename('NDVI');
   } else {
-    print('wrong sensor. Choose between L5 or L8');
+    print('Error: Wrong sensor. Choose between L5 or L8');
     return;
   }
   var i_ndvi_1_mask = i_ndvi_1.select('NDVI').gte(threshold);
@@ -212,7 +233,7 @@ exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
     var i_ndwi_1 = img1.normalizedDifference(['B3', 'B5']).rename('NDWI');
     var i_ndwi_2 = img2.normalizedDifference(['B3', 'B5']).rename('NDWI');
   } else {
-    print('wrong sensor. Choose between L5 or L8');
+    print('Error: Wrong sensor. Choose between L5 or L8');
     return;
   }
   var i_ndwi_1_mask = i_ndwi_1.select('NDWI').gte(threshold);
@@ -250,7 +271,7 @@ exports.simpleNDBIChangeDetection = function (img1, img2, sensor, threshold) {
     var i_ndbi_1 = img1.normalizedDifference(['B5', 'B4']).rename('NDBI');
     var i_ndbi_2 = img2.normalizedDifference(['B5', 'B4']).rename('NDBI');
   } else {
-    print('wrong sensor. Choose between L5 or L8');
+    print('Error: Wrong sensor. Choose between L5 or L8');
     return;
   }
   var i_ndbi_1_mask = i_ndbi_1.select('NDBI').gte(threshold);
@@ -438,10 +459,11 @@ exports.plotClass = function (image, numClasses, _title) {
       Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER, COLOR.SHADOW] }, title);
       break;
     default:
-      print("Wrong number of classes. plotClass supports a number of classes from 2 to 5 only.");
+      print("Error: Wrong number of classes. plotClass supports a number of classes from 2 to 5 only.");
       break;
   }
 };
+
 
 /*
   spectralIndices:
@@ -478,8 +500,12 @@ exports.spectralIndices = function (image, sensor, index) {
           var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
           var newImage = image.addBands(i_ndvi);
           return newImage;
+        } else if (sensor == 'S2') {
+          var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
+          var newImage = image.addBands(i_ndvi);
+          return newImage;
         } else {
-          print('Wrong sensor!');
+          print('Error: Wrong sensor!');
         }
         break;
       case 'NDWI':
@@ -491,8 +517,12 @@ exports.spectralIndices = function (image, sensor, index) {
           var i_ndwi = image.normalizedDifference(['B4', 'B6']).rename('NDWI');
           var newImage = image.addBands(i_ndwi);
           return newImage;
+        } else if (sensor == 'S2') {
+          var i_ndwi = image.normalizedDifference(['B4', 'B11']).rename('NDWI');
+          var newImage = image.addBands(i_ndwi);
+          return newImage;
         } else {
-          print('Wrong sensor!');
+          print('Error: Wrong sensor!');
         }
         break;
       case 'NDBI':
@@ -504,8 +534,12 @@ exports.spectralIndices = function (image, sensor, index) {
           var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
           var newImage = image.addBands(i_ndbi);
           return newImage;
+        } else if (sensor == 'S2') {
+          var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
+          var newImage = image.addBands(i_ndbi);
+          return newImage;
         } else {
-          print('Wrong sensor!');
+          print('Error: Wrong sensor!');
         }
         break;
       case 'NRVI':
@@ -526,7 +560,7 @@ exports.spectralIndices = function (image, sensor, index) {
           var newImage = image.addBands(i_nrvi);
           return newImage;
         } else {
-          print('Wrong sensor!');
+          print('Error: Wrong sensor!');
         }
         break;
       case 'EVI':
@@ -548,8 +582,17 @@ exports.spectralIndices = function (image, sensor, index) {
             }).rename('EVI');
           var newImage = image.addBands(i_evi);
           return newImage;
+        } else if (sensor == 'S2') {
+          var i_evi = image.expression(
+            '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+              'NIR': image.select('B8'),
+              'RED': image.select('B4'),
+              'BLUE': image.select('B2')
+            }).rename('EVI');
+          var newImage = image.addBands(i_evi);
+          return newImage;
         } else {
-          print('Wrong sensor!');
+          print('Error: Wrong sensor!');
         }
         break;
       case 'SAVI':
@@ -571,8 +614,17 @@ exports.spectralIndices = function (image, sensor, index) {
             }).rename('SAVI');
           var newImage = image.addBands(i_savi);
           return newImage;
+        } else if (sensor == 'S2') {
+          var i_savi = image.expression(
+            '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+              'NIR': image.select('B8'),
+              'RED': image.select('B4'),
+              'L': 0.2
+            }).rename('SAVI');
+          var newImage = image.addBands(i_savi);
+          return newImage;
         } else {
-          print('Wrong sensor!');
+          print('Error: Wrong sensor!');
         }
         break;
       case 'GOSAVI':
@@ -594,8 +646,17 @@ exports.spectralIndices = function (image, sensor, index) {
             }).rename('GOSAVI');
           var newImage = image.addBands(i_gosavi);
           return newImage;
+        } else if (sensor == 'S2') {
+          var i_gosavi = image.expression(
+            '(NIR - GREEN) / (NIR + GREEN + Y)', {
+              'NIR': image.select('B8'),
+              'GREEN': image.select('B3'),
+              'Y': 0.16
+            }).rename('GOSAVI');
+          var newImage = image.addBands(i_gosavi);
+          return newImage;
         } else {
-          print('Wrong sensor!');
+          print('Error: Wrong sensor!');
         }
         break;
     }
@@ -603,7 +664,7 @@ exports.spectralIndices = function (image, sensor, index) {
     // Gen ALL indices
     if (sensor == 'L5') {
       var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
-      var i_ndwi = image.normalizedDifference(['B2', 'B4']).rename('NDWI');
+      var i_ndwi = image.normalizedDifference(['B2', 'B5']).rename('NDWI');
       var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
       var i_nrvi = image.expression(
         '(RED/NIR - 1) / (RED/NIR + 1)', {
@@ -628,11 +689,11 @@ exports.spectralIndices = function (image, sensor, index) {
           'GREEN': image.select('B2'),
           'Y': 0.16
         }).rename('GOSAVI');
-      var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi, i_gosavi]);
+      var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
       return newImage;
     } else if (sensor == 'L8') {
       var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
-      var i_ndwi = image.normalizedDifference(['B3', 'B5']).rename('NDWI');
+      var i_ndwi = image.normalizedDifference(['B3', 'B6']).rename('NDWI');
       var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
       var i_nrvi = image.expression(
         '(RED/NIR - 1) / (RED/NIR + 1)', {
@@ -657,11 +718,35 @@ exports.spectralIndices = function (image, sensor, index) {
           'GREEN': image.select('B3'),
           'Y': 0.16
         }).rename('GOSAVI');
+      var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
+      return newImage;
+    } else if (sensor == 'S2') {
+      var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
+      var i_ndwi = image.normalizedDifference(['B3', 'B11']).rename('NDWI');
+      var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
+      var i_evi = image.expression(
+        '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+          'NIR': image.select('B8'),
+          'RED': image.select('B4'),
+          'BLUE': image.select('B2')
+        }).rename('EVI');
+      var i_savi = image.expression(
+        '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+          'NIR': image.select('B8'),
+          'RED': image.select('B4'),
+          'L': 0.2
+        }).rename('SAVI');
+      var i_gosavi = image.expression(
+        '(NIR - GREEN) / (NIR + GREEN + Y)', {
+          'NIR': image.select('B8'),
+          'GREEN': image.select('B3'),
+          'Y': 0.16
+        }).rename('GOSAVI');
       var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi, i_gosavi]);
       return newImage;
     } else {
-      print("Wrong sensor input!");
-      print("Choose 'L5' to process Landsat 5 images or 'L8' for Landsat 8");
+      print("Error: Wrong sensor input!");
+      print("Choose 'L5' to process Landsat 5 images, 'L8' for Landsat 8 and S2 for Sentinel 2");
     }
   }
 };
@@ -697,7 +782,7 @@ exports.loadImg = function (_collection, _year, _roi, _title) {
   if (_year !== undefined) {
     year = _year;
   } else {
-    print('ERRO: You need to specify the year parameter.')
+    print('Error: You need to specify the year parameter.')
   }
 
   // Check roi
@@ -727,7 +812,7 @@ exports.loadImg = function (_collection, _year, _roi, _title) {
           bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
         };
       } else {
-        print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
+        print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
       }
     }
   } else if (year < 2013 && year >= 1985) {
@@ -746,11 +831,11 @@ exports.loadImg = function (_collection, _year, _roi, _title) {
           bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
         };
       } else {
-        print("Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
+        print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
       }
     }
   } else {
-    print('ERROR: Wrong year parameter');
+    print('Error: Wrong year parameter');
   }
 
   // Get Image
