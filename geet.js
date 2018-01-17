@@ -3,7 +3,7 @@
     Author    : Eduardo R. Lacerda
     e-mail    : eduardolacerdageo@gmail.com
     Version   : 0.0.19 (Alpha)
-    Date      : 15-01-2018
+    Date      : 17-01-2018
     Description: Lib to write small EE apps or big/complex apps with a lot less code.
   */
 
@@ -1458,3 +1458,31 @@ exports.landsat8Mosaic = function (startDate, endDate, roi, _showMosaic) {
   return composite;
 }
 
+
+exports.modisNdviMosaic = function (startDate, endDate, roi, _showMosaic) {
+  if (_showMosaic === undefined) {
+    var showMosaic = true;
+  } else {
+    showMosaic = _showMosaic;
+  }
+
+  var modis = ee.ImageCollection('MODIS/MOD13Q1')
+    .filterDate(ee.Date(startDate), ee.Date(endDate))
+
+  var rescale_ndvi = function (img) {
+    var rescaled_NDVI = img.select('NDVI')
+      .multiply(0.0001)
+      .rename('NDVI_rescaled');
+    return img.addBands(rescaled_NDVI);
+  };
+
+  var goodCollection = modis.map(rescale_ndvi);
+  var modis_ndvi_mosaic = goodCollection.select('NDVI_rescaled').mosaic();
+
+  if (showMosaic === true) {
+    Map.addLayer(modis_ndvi_mosaic)
+  } else {
+    return modis_ndvi_mosaic;
+  }
+  return modis_ndvi_mosaic;
+}
