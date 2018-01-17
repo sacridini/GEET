@@ -1238,42 +1238,55 @@ exports.loadS2ById = function (id) {
   return s2_filtered;
 }
 
-
 /*
-  s2WorldMosaic:
-  Function to build a world cloud free mosaic using the Sentinel 2 dataset.
+  s2Mosaic:
+  Function to build a cloud free mosaic using the Sentinel 2 dataset filtered by the roi.
 
   Params:
   (string) startDate - the start date of the dataset.
-  (string) endDate - the end date of the dataset
-  (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  (string) endDate - the end date of the dataset.
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
+  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var s2_world_mosaic = geet.s2WorldMosaic('2016-01-01', '2016-12-31'); // Display the final mosaic.
+  var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31'); // Display the final world mosaic.
+
+  or
+
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi
 
   or 
 
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var s2_world_mosaic = geet.s2WorldMosaic('2016-01-01', '2016-12-31', false); // Doesnt display the mosaic
+  var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.s2WorldMosaic = function (startDate, endDate, _showMosaic) {
+exports.s2Mosaic = function (startDate, endDate, roi, _showMosaic) {
+  var s2 = ee.ImageCollection('COPERNICUS/S2');
+
   if (_showMosaic === undefined) {
     var showMosaic = true;
   } else {
     showMosaic = _showMosaic;
   }
 
-  var s2 = ee.ImageCollection('COPERNICUS/S2');
-  var composite = s2.filterDate('2016-01-01', '2016-12-31')
-    .sort('CLOUDY_PIXEL_PERCENTAGE', false)
-    .map(function (image) {
-      return image.addBands(image.metadata('system:time_start'));
-    })
-    .mosaic();
+  if (roi === undefined) {
+    var composite = s2.filterDate(startDate, endDate)
+      .sort('CLOUDY_PIXEL_PERCENTAGE', false)
+      .map(function (image) {
+        return image.addBands(image.metadata('system:time_start'));
+      })
+      .mosaic();
+  } else {
+    composite = s2.filterDate(startDate, endDate)
+      .sort('CLOUDY_PIXEL_PERCENTAGE', false)
+      .filterBounds(roi)
+      .mosaic();
+  }
 
   if (showMosaic === true) {
-    Map.addLayer(composite, { bands: ['B2', 'B3', 'B4'], min: 400, max: 2811 }, 'S2_Mosaic');
+    Map.addLayer(composite, { bands: ['B2', 'B3', 'B4'], min: 400, max: 2811 }, 'S2_roi_Mosaic');
   } else {
     return composite;
   }
