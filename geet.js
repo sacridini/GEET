@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.16 (Alpha)
+  Version   : 0.0.17 (Alpha)
   Date      : 15-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
@@ -399,8 +399,21 @@ exports.color = function (_color) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   geet.plotRGB(image, 'rgb_image');
 */
-exports.plotRGB = function (image, title) {
-  Map.addLayer(image, { bands: ['B4', 'B3', 'B2'], max: 0.3 }, title);
+exports.plotRGB = function (image, _title) {
+  if (_title === undefined) {
+    var title = 'image_RGB';
+  } else {
+    title = _title;
+  }
+  
+  var vizParams = {
+    'bands': 'B4,B3,B2',
+    'min': 5000,
+    'max': 30000,
+    'gamma': 1.6
+  };
+
+  Map.addLayer(image, vizParams, title);
 };
 
 /*
@@ -1160,4 +1173,112 @@ exports.brightnessTempL8 = function (image, _single) {
     return brightness_temp;
   }
 }
+
+/*
+  resample:
+  Function to resample an input image.
+
+  Params:
+  (ee.Image) image - the image to resample
+  (number) scaleNumber - the number of the spatial resolution that you
+                         want to use to  resample the input image.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var landsat_10m = geet.resample(L8_img, 10); 
+*/
+exports.resample = function (image, scaleNumber) {
+  // Get the projection information from a band.
+  var band = image.select('B2');
+
+  var resampled_image = image.resample('bilinear').reproject({
+    crs: band.projection().crs(),
+    scale: scaleNumber
+  });
+
+  return resampled_image;
+}
+
+/*
+  resampleBand:
+  Function to resample just a single band.
+
+  Params:
+  (ee.Image) band - the band to resample
+  (number) scaleNumber - the number of the spatial resolution that you
+                         want to use to  resample the input band.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var landsatB10_60m = geet.resampleBand(b10, 60);
+*/
+exports.resampleBand = function (band, scaleNumber) {
+  var resampled_band = band.resample('bilinear').reproject({
+    crs: band.projection().crs(),
+    scale: scaleNumber
+  });
+  return resampled_band;
+}
+
+/*
+  loadS2ById:
+  Function to filter the Sentinel-2 collection by Product ID obtained from the
+  Copernicus Open Access Hub.
+
+  Params:
+  (string) id - the id of the Sentinel 2 image.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var s2_image = geet.loadS2ById('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');
+*/
+exports.loadS2ById = function (id) {
+  var s2 = ee.ImageCollection("COPERNICUS/S2");
+  var s2_filtered = s2.filterMetadata('PRODUCT_ID', 'equals', id);
+  return s2_filtered;
+}
+
+
+/*
+  s2WorldMosaic:
+  Function to build a world cloud free mosaic using the Sentinel 2 dataset.
+
+  Params:
+  (string) startDate - the start date of the dataset.
+  (string) endDate - the end date of the dataset
+  (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var s2_world_mosaic = geet.s2WorldMosaic('2016-01-01', '2016-12-31'); // Display the final mosaic.
+
+  or 
+
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var s2_world_mosaic = geet.s2WorldMosaic('2016-01-01', '2016-12-31', false); // Doesnt display the mosaic
+*/
+exports.s2WorldMosaic = function (startDate, endDate, _showMosaic) {
+  if (_showMosaic === undefined) {
+    var showMosaic = true;
+  } else {
+    showMosaic = _showMosaic;
+  }
+
+  var s2 = ee.ImageCollection('COPERNICUS/S2');
+  var composite = s2.filterDate('2016-01-01', '2016-12-31')
+    .sort('CLOUDY_PIXEL_PERCENTAGE', false)
+    .map(function (image) {
+      return image.addBands(image.metadata('system:time_start'));
+    })
+    .mosaic();
+
+  if (showMosaic === true) {
+    Map.addLayer(composite, { bands: ['B2', 'B3', 'B4'], min: 400, max: 2811 }, 'S2_Mosaic');
+  } else {
+    return composite;
+  }
+  return composite;
+}
+
+
 
