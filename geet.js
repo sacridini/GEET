@@ -2,7 +2,7 @@
     Name      : geet.js
     Author    : Eduardo R. Lacerda
     e-mail    : eduardolacerdageo@gmail.com
-    Version   : 0.0.19 (Alpha)
+    Version   : 0.0.21 (Alpha)
     Date      : 17-01-2018
     Description: Lib to write small EE apps or big/complex apps with a lot less code.
   */
@@ -27,7 +27,7 @@
     }
 
     var training = image.sampleRegions({
-      collection: trainingData,
+      collection: trainingData, 
       properties: [fieldName],
       scale: 30
     });
@@ -790,7 +790,7 @@
     or 
 
     var geet = require('users/eduardolacerdageo/default:Functions/GEET');
-    var image = geet.loadImg('SR'); // Returns a SR image
+    var image = geet.loadImg('SR', 2015); // Returns a SR image
   */
   exports.loadImg = function (_collection, _year, _roi, _title) {
     // Setup
@@ -1031,7 +1031,7 @@
 
 
   /*
-    brightnessTempL5:
+    brightnessTempL5_K:
     Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
     This one works only for Landsat 5 data.
 
@@ -1040,14 +1040,14 @@
     
     Usage:
     var geet = require('users/eduardolacerdageo/default:Function/GEET');
-    var brightness_temp_img = geet.brightnessTempL5(toa_image); // ee.Image
+    var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image
 
     T           = Top of atmosphere brightness temperature (K)
     Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
     K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
     K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
   */
-  exports.brightnessTempL5 = function (image) {
+  exports.brightnessTempL5_K = function (image) {
     // landsat 5 constants
     var K1 = 607.76
     var K2 = 1260.56
@@ -1068,8 +1068,49 @@
     return brightness_temp;
   }
 
+
+    /*
+    brightnessTempL5_C:
+    Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
+    This one works only for Landsat 5 data.
+
+    Params:
+    (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
+    
+    Usage:
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image
+
+    T           = Top of atmosphere brightness temperature (K)
+    Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
+    K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
+    K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
+  */
+  exports.brightnessTempL5_C = function (image) {
+    // landsat 5 constants
+    var K1 = 607.76
+    var K2 = 1260.56
+
+    var brightness_temp_semlog = image.expression(
+      'K1 / B6 + 1', {
+        'K1': K1,
+        'B6': image.select('B6')
+      });
+
+    var brightness_temp_log = brightness_temp_semlog.log();
+
+    var brightness_temp = image.expression(
+      'K2 / brightness_temp_log', {
+        'K2': K2,
+        'brightness_temp_log': brightness_temp_log
+      });
+    
+    var brightness_temp_celsius = brightness_temp.subtract(273.5);
+    return brightness_temp_celsius;
+  }
+
   /*
-    brightnessTempL7:
+    brightnessTempL7_K:
     Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
     This one works only for Landsat 7 data.
 
@@ -1078,14 +1119,14 @@
     
     Usage:
     var geet = require('users/eduardolacerdageo/default:Function/GEET');
-    var brightness_temp_img = geet.brightnessTempL7(toa_image); // ee.Image
+    var brightness_temp_img = geet.brightnessTempL7_K(toa_image); // ee.Image
 
     T           = Top of atmosphere brightness temperature (K)
     Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
     K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
     K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
   */
-  exports.brightnessTempL7 = function (image) {
+  exports.brightnessTempL7_K = function (image) {
     // landsat 7 constants
     var K1 = 666.09
     var K2 = 1282.71
@@ -1106,8 +1147,50 @@
     return brightness_temp;
   }
 
+
+    /*
+    brightnessTempL7_C:
+    Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
+    This one works only for Landsat 7 data.
+
+    Params:
+    (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
+    
+    Usage:
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var brightness_temp_img = geet.brightnessTempL7_C(toa_image); // ee.Image
+
+    T           = Top of atmosphere brightness temperature (K)
+    Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
+    K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
+    K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
+  */
+  exports.brightnessTempL7_C = function (image) {
+    // landsat 7 constants
+    var K1 = 666.09
+    var K2 = 1282.71
+
+    var brightness_temp_semlog = image.expression(
+      'K1 / B6 + 1', {
+        'K1': K1,
+        'B6': image.select('B6')
+      });
+
+    var brightness_temp_log = brightness_temp_semlog.log();
+
+    var brightness_temp = image.expression(
+      'K2 / brightness_temp_log', {
+        'K2': K2,
+        'brightness_temp_log': brightness_temp_log
+      });
+
+    var brightness_temp_celsius = brightness_temp.subtract(273.5);
+    return brightness_temp_celsius;
+  }
+
+
   /*
-    brightnessTempL8:
+    brightnessTempL8_K:
     Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
     This one works only for Landsat 8 data.
 
@@ -1117,19 +1200,19 @@
     
     Usage:
     var geet = require('users/eduardolacerdageo/default:Function/GEET');
-    var brightness_temp_img = geet.brightnessTempL8(toa_image); // ee.Image
+    var brightness_temp_img = geet.brightnessTempL8_K(toa_image); // ee.Image
 
     or 
 
     var geet = require('users/eduardolacerdageo/default:Function/GEET');
-    var brightness_temp_img = geet.brightnessTempL8(toa_image, false); // ee.Image
+    var brightness_temp_img = geet.brightnessTempL8_K(toa_image, false); // ee.Image
 
     T           = Top of atmosphere brightness temperature (K)
     Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
     K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
     K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
   */
-  exports.brightnessTempL8 = function (image, _single) {
+  exports.brightnessTempL8_K = function (image, _single) {
     var single = (arguments[1] !== void 1 ? false : true);
     // default is true - double band (B10 and B11) processing
     if (single === true) {
@@ -1173,6 +1256,78 @@
       return brightness_temp;
     }
   }
+
+
+    /*
+    brightnessTempL8_C:
+    Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
+    This one works only for Landsat 8 data.
+
+    Params:
+    (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
+    (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
+    
+    Usage:
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var brightness_temp_img = geet.brightnessTempL8_C(toa_image); // ee.Image
+
+    or 
+
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var brightness_temp_img = geet.brightnessTempL8_C(toa_image, false); // ee.Image
+
+    T           = Top of atmosphere brightness temperature (K)
+    Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
+    K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
+    K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
+  */
+  exports.brightnessTempL8_C = function (image, _single) {
+    var single = (arguments[1] !== void 1 ? false : true);
+   // false - double band (B10 and B11) processing
+    if (single === false) {
+      var K1_10 = ee.Number(image.get('K1_CONSTANT_BAND_10'));
+      var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
+      var K1_11 = ee.Number(image.get('K1_CONSTANT_BAND_11'));
+      var K2_11 = ee.Number(image.get('K2_CONSTANT_BAND_11'));
+
+      var brightness_temp_semlog = image.expression(
+        'K1 / B10 + 1', {
+          'K1': K1_10,
+          'B10': image.select('B10')
+        });
+
+      var brightness_temp_log = brightness_temp_semlog.log();
+
+      var brightness_temp = image.expression(
+        'K2 / brightness_temp_log', {
+          'K2': K2_10,
+          'brightness_temp_log': brightness_temp_log
+        });
+      return brightness_temp;
+    } else {
+      // default is true - single band (B10) processing
+      var K1_10 = ee.Number(image.get('K1_CONSTANT_BAND_10'));
+      var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
+
+      var brightness_temp_semlog = image.expression(
+        'K1 / B10 + 1', {
+          'K1': K1_10,
+          'B10': image.select('B10')
+        });
+
+      var brightness_temp_log = brightness_temp_semlog.log();
+
+      var brightness_temp = image.expression(
+        'K2 / brightness_temp_log', {
+          'K2': K2_10,
+          'brightness_temp_log': brightness_temp_log
+        });
+
+      var brightness_temp_celsius = brightness_temp.subtract(273.5);
+      return brightness_temp_celsius;
+    }
+  }
+
 
   /*
     resample:
@@ -1486,3 +1641,38 @@ exports.modisNdviMosaic = function (startDate, endDate, roi, _showMosaic) {
   }
   return modis_ndvi_mosaic;
 }
+
+
+exports.max = function (image) {
+  var maxValue = image.reduce(ee.Reducer.max());
+  return maxValue;
+}
+
+
+exports.min = function (image) {
+  var minValue = image.reduce(ee.Reducer.min());
+  return minValue;
+}
+
+
+exports.propVeg = function (ndvi_img) {
+  var ndvi_max = ndvi_img.reduce(ee.Reducer.max());
+  var ndvi_min = ee.Number(ndvi_img.reduce(ee.Reducer.min()));
+  print(ndvi_min)
+  
+  var propVeg = ndvi_img.expression(
+    '((ndvi - ndvi_min) / (ndvi_max - ndvi_min)) * ((ndvi - ndvi_min) / (ndvi_max - ndvi_min))', {
+      'ndvi_max': 0.7,
+      'ndvi_min': 0.05,
+      'ndvi': ndvi_img
+    });
+  return propVeg;
+}
+
+exports.landSurfaceEmissivity = function (pv_img) {
+  var first = ee.Number(0.004);
+  var second = ee.Number(0.986)
+  var lse = first.multiply(pv_img).add(second);
+  return lse;
+}
+
