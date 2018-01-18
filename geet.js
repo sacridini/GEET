@@ -2,7 +2,7 @@
     Name      : geet.js
     Author    : Eduardo R. Lacerda
     e-mail    : eduardolacerdageo@gmail.com
-    Version   : 0.0.21 (Alpha)
+    Version   : 0.0.22 (Alpha)
     Date      : 17-01-2018
     Description: Lib to write small EE apps or big/complex apps with a lot less code.
   */
@@ -871,7 +871,6 @@
       .first());
 
     var titleName = title + '_' +  year.toString();
-
     Map.addLayer(image, visParams, titleName);
     print(image);
     return image;
@@ -900,13 +899,14 @@
     var band_to_toa = image.select('B' + band.toString());
     var radiance_multi_band = ee.Number(image.get('RADIANCE_MULT_BAND_' + band.toString())); // Ml
     var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
-    var toa = band_to_toa.expression(
-      '(Ml * image) + Al', {
+    var toa_radiance = band_to_toa.expression(
+      '(Ml * band) + Al', {
         'Ml': radiance_multi_band,
         'Al': radiance_add_band,
-        'image': band_to_toa
-      }).rename('B' + band.toString() + '_TOA_Radiance');
-    return toa;
+        'band': band_to_toa
+      }).rename('TOA_Radiance');
+    var img_radiance = image.addBands(toa_radiance);
+    return img_radiance;
   }
 
   /*
@@ -1293,7 +1293,7 @@
       var brightness_temp_semlog = image.expression(
         'K1 / B10 + 1', {
           'K1': K1_10,
-          'B10': image.select('B10')
+          'B10': image.select('TOA_Radiance')
         });
 
       var brightness_temp_log = brightness_temp_semlog.log();
@@ -1312,7 +1312,7 @@
       var brightness_temp_semlog = image.expression(
         'K1 / B10 + 1', {
           'K1': K1_10,
-          'B10': image.select('B10')
+          'B10': image.select('TOA_Radiance')
         });
 
       var brightness_temp_log = brightness_temp_semlog.log();
@@ -1327,7 +1327,6 @@
       return brightness_temp_celsius;
     }
   }
-
 
   /*
     resample:
@@ -1614,6 +1613,9 @@ exports.landsat8Mosaic = function (startDate, endDate, roi, _showMosaic) {
 }
 
 
+/*
+TODO
+*/
 exports.modisNdviMosaic = function (startDate, endDate, roi, _showMosaic) {
   if (_showMosaic === undefined) {
     var showMosaic = true;
@@ -1643,36 +1645,77 @@ exports.modisNdviMosaic = function (startDate, endDate, roi, _showMosaic) {
 }
 
 
+/*
+TODO
+*/
 exports.max = function (image) {
   var maxValue = image.reduce(ee.Reducer.max());
   return maxValue;
 }
 
 
+/*
+TODO
+*/
 exports.min = function (image) {
   var minValue = image.reduce(ee.Reducer.min());
   return minValue;
 }
 
 
+/*
+TODO
+*/
 exports.propVeg = function (ndvi_img) {
-  var ndvi_max = ndvi_img.reduce(ee.Reducer.max());
-  var ndvi_min = ee.Number(ndvi_img.reduce(ee.Reducer.min()));
-  print(ndvi_min)
-  
+  // var ndvi_max = ndvi_img.reduce(ee.Reducer.max());
+  // var ndvi_min = ee.Number(ndvi_img.reduce(ee.Reducer.min()));
+    
   var propVeg = ndvi_img.expression(
     '((ndvi - ndvi_min) / (ndvi_max - ndvi_min)) * ((ndvi - ndvi_min) / (ndvi_max - ndvi_min))', {
       'ndvi_max': 0.7,
       'ndvi_min': 0.05,
       'ndvi': ndvi_img
-    });
+    }).rename('propVeg');
   return propVeg;
 }
 
+/*
+TODO
+*/
 exports.landSurfaceEmissivity = function (pv_img) {
+  var lse = ee.Image();
   var first = ee.Number(0.004);
   var second = ee.Number(0.986)
-  var lse = first.multiply(pv_img).add(second);
+  lse = lse.expression(
+    '(0.004 * pv_img) + 0.986', {
+      'pv_img': pv_img
+    });
   return lse;
+}
+
+
+  /*
+  TODO:
+    surfTemp:
+    Function calculate the surface temperature.
+
+    Params:
+    (ee.Image) brightnessTempImg - the brightness temperature
+    (ee.Image) originalImg - the original TOA image
+    (ee.Image) lseImg - the land surface emissivity image.
+    
+    Usage:
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var surfTemp_B10 = geet.surfTemp(brightTemp_B10, image, lse_img);
+  */
+exports.surfTemp = function (brightnessTempImg, originalImg, lseImg) {
+  var p = 14380;
+  var lse_log = lseImg.log();
+  var band10 = originalImg.select('B10');
+  var primeira = brightnessTempImg.divide(1).add(band10);
+  var secunda = brightnessTempImg.divide(p);
+  var terceira = segunda.multiply(lse_log);
+  var surfTemp = primeira.multiply(terceira);
+  return surfTemp;
 }
 
