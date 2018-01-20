@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.0.23 (Alpha)
+  Version   : 0.1.0 (Alpha)
   Date      : 20-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
@@ -1794,7 +1794,7 @@ exports.propVeg = function (image) {
   // var ndvi_max = ndvi_img.reduce(ee.Reducer.max());
   // var ndvi_min = ee.Number(ndvi_img.reduce(ee.Reducer.min()));
   var ndvi = image.select('NDVI');
-  var propVeg = ndvi_img.expression(
+  var propVeg = ndvi.expression(
     '((ndvi - ndvi_min) / (ndvi_max - ndvi_min)) * ((ndvi - ndvi_min) / (ndvi_max - ndvi_min))', {
       'ndvi_max': 0.7,
       'ndvi_min': 0.05,
@@ -1817,7 +1817,7 @@ exports.propVeg = function (image) {
   var lse = geet.landSurfaceEmissivity(pv);
 */
 exports.landSurfaceEmissivity = function (image) {
-  lse = image.expression(
+  var lse = image.expression(
     '(0.004 * pv_img) + 0.986', {
       'pv_img': image.select('propVeg')
     }).rename('LSE');
@@ -1849,7 +1849,7 @@ exports.landSurfaceTemperature = function (image) {
       'BT': image.select('Brightness_Temperature'),
       'B10': image.select('B10'),
       'lse_log': lse_log
-    }).rename('Land_Surface_Temperature');
+    }).rename('LST');
 
   var image_with_lst = image.addBands(lst);
   return image_with_lst;
