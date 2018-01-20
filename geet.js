@@ -1673,17 +1673,51 @@ exports.modisNdviMosaic = function (startDate, endDate, roi, _showMosaic) {
 }
 
 
+/*
+  max:
+  Function the get the maximum value from an image.
+
+  Params:
+  (ee.Image) image - the input image.
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var img_max = geet.max(img);
+*/
 exports.max = function (image) {
   var maxValue = image.reduce(ee.Reducer.max());
   return maxValue;
 }
 
 
+/*
+  min:
+  Function the get the minimum value from an image.
+
+  Params:
+  (ee.Image) image - the input image.
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var img_min = geet.min(img);
+*/
 exports.min = function (image) {
   var minValue = image.reduce(ee.Reducer.min());
   return minValue;
 }
 
+
+/*
+  ndviL5:
+  Function calculate the normalized difference vegetation index (NDVI) from Landsat 5 data.
+
+  Params:
+  (ee.Image) image - the input image.
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var l5_ndvi = geet.ndviL5(img);
+*/
 exports.ndviL5 = function (image) {
   var l5_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
   var image_with_ndvi = image.addBands(l5_ndvi);
@@ -1691,6 +1725,17 @@ exports.ndviL5 = function (image) {
 }
 
 
+/*
+  ndviL7:
+  Function calculate the normalized difference vegetation index (NDVI) from Landsat 7 data.
+
+  Params:
+  (ee.Image) image - the input image.
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var l7_ndvi = geet.ndviL7(img);
+*/
 exports.ndviL7 = function (image) {
   var l7_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
   var image_with_ndvi = image.addBands(l7_ndvi);
@@ -1698,6 +1743,17 @@ exports.ndviL7 = function (image) {
 }
 
 
+/*
+  ndviL8:
+  Function calculate the normalized difference vegetation index (NDVI) from Landsat 8 data.
+
+  Params:
+  (ee.Image) image - the input image.
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var l8_ndvi = geet.ndviL8(img);
+*/
 exports.ndviL8 = function (image) {
   var l8_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
   var image_with_ndvi = image.addBands(l8_ndvi);
@@ -1705,6 +1761,17 @@ exports.ndviL8 = function (image) {
 }
 
 
+/*
+  ndviS2:
+  Function calculate the normalized difference vegetation index (NDVI) from Sentinel 2 data.
+
+  Params:
+  (ee.Image) image - the input image.
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var s2_ndvi = geet.ndviS2(img);
+*/
 exports.ndviS2 = function (image) {
   var s2_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
   var image_with_ndvi = image.addBands(s2_ndvi);
@@ -1712,6 +1779,17 @@ exports.ndviS2 = function (image) {
 }
 
 
+/*
+  propVeg:
+  Function calculate the proportional vegetation.
+
+  Params:
+  (ee.Image) image - input image with the NDVI band.
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var img_pv = geet.propVeg(img);
+*/
 exports.propVeg = function (image) {
   // var ndvi_max = ndvi_img.reduce(ee.Reducer.max());
   // var ndvi_min = ee.Number(ndvi_img.reduce(ee.Reducer.min()));
@@ -1732,7 +1810,7 @@ exports.propVeg = function (image) {
   Function calculate the surface emissifity.
 
   Params:
-  (ee.Image) pv_img - proportional vegetation image.
+  (ee.Image) image - input image with the proportional vegetation band.
   
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
