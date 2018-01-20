@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.1.0 (Alpha)
+  Version   : 0.1.0 (Beta)
   Date      : 20-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
