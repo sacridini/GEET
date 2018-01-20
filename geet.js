@@ -3,7 +3,7 @@
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
   Version   : 0.0.23 (Alpha)
-  Date      : 17-01-2018
+  Date      : 20-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
 
@@ -288,13 +288,13 @@ exports.simpleNDBIChangeDetection = function (img1, img2, sensor, threshold) {
   var imgSoma = i_ndbi_1_mask.add(i_ndbi_2_mask);
   Map.addLayer(imgSoma, { min: 0, max: 2, palette: [COLOR.SHADOW, COLOR.URBAN, COLOR.PASTURE] }, 'ndbi_cd');
   return imgSoma;
-}
+};
 
 // TODO
 exports.filterDateRange = function (imgCol, start, finish, field) {
   var imgCol_filtered = imgCol.filter(ee.Filter.calendarRange(start, finish, field));
   return imgCol_filtered;
-}
+};
 
 /*
   Texture:
@@ -315,7 +315,7 @@ exports.texture = function (image, radius) {
     kernel: ee.Kernel.circle(radius),
   });
   return texture;
-}
+};
 
 /*
   Majority:
@@ -336,7 +336,7 @@ exports.majority = function (image, radius) {
     kernel: ee.Kernel.circle(radius),
   });
   return majority;
-}
+};
 
 // COLOR OBJECT
 var COLOR = {
@@ -365,27 +365,20 @@ exports.color = function (_color) {
   switch (color) {
     case 'water':
       return COLOR.WATER;
-      break;
     case 'forest':
       return COLOR.FOREST;
-      break;
     case 'PASTURE':
       return COLOR.PASTURE;
-      break;
     case 'URBAN':
       return COLOR.URBAN;
-      break;
     case 'SHADOW':
       return COLOR.SHADOW;
-      break;
     case 'NULL':
       return COLOR.NULL;
-      break;
     default:
-      return 'Error: Valid options are water, forest, pasture, urban, shadow or null! Remember to pass the argument as a string.'
-      break;
+      return 'Error: Valid options are water, forest, pasture, urban, shadow or null! Remember to pass the argument as a string.';
   }
-}
+};
 
 /*
   plotRGB:
