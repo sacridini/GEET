@@ -622,24 +622,274 @@ _Function to build a cloud free mosaic using the Sentinel 2 dataset._
   
 ##### Usage:
 ```js
-    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
     var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31'); // Display the final world mosaic.  
 ```
 
 or
 
 ```js
-    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
     var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi  
 ```
 
 or 
 
 ```js
-    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
     var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic  
 ```
 
 ------------------------------------------------------------------------------
 
+#### **landsat5Mosaic - (startDate, endDate, roi, _showMosaic)**
+_Function to build a cloud free mosaic using the Landsat 5 dataset._     
+
+##### Params:
+  (ee.Date) startDate - the start date of the dataset.  
+  (ee.Date) endDate - the end date of the dataset.  
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+    
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31'); // Display the final world mosaic. 
+```
+
+or
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l5_mosaic = geet.landsat5Mosaic(start, finish, roi); // Display the final mosaic of the roi
+```
+
+or 
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
+```
+
+------------------------------------------------------------------------------
+
+#### **landsat7Mosaic - (startDate, endDate, roi, _showMosaic)**
+_Function to build a cloud free mosaic using the Landsat 7 dataset._     
+
+##### Params:
+  (ee.Date) startDate - the start date of the dataset.  
+  (ee.Date) endDate - the end date of the dataset.  
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+    
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31'); // Display the final world mosaic. 
+```
+
+or
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l7_mosaic = geet.landsat7Mosaic(start, finish, roi); // Display the final mosaic of the roi
+```
+
+or 
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
+```
+
+------------------------------------------------------------------------------
+
+#### **landsat8Mosaic - (startDate, endDate, roi, _showMosaic)**
+_Function to build a cloud free mosaic using the Landsat 8 dataset._     
+
+##### Params:
+  (ee.Date) startDate - the start date of the dataset.  
+  (ee.Date) endDate - the end date of the dataset.  
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+    
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
+```
+
+or
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l8_mosaic = geet.landsat8Mosaic(start, finish, roi); // Display the final mosaic of the roi
+```
+
+or 
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+```
+
+------------------------------------------------------------------------------
+
+#### **modisNdviMosaic - (startDate, endDate, roi, _showMosaic)**
+_Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._     
+
+##### Params:
+  (ee.Date) startDate - the start date of the dataset.  
+  (ee.Date) endDate - the end date of the dataset.  
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+    
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
+```
+
+or
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var modis_ndvi_mosaic = geet.modisNdviMosaic(start, finish, roi); // Display the final mosaic of the roi
+```
+
+or 
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+```
+
+------------------------------------------------------------------------------
+
+#### **max - (image)**
+_Function the get the maximum value from an image._     
+
+##### Params:
+  (ee.Image) image - the input image.                             
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var img_max = geet.max(img);     
+```
+
+------------------------------------------------------------------------------
+
+#### **min - (image)**
+_Function the get the minimum value from an image._     
+
+##### Params:
+  (ee.Image) image - the input image.                             
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var img_max = geet.min(img);    
+```
+
+------------------------------------------------------------------------------
+
+#### **ndviL5 - (image)**
+_Function calculate the normalized difference vegetation index (NDVI) from Landsat 5 data._     
+
+##### Params:
+  (ee.Image) image - the input image.                             
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var l5_ndvi = geet.ndviL5(img);  
+```
+
+------------------------------------------------------------------------------
+
+#### **ndviL7 - (image)**
+_Function calculate the normalized difference vegetation index (NDVI) from Landsat 7 data._     
+
+##### Params:
+  (ee.Image) image - the input image.                             
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var l7_ndvi = geet.ndviL7(img);  
+```
+
+------------------------------------------------------------------------------
+
+#### **ndviL8 - (image)**
+_Function calculate the normalized difference vegetation index (NDVI) from Landsat 8 data._     
+
+##### Params:
+  (ee.Image) image - the input image.                             
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var l8_ndvi = geet.ndviL8(img);  
+```
+
+------------------------------------------------------------------------------
+
+#### **ndviS2 - (image)**
+_Function calculate the normalized difference vegetation index (NDVI) from Sentinel 2 data._     
+
+##### Params:
+  (ee.Image) image - the input image.                               
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var s2_ndvi = geet.ndviS2(img);
+```
+
+------------------------------------------------------------------------------
+
+#### **propVeg - (image)**
+_Function calculate the proportional vegetation._     
+
+##### Params:
+  (ee.Image) image - input image with the NDVI band.                              
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var img_pv = geet.propVeg(img);
+```
+
+------------------------------------------------------------------------------
+
+#### **landSurfaceEmissivity - (image)**
+_Function calculate the surface emissifity._     
+
+##### Params:
+  (ee.Image) image - input image with the proportional vegetation band.                            
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var lse = geet.landSurfaceEmissivity(pv);
+```
+
+------------------------------------------------------------------------------
+
+#### **landSurfaceTemperature - (image)**
+_Function calculate the land surface temperature._     
+
+##### Params:
+  (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
+                     NDVI, PropVeg and LSE bands.                            
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+    var surfTemp_img = geet.landSurfaceTemperature(img);
+```
+
+------------------------------------------------------------------------------
 
