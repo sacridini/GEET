@@ -56,6 +56,7 @@ landSurfaceTemperature**
 ### 1 - Classifiers
 #### **svm - (image, trainingData, fieldName, kernelType)** 
 _Function to apply SVM classification to a image._  
+
 ##### Params:
   (ee.Image) image - The input image to classify.    
   (ee.List) trainingData - Training data (samples).      
@@ -70,6 +71,7 @@ _Function to apply SVM classification to a image._
 
 #### **cart - (image, trainingData, fieldName)**
 _Function to apply CART classification to a image._
+
 ##### Params:
   (ee.Image) image - The input image to classify.       
   (ee.List) trainingData - Training data (samples).     
@@ -83,6 +85,7 @@ _Function to apply CART classification to a image._
 
 #### **rf - (image, trainingData, fieldName, _numOfTrees)**
 _Function to apply Random Forest classification to an image._ 
+
 ##### Params:
   (ee.Image) image - The input image to classify.   
   (ee.List) trainingData - Training data (samples).   
@@ -97,8 +100,9 @@ _Function to apply Random Forest classification to an image._
  
 #### **kmeans - (image, roi, _numClusters, _scale, _numPixels)**
 _Function to apply RandomForest classification to an image._  
+
 ##### Params:
-(ee.Image) image - The input image to classify.     
+  (ee.Image) image - The input image to classify.     
   (list) roi - Coordenates or just a polygon of the sample area.   
   optional (number) _numClusters - the number of clusters that will be used. Default is 15.  
   optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.  
@@ -118,6 +122,7 @@ _Function to apply RandomForest classification to an image._
 ### 2 - Change Detection
 #### **simpleNDVIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDVI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndviChange, 3, 'change_detection');_ 
+
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
@@ -134,6 +139,7 @@ _Function to detect changes between two input images using the NDVI index and a 
    
 #### **simpleNDWIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDWI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndwiChange, 3, 'change_detection');_ 
+
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
@@ -150,6 +156,7 @@ _Function to detect changes between two input images using the NDWI index and a 
 
 #### **simpleNDBIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDBI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndbiChange, 3, 'change_detection');_ 
+
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
@@ -164,4 +171,30 @@ _Function to detect changes between two input images using the NDBI index and a 
   
 ------------------------------------------------------------------------------
 
+### 2 - Image Post-Processing
+#### **texture - (image, radius)**
+_Function generate a texture filter on the image._ 
+
+##### Params:
+  (ee.Image) image = The input image.  
+  (ee.Number) radius = the radius number that defines the effect level of the filter. 
+                      Bigger numbers generalize more the result.                    
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var texture = geet.texture(image_from_rio, 1);   
+    
+------------------------------------------------------------------------------
+
+#### **majority - (image, radius)**
+_Function to filter the final classification image and clear the salt n' pepper effect._ 
+
+##### Params:
+  (ee.Image) image = The input image.
+  (ee.Number) radius = the radius number that defines the effect level of the filter. 
+                      Bigger numbers generalize more the result.                     
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var majority = geet.majority(image_from_rio, 1);  
 // TODO
