@@ -54,7 +54,7 @@ landSurfaceTemperature**
 
 
 ### 1 - Classifiers
-#### **svm - (image, trainingData, fieldName, kernelType)** 
+### svm - (image, trainingData, fieldName, kernelType)** 
 _Function to apply SVM classification to a image._  
 
 ##### Params:
@@ -69,7 +69,7 @@ _Function to apply SVM classification to a image._
   
 ------------------------------------------------------------------------------
 
-#### **cart - (image, trainingData, fieldName)**
+### **cart - (image, trainingData, fieldName)**
 _Function to apply CART classification to a image._
 
 ##### Params:
@@ -83,7 +83,7 @@ _Function to apply CART classification to a image._
 
 ------------------------------------------------------------------------------
 
-#### **rf - (image, trainingData, fieldName, _numOfTrees)**
+### **rf - (image, trainingData, fieldName, _numOfTrees)**
 _Function to apply Random Forest classification to an image._ 
 
 ##### Params:
@@ -120,7 +120,7 @@ _Function to apply RandomForest classification to an image._
   ------------------------------------------------------------------------------
   
 ### 2 - Change Detection
-#### **simpleNDVIChangeDetection - (img1, img2, sensor, threshold)**
+### **simpleNDVIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDVI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndviChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -137,7 +137,7 @@ _Function to detect changes between two input images using the NDVI index and a 
   
 ------------------------------------------------------------------------------
    
-#### **simpleNDWIChangeDetection - (img1, img2, sensor, threshold)**
+### **simpleNDWIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDWI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndwiChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -154,7 +154,7 @@ _Function to detect changes between two input images using the NDWI index and a 
   
 ------------------------------------------------------------------------------
 
-#### **simpleNDBIChangeDetection - (img1, img2, sensor, threshold)**
+### **simpleNDBIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDBI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndbiChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -172,7 +172,7 @@ _Function to detect changes between two input images using the NDBI index and a 
 ------------------------------------------------------------------------------
 
 ### 2 - Image Post-Processing
-#### **texture - (image, radius)**
+### **texture - (image, radius)**
 _Function generate a texture filter on the image._ 
 
 ##### Params:
@@ -186,7 +186,7 @@ _Function generate a texture filter on the image._
     
 ------------------------------------------------------------------------------
 
-#### **majority - (image, radius)**
+### **majority - (image, radius)**
 _Function to filter the final classification image and clear the salt n' pepper effect._ 
 
 ##### Params:
