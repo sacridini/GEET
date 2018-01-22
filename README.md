@@ -275,13 +275,19 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
                     if you dont specify any index the function will create all possible indices.                        
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/indexGen');  
-  var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/indexGen');  
+    var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.  
+```
+ 
 
   **or specifying the index to generate:**
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.    
+```
+
 
 ------------------------------------------------------------------------------
 
@@ -295,13 +301,19 @@ _Function to get an example image to debug or test some code._
   optional (string) title - the title of the plotted image.                          
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
-  var image = geet.loadImg(); // Returns a TOA image  
+```js
+    var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
+    var image = geet.loadImg(); // Returns a TOA image   
+```
+
 
   **or** 
 
-  var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
-  var image = geet.loadImg('SR', 2015); // Returns a SR image  
+```js
+     var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
+    var image = geet.loadImg('SR', 2015); // Returns a SR image   
+```
+ 
 
 ------------------------------------------------------------------------------
 
