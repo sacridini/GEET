@@ -52,6 +52,7 @@ propVeg,
 landSurfaceEmissivity,
 landSurfaceTemperature**
 
+------------------------------------------------------------------------------
 
 #### **svm - (image, trainingData, fieldName, kernelType)** 
 _Function to apply SVM classification to a image._  
@@ -68,7 +69,6 @@ _Function to apply SVM classification to a image._
     var imgClass = geet.svm(image, samplesfc, landcover);   
 ```
     
-  
 ------------------------------------------------------------------------------
 
 #### **cart - (image, trainingData, fieldName)**
@@ -84,7 +84,6 @@ _Function to apply CART classification to a image._
     var geet = require('users/eduardolacerdageo/default:Function/GEET');    
     var imgClass = geet.cart(image, samplesfc, landcover);    
 ```
- 
 
 ------------------------------------------------------------------------------
 
@@ -102,7 +101,6 @@ _Function to apply Random Forest classification to an image._
     var geet = require('users/eduardolacerdageo/default:Function/GEET');   
     var imgClass = geet.rf(image, samplesfc, landcover, 10);   
 ```
-   
   
  ------------------------------------------------------------------------------
  
@@ -130,7 +128,6 @@ _Function to apply RandomForest classification to an image._
     var imgClass = geet.kmeans(image, roi, 20, 10, 6000);   
 ```
   
-  
   ------------------------------------------------------------------------------
   
 #### **simpleNDVIChangeDetection - (img1, img2, sensor, threshold)**
@@ -150,7 +147,6 @@ _Function to detect changes between two input images using the NDVI index and a 
     var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);   
 ```
    
-  
 ------------------------------------------------------------------------------
    
 #### **simpleNDWIChangeDetection - (img1, img2, sensor, threshold)**
@@ -170,7 +166,6 @@ _Function to detect changes between two input images using the NDWI index and a 
     var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);  
 ```
     
-  
 ------------------------------------------------------------------------------
 
 #### **simpleNDBIChangeDetection - (img1, img2, sensor, threshold)**
@@ -189,8 +184,7 @@ _Function to detect changes between two input images using the NDBI index and a 
     var geet = require('users/eduardolacerdageo/default:Function/GEET');  
     var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);  
 ```
-  
-  
+   
 ------------------------------------------------------------------------------
 
 #### **texture - (image, radius)**
@@ -205,8 +199,7 @@ _Function generate a texture filter on the image._
 ```js
     var geet = require('users/eduardolacerdageo/default:Function/GEET');    
     var texture = geet.texture(image_from_rio, 1);         
-```
-     
+```  
     
 ------------------------------------------------------------------------------
 
@@ -222,8 +215,7 @@ _Function to filter the final classification image and clear the salt n' pepper 
 ```js
     var geet = require('users/eduardolacerdageo/default:Function/GEET');    
     var majority = geet.majority(image_from_rio, 1);  
-```
-   
+``` 
 
   ------------------------------------------------------------------------------
 
@@ -239,7 +231,6 @@ _Function to return a valid color value from the object COLOR._
     var geet = require('users/eduardolacerdageo/default:Function/GEET');    
     geet.color('water');  
 ```
-   
 
 ------------------------------------------------------------------------------
 
@@ -255,8 +246,7 @@ _Function to plot a RGB image._
     var geet = require('users/eduardolacerdageo/default:Function/GEET');    
     geet.plotRGB(image, 'rgb_image');  
 ```
-   
-
+  
 ------------------------------------------------------------------------------
 
 #### **plotNDVI - (image, _title)**
@@ -271,7 +261,6 @@ _Function to plot a NDVI image index._
     var geet = require('users/eduardolacerdageo/default:Function/GEET');  
     geet.plotNDVI(ndvi, 'ndvi_image'); 
 ```
- 
 
 ------------------------------------------------------------------------------
 
@@ -287,7 +276,6 @@ _Function to plot a NDWI image index._
     var geet = require('users/eduardolacerdageo/default:Function/GEET');  
     geet.plotNDWI(ndwi, 'ndwi_image'); 
 ```
-  
 
 ------------------------------------------------------------------------------
 
@@ -304,8 +292,7 @@ _Function to plot the final classification map._
     var geet = require('users/eduardolacerdageo/default:Function/GEET');  
     geet.plotClass(classified, 4, 'class_final'); 
 ```
-  
-
+ 
 ------------------------------------------------------------------------------
 
 #### **spectralIndices - (image, sensor, index)**
@@ -333,7 +320,6 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
     var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.    
 ```
 
-
 ------------------------------------------------------------------------------
 
 #### **loadImg - (_collection, _year, _roi, _title)**
@@ -358,7 +344,6 @@ _Function to get an example image to debug or test some code._
     var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
     var image = geet.loadImg('SR', 2015); // Returns a SR image   
 ```
- 
 
 ------------------------------------------------------------------------------
 
@@ -482,8 +467,3 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 ------------------------------------------------------------------------------
 
-
-// TODO
-    ```js
-    
-    ```
