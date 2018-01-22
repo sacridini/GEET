@@ -130,8 +130,8 @@ _Function to detect changes between two input images using the NDVI index and a 
                           will be selected.           
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);  
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+  var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);    
   
 ------------------------------------------------------------------------------
    
@@ -147,8 +147,8 @@ _Function to detect changes between two input images using the NDWI index and a 
                           will be selected.            
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);  
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+  var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);    
   
 ------------------------------------------------------------------------------
 
@@ -164,8 +164,8 @@ _Function to detect changes between two input images using the NDBI index and a 
                           will be selected.                  
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);  
   
 ------------------------------------------------------------------------------
 
@@ -178,8 +178,8 @@ _Function generate a texture filter on the image._
                       Bigger numbers generalize more the result.                    
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var texture = geet.texture(image_from_rio, 1);   
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+  var texture = geet.texture(image_from_rio, 1);     
     
 ------------------------------------------------------------------------------
 
@@ -192,8 +192,8 @@ _Function to filter the final classification image and clear the salt n' pepper 
                       Bigger numbers generalize more the result.                     
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var majority = geet.majority(image_from_rio, 1); 
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+  var majority = geet.majority(image_from_rio, 1);   
 
   ------------------------------------------------------------------------------
 
@@ -205,8 +205,8 @@ _Function to return a valid color value from the object COLOR._
                    forest, pasture, urban, shadow or null.                     
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  geet.color('water');  
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+  geet.color('water');    
 
 ------------------------------------------------------------------------------
 
@@ -218,8 +218,8 @@ _Function to plot a RGB image._
   (string) title - the layer title.                   
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  geet.plotRGB(image, 'rgb_image');  
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+  geet.plotRGB(image, 'rgb_image');    
 
 ------------------------------------------------------------------------------
 
@@ -231,8 +231,8 @@ _Function to plot a NDVI image index._
   (string) title - the layer title.                   
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  geet.plotNDVI(ndvi, 'ndvi_image');
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  geet.plotNDVI(ndvi, 'ndvi_image');  
 
 ------------------------------------------------------------------------------
 
@@ -244,8 +244,8 @@ _Function to plot a NDWI image index._
   (string) title - the layer title.                     
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  geet.plotNDWI(ndwi, 'ndwi_image');
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  geet.plotNDWI(ndwi, 'ndwi_image');  
 
 ------------------------------------------------------------------------------
 
@@ -258,8 +258,8 @@ _Function to plot the final classification map._
   (string) title - the layer title.                       
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  geet.plotClass(classified, 4, 'class_final');
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  geet.plotClass(classified, 4, 'class_final');  
 
 ------------------------------------------------------------------------------
 
@@ -275,13 +275,13 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
                     if you dont specify any index the function will create all possible indices.                        
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/indexGen');
-  var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.
+  var geet = require('users/eduardolacerdageo/default:Function/indexGen');  
+  var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.  
 
   **or specifying the index to generate:**
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.  
 
 ------------------------------------------------------------------------------
 
@@ -295,13 +295,13 @@ _Function to get an example image to debug or test some code._
   optional (string) title - the title of the plotted image.                          
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Functions/GEET');
-  var image = geet.loadImg(); // Returns a TOA image
+  var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
+  var image = geet.loadImg(); // Returns a TOA image  
 
   **or** 
 
-  var geet = require('users/eduardolacerdageo/default:Functions/GEET');
-  var image = geet.loadImg('SR', 2015); // Returns a SR image
+  var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
+  var image = geet.loadImg('SR', 2015); // Returns a SR image  
 
 ------------------------------------------------------------------------------
 
@@ -313,15 +313,15 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   (number) band - The number of the band that you want to process.                        
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image  
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+  var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image    
 
 #### Information:
   Formula:     **_Lλ = MLQcal + AL_**
-  Lλ           = TOA spectral radiance (Watts/( m2 * srad * μm))
-  ML           = Band-specific multiplicative rescaling factor from the metadata (RADIANCE_MULT_BAND_x, where x is the band number)
-  AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
-  Qcal         = Quantized and calibrated standard product pixel values (DN)
+  Lλ           = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  ML           = Band-specific multiplicative rescaling factor from the metadata (RADIANCE_MULT_BAND_x, where x is the band number)  
+  AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)  
+  Qcal         = Quantized and calibrated standard product pixel values (DN)  
 
 ------------------------------------------------------------------------------
 
@@ -333,14 +333,14 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   (number) band - The number of the band that you want to process.                         
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image   
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+  var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image     
 
 #### Information:
-  Formula:      **_ρλ' = MρQcal + Aρ_**
-  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.
-  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)
-  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)
-  Qcal          = Quantized and calibrated standard product pixel values (DN)
+  Formula:      **_ρλ' = MρQcal + Aρ_**  
+  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.  
+  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)  
+  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)  
+  Qcal          = Quantized and calibrated standard product pixel values (DN)  
 
 // TODO
