@@ -53,8 +53,7 @@ landSurfaceEmissivity,
 landSurfaceTemperature**
 
 
-### 1 - Classifiers
-### svm - (image, trainingData, fieldName, kernelType)** 
+#### **svm - (image, trainingData, fieldName, kernelType)** 
 _Function to apply SVM classification to a image._  
 
 ##### Params:
@@ -69,7 +68,7 @@ _Function to apply SVM classification to a image._
   
 ------------------------------------------------------------------------------
 
-### **cart - (image, trainingData, fieldName)**
+#### **cart - (image, trainingData, fieldName)**
 _Function to apply CART classification to a image._
 
 ##### Params:
@@ -83,7 +82,7 @@ _Function to apply CART classification to a image._
 
 ------------------------------------------------------------------------------
 
-### **rf - (image, trainingData, fieldName, _numOfTrees)**
+#### **rf - (image, trainingData, fieldName, _numOfTrees)**
 _Function to apply Random Forest classification to an image._ 
 
 ##### Params:
@@ -119,8 +118,7 @@ _Function to apply RandomForest classification to an image._
   
   ------------------------------------------------------------------------------
   
-### 2 - Change Detection
-### **simpleNDVIChangeDetection - (img1, img2, sensor, threshold)**
+#### **simpleNDVIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDVI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndviChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -137,7 +135,7 @@ _Function to detect changes between two input images using the NDVI index and a 
   
 ------------------------------------------------------------------------------
    
-### **simpleNDWIChangeDetection - (img1, img2, sensor, threshold)**
+#### **simpleNDWIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDWI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndwiChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -154,7 +152,7 @@ _Function to detect changes between two input images using the NDWI index and a 
   
 ------------------------------------------------------------------------------
 
-### **simpleNDBIChangeDetection - (img1, img2, sensor, threshold)**
+#### **simpleNDBIChangeDetection - (img1, img2, sensor, threshold)**
 _Function to detect changes between two input images using the NDBI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndbiChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -171,8 +169,7 @@ _Function to detect changes between two input images using the NDBI index and a 
   
 ------------------------------------------------------------------------------
 
-### 2 - Image Post-Processing
-### **texture - (image, radius)**
+#### **texture - (image, radius)**
 _Function generate a texture filter on the image._ 
 
 ##### Params:
@@ -186,7 +183,7 @@ _Function generate a texture filter on the image._
     
 ------------------------------------------------------------------------------
 
-### **majority - (image, radius)**
+#### **majority - (image, radius)**
 _Function to filter the final classification image and clear the salt n' pepper effect._ 
 
 ##### Params:
@@ -196,5 +193,154 @@ _Function to filter the final classification image and clear the salt n' pepper 
   
 ##### Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var majority = geet.majority(image_from_rio, 1);  
+  var majority = geet.majority(image_from_rio, 1); 
+
+  ------------------------------------------------------------------------------
+
+#### **color - (_color)**
+_Function to return a valid color value from the object COLOR._ 
+
+##### Params:
+  (string) color - the name of the desired color. Valid options are water, 
+                   forest, pasture, urban, shadow or null.                     
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  geet.color('water');  
+
+------------------------------------------------------------------------------
+
+#### **plotRGB - (image, _title)**
+_Function to plot a RGB image._ 
+
+##### Params:
+  (ee.Image) image - the image to display.  
+  (string) title - the layer title.                   
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  geet.plotRGB(image, 'rgb_image');  
+
+------------------------------------------------------------------------------
+
+#### **plotNDVI - (image, _title)**
+_Function to plot a NDVI image index._ 
+
+##### Params:
+  (ee.Image) image - the image to display.  
+  (string) title - the layer title.                   
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  geet.plotNDVI(ndvi, 'ndvi_image');
+
+------------------------------------------------------------------------------
+
+#### **plotNDWI - (image, _title)**
+_Function to plot a NDWI image index._ 
+
+##### Params:
+  (ee.Image) image - the image to display.  
+  (string) title - the layer title.                     
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  geet.plotNDWI(ndwi, 'ndwi_image');
+
+------------------------------------------------------------------------------
+
+#### **plotClass - (image, numClasses, _title)**
+_Function to plot the final classification map._ 
+
+##### Params:
+  (ee.Image) image - the image to process.  
+  (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.  
+  (string) title - the layer title.                       
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  geet.plotClass(classified, 4, 'class_final');
+
+------------------------------------------------------------------------------
+
+#### **spectralIndices - (image, sensor, index)**
+_Function to take an input image and generate indexes like: NDVI, NDWI, NDBI..._   
+More indices and features will be added in the future!  
+Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI  
+
+##### Params:
+  (ee.Image) image - the image to process.  
+  (string) sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8').  
+  (string or string array) index (optional) - you can specify the index that you want
+                    if you dont specify any index the function will create all possible indices.                        
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/indexGen');
+  var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.
+
+  **or specifying the index to generate:**
+
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.
+
+------------------------------------------------------------------------------
+
+#### **loadImg - (_collection, _year, _roi, _title)**
+_Function to get an example image to debug or test some code._     
+
+##### Params:
+  (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.  
+  (number) year - the year of the image that you want to get.  
+  optional (list) roi - the latitude and longitude of a roi.  
+  optional (string) title - the title of the plotted image.                          
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+  var image = geet.loadImg(); // Returns a TOA image
+
+  **or** 
+
+  var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+  var image = geet.loadImg('SR', 2015); // Returns a SR image
+
+------------------------------------------------------------------------------
+
+#### **toaRadiance - (image, band)**
+_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance._     
+
+##### Params:
+  (ee.Image) image - The image to process.  
+  (number) band - The number of the band that you want to process.                        
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image  
+
+#### Information:
+  Formula:     **_Lλ = MLQcal + AL_**
+  Lλ           = TOA spectral radiance (Watts/( m2 * srad * μm))
+  ML           = Band-specific multiplicative rescaling factor from the metadata (RADIANCE_MULT_BAND_x, where x is the band number)
+  AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
+  Qcal         = Quantized and calibrated standard product pixel values (DN)
+
+------------------------------------------------------------------------------
+
+#### **toaReflectance - (image, band)**
+_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance._     
+
+##### Params:
+  (ee.Image) image - The image to process.  
+  (number) band - The number of the band that you want to process.                         
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image   
+
+#### Information:
+  Formula:      **_ρλ' = MρQcal + Aρ_**
+  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.
+  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)
+  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)
+  Qcal          = Quantized and calibrated standard product pixel values (DN)
+
 // TODO
