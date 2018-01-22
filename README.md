@@ -455,8 +455,8 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   
 ##### Usage:
 ```js
-    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-    var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image  
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image    
 ```   
 
 #### Information:
@@ -466,4 +466,180 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)   
 
 ------------------------------------------------------------------------------
+
+#### **brightnessTempL7_K - (image)**
+_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
+
+##### Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                            
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var brightness_temp_img = geet.brightnessTempL7_K(toa_image); // ee.Image      
+```   
+
+#### Information:
+  T           = Top of atmosphere brightness temperature (K)  
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)    
+
+------------------------------------------------------------------------------
+
+#### **brightnessTempL7_C - (image)**
+_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
+
+##### Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.  
+                               
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');   
+    var brightness_temp_img = geet.brightnessTempL7_C(toa_image); // ee.Image  
+```   
+
+
+#### Information:
+  T           = Top of atmosphere brightness temperature (K)  
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)  
+
+------------------------------------------------------------------------------
+
+#### **brightnessTempL8_K - (image, _single)**
+_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
+
+##### Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.   
+  (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var brightness_temp_img = geet.brightnessTempL8_K(toa_image); // ee.Image      
+``` 
+
+or
+
+ ```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var brightness_temp_img = geet.brightnessTempL8_K(toa_image, false); // ee.Image    
+``` 
+
+#### Information:
+  T           = Top of atmosphere brightness temperature (K)  
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
+
+------------------------------------------------------------------------------
+
+#### **brightnessTempL8_C - (image, _single)**
+_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
+
+##### Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.   
+  (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');   
+    var brightness_temp_img = geet.brightnessTempL8_C(toa_image); // ee.Image  
+``` 
+
+or
+
+ ```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var brightness_temp_img = geet.brightnessTempL8_C(toa_image, false); // ee.Image   
+``` 
+
+#### Information:
+  T           = Top of atmosphere brightness temperature (K)    
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))    
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)    
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)  
+
+------------------------------------------------------------------------------
+
+#### **resample - (image, scaleNumber)**
+_Function to resample an input image._     
+
+##### Params:
+  (ee.Image) image - the image to resample.  
+  (number) scaleNumber - the number of the spatial resolution that you
+                        want to use to  resample the input image.                            
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var landsat_10m = geet.resample(L8_img, 10);      
+``` 
+
+------------------------------------------------------------------------------
+
+#### **resampleBand - (band, scaleNumber)**
+_Function to resample just a single band._     
+
+##### Params:
+  (ee.Image) band - the band to resample.  
+  (number) scaleNumber - the number of the spatial resolution that you
+                        want to use to  resample the input band.                           
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET'); 
+    var landsatB10_60m = geet.resampleBand(b10, 60);  
+```
+
+------------------------------------------------------------------------------
+
+#### **loadS2ById - (id)**
+_Function to filter the Sentinel-2 collection by Product ID obtained from the Copernicus Open Access Hub._     
+
+##### Params:
+  (string) id - the id of the Sentinel 2 image.                            
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var s2_image = geet.loadS2ById('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');  
+```
+
+------------------------------------------------------------------------------
+
+#### **s2Mosaic - (startDate, endDate, roi, _showMosaic)**
+_Function to build a cloud free mosaic using the Sentinel 2 dataset._     
+
+##### Params:
+  (string) startDate - the start date of the dataset.  
+  (string) endDate - the end date of the dataset.  
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                             
+  
+##### Usage:
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31'); // Display the final world mosaic.  
+```
+
+or
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi  
+```
+
+or 
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic  
+```
+
+------------------------------------------------------------------------------
+
 
