@@ -3,6 +3,8 @@ The Google Earth Engine Toolbox (GEET) is a JavaScript single-file public domain
 
 The library also can be used to teach new developers to use the plataform even wihtout any previous programming skills.
 
+![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
+
 ## Documentation: 
 All functions implemented (Version 1.0 - Beta):
 **svm,
