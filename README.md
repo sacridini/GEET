@@ -54,6 +54,43 @@ landSurfaceTemperature**
 
 ------------------------------------------------------------------------------
 
+### Quickstart Guide:
+### (English)
+To use the library you need to copy the entire contents of the geet.js file and save as a script in the Google Earth Engine platform editor code.  
+After you save the content as a new script, you must call the saved file in order to use the GEET functions using the "require" function:  
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+```
+
+in my case, the file was saved with the GEET name inside my "Functions" directory that belongs to my home directory linked to my account "users/eduardolacerdageo/default:". It is important to change the example path for your case.
+
+After that you can call the functions of the library using the variable in which we store the contents of the functions:
+
+```js 
+    var image = geet.loadImg('TOA', 2015); // Returns and loads an image on the map.
+```
+
+### (Português)
+Para utilizar a biblioteca é preciso copiar todo o conteúdo do arquivo geet.js e salvar como um script no code editor da plataforma do Google Earth Engine.   
+Após salvar o conteúdo como um novo script, é necessário chamar o arquivo salvo para poder utilizar as funções do GEET utilizando a função "require":  
+
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');
+```
+
+no meu caso, o arquivo foi salvo com o nome GEET dentro do meu diretório "Functions" que pertente ao meu diretório principal linkado a minha conta "users/eduardolacerdageo/default:". É importante trocar o caminho exemplificado para o seu caso.
+
+Depois disso é possível chamar as funções da biblioteca utilizando a variável na qual armazenamos o conteúdo das funções:
+
+```js 
+    var image = geet.loadImg('TOA', 2015); // Retorna e carrega no mapa uma imagem.
+```
+
+------------------------------------------------------------------------------
+
+### References:
+
 #### **svm - (image, trainingData, fieldName, kernelType)** 
 _Function to apply SVM classification to a image._  
 
