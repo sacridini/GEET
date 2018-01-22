@@ -313,8 +313,11 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   (number) band - The number of the band that you want to process.                        
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image    
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image    
+```
+  
 
 #### Information:
   Formula:     **_Lλ = MLQcal + AL_**  
@@ -333,8 +336,10 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   (number) band - The number of the band that you want to process.                         
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image     
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image    
+```
 
 #### Information:
   Formula:      **_ρλ' = MρQcal + Aρ_**  
@@ -354,13 +359,18 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.                       
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var new_toa_reflectance_sz = geet.toaReflectanceL8(img, 10, 'SZ'); // ee.Image  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var new_toa_reflectance_sz = geet.toaReflectanceL8(img, 10, 'SZ'); // ee.Image   
+```
+
 
   or
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var new_toa_reflectance_se = geet.toaReflectanceL8(img, 10, 'SE'); // ee.Image    
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var new_toa_reflectance_se = geet.toaReflectanceL8(img, 10, 'SE'); // ee.Image    
+``` 
 
 #### Information:
   Formula:      **_ρλ' = MρQcal + Aρ_**  
@@ -380,9 +390,12 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 ##### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                        
   
-##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image       
+##### Usage:  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image  
+```
+     
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)  
@@ -399,8 +412,10 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                          
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image         
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image  
+```   
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)  
@@ -412,3 +427,6 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 
 // TODO
+    ```js
+    
+    ```
