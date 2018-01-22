@@ -317,8 +317,8 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image    
 
 #### Information:
-  Formula:     **_Lλ = MLQcal + AL_**
-  Lλ           = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  Formula:     **_Lλ = MLQcal + AL_**  
+  Lλ           = TOA spectral radiance (Watts/( m2 * srad * μm))    
   ML           = Band-specific multiplicative rescaling factor from the metadata (RADIANCE_MULT_BAND_x, where x is the band number)  
   AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)  
   Qcal         = Quantized and calibrated standard product pixel values (DN)  
@@ -342,5 +342,73 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)  
   Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)  
   Qcal          = Quantized and calibrated standard product pixel values (DN)  
+
+------------------------------------------------------------------------------
+
+#### **toaReflectanceL8 - (image, band, _solarAngle)** 
+_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance Landsat 8 version with Solar Angle correction._       
+
+##### Params:
+  (ee.Image) image - The image to process.  
+  (number) band - The number of the band that you want to process.  
+  (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.                       
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var new_toa_reflectance_sz = geet.toaReflectanceL8(img, 10, 'SZ'); // ee.Image  
+
+  or
+
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var new_toa_reflectance_se = geet.toaReflectanceL8(img, 10, 'SE'); // ee.Image    
+
+#### Information:
+  Formula:      **_ρλ' = MρQcal + Aρ_**  
+  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.  
+  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)  
+  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)  
+  Qcal          = Quantized and calibrated standard product pixel values (DN)  
+
+  SE = Local sun elevation angle. The scene center sun elevation angle in degrees is provided in the metadata (SUN_ELEVATION).  
+  SZ = Local solar zenith angle: SZ = 90° - SE  
+
+------------------------------------------------------------------------------
+
+#### **brightnessTempL5_K - (image)**
+_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance._     
+
+##### Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                        
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image       
+
+#### Information:
+  T           = Top of atmosphere brightness temperature (K)  
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)  
+
+------------------------------------------------------------------------------
+
+#### **brightnessTempL5_C - (image)**
+_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 5 data._     
+
+##### Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                          
+  
+##### Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+  var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image         
+
+#### Information:
+  T           = Top of atmosphere brightness temperature (K)  
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)   
+
+------------------------------------------------------------------------------
+
 
 // TODO
