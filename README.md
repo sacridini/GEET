@@ -63,8 +63,11 @@ _Function to apply SVM classification to a image._
   (string) kernelType - the kernel type of the classifier.     
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
-  var imgClass = geet.svm(image, samplesfc, landcover);    
+```js
+    var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
+    var imgClass = geet.svm(image, samplesfc, landcover);   
+```
+    
   
 ------------------------------------------------------------------------------
 
@@ -77,8 +80,11 @@ _Function to apply CART classification to a image._
   (string) fieldName - The name of the column that contains the class names.       
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  var imgClass = geet.cart(image, samplesfc, landcover);   
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var imgClass = geet.cart(image, samplesfc, landcover);    
+```
+ 
 
 ------------------------------------------------------------------------------
 
@@ -92,8 +98,11 @@ _Function to apply Random Forest classification to an image._
   (ee.Number) numOfTrees - the number of trees that the model will create.         
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');   
-  var imgClass = geet.rf(image, samplesfc, landcover, 10);    
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');   
+    var imgClass = geet.rf(image, samplesfc, landcover, 10);   
+```
+   
   
  ------------------------------------------------------------------------------
  
@@ -108,13 +117,19 @@ _Function to apply RandomForest classification to an image._
   optional (number) _numPixels - the number of pixels that the classifier will take samples from the roi.           
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');   
-  var imgClass = geet.kmeans(image, roi);   
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');   
+    var imgClass = geet.kmeans(image, roi);    
+```
+  
 
   **or**
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var imgClass = geet.kmeans(image, roi, 20, 10, 6000);  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var imgClass = geet.kmeans(image, roi, 20, 10, 6000);   
+```
+  
   
   ------------------------------------------------------------------------------
   
@@ -130,8 +145,11 @@ _Function to detect changes between two input images using the NDVI index and a 
                           will be selected.           
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);    
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);   
+```
+   
   
 ------------------------------------------------------------------------------
    
@@ -147,8 +165,11 @@ _Function to detect changes between two input images using the NDWI index and a 
                           will be selected.            
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);    
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);  
+```
+    
   
 ------------------------------------------------------------------------------
 
@@ -164,8 +185,11 @@ _Function to detect changes between two input images using the NDBI index and a 
                           will be selected.                  
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);  
+```
+  
   
 ------------------------------------------------------------------------------
 
@@ -178,8 +202,11 @@ _Function generate a texture filter on the image._
                       Bigger numbers generalize more the result.                    
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  var texture = geet.texture(image_from_rio, 1);     
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var texture = geet.texture(image_from_rio, 1);         
+```
+     
     
 ------------------------------------------------------------------------------
 
@@ -192,8 +219,11 @@ _Function to filter the final classification image and clear the salt n' pepper 
                       Bigger numbers generalize more the result.                     
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  var majority = geet.majority(image_from_rio, 1);   
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    var majority = geet.majority(image_from_rio, 1);  
+```
+   
 
   ------------------------------------------------------------------------------
 
@@ -205,8 +235,11 @@ _Function to return a valid color value from the object COLOR._
                    forest, pasture, urban, shadow or null.                     
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  geet.color('water');    
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    geet.color('water');  
+```
+   
 
 ------------------------------------------------------------------------------
 
@@ -218,8 +251,11 @@ _Function to plot a RGB image._
   (string) title - the layer title.                   
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');    
-  geet.plotRGB(image, 'rgb_image');    
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');    
+    geet.plotRGB(image, 'rgb_image');  
+```
+   
 
 ------------------------------------------------------------------------------
 
@@ -231,8 +267,11 @@ _Function to plot a NDVI image index._
   (string) title - the layer title.                   
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  geet.plotNDVI(ndvi, 'ndvi_image');  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    geet.plotNDVI(ndvi, 'ndvi_image'); 
+```
+ 
 
 ------------------------------------------------------------------------------
 
@@ -244,8 +283,11 @@ _Function to plot a NDWI image index._
   (string) title - the layer title.                     
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  geet.plotNDWI(ndwi, 'ndwi_image');  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    geet.plotNDWI(ndwi, 'ndwi_image'); 
+```
+  
 
 ------------------------------------------------------------------------------
 
@@ -258,8 +300,11 @@ _Function to plot the final classification map._
   (string) title - the layer title.                       
   
 ##### Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');  
-  geet.plotClass(classified, 4, 'class_final');  
+```js
+    var geet = require('users/eduardolacerdageo/default:Function/GEET');  
+    geet.plotClass(classified, 4, 'class_final'); 
+```
+  
 
 ------------------------------------------------------------------------------
 
@@ -310,7 +355,7 @@ _Function to get an example image to debug or test some code._
   **or** 
 
 ```js
-     var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
+    var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
     var image = geet.loadImg('SR', 2015); // Returns a SR image   
 ```
  
