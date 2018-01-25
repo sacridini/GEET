@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.1.0 (Beta)
+  Version   : 0.1.1 (Beta)
   Date      : 20-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
@@ -15,21 +15,29 @@
   (ee.Image) image - The input image to classify
   (ee.List) trainingData - Training data (samples)  
   (string) fieldName - The name of the column that contains the class names
+  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Functions/GEET');
   var imgClass = geet.svm(image, samplesfc, landcover);
 */
-exports.svm = function (image, trainingData, fieldName, kernelType) {
+exports.svm = function (image, trainingData, fieldName, kernelType, _scale) {
   var kernel = 'RBF';
   if (kernelType !== undefined) {
     kernel = kernelType;
   }
 
+  if (_scale === undefined) {
+    var scale = 30;
+  } else {
+    scale = _scale;
+  }
+
+
   var training = image.sampleRegions({
     collection: trainingData,
     properties: [fieldName],
-    scale: 30
+    scale: scale
   });
 
   var classifier = ee.Classifier.svm({
@@ -50,16 +58,23 @@ exports.svm = function (image, trainingData, fieldName, kernelType) {
   (ee.Image) image - The input image to classify
   (ee.List) trainingData - Training data (samples) 
   (string) fieldName - The name of the column that contains the class names
+  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.cart(image, samplesfc, landcover);
 */
-exports.cart = function (image, trainingData, fieldName) {
+exports.cart = function (image, trainingData, fieldName, _scale) {
+  if (_scale === undefined) {
+    var scale = 30;
+  } else {
+    scale = _scale;
+  }
+
   var training = image.sampleRegions({
     collection: trainingData,
     properties: [fieldName],
-    scale: 30
+    scale: scale
   });
 
   var classifier = ee.Classifier.cart().train({
@@ -81,21 +96,28 @@ exports.cart = function (image, trainingData, fieldName) {
   (ee.List) trainingData - Training data (samples)
   (string) fieldName - the name of the column that contains the class names
   (ee.Number) numOfTrees - the number of trees that the model will create
+  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
-exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
+exports.rf = function (image, trainingData, fieldName, _numOfTrees, _scale) {
   var numOfTrees = 10;
   if (_numOfTrees !== undefined) {
     numOfTrees = _numOfTrees;
   }
 
+  if (_scale === undefined) {
+    var scale = 30;
+  } else {
+    scale = _scale;
+  }
+
   var training = image.sampleRegions({
     collection: trainingData,
     properties: [fieldName],
-    scale: 30
+    scale: scale
   });
 
   var classifier = ee.Classifier.randomForest(numOfTrees).train({
@@ -1854,4 +1876,3 @@ exports.landSurfaceTemperature = function (image) {
   var image_with_lst = image.addBands(lst);
   return image_with_lst;
 }
-
