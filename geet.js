@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.1.1 (Beta)
+  Version   : 0.1.0 (Beta)
   Date      : 20-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
@@ -12,32 +12,25 @@
   Function to apply SVM classification to a image.
 
   Params:
-  (ee.Image) image - The input image to classify
-  (ee.List) trainingData - Training data (samples)  
-  (string) fieldName - The name of the column that contains the class names
-  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
+  (ee.Image) image - The input image to classify.
+  (ee.List) trainingData - Training data (samples). 
+  (string) fieldName - The name of the column that contains the class names.
+  (string) kernelType - the kernel type of the classifier.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Functions/GEET');
   var imgClass = geet.svm(image, samplesfc, landcover);
 */
-exports.svm = function (image, trainingData, fieldName, kernelType, _scale) {
+exports.svm = function (image, trainingData, fieldName, kernelType) {
   var kernel = 'RBF';
   if (kernelType !== undefined) {
     kernel = kernelType;
   }
 
-  if (_scale === undefined) {
-    var scale = 30;
-  } else {
-    scale = _scale;
-  }
-
-
   var training = image.sampleRegions({
     collection: trainingData,
     properties: [fieldName],
-    scale: scale
+    scale: 30
   });
 
   var classifier = ee.Classifier.svm({
@@ -55,26 +48,19 @@ exports.svm = function (image, trainingData, fieldName, kernelType, _scale) {
   Function to apply CART classification to a image.
 
   Params:
-  (ee.Image) image - The input image to classify
-  (ee.List) trainingData - Training data (samples) 
-  (string) fieldName - The name of the column that contains the class names
-  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
+  (ee.Image) image - The input image to classify.
+  (ee.List) trainingData - Training data (samples).
+  (string) fieldName - The name of the column that contains the class names.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.cart(image, samplesfc, landcover);
 */
-exports.cart = function (image, trainingData, fieldName, _scale) {
-  if (_scale === undefined) {
-    var scale = 30;
-  } else {
-    scale = _scale;
-  }
-
+exports.cart = function (image, trainingData, fieldName) {
   var training = image.sampleRegions({
     collection: trainingData,
     properties: [fieldName],
-    scale: scale
+    scale: 30
   });
 
   var classifier = ee.Classifier.cart().train({
@@ -89,35 +75,28 @@ exports.cart = function (image, trainingData, fieldName, _scale) {
 
 /*
   rf:
-  Function to apply RandomForest classification to an image.
+  Function to apply Random Forest classification to an image.
 
   Params:
-  (ee.Image) image - The input image to classify
-  (ee.List) trainingData - Training data (samples)
-  (string) fieldName - the name of the column that contains the class names
-  (ee.Number) numOfTrees - the number of trees that the model will create
-  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
+  (ee.Image) image - The input image to classify.
+  (ee.List) trainingData - Training data (samples).
+  (string) fieldName - the name of the column that contains the class names.
+  (ee.Number) numOfTrees - the number of trees that the model will create.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
-exports.rf = function (image, trainingData, fieldName, _numOfTrees, _scale) {
+exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
   var numOfTrees = 10;
   if (_numOfTrees !== undefined) {
     numOfTrees = _numOfTrees;
   }
 
-  if (_scale === undefined) {
-    var scale = 30;
-  } else {
-    scale = _scale;
-  }
-
   var training = image.sampleRegions({
     collection: trainingData,
     properties: [fieldName],
-    scale: scale
+    scale: 30
   });
 
   var classifier = ee.Classifier.randomForest(numOfTrees).train({
@@ -134,8 +113,8 @@ exports.rf = function (image, trainingData, fieldName, _numOfTrees, _scale) {
   Function to apply RandomForest classification to an image.
 
   Params:
-  (ee.Image) image - The input image to classify
-  (list) roi - Coordenates or just a polygon of the sample area
+  (ee.Image) image - The input image to classify.
+  (list) roi - Coordenates or just a polygon of the sample area.
   optional (number) _numClusters - the number of clusters that will be used. Default is 15.
   optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
   optional (number) _numPixels - the number of pixels that the classifier will take samples from the roi.
@@ -289,7 +268,7 @@ exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
                           
   Usage: 
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
-  var ndbiChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);
+  var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);
 */
 exports.simpleNDBIChangeDetection = function (img1, img2, sensor, threshold) {
   if (sensor === 'L8') {
@@ -407,8 +386,8 @@ exports.color = function (_color) {
   Function to plot a RGB image.
 
   Params:
-  (ee.Image) image - the image to display
-  (string) title - the layer title
+  (ee.Image) image - the image to display.
+  (string) title - the layer title.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -436,8 +415,8 @@ exports.plotRGB = function (image, _title) {
   Function to plot a NDVI image index.
 
   Params:
-  (ee.Image) image - the image to display
-  (string) title - the layer title
+  (ee.Image) image - the image to display.
+  (string) title - the layer title.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -452,8 +431,8 @@ exports.plotNDVI = function (image, title) {
   Function to plot a NDWI image index.
 
   Params:
-  (ee.Image) image - the image to display
-  (string) title - the layer title
+  (ee.Image) image - the image to display.
+  (string) title - the layer title.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -470,7 +449,7 @@ exports.plotNDWI = function (image, title) {
   Params:
   (ee.Image) image - the image to process
   (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.
-  (string) title - the layer title 
+  (string) title - the layer title. 
   
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -513,8 +492,8 @@ exports.plotClass = function (image, numClasses, _title) {
   NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 
   Params:
-  (ee.Image) image - the image to process
-  (string) sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8')
+  (ee.Image) image - the image to process.
+  (string) sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8').
   (string or string array) index (optional) - you can specify the index that you want
                     if you dont specify any index the function will create all possible indices.
   Usage:
@@ -893,7 +872,7 @@ exports.loadImg = function (_collection, _year, _roi, _title) {
 
 /*
   toaRadiance:
-  Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance
+  Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance.
 
   Params:
   (ee.Image) image - The image to process.
@@ -926,7 +905,7 @@ exports.toaRadiance = function (image, band) {
 
 /*
   toaReflectance:
-  Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance
+  Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance.
 
   Params:
   (ee.Image) image - The image to process.
@@ -1057,6 +1036,7 @@ exports.toaReflectanceL8 = function (image, band, _solarAngle) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image
 
+  Information:
   T           = Top of atmosphere brightness temperature (K)
   Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
@@ -1098,6 +1078,7 @@ Usage:
 var geet = require('users/eduardolacerdageo/default:Function/GEET');
 var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image
 
+Information:
 T           = Top of atmosphere brightness temperature (K)
 Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
 K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
@@ -1139,6 +1120,7 @@ exports.brightnessTempL5_C = function (image) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var brightness_temp_img = geet.brightnessTempL7_K(toa_image); // ee.Image
 
+  Information:
   T           = Top of atmosphere brightness temperature (K)
   Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
@@ -1180,6 +1162,7 @@ Usage:
 var geet = require('users/eduardolacerdageo/default:Function/GEET');
 var brightness_temp_img = geet.brightnessTempL7_C(toa_image); // ee.Image
 
+Information:
 T           = Top of atmosphere brightness temperature (K)
 Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
 K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
@@ -1228,6 +1211,7 @@ exports.brightnessTempL7_C = function (image) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var brightness_temp_img = geet.brightnessTempL8_K(toa_image, false); // ee.Image
 
+  Information:
   T           = Top of atmosphere brightness temperature (K)
   Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
@@ -1301,6 +1285,7 @@ or
 var geet = require('users/eduardolacerdageo/default:Function/GEET');
 var brightness_temp_img = geet.brightnessTempL8_C(toa_image, false); // ee.Image
 
+Information:
 T           = Top of atmosphere brightness temperature (K)
 Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
 K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
@@ -1362,7 +1347,7 @@ exports.brightnessTempL8_C = function (image, _single) {
   Function to resample an input image.
 
   Params:
-  (ee.Image) image - the image to resample
+  (ee.Image) image - the image to resample.
   (number) scaleNumber - the number of the spatial resolution that you
                         want to use to  resample the input image.
 
@@ -1387,7 +1372,7 @@ exports.resample = function (image, scaleNumber) {
   Function to resample just a single band.
 
   Params:
-  (ee.Image) band - the band to resample
+  (ee.Image) band - the band to resample.
   (number) scaleNumber - the number of the spatial resolution that you
                         want to use to  resample the input band.
 
@@ -1875,4 +1860,42 @@ exports.landSurfaceTemperature = function (image) {
 
   var image_with_lst = image.addBands(lst);
   return image_with_lst;
+}
+
+
+
+/*
+  exportImg:
+  Function to export an image to your Google Drive account.
+
+  Params:
+  (ee.Image) image - the input image.
+  (string) outFilename - the name of the output file that will be exported.
+  optional (number) _scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
+  optional (number) _maxPixels - the number of maximun pixels that can be exported. Default is 1e12.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  geet.exportImg(img, 'output_img');
+*/
+exports.exportImg = function (image, outFilename, _scale, _maxPixels) {
+  if (_scale === undefined) {
+    var scale = 30;
+  } else {
+    scale = _scale;
+  }
+
+  if (_scale === undefined) {
+    var maxPixels = 1e12;
+  } else {
+    maxPixels = _scale;
+  }
+
+  // Export the image, specifying scale and region.
+  Export.image.toDrive({
+    image: image,
+    description: outFilename,
+    scale: scale,
+    maxPixels: maxPixels
+  });
 }
