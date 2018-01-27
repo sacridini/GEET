@@ -15,7 +15,7 @@ All functions implemented (Version 1.0 - Beta):
 
 ### Quickstart Guide:
 ### (English)
-To use the library you need to click [here](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
+To use the library you need to click on this [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
 
 After adding the library you can call its functions using the function **_require_** and storing the content in a variable. In this case, we will create a variable called **_geet_** which contains all the contents of the library. Then we can use it to call library functions: 
 
@@ -25,7 +25,7 @@ After adding the library you can call its functions using the function **_requir
 ```
 
 ### (Português)
-Para utilizar a biblioteca é preciso clicar [aqui](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). Isto adicionará automaticamente todo o código da biblioteca na sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
+Para utilizar a biblioteca é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). Ele adicionará automaticamente todo o código da biblioteca na sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
 Depois de adicionar a biblioteca é possível chamar suas funções utilizando a função **_require_** e armazenando o conteúdo em uma variável. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizar ela para chamar as funções da biblioteca:
 
@@ -95,9 +95,9 @@ _Function to apply RandomForest classification to an image._
 ##### Params:
   (ee.Image) image - The input image to classify.     
   (list) roi - Coordenates or just a polygon of the sample area.   
-  optional (number) _numClusters - the number of clusters that will be used. Default is 15.  
-  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.  
-  optional (number) _numPixels - the number of pixels that the classifier will take samples from the roi.           
+  **optional** (number) _numClusters - the number of clusters that will be used. Default is 15.  
+  **optional** (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.  
+  **optional** (number) _numPixels - the number of pixels that the classifier will take samples from the roi.           
   
 ##### Usage:
 ```js
@@ -288,7 +288,7 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 ##### Params:
   (ee.Image) image - the image to process.  
   (string) sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8').  
-  (string or string array) index (optional) - you can specify the index that you want
+  **optional** (string or string array) index  - you can specify the index that you want
                     if you dont specify any index the function will create all possible indices.                        
   
 ##### Usage:
@@ -312,8 +312,8 @@ _Function to get an example image to debug or test some code._
 ##### Params:
   (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.  
   (number) year - the year of the image that you want to get.  
-  optional (list) roi - the latitude and longitude of a roi.  
-  optional (string) title - the title of the plotted image.                          
+  **optional** (list) roi - the latitude and longitude of a roi.  
+  **optional** (string) title - the title of the plotted image.                          
   
 ##### Usage:
 ```js 
@@ -597,8 +597,8 @@ _Function to build a cloud free mosaic using the Sentinel 2 dataset._
 ##### Params:
   (string) startDate - the start date of the dataset.  
   (string) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                             
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                             
   
 ##### Usage:
 ```js  
@@ -626,8 +626,8 @@ _Function to build a cloud free mosaic using the Landsat 5 dataset._
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
     
 ##### Usage:
 ```js
@@ -655,8 +655,8 @@ _Function to build a cloud free mosaic using the Landsat 7 dataset._
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
     
 ##### Usage:
 ```js
@@ -684,8 +684,8 @@ _Function to build a cloud free mosaic using the Landsat 8 dataset._
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
     
 ##### Usage:
 ```js
@@ -713,8 +713,8 @@ _Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
     
 ##### Usage:
 ```js
@@ -859,6 +859,34 @@ _Function calculate the land surface temperature._
 ```js
     var surfTemp_img = geet.landSurfaceTemperature(img);
 ```
-
+`
 ------------------------------------------------------------------------------
 
+#### exportImg
+(image, outFilename, _scale, _maxPixels)   
+_Function to export an image to your Google Drive account._     
+
+##### Params:
+  (ee.Image) image - the input image.
+  (string) outFilename - the name of the output file that will be exported.
+  **optional** (number) _scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
+  **optional** (number) _maxPixels - the number of maximun pixels that can be exported. Default is 1e12.                          
+  
+##### Usage:
+```js
+    geet.exportImg(img, 'output_classification');
+```
+
+or
+
+```js
+    geet.exportImg(img, 'output_sentinel2_classification', 10);
+```
+
+or 
+
+```js
+    geet.exportImg(img, 'output_sentinel2_classification', 10, 1e13);
+```
+
+------------------------------------------------------------------------------
