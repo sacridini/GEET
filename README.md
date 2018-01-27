@@ -18,8 +18,10 @@ All functions implemented (Version 1.0 - Beta):
 To use the library you need to copy the entire contents of the geet.js file and save as a script in the Google Earth Engine platform editor code.  
 After you save the content as a new script, you must call the saved file in order to use the GEET functions using the "require" function:  
 
+https://code.earthengine.google.com/?accept_repo=users/elacerda/geet
+
 ```js
-    var geet = require('users/elacerda/geet:geet');
+    
 ```
 
 in my case, the file was saved with the GEET name inside my "Functions" directory that belongs to my home directory linked to my account "users/eduardolacerdageo/default:". It is important to change the example path for your case.
@@ -31,18 +33,12 @@ After that you can call the functions of the library using the variable in which
 ```
 
 ### (Português)
-Para utilizar a biblioteca é preciso copiar todo o conteúdo do arquivo geet.js e salvar como um script no code editor da plataforma do Google Earth Engine.   
-Após salvar o conteúdo como um novo script, é necessário chamar o arquivo salvo para poder utilizar as funções do GEET utilizando a função "require":  
+Para utilizar a biblioteca é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). Ele adicionará automaticamente todo o código do Google Earth Engine Toolbox (GEET) na sua conta pessoal do Google Earth Engine. Lembre-se que é necessário já ter uma conta válida na plataforma do Earth Engine. Para saber mais visite o site oficial da plataforma: https://earthengine.google.com/  
 
-```js
-    var geet = require('users/elacerda/geet:geet');
-```
-
-no meu caso, o arquivo foi salvo com o nome GEET dentro do meu diretório "Functions" que pertente ao meu diretório principal linkado a minha conta "users/eduardolacerdageo/default:". É importante trocar o caminho exemplificado para o seu caso.
-
-Depois disso é possível chamar as funções da biblioteca utilizando a variável na qual armazenamos o conteúdo das funções:
+Depois disso é possível chamar as funções da biblioteca criando uma variável e chamando a função **_require_**. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizar ela para chamar as funções da biblioteca:
 
 ```js 
+    var geet = require('users/elacerda/geet:geet'); 
     var image = geet.loadImg('TOA', 2015); // Retorna e carrega no mapa uma imagem.
 ```
 
@@ -61,8 +57,7 @@ _Function to apply SVM classification to a image._
   (string) kernelType - the kernel type of the classifier.     
   
 ##### Usage:
-```js
-    var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
+```js 
     var imgClass = geet.svm(image, samplesfc, landcover);   
 ```
     
@@ -78,8 +73,7 @@ _Function to apply CART classification to a image._
   (string) fieldName - The name of the column that contains the class names.       
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js 
     var imgClass = geet.cart(image, samplesfc, landcover);    
 ```
 
@@ -97,7 +91,6 @@ _Function to apply Random Forest classification to an image._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');   
     var imgClass = geet.rf(image, samplesfc, landcover, 10);   
 ```
   
@@ -116,7 +109,6 @@ _Function to apply RandomForest classification to an image._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');   
     var imgClass = geet.kmeans(image, roi);    
 ```
   
@@ -124,7 +116,6 @@ _Function to apply RandomForest classification to an image._
   **or**
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var imgClass = geet.kmeans(image, roi, 20, 10, 6000);  
 ```
   
@@ -143,8 +134,7 @@ _Function to detect changes between two input images using the NDVI index and a 
                           will be selected.           
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js    
     var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);   
 ```
    
@@ -163,8 +153,7 @@ _Function to detect changes between two input images using the NDWI index and a 
                           will be selected.            
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js    
     var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);  
 ```
     
@@ -184,7 +173,6 @@ _Function to detect changes between two input images using the NDBI index and a 
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);  
 ```
    
@@ -200,8 +188,7 @@ _Function generate a texture filter on the image._
                       Bigger numbers generalize more the result.                    
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js   
     var texture = geet.texture(image_from_rio, 1);         
 ```  
     
@@ -217,8 +204,7 @@ _Function to filter the final classification image and clear the salt n' pepper 
                       Bigger numbers generalize more the result.                     
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js 
     var majority = geet.majority(image_from_rio, 1);  
 ``` 
 
@@ -233,8 +219,7 @@ _Function to return a valid color value from the object COLOR._
                    forest, pasture, urban, shadow or null.                     
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js 
     geet.color('water');  
 ```
 
@@ -250,7 +235,7 @@ _Function to plot a RGB image._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');    
+        
     geet.plotRGB(image, 'rgb_image');  
 ```
   
@@ -266,7 +251,6 @@ _Function to plot a NDVI image index._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     geet.plotNDVI(ndvi, 'ndvi_image'); 
 ```
 
@@ -282,7 +266,6 @@ _Function to plot a NDWI image index._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     geet.plotNDWI(ndwi, 'ndwi_image'); 
 ```
 
@@ -299,7 +282,6 @@ _Function to plot the final classification map._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     geet.plotClass(classified, 4, 'class_final'); 
 ```
  
@@ -318,16 +300,14 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
                     if you dont specify any index the function will create all possible indices.                        
   
 ##### Usage:
-```js
-    var geet = require('users/eduardolacerdageo/default:Function/indexGen');  
+```js  
     var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.  
 ```
  
 
   **or specifying the index to generate:**
 
-```js
-    var geet = require('users/elacerda/geet:geet');  
+```js 
     var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.    
 ```
 
@@ -344,8 +324,7 @@ _Function to get an example image to debug or test some code._
   optional (string) title - the title of the plotted image.                          
   
 ##### Usage:
-```js
-    var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
+```js 
     var image = geet.loadImg(); // Returns a TOA image   
 ```
 
@@ -353,7 +332,6 @@ _Function to get an example image to debug or test some code._
   **or** 
 
 ```js
-    var geet = require('users/eduardolacerdageo/default:Functions/GEET');  
     var image = geet.loadImg('SR', 2015); // Returns a SR image   
 ```
 
@@ -369,7 +347,6 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');    
     var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image    
 ```
   
@@ -392,8 +369,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   (number) band - The number of the band that you want to process.                         
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js   
     var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image    
 ```
 
@@ -417,7 +393,6 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var new_toa_reflectance_sz = geet.toaReflectanceL8(img, 10, 'SZ'); // ee.Image   
 ```
 
@@ -425,7 +400,6 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   or
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var new_toa_reflectance_se = geet.toaReflectanceL8(img, 10, 'SE'); // ee.Image    
 ``` 
 
@@ -450,7 +424,6 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   
 ##### Usage:  
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image  
 ```
      
@@ -471,8 +444,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                          
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js   
     var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image    
 ```   
 
@@ -492,8 +464,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                            
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js    
     var brightness_temp_img = geet.brightnessTempL7_K(toa_image); // ee.Image      
 ```   
 
@@ -514,8 +485,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
                                
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');   
+```js  
     var brightness_temp_img = geet.brightnessTempL7_C(toa_image); // ee.Image  
 ```   
 
@@ -537,15 +507,13 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');  
+```js 
     var brightness_temp_img = geet.brightnessTempL8_K(toa_image); // ee.Image      
 ``` 
 
 or
 
  ```js
-    var geet = require('users/elacerda/geet:geet');  
     var brightness_temp_img = geet.brightnessTempL8_K(toa_image, false); // ee.Image    
 ``` 
 
@@ -566,15 +534,13 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');   
+```js  
     var brightness_temp_img = geet.brightnessTempL8_C(toa_image); // ee.Image  
 ``` 
 
 or
 
  ```js
-    var geet = require('users/elacerda/geet:geet');  
     var brightness_temp_img = geet.brightnessTempL8_C(toa_image, false); // ee.Image   
 ``` 
 
@@ -597,7 +563,6 @@ _Function to resample an input image._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var landsat_10m = geet.resample(L8_img, 10);      
 ``` 
 
@@ -614,7 +579,6 @@ _Function to resample just a single band._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet'); 
     var landsatB10_60m = geet.resampleBand(b10, 60);  
 ```
 
@@ -629,7 +593,6 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var s2_image = geet.loadS2ById('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');  
 ```
 
@@ -646,22 +609,19 @@ _Function to build a cloud free mosaic using the Sentinel 2 dataset._
   optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                             
   
 ##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js  
     var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31'); // Display the final world mosaic.  
 ```
 
 or
 
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js   
     var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi  
 ```
 
 or 
 
-```js
-    var geet = require('users/elacerda/geet:geet');    
+```js 
     var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic  
 ```
 
@@ -679,21 +639,18 @@ _Function to build a cloud free mosaic using the Landsat 5 dataset._
     
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31'); // Display the final world mosaic. 
 ```
 
 or
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l5_mosaic = geet.landsat5Mosaic(start, finish, roi); // Display the final mosaic of the roi
 ```
 
 or 
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
 ```
 
@@ -711,21 +668,18 @@ _Function to build a cloud free mosaic using the Landsat 7 dataset._
     
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31'); // Display the final world mosaic. 
 ```
 
 or
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l7_mosaic = geet.landsat7Mosaic(start, finish, roi); // Display the final mosaic of the roi
 ```
 
 or 
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
 ```
 
@@ -743,21 +697,18 @@ _Function to build a cloud free mosaic using the Landsat 8 dataset._
     
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
 ```
 
 or
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l8_mosaic = geet.landsat8Mosaic(start, finish, roi); // Display the final mosaic of the roi
 ```
 
 or 
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 ```
 
@@ -775,21 +726,18 @@ _Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._
     
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
 ```
 
 or
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var modis_ndvi_mosaic = geet.modisNdviMosaic(start, finish, roi); // Display the final mosaic of the roi
 ```
 
 or 
 
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 ```
 
@@ -804,7 +752,6 @@ _Function the get the maximum value from an image._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var img_max = geet.max(img);     
 ```
 
@@ -819,7 +766,6 @@ _Function the get the minimum value from an image._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');  
     var img_max = geet.min(img);    
 ```
 
@@ -834,7 +780,6 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');
     var l5_ndvi = geet.ndviL5(img);  
 ```
 
@@ -849,7 +794,6 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');
     var l7_ndvi = geet.ndviL7(img);  
 ```
 
@@ -864,7 +808,6 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');
     var l8_ndvi = geet.ndviL8(img);  
 ```
 
@@ -879,7 +822,6 @@ _Function calculate the normalized difference vegetation index (NDVI) from Senti
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');
     var s2_ndvi = geet.ndviS2(img);
 ```
 
@@ -894,7 +836,6 @@ _Function calculate the proportional vegetation._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');
     var img_pv = geet.propVeg(img);
 ```
 
@@ -909,7 +850,6 @@ _Function calculate the surface emissifity._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');
     var lse = geet.landSurfaceEmissivity(pv);
 ```
 
@@ -925,7 +865,6 @@ _Function calculate the land surface temperature._
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet');
     var surfTemp_img = geet.landSurfaceTemperature(img);
 ```
 
