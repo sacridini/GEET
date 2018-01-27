@@ -491,6 +491,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 #### brightnessTempL7_C
 (image)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
 
 ##### Params:
