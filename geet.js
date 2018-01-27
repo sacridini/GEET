@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.1.3 (Beta)
+  Version   : 0.1.4 (Beta)
   Date      : 26-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
@@ -19,7 +19,7 @@
   optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.svm(image, samplesfc, landcover);
 */
 exports.svm = function (image, trainingData, fieldName, kernelType, scale) {
@@ -54,7 +54,7 @@ exports.svm = function (image, trainingData, fieldName, kernelType, scale) {
   optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.cart(image, samplesfc, landcover);
 */
 exports.cart = function (image, trainingData, fieldName, scale) {
@@ -88,7 +88,7 @@ exports.cart = function (image, trainingData, fieldName, scale) {
   optional (ee.Number) numOfTrees - the number of trees that the model will create. Default is 10.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
 exports.rf = function (image, trainingData, fieldName, numOfTrees) {
@@ -122,12 +122,12 @@ exports.rf = function (image, trainingData, fieldName, numOfTrees) {
   optional (number) numPixels - the number of pixels that the classifier will take samples from the roi. Default is set to 5000.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.kmeans(image, roi);
 
   or 
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.kmeans(image, roi, 20, 10, 6000);
 */
 exports.kmeans = function (image, roi, numClusters, scale, numPixels) {
@@ -175,7 +175,7 @@ exports.kmeans = function (image, roi, numClusters, scale, numPixels) {
                           will be selected.   
                           
   Usage: 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);
 */
 exports.simpleNDVIChangeDetection = function (img1, img2, sensor, threshold) {
@@ -216,7 +216,7 @@ exports.simpleNDVIChangeDetection = function (img1, img2, sensor, threshold) {
                           will be selected.   
                           
   Usage: 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);
 */
 exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
@@ -257,7 +257,7 @@ exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
                           will be selected.   
                           
   Usage: 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);
 */
 exports.simpleNDBIChangeDetection = function (img1, img2, sensor, threshold) {
@@ -297,7 +297,7 @@ exports.filterDateRange = function (imgCol, start, finish, field) {
                       Bigger numbers generalize more the result. 
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var texture = geet.texture(image_from_rio, 1);
 */
 exports.texture = function (image, radius) {
@@ -318,7 +318,7 @@ exports.texture = function (image, radius) {
                       Bigger numbers generalize more the result. 
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var majority = geet.majority(image_from_rio, 1);
 */
 exports.majority = function (image, radius) {
@@ -348,7 +348,7 @@ var COLOR = {
                   Valid options are water, forest, pasture, urban, shadow or null
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   geet.color('water');
 */
 exports.color = function (_color) {
@@ -380,7 +380,7 @@ exports.color = function (_color) {
   optional (string) title - the layer title.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   geet.plotRGB(image, 'rgb_image');
 */
 exports.plotRGB = function (image, title) {
@@ -406,7 +406,7 @@ exports.plotRGB = function (image, title) {
   (string) title - the layer title.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   geet.plotNDVI(ndvi, 'ndvi_image');
 */
 exports.plotNDVI = function (image, title) {
@@ -422,7 +422,7 @@ exports.plotNDVI = function (image, title) {
   (string) title - the layer title.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   geet.plotNDWI(ndwi, 'ndwi_image');
 */
 exports.plotNDWI = function (image, title) {
@@ -439,7 +439,7 @@ exports.plotNDWI = function (image, title) {
   optional (string) title - the layer title. 
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   geet.plotClass(classified, 4, 'class_final');
 */
 exports.plotClass = function (image, numClasses, title) {
@@ -485,7 +485,7 @@ exports.plotClass = function (image, numClasses, title) {
   var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.
 
   or specifying the index to generate:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.
 */
 exports.spectralIndices = function (image, sensor, index) {
@@ -762,12 +762,12 @@ exports.spectralIndices = function (image, sensor, index) {
   optional (string) title - the title of the plotted image.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var image = geet.loadImg(); // Returns a TOA image
 
   or 
 
-  var geet = require('users/eduardolacerdageo/default:Functions/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var image = geet.loadImg('SR', 2015); // Returns a SR image
 */
 exports.loadImg = function (collection, year, roi, title) {
@@ -842,7 +842,7 @@ exports.loadImg = function (collection, year, roi, title) {
   (number) band - The number of the band that you want to process.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image
 
   Information:
@@ -875,7 +875,7 @@ exports.toaRadiance = function (image, band) {
   (number) band - The number of the band that you want to process.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image
 
   Information:
@@ -926,12 +926,12 @@ function solarAngleZenith(original_img, raw_reflectance) {
   (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var new_toa_reflectance_sz = geet.toaReflectanceL8(img, 10, 'SZ'); // ee.Image
 
   or
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var new_toa_reflectance_se = geet.toaReflectanceL8(img, 10, 'SE'); // ee.Image
 
   Information:
@@ -996,7 +996,7 @@ exports.toaReflectanceL8 = function (image, band, _solarAngle) {
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image
 
   Information:
@@ -1038,7 +1038,7 @@ Params:
 (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
  
 Usage:
-var geet = require('users/eduardolacerdageo/default:Function/GEET');
+var geet = require('users/elacerda/geet:geet'); 
 var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image
 
 Information:
@@ -1080,7 +1080,7 @@ exports.brightnessTempL5_C = function (image) {
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var brightness_temp_img = geet.brightnessTempL7_K(toa_image); // ee.Image
 
   Information:
@@ -1122,7 +1122,7 @@ Params:
 (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
  
 Usage:
-var geet = require('users/eduardolacerdageo/default:Function/GEET');
+var geet = require('users/elacerda/geet:geet'); 
 var brightness_temp_img = geet.brightnessTempL7_C(toa_image); // ee.Image
 
 Information:
@@ -1166,12 +1166,12 @@ exports.brightnessTempL7_C = function (image) {
   (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var brightness_temp_img = geet.brightnessTempL8_K(toa_image); // ee.Image
 
   or 
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var brightness_temp_img = geet.brightnessTempL8_K(toa_image, false); // ee.Image
 
   Information:
@@ -1240,12 +1240,12 @@ Params:
 (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
  
 Usage:
-var geet = require('users/eduardolacerdageo/default:Function/GEET');
+var geet = require('users/elacerda/geet:geet'); 
 var brightness_temp_img = geet.brightnessTempL8_C(toa_image); // ee.Image
 
 or 
 
-var geet = require('users/eduardolacerdageo/default:Function/GEET');
+var geet = require('users/elacerda/geet:geet'); 
 var brightness_temp_img = geet.brightnessTempL8_C(toa_image, false); // ee.Image
 
 Information:
@@ -1315,7 +1315,7 @@ exports.brightnessTempL8_C = function (image, single) {
                         want to use to  resample the input image.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var landsat_10m = geet.resample(L8_img, 10); 
 */
 exports.resample = function (image, scaleNumber) {
@@ -1340,7 +1340,7 @@ exports.resample = function (image, scaleNumber) {
                         want to use to  resample the input band.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var landsatB10_60m = geet.resampleBand(b10, 60);
 */
 exports.resampleBand = function (band, scaleNumber) {
@@ -1360,7 +1360,7 @@ exports.resampleBand = function (band, scaleNumber) {
   (string) id - the id of the Sentinel 2 image.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var s2_image = geet.loadS2ById('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');
 */
 exports.loadS2ById = function (id) {
@@ -1380,17 +1380,17 @@ exports.loadS2ById = function (id) {
   optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31'); // Display the final world mosaic.
 
   or
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi
 
   or 
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic
 */
 exports.s2Mosaic = function (startDate, endDate, roi, showMosaic) {
@@ -1433,17 +1433,17 @@ exports.s2Mosaic = function (startDate, endDate, roi, showMosaic) {
   optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31'); // Display the final world mosaic.
 
   or
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l5_mosaic = geet.landsat5Mosaic(start, finish, roi); // Display the final mosaic of the roi
 
   or 
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
 */
 exports.landsat5Mosaic = function (startDate, endDate, roi, showMosaic) {
@@ -1485,17 +1485,17 @@ exports.landsat5Mosaic = function (startDate, endDate, roi, showMosaic) {
   optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31'); // Display the final world mosaic.
 
   or
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l7_mosaic = geet.landsat7Mosaic(start, finish, roi); // Display the final mosaic of the roi
 
   or 
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
 */
 exports.landsat7Mosaic = function (startDate, endDate, roi, showMosaic) {
@@ -1537,17 +1537,17 @@ exports.landsat7Mosaic = function (startDate, endDate, roi, showMosaic) {
   optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic.
 
   or
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l8_mosaic = geet.landsat8Mosaic(start, finish, roi); // Display the final mosaic of the roi
 
   or 
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 */
 exports.landsat8Mosaic = function (startDate, endDate, roi, showMosaic) {
@@ -1589,17 +1589,17 @@ exports.landsat8Mosaic = function (startDate, endDate, roi, showMosaic) {
   optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic.
 
   or
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var modis_ndvi_mosaic = geet.modisNdviMosaic(start, finish, roi); // Display the final mosaic of the roi
 
   or 
 
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 */
 exports.modisNdviMosaic = function (startDate, endDate, roi, showMosaic) {
@@ -1636,7 +1636,7 @@ exports.modisNdviMosaic = function (startDate, endDate, roi, showMosaic) {
   (ee.Image) image - the input image.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var img_max = geet.max(img);
 */
 exports.max = function (image) {
@@ -1653,7 +1653,7 @@ exports.max = function (image) {
   (ee.Image) image - the input image.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var img_min = geet.min(img);
 */
 exports.min = function (image) {
@@ -1670,7 +1670,7 @@ exports.min = function (image) {
   (ee.Image) image - the input image.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l5_ndvi = geet.ndviL5(img);
 */
 exports.ndviL5 = function (image) {
@@ -1688,7 +1688,7 @@ exports.ndviL5 = function (image) {
   (ee.Image) image - the input image.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l7_ndvi = geet.ndviL7(img);
 */
 exports.ndviL7 = function (image) {
@@ -1706,7 +1706,7 @@ exports.ndviL7 = function (image) {
   (ee.Image) image - the input image.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var l8_ndvi = geet.ndviL8(img);
 */
 exports.ndviL8 = function (image) {
@@ -1724,7 +1724,7 @@ exports.ndviL8 = function (image) {
   (ee.Image) image - the input image.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var s2_ndvi = geet.ndviS2(img);
 */
 exports.ndviS2 = function (image) {
@@ -1742,7 +1742,7 @@ exports.ndviS2 = function (image) {
   (ee.Image) image - input image with the NDVI band.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var img_pv = geet.propVeg(img);
 */
 exports.propVeg = function (image) {
@@ -1768,7 +1768,7 @@ exports.propVeg = function (image) {
   (ee.Image) image - input image with the proportional vegetation band.
   
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var lse = geet.landSurfaceEmissivity(pv);
 */
 exports.landSurfaceEmissivity = function (image) {
@@ -1790,7 +1790,7 @@ exports.landSurfaceEmissivity = function (image) {
                      NDVI, PropVeg and LSE bands.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   var surfTemp_img = geet.landSurfaceTemperature(img);
 */
 exports.landSurfaceTemperature = function (image) {
@@ -1823,7 +1823,7 @@ exports.landSurfaceTemperature = function (image) {
   optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
 
   Usage:
-  var geet = require('users/eduardolacerdageo/default:Function/GEET');
+  var geet = require('users/elacerda/geet:geet'); 
   geet.exportImg(img, 'output_img');
 */
 exports.exportImg = function (image, outFilename, scale, maxPixels) {
@@ -1841,19 +1841,55 @@ exports.exportImg = function (image, outFilename, scale, maxPixels) {
 }
 
 
-exports.pca = function (image, scale, nbands, maxPixels) {
+/*
+  pca:
+  Function produce the principal components analysis of an image.
+
+  Params:
+  (ee.Image) image - the input image.
+  optional (number) nBands - the number of the bands of the image. Default is 12.
+  optional (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
+  optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+
+  Usage:
+  var geet = require('users/elacerda/geet:geet'); 
+  var pca = geet.pca(img, 'output_img');
+*/
+exports.pca = function (image, nbands, scale, maxPixels) {
   // Default params
   scale = typeof scale !== 'undefined' ? scale : 30;
-  nbands = typeof nbands !== 'undefined' ? nbands : 6;
+  nbands = typeof nbands !== 'undefined' ? nbands : 12;
   maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
+  var pcNames = [];
 
   // center the image
   var bandNames = image.bandNames();
-  var meanDict = image.reduceRegion(ee.Reducer.mean(),
-                  scale=scale,maxPixels=maxPixels);
+  var meanDict = image.reduceRegion({
+      reducer: ee.Reducer.mean(),
+      scale: scale,
+      maxPixels : maxPixels
+  });
   var means = ee.Image.constant(meanDict.values(bandNames));
   var centered = image.subtract(means);
 
   // principal components analysis
-
+  for (var i = 0; i < nbands; i++) {
+    pcNames.push('pc' + (i + 1).toString());
+  }
+  var centered = centered.toArray();
+  var covar = centered.reduceRegion({
+      reducer: ee.Reducer.centeredCovariance(),
+      scale: scale,
+      maxPixels: maxPixels
+  });
+  var covarArray = ee.Array(covar.get('array'));
+  var eigens = covarArray.eigen();
+  var lambdas = eigens.slice(1, 0, 1);
+  var eivs = eigens.slice(1, 1);
+  var centered = centered.toArray(1);
+  var pcs = ee.Image(eivs).matrixMultiply(centered)
+    .arrayProject([0])
+    .arrayFlatten([pcNames]);
+  return [ pcs, lambdas ];
 }
+
