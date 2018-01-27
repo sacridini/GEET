@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.1.2 (Beta)
+  Version   : 0.1.3 (Beta)
   Date      : 26-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
@@ -15,26 +15,26 @@
   (ee.Image) image - The input image to classify.
   (ee.List) trainingData - Training data (samples). 
   (string) fieldName - The name of the column that contains the class names.
-  (string) kernelType - the kernel type of the classifier.
+  optional (string) kernelType - the kernel type of the classifier. Default is 'RBF'.
+  optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Functions/GEET');
   var imgClass = geet.svm(image, samplesfc, landcover);
 */
-exports.svm = function (image, trainingData, fieldName, kernelType) {
-  var kernel = 'RBF';
-  if (kernelType !== undefined) {
-    kernel = kernelType;
-  }
+exports.svm = function (image, trainingData, fieldName, kernelType, scale) {
+  // Default params
+  kernelType = typeof kernelType !== 'undefined' ? kernelType : 'RBF';
+  scale = typeof scale !== 'undefined' ? scale : 30;
 
   var training = image.sampleRegions({
     collection: trainingData,
     properties: [fieldName],
-    scale: 30
+    scale: scale
   });
 
   var classifier = ee.Classifier.svm({
-    kernelType: kernel,
+    kernelType: kernelType,
     cost: 10
   });
 
@@ -51,16 +51,20 @@ exports.svm = function (image, trainingData, fieldName, kernelType) {
   (ee.Image) image - The input image to classify.
   (ee.List) trainingData - Training data (samples).
   (string) fieldName - The name of the column that contains the class names.
+  optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.cart(image, samplesfc, landcover);
 */
-exports.cart = function (image, trainingData, fieldName) {
+exports.cart = function (image, trainingData, fieldName, scale) {
+  // Default params
+  scale = typeof scale !== 'undefined' ? scale : 30;
+
   var training = image.sampleRegions({
     collection: trainingData,
     properties: [fieldName],
-    scale: 30
+    scale: scale
   });
 
   var classifier = ee.Classifier.cart().train({
@@ -81,17 +85,15 @@ exports.cart = function (image, trainingData, fieldName) {
   (ee.Image) image - The input image to classify.
   (ee.List) trainingData - Training data (samples).
   (string) fieldName - the name of the column that contains the class names.
-  (ee.Number) numOfTrees - the number of trees that the model will create.
+  optional (ee.Number) numOfTrees - the number of trees that the model will create. Default is 10.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
-exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
-  var numOfTrees = 10;
-  if (_numOfTrees !== undefined) {
-    numOfTrees = _numOfTrees;
-  }
+exports.rf = function (image, trainingData, fieldName, numOfTrees) {
+  // Default params
+  numOfTrees = typeof numOfTrees !== 'undefined' ? numOfTrees : 10;
 
   var training = image.sampleRegions({
     collection: trainingData,
@@ -115,9 +117,9 @@ exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
   Params:
   (ee.Image) image - The input image to classify.
   (list) roi - Coordenates or just a polygon of the sample area.
-  optional (number) _numClusters - the number of clusters that will be used. Default is 15.
-  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
-  optional (number) _numPixels - the number of pixels that the classifier will take samples from the roi.
+  optional (number) numClusters - the number of clusters that will be used. Default is 15.
+  optional (number) scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
+  optional (number) numPixels - the number of pixels that the classifier will take samples from the roi. Default is set to 5000.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -128,28 +130,16 @@ exports.rf = function (image, trainingData, fieldName, _numOfTrees) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var imgClass = geet.kmeans(image, roi, 20, 10, 6000);
 */
-exports.kmeans = function (image, roi, _numClusters, _scale, _numPixels) {
+exports.kmeans = function (image, roi, numClusters, scale, numPixels) {
   if (roi === undefined) {
     print("Error: You need to define and pass a roi as argument to collect the samples for the classfication process.")
   }
 
-  if (_numClusters === undefined) {
-    var numClusters = 15;
-  } else {
-    numClusters = _numClusters;
-  }
+  // Default params
+  numClusters = typeof numClusters !== 'undefined' ? numClusters : 15;
+  scale = typeof scale !== 'undefined' ? scale : 30;
+  numPixels = typeof numPixels !== 'undefined' ? numPixels : 5000;
 
-  if (_scale === undefined) {
-    var scale = 30;
-  } else {
-    scale = _scale;
-  }
-
-  if (_numPixels === undefined) {
-    var numPixels = 5000;
-  } else {
-    numPixels = _numPixels;
-  }
 
   // Make the training dataset.
   var training = image.sample({
@@ -387,18 +377,15 @@ exports.color = function (_color) {
 
   Params:
   (ee.Image) image - the image to display.
-  (string) title - the layer title.
+  optional (string) title - the layer title.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   geet.plotRGB(image, 'rgb_image');
 */
-exports.plotRGB = function (image, _title) {
-  if (_title === undefined) {
-    var title = 'image_RGB';
-  } else {
-    title = _title;
-  }
+exports.plotRGB = function (image, title) {
+  title = typeof title !== 'undefined' ? title : 'image_RGB';
+  
 
   var vizParams = {
     'bands': 'B4,B3,B2',
@@ -449,17 +436,14 @@ exports.plotNDWI = function (image, title) {
   Params:
   (ee.Image) image - the image to process
   (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.
-  (string) title - the layer title. 
+  optional (string) title - the layer title. 
   
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   geet.plotClass(classified, 4, 'class_final');
 */
-exports.plotClass = function (image, numClasses, _title) {
-  var title = 'class_final';
-  if (_title !== undefined) {
-    title = _title;
-  }
+exports.plotClass = function (image, numClasses, title) {
+  title = typeof title !== 'undefined' ? title : 'class_final';
 
   switch (numClasses) {
     case 2:
@@ -772,8 +756,8 @@ exports.spectralIndices = function (image, sensor, index) {
   Function to get an example image to debug or test some code. 
 
   Params:
-  (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.
-  (number) year - the year of the image that you want to get.
+  optional (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.
+  optional (number) year - the year of the image that you want to get.
   optional (list) roi - the latitude and longitude of a roi.
   optional (string) title - the title of the plotted image.
   
@@ -786,69 +770,48 @@ exports.spectralIndices = function (image, sensor, index) {
   var geet = require('users/eduardolacerdageo/default:Functions/GEET');
   var image = geet.loadImg('SR', 2015); // Returns a SR image
 */
-exports.loadImg = function (_collection, _year, _roi, _title) {
+exports.loadImg = function (collection, year, roi, title) {
   // Setup
-  var collection = 'TOA';
-  var year = 2015;
-  var roi = ee.Geometry.Point(-43.25, -22.90);
-  var title = 'loadImg';
   var visParams = { bands: ['B4', 'B3', 'B2'], max: 0.3 };
 
-  // Check year
-  if (_year !== undefined) {
-    year = _year;
-  } else {
-    print('Error: You need to specify the year parameter.')
-  }
-
-  // Check roi
-  if (_roi !== undefined) {
-    roi = _roi;
-  }
-
-  // Check title
-  if (_title !== undefined) {
-    title = _title;
-  }
-
+  // Default params
+  collection = typeof collection !== 'undefined' ? collection : 'TOA';
+  roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point(-43.25, -22.90);
+  year = typeof year !== 'undefined' ? year : 2015;
+  title = typeof title !== 'undefined' ? title : 'loadImg';
+  
   // Check collection
   if (year >= 2013) {
-    if (collection !== undefined) {
-      collection = _collection;
-      if (collection === 'RAW') {
-        collection = 'LANDSAT/LC8_L1T';
-        visParams = {
-          bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
-        };
-      } else if (collection === 'TOA') {
-        collection = 'LANDSAT/LC8_L1T_TOA';
-      } else if (collection === 'SR') {
-        collection = 'LANDSAT/LC8_SR';
-        visParams = {
-          bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
-        };
-      } else {
-        print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
-      }
+    if (collection === 'RAW') {
+      collection = 'LANDSAT/LC8_L1T';
+      visParams = {
+        bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
+      };
+    } else if (collection === 'TOA') {
+      collection = 'LANDSAT/LC8_L1T_TOA';
+    } else if (collection === 'SR') {
+      collection = 'LANDSAT/LC8_SR';
+      visParams = {
+        bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
+      };
+    } else {
+      print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
     }
   } else if (year < 2013 && year >= 1985) {
-    if (collection !== undefined) {
-      collection = _collection;
-      if (collection === 'RAW') {
-        collection = 'LANDSAT/LT5_L1T';
-        visParams = {
-          bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
-        };
-      } else if (collection === 'TOA') {
-        collection = 'LANDSAT/LT5_L1T_TOA_FMASK';
-      } else if (collection === 'SR') {
-        collection = 'LANDSAT/LT5_SR';
-        visParams = {
-          bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
-        };
-      } else {
-        print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
-      }
+    if (collection === 'RAW') {
+      collection = 'LANDSAT/LT5_L1T';
+      visParams = {
+        bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
+      };
+    } else if (collection === 'TOA') {
+      collection = 'LANDSAT/LT5_L1T_TOA_FMASK';
+    } else if (collection === 'SR') {
+      collection = 'LANDSAT/LT5_SR';
+      visParams = {
+        bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
+      };
+    } else {
+      print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
     }
   } else {
     print('Error: Wrong year parameter');
@@ -1414,7 +1377,7 @@ exports.loadS2ById = function (id) {
   (string) startDate - the start date of the dataset.
   (string) endDate - the end date of the dataset.
   optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -1430,14 +1393,11 @@ exports.loadS2ById = function (id) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.s2Mosaic = function (startDate, endDate, roi, _showMosaic) {
+exports.s2Mosaic = function (startDate, endDate, roi, showMosaic) {
   var s2 = ee.ImageCollection('COPERNICUS/S2');
 
-  if (_showMosaic === undefined) {
-    var showMosaic = true;
-  } else {
-    showMosaic = _showMosaic;
-  }
+  // Default params
+  showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
 
   if (roi === undefined) {
     var composite = s2.filterDate(ee.Date(startDate), ee.Date(endDate))
@@ -1470,7 +1430,7 @@ exports.s2Mosaic = function (startDate, endDate, roi, _showMosaic) {
   (ee.Date) startDate - the start date of the dataset.
   (ee.Date) endDate - the end date of the dataset.
   optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -1486,14 +1446,11 @@ exports.s2Mosaic = function (startDate, endDate, roi, _showMosaic) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.landsat5Mosaic = function (startDate, endDate, roi, _showMosaic) {
+exports.landsat5Mosaic = function (startDate, endDate, roi, showMosaic) {
   var l5 = ee.ImageCollection('LANDSAT/LT5_L1T_TOA');
 
-  if (_showMosaic === undefined) {
-    var showMosaic = true;
-  } else {
-    showMosaic = _showMosaic;
-  }
+  // Default params
+  showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
 
   if (roi === undefined) {
     var composite = l5
@@ -1525,7 +1482,7 @@ exports.landsat5Mosaic = function (startDate, endDate, roi, _showMosaic) {
   (ee.Date) startDate - the start date of the dataset.
   (ee.Date) endDate - the end date of the dataset.
   optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -1541,14 +1498,11 @@ exports.landsat5Mosaic = function (startDate, endDate, roi, _showMosaic) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.landsat7Mosaic = function (startDate, endDate, roi, _showMosaic) {
+exports.landsat7Mosaic = function (startDate, endDate, roi, showMosaic) {
   var l7 = ee.ImageCollection('LANDSAT/LE7_L1T_TOA');
 
-  if (_showMosaic === undefined) {
-    var showMosaic = true;
-  } else {
-    showMosaic = _showMosaic;
-  }
+  // Default params
+  showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
 
   if (roi === undefined) {
     var composite = l7
@@ -1580,7 +1534,7 @@ exports.landsat7Mosaic = function (startDate, endDate, roi, _showMosaic) {
   (ee.Date) startDate - the start date of the dataset.
   (ee.Date) endDate - the end date of the dataset.
   optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -1596,14 +1550,11 @@ exports.landsat7Mosaic = function (startDate, endDate, roi, _showMosaic) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.landsat8Mosaic = function (startDate, endDate, roi, _showMosaic) {
+exports.landsat8Mosaic = function (startDate, endDate, roi, showMosaic) {
   var l8 = ee.ImageCollection('LANDSAT/LC8_L1T_TOA');
 
-  if (_showMosaic === undefined) {
-    var showMosaic = true;
-  } else {
-    showMosaic = _showMosaic;
-  }
+  // Default params
+  showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
 
   if (roi === undefined) {
     var composite = l8
@@ -1635,7 +1586,7 @@ exports.landsat8Mosaic = function (startDate, endDate, roi, _showMosaic) {
   (ee.Date) startDate - the start date of the dataset.
   (ee.Date) endDate - the end date of the dataset.
   optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
@@ -1651,12 +1602,9 @@ exports.landsat8Mosaic = function (startDate, endDate, roi, _showMosaic) {
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.modisNdviMosaic = function (startDate, endDate, roi, _showMosaic) {
-  if (_showMosaic === undefined) {
-    var showMosaic = true;
-  } else {
-    showMosaic = _showMosaic;
-  }
+exports.modisNdviMosaic = function (startDate, endDate, roi, showMosaic) {
+  // Default params
+  showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
 
   var modis = ee.ImageCollection('MODIS/MOD13Q1')
     .filterDate(ee.Date(startDate), ee.Date(endDate))
@@ -1871,25 +1819,17 @@ exports.landSurfaceTemperature = function (image) {
   Params:
   (ee.Image) image - the input image.
   (string) outFilename - the name of the output file that will be exported.
-  optional (number) _scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
-  optional (number) _maxPixels - the number of maximun pixels that can be exported. Default is 1e12.
+  optional (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
+  optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
 
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/GEET');
   geet.exportImg(img, 'output_img');
 */
-exports.exportImg = function (image, outFilename, _scale, _maxPixels) {
-  if (_scale === undefined) {
-    var scale = 30;
-  } else {
-    scale = _scale;
-  }
-
-  if (_scale === undefined) {
-    var maxPixels = 1e12;
-  } else {
-    maxPixels = _scale;
-  }
+exports.exportImg = function (image, outFilename, scale, maxPixels) {
+  // Default params
+  scale = typeof scale !== 'undefined' ? scale : 30;
+  maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
 
   // Export the image, specifying scale and region.
   Export.image.toDrive({
@@ -1898,4 +1838,22 @@ exports.exportImg = function (image, outFilename, _scale, _maxPixels) {
     scale: scale,
     maxPixels: maxPixels
   });
+}
+
+
+exports.pca = function (image, scale, nbands, maxPixels) {
+  // Default params
+  scale = typeof scale !== 'undefined' ? scale : 30;
+  nbands = typeof nbands !== 'undefined' ? nbands : 6;
+  maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
+
+  // center the image
+  var bandNames = image.bandNames();
+  var meanDict = image.reduceRegion(ee.Reducer.mean(),
+                  scale=scale,maxPixels=maxPixels);
+  var means = ee.Image.constant(meanDict.values(bandNames));
+  var centered = image.subtract(means);
+
+  // principal components analysis
+
 }
