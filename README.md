@@ -21,7 +21,7 @@ After adding the library you can call its functions using the function **_requir
 
 ```js 
     var geet = require('users/elacerda/geet:geet'); 
-    var image = geet.loadImg('TOA', 2015); // Retorna e carrega no mapa uma imagem.
+    var image = geet.loadImg('TOA', 2015); // Returns and loads an image on the map.
 ```
 
 ### (Português)
