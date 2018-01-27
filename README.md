@@ -15,27 +15,19 @@ All functions implemented (Version 1.0 - Beta):
 
 ### Quickstart Guide:
 ### (English)
-To use the library you need to copy the entire contents of the geet.js file and save as a script in the Google Earth Engine platform editor code.  
-After you save the content as a new script, you must call the saved file in order to use the GEET functions using the "require" function:  
+To use the library you need to click on this [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
 
-https://code.earthengine.google.com/?accept_repo=users/elacerda/geet
-
-```js
-    
-```
-
-in my case, the file was saved with the GEET name inside my "Functions" directory that belongs to my home directory linked to my account "users/eduardolacerdageo/default:". It is important to change the example path for your case.
-
-After that you can call the functions of the library using the variable in which we store the contents of the functions:
+After adding the library you can call its functions using the function **_require_** and storing the content in a variable. In this case, we will create a variable called **_geet_** which contains all the contents of the library. Then we can use it to call library functions: 
 
 ```js 
-    var image = geet.loadImg('TOA', 2015); // Returns and loads an image on the map.
+    var geet = require('users/elacerda/geet:geet'); 
+    var image = geet.loadImg('TOA', 2015); // Retorna e carrega no mapa uma imagem.
 ```
 
 ### (Português)
-Para utilizar a biblioteca é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). Ele adicionará automaticamente todo o código do Google Earth Engine Toolbox (GEET) na sua conta pessoal do Google Earth Engine. Lembre-se que é necessário já ter uma conta válida na plataforma do Earth Engine. Para saber mais visite o site oficial da plataforma: https://earthengine.google.com/  
+Para utilizar a biblioteca é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). Ele adicionará automaticamente todo o código da biblioteca na sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
-Depois disso é possível chamar as funções da biblioteca criando uma variável e chamando a função **_require_**. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizar ela para chamar as funções da biblioteca:
+Depois de adicionar a biblioteca é possível chamar suas funções utilizando a função **_require_** e armazenando o conteúdo em uma variável. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizar ela para chamar as funções da biblioteca:
 
 ```js 
     var geet = require('users/elacerda/geet:geet'); 
