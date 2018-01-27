@@ -1854,6 +1854,11 @@ exports.exportImg = function (image, outFilename, scale, maxPixels) {
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
   var pca = geet.pca(img, 'output_img');
+  var pca_image = ee.Image(pca[0]);
+  Map.addLayer(pca_image);
+
+  Information: 
+  Modified from https://github.com/mortcanty/earthengine/blob/master/src/eePca.py
 */
 exports.pca = function (image, nbands, scale, maxPixels) {
   // Default params
@@ -1893,3 +1898,153 @@ exports.pca = function (image, nbands, scale, maxPixels) {
   return [ pcs, lambdas ];
 }
 
+ /* ------------------------ TEST ZONE ------------------------ */
+
+// JavaScript implementation of this great work: https://github.com/mortcanty/earthengine
+
+function imad (current, prev) {
+  var done =  ee.Number(ee.Dictionary(prev).get('done'))
+  return ee.Algorithms.If(done,prev,imad1(current,prev))
+}
+
+function chi2cdf (chi2, df) {
+  /* Chi square cumulative distribution function */
+  return ee.Image(chi2.divide(2)).gammainc(ee.Number(df).divide(2))
+}
+
+function addcoeffs (current, prev) {
+    var coeff = ee.List(current)
+    var log = ee.List(prev)
+    return log.add(coeff)
+}
+
+function geneiv (C, B) { 
+  /* Generalized eigenproblem C*X = lambda*B*X */
+  var C = ee.Array(C)
+  var B = ee.Array(B)  
+  // Li = choldc(B)^-1
+  var Li = ee.Array(B.matrixCholeskyDecomposition().get('L')).matrixInverse()
+  //  solve symmetric eigenproblem Li*C*Li^T*x = lambda*x
+  var Xa = Li.matrixMultiply(C) 
+         .matrixMultiply(Li.matrixTranspose()) 
+         .eigen()
+  // eigenvalues as a row vector
+  var lambdas = Xa.slice(1,0,1).matrixTranspose()
+  // eigenvectors as columns
+  var X = Xa.slice(1,1).matrixTranspose()  
+  // generalized eigenvectors as columns, Li^T*X
+  var eigenvecs = Li.matrixTranspose().matrixMultiply(X)
+  return (lambdas,eigenvecs) 
+}
+
+function covarw (image, weights, maxPixels) {
+  maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
+
+  /* Return the weighted centered image and its weighted covariance matrix */
+  var geometry = image.geometry();
+  var bandNames = image.bandNames();
+  var N = bandNames.length();
+  var scale = image.select(0).projection().nominalScale();
+  var weightsImage = image.multiply(ee.Image.constant(0)).add(weights);
+  var means = image.addBands(weightsImage).reduceRegion({
+      reducer: ee.Reducer.mean().repeat(N).splitWeights(),
+      scale: scale,
+      maxPixels: maxPixels
+  }).toArray().project([1]);
+  var centered = image.toArray().subtract(means);
+  var B1 = centered.bandNames().get(0);
+  var b1 = weights.bandNames().get(0);
+  var nPixels = ee.Number(centered.reduceRegion({
+      reducer: ee.Reducer.count(),
+      scale: scale,
+      maxPixels: maxPixels
+  }).get(B1));
+  var sumWeights = ee.Number(weights.reduceRegion({
+      reducer: ee.Reducer.sum(),
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels
+  }).get(b1));
+  var covw = centered.multiply(weights.sqrt()).toArray().reduceRegion({
+      reducer: ee.Reducer.centeredCovariance(),
+      geometry: geometry,
+      scale: scale,
+      maxPixels: maxPixels
+  }).get('array');
+  var covw = ee.Array(covw).multiply(nPixels).divide(sumWeights);
+  return [ centered.arrayFlatten([bandNames]), covw ]
+}
+
+function imad1 (current, prev) {
+  /* Iteratively re-weighted MAD */
+  var image = ee.Image(ee.Dictionary(prev).get('image'));
+  var chi2 = ee.Image(ee.Dictionary(prev).get('chi2'));
+  var allrhos = ee.List(ee.Dictionary(prev).get('allrhos'));
+  var region = image.geometry();
+  var nBands = image.bandNames().length().divide(2);
+  var weights = chi2cdf(chi2,nBands).subtract(1).multiply(-1);
+  // ---------- check later -----------
+  // centeredImage,covarArray = covarw(image,weights) - python
+  var centeredImage  = covarw(image,weights)[0];
+  var covarArray = covarw(image,weights)[1];
+  // ---------- check later -----------
+  var bNames = centeredImage.bandNames();
+  var bNames1 = bNames.slice(0,nBands);
+  var bNames2 = bNames.slice(nBands);
+  var centeredImage1 = centeredImage.select(bNames1);
+  var centeredImage2 = centeredImage.select(bNames2);
+  var s11 = covarArray.slice(0,0,nBands).slice(1,0,nBands);
+  var s22 = covarArray.slice(0,nBands).slice(1,nBands);
+  var s12 = covarArray.slice(0,0,nBands).slice(1,nBands);
+  var s21 = covarArray.slice(0,nBands).slice(1,0,nBands);
+  var c1 = s12.matrixMultiply(s22.matrixInverse()).matrixMultiply(s21);
+  var b1 = s11;
+  var c2 = s21.matrixMultiply(s11.matrixInverse()).matrixMultiply(s12);
+  var b2 = s22;
+  /* solution of generalized eigenproblems */
+  var lambdas = geneiv(c1,b1)[0];
+  var A = geneiv(c1,b1)[1];
+  var B = geneiv(c2,b2)[1];
+  var rhos = lambdas.sqrt().project(ee.List([1]));
+  /* sort in increasing order */
+  var keys = ee.List.sequence(nBands,1,-1);
+  A = A.sort([keys]);
+  B = B.sort([keys]);
+  rhos = rhos.sort(keys);
+  /* test for convergence */
+  var lastrhos = ee.Array(allrhos.get(-1));
+  var done = rhos.subtract(lastrhos).abs().reduce(ee.Reducer.max(),ee.List([0]))
+                                    .lt(ee.Number(0.001))
+                                    .toList()
+                                    .get(0);
+  var allrhos = allrhos.cat([rhos.toList()]);
+  /* MAD variances */
+  var sigma2s = rhos.subtract(1).multiply(-2).toList();
+  var sigma2s = ee.Image.constant(sigma2s);
+  /* ensure sum of positive correlations between X and U is positive */
+  var tmp = s11.matrixDiagonal().sqrt();
+  var ones = tmp.multiply(0).add(1);
+  var tmp = ones.divide(tmp).matrixToDiag();
+  var s = tmp.matrixMultiply(s11).matrixMultiply(A).reduce(ee.Reducer.sum(),[0]).transpose();
+  var A = A.matrixMultiply(s.divide(s.abs()).matrixToDiag());
+  /* ensure positive correlation */
+  var tmp = A.transpose().matrixMultiply(s12).matrixMultiply(B).matrixDiagonal();
+  var tmp = tmp.divide(tmp.abs()).matrixToDiag();
+  var B = B.matrixMultiply(tmp);
+  /* canonical and MAD variates  */
+  var centeredImage1Array = centeredImage1.toArray().toArray(1);
+  var centeredImage2Array = centeredImage2.toArray().toArray(1);
+  var U = ee.Image(A.transpose()).matrixMultiply(centeredImage1Array)
+                                 .arrayProject([0])
+                                 .arrayFlatten([bNames1]);
+  var V = ee.Image(B.transpose()).matrixMultiply(centeredImage2Array)
+                                 .arrayProject([0])
+                                 .arrayFlatten([bNames2]);
+  var MAD = U.subtract(V);
+  /* chi square image */
+  var chi2 = MAD.pow(2).divide(sigma2s).reduce(ee.Reducer.sum()).clip(region);
+  return ee.Dictionary({'done':done,'image':image,'allrhos':allrhos,'chi2':chi2,'MAD':MAD});
+}
+
+
+/* ------------------------ TEST ZONE ------------------------ */
