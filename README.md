@@ -867,10 +867,10 @@ _Function calculate the land surface temperature._
 _Function to export an image to your Google Drive account._     
 
 ##### Params:
-  (ee.Image) image - the input image.
-  (string) outFilename - the name of the output file that will be exported.
-  **optional** (number) _scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
-  **optional** (number) _maxPixels - the number of maximun pixels that can be exported. Default is 1e12.                          
+  (ee.Image) image - the input image.  
+  (string) outFilename - the name of the output file that will be exported.  
+  **optional** (number) _scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.  
+  **optional** (number) _maxPixels - the number of maximun pixels that can be exported. Default is 1e12.                            
   
 ##### Usage:
 ```js
