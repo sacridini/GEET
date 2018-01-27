@@ -8,14 +8,14 @@ The library also can be used to teach new developers to use the plataform even w
 
 ## Documentation: 
 All functions implemented (Version 1.0 - Beta):
-[svm](#svm), [cart](#cart), [rf](#rf), [kmeans](#kmeans), [simpleNDVIChangeDetection](#simplendvichangedetection), [simpleNDWIChangeDetection](#simplendwichangedetection), [simpleNDBIChangeDetection](#simplendbichangedetection), [texture](#texture), [majority](#majority), [color](#color), [plotRGB](#plotrgb), [plotNDVI](#plotndvi), [plotNDWI](#plotndwi), [plotClass](#plotclass), [spectralIndices](#spectralindices), [loadImg](#loadimg), [toaRadiance](#toaradiance), [toareflectance](#toareflectance), [toaReflectanceL8](#toareflectancel8), [brightnessTempL5_K](#brightnesstempl5_k), [brightnessTempL5_C](#brightnesstempl5_c), [brightnessTempL7_K](#brightnesstempl7_k), [brightnessTempL7_C](#brightnesstempl7_c), [brightnessTempL8_K](#brightnesstempl8_k), [brightnessTempL8_C](#brightnesstempl8_c), [resample](#resample), [resampleBand](#resampleband), [loadS2ById](#loads2byid), [s2Mosaic](#s2mosaic), [landsat5Mosaic](#landsat5mosaic), [landsat7Mosaic](#landsat7mosaic), [landsat8Mosaic](#landsat8mosaic), [modisNdviMosaic](#modisndvimosaic), [max](#max), [min](#min), [ndviL5](#ndvil5), [ndviL7](#ndvil7), [ndviL8](#ndvil8), [ndviS2](#ndvis2), [propVeg](#propveg), [landSurfaceEmissivity](#landsurfaceemissivity), [landSurfaceTemperature](#landsurfacetemperature)
+[svm](#svm), [cart](#cart), [rf](#rf), [kmeans](#kmeans), [simpleNDVIChangeDetection](#simplendvichangedetection), [simpleNDWIChangeDetection](#simplendwichangedetection), [simpleNDBIChangeDetection](#simplendbichangedetection), [texture](#texture), [majority](#majority), [color](#color), [plotRGB](#plotrgb), [plotNDVI](#plotndvi), [plotNDWI](#plotndwi), [plotClass](#plotclass), [spectralIndices](#spectralindices), [loadImg](#loadimg), [toaRadiance](#toaradiance), [toareflectance](#toareflectance), [toaReflectanceL8](#toareflectancel8), [brightnessTempL5_K](#brightnesstempl5_k), [brightnessTempL5_C](#brightnesstempl5_c), [brightnessTempL7_K](#brightnesstempl7_k), [brightnessTempL7_C](#brightnesstempl7_c), [brightnessTempL8_K](#brightnesstempl8_k), [brightnessTempL8_C](#brightnesstempl8_c), [resample](#resample), [resampleBand](#resampleband), [loadS2ById](#loads2byid), [s2Mosaic](#s2mosaic), [landsat5Mosaic](#landsat5mosaic), [landsat7Mosaic](#landsat7mosaic), [landsat8Mosaic](#landsat8mosaic), [modisNdviMosaic](#modisndvimosaic), [max](#max), [min](#min), [ndviL5](#ndvil5), [ndviL7](#ndvil7), [ndviL8](#ndvil8), [ndviS2](#ndvis2), [propVeg](#propveg), [landSurfaceEmissivity](#landsurfaceemissivity), [landSurfaceTemperature](#landsurfacetemperature), [exportImg](#exportimg)
 
 
 ------------------------------------------------------------------------------
 
 ### Quickstart Guide:
 ### (English)
-To use the library you need to click [here](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
+To use the library you need to click on this [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
 
 After adding the library you can call its functions using the function **_require_** and storing the content in a variable. In this case, we will create a variable called **_geet_** which contains all the contents of the library. Then we can use it to call library functions: 
 
@@ -25,7 +25,7 @@ After adding the library you can call its functions using the function **_requir
 ```
 
 ### (Português)
-Para utilizar a biblioteca é preciso clicar [aqui](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). Isto adicionará automaticamente todo o código da biblioteca na sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
+Para utilizar a biblioteca é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). Ele adicionará automaticamente todo o código da biblioteca na sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
 Depois de adicionar a biblioteca é possível chamar suas funções utilizando a função **_require_** e armazenando o conteúdo em uma variável. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizar ela para chamar as funções da biblioteca:
 
@@ -39,7 +39,8 @@ Depois de adicionar a biblioteca é possível chamar suas funções utilizando a
 ### References:
 
 #### svm
-(image, trainingData, fieldName, kernelType)  
+(image, trainingData, fieldName, kernelType) 
+
 _Function to apply SVM classification to a image._  
 
 ##### Params:
@@ -57,6 +58,7 @@ _Function to apply SVM classification to a image._
 
 #### cart
 (image, trainingData, fieldName)  
+
 _Function to apply CART classification to a image._
 
 ##### Params:
@@ -73,6 +75,7 @@ _Function to apply CART classification to a image._
 
 #### rf
 (image, trainingData, fieldName, _numOfTrees)  
+
 _Function to apply Random Forest classification to an image._ 
 
 ##### Params:
@@ -90,14 +93,15 @@ _Function to apply Random Forest classification to an image._
  
 #### kmeans 
 (image, roi, _numClusters, _scale, _numPixels)  
+
 _Function to apply RandomForest classification to an image._  
 
 ##### Params:
   (ee.Image) image - The input image to classify.     
   (list) roi - Coordenates or just a polygon of the sample area.   
-  optional (number) _numClusters - the number of clusters that will be used. Default is 15.  
-  optional (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.  
-  optional (number) _numPixels - the number of pixels that the classifier will take samples from the roi.           
+  **optional** (number) _numClusters - the number of clusters that will be used. Default is 15.  
+  **optional** (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.  
+  **optional** (number) _numPixels - the number of pixels that the classifier will take samples from the roi.           
   
 ##### Usage:
 ```js
@@ -105,7 +109,7 @@ _Function to apply RandomForest classification to an image._
 ```
   
 
-  **or**
+  or
 
 ```js
     var imgClass = geet.kmeans(image, roi, 20, 10, 6000);  
@@ -115,6 +119,7 @@ _Function to apply RandomForest classification to an image._
   
 #### simpleNDVIChangeDetection
 (img1, img2, sensor, threshold)  
+
 _Function to detect changes between two input images using the NDVI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndviChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -133,7 +138,8 @@ _Function to detect changes between two input images using the NDVI index and a 
 ------------------------------------------------------------------------------
    
 #### simpleNDWIChangeDetection
-(img1, img2, sensor, threshold)  
+(img1, img2, sensor, threshold) 
+
 _Function to detect changes between two input images using the NDWI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndwiChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -153,6 +159,7 @@ _Function to detect changes between two input images using the NDWI index and a 
 
 #### simpleNDBIChangeDetection
 (img1, img2, sensor, threshold)  
+
 _Function to detect changes between two input images using the NDBI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndbiChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -172,6 +179,7 @@ _Function to detect changes between two input images using the NDBI index and a 
 
 #### texture
 (image, radius)  
+
 _Function generate a texture filter on the image._ 
 
 ##### Params:
@@ -188,6 +196,7 @@ _Function generate a texture filter on the image._
 
 #### majority
 (image, radius)  
+
 _Function to filter the final classification image and clear the salt n' pepper effect._ 
 
 ##### Params:
@@ -204,6 +213,7 @@ _Function to filter the final classification image and clear the salt n' pepper 
 
 #### color
 (_color)  
+
 _Function to return a valid color value from the object COLOR._ 
 
 ##### Params:
@@ -219,6 +229,7 @@ _Function to return a valid color value from the object COLOR._
 
 #### plotRGB
 (image, _title)  
+
 _Function to plot a RGB image._ 
 
 ##### Params:
@@ -235,6 +246,7 @@ _Function to plot a RGB image._
 
 #### plotNDVI
 (image, _title)  
+
 _Function to plot a NDVI image index._ 
 
 ##### Params:
@@ -250,6 +262,7 @@ _Function to plot a NDVI image index._
 
 #### plotNDWI
 (image, _title)  
+
 _Function to plot a NDWI image index._ 
 
 ##### Params:
@@ -265,6 +278,7 @@ _Function to plot a NDWI image index._
 
 #### plotClass
 (image, numClasses, _title)  
+
 _Function to plot the final classification map._ 
 
 ##### Params:
@@ -281,6 +295,7 @@ _Function to plot the final classification map._
 
 #### spectralIndices  
 (image, sensor, index)  
+
 _Function to take an input image and generate indexes like: NDVI, NDWI, NDBI..._   
 More indices and features will be added in the future!  
 Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI  
@@ -288,7 +303,7 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 ##### Params:
   (ee.Image) image - the image to process.  
   (string) sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8').  
-  (string or string array) index (optional) - you can specify the index that you want
+  **optional** (string or string array) index  - you can specify the index that you want
                     if you dont specify any index the function will create all possible indices.                        
   
 ##### Usage:
@@ -297,7 +312,7 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 ```
  
 
-  **or specifying the index to generate:**
+  or specifying the index to generate:
 
 ```js 
     var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.    
@@ -307,13 +322,14 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 
 #### loadImg
 (_collection, _year, _roi, _title)  
+
 _Function to get an example image to debug or test some code._     
 
 ##### Params:
   (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.  
   (number) year - the year of the image that you want to get.  
-  optional (list) roi - the latitude and longitude of a roi.  
-  optional (string) title - the title of the plotted image.                          
+  **optional** (list) roi - the latitude and longitude of a roi.  
+  **optional** (string) title - the title of the plotted image.                          
   
 ##### Usage:
 ```js 
@@ -321,7 +337,7 @@ _Function to get an example image to debug or test some code._
 ```
 
 
-  **or** 
+  or
 
 ```js
     var image = geet.loadImg('SR', 2015); // Returns a SR image   
@@ -331,6 +347,7 @@ _Function to get an example image to debug or test some code._
 
 #### toaRadiance
 (image, band)  
+
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance._     
 
 ##### Params:
@@ -376,6 +393,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 #### toaReflectanceL8
 (image, band, _solarAngle)  
+
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance Landsat 8 version with Solar Angle correction._       
 
 ##### Params:
@@ -409,6 +427,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 #### brightnessTempL5_K
 (image)  
+
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance._     
 
 ##### Params:
@@ -430,6 +449,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 #### brightnessTempL5_C
 (image)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 5 data._     
 
 ##### Params:
@@ -450,6 +470,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 #### brightnessTempL7_K
 (image)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
 
 ##### Params:
@@ -470,6 +491,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 #### brightnessTempL7_C
 (image)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
 
 ##### Params:
@@ -492,6 +514,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 #### brightnessTempL8_K
 (image, _single)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
 
 ##### Params:
@@ -519,6 +542,7 @@ or
 
 #### brightnessTempL8_C
 (image, _single)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
 
 ##### Params:
@@ -546,6 +570,7 @@ or
 
 #### resample
 (image, scaleNumber)  
+
 _Function to resample an input image._     
 
 ##### Params:
@@ -562,6 +587,7 @@ _Function to resample an input image._
 
 #### resampleBand
 (band, scaleNumber)  
+
 _Function to resample just a single band._     
 
 ##### Params:
@@ -578,6 +604,7 @@ _Function to resample just a single band._
 
 #### loadS2ById
 (id)  
+
 _Function to filter the Sentinel-2 collection by Product ID obtained from the Copernicus Open Access Hub._     
 
 ##### Params:
@@ -592,13 +619,14 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 
 #### s2Mosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free mosaic using the Sentinel 2 dataset._     
 
 ##### Params:
   (string) startDate - the start date of the dataset.  
   (string) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                             
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                             
   
 ##### Usage:
 ```js  
@@ -621,13 +649,14 @@ or
 
 #### landsat5Mosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free mosaic using the Landsat 5 dataset._     
 
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
     
 ##### Usage:
 ```js
@@ -650,13 +679,14 @@ or
 
 #### landsat7Mosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free mosaic using the Landsat 7 dataset._     
 
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
     
 ##### Usage:
 ```js
@@ -679,13 +709,14 @@ or
 
 #### landsat8Mosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free mosaic using the Landsat 8 dataset._     
 
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
     
 ##### Usage:
 ```js
@@ -708,13 +739,14 @@ or
 
 #### modisNdviMosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._     
 
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
-  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.  
-  optional (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
     
 ##### Usage:
 ```js
@@ -737,6 +769,7 @@ or
 
 #### max
 (image)  
+
 _Function the get the maximum value from an image._     
 
 ##### Params:
@@ -751,6 +784,7 @@ _Function the get the maximum value from an image._
 
 #### min
 (image)  
+
 _Function the get the minimum value from an image._     
 
 ##### Params:
@@ -765,6 +799,7 @@ _Function the get the minimum value from an image._
 
 #### ndviL5 
 (image)  
+
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 5 data._     
 
 ##### Params:
@@ -779,6 +814,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 #### ndviL7
 (image)  
+
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 7 data._     
 
 ##### Params:
@@ -793,6 +829,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 #### ndviL8
 (image)  
+
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 8 data._     
 
 ##### Params:
@@ -807,6 +844,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 #### ndviS2
 (image)  
+
 _Function calculate the normalized difference vegetation index (NDVI) from Sentinel 2 data._     
 
 ##### Params:
@@ -821,6 +859,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Senti
 
 #### propVeg
 (image)  
+
 _Function calculate the proportional vegetation._     
 
 ##### Params:
@@ -835,6 +874,7 @@ _Function calculate the proportional vegetation._
 
 #### landSurfaceEmissivity
 (image)  
+
 _Function calculate the surface emissifity._     
 
 ##### Params:
@@ -849,6 +889,7 @@ _Function calculate the surface emissifity._
 
 #### landSurfaceTemperature
 (image)  
+
 _Function calculate the land surface temperature._     
 
 ##### Params:
@@ -859,6 +900,35 @@ _Function calculate the land surface temperature._
 ```js
     var surfTemp_img = geet.landSurfaceTemperature(img);
 ```
-
+`
 ------------------------------------------------------------------------------
 
+#### exportImg
+(image, outFilename, _scale, _maxPixels)  
+
+_Function to export an image to your Google Drive account._     
+
+##### Params:
+  (ee.Image) image - the input image.  
+  (string) outFilename - the name of the output file that will be exported.  
+  **optional** (number) _scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.  
+  **optional** (number) _maxPixels - the number of maximun pixels that can be exported. Default is 1e12.                            
+  
+##### Usage:
+```js
+    geet.exportImg(img, 'output_classification');
+```
+
+or
+
+```js
+    geet.exportImg(img, 'output_sentinel2_classification', 10);
+```
+
+or 
+
+```js
+    geet.exportImg(img, 'output_sentinel2_classification', 10, 1e13);
+```
+
+------------------------------------------------------------------------------
