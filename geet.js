@@ -2,7 +2,7 @@
   Name      : geet.js
   Author    : Eduardo R. Lacerda
   e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.1.1 (Beta)
+  Version   : 0.1.2 (Beta)
   Date      : 26-01-2018
   Description: Lib to write small EE apps or big/complex apps with a lot less code.
 */
@@ -493,7 +493,7 @@ exports.plotClass = function (image, numClasses, _title) {
 
   Params:
   (ee.Image) image - the image to process.
-  (string) sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8').
+  (string) sensor - the sensor that you are working on Landsat 5 ('L5'), 7 ('L7') or 8 ('L8').
   (string or string array) index (optional) - you can specify the index that you want
                     if you dont specify any index the function will create all possible indices.
   Usage:
@@ -508,7 +508,7 @@ exports.spectralIndices = function (image, sensor, index) {
   if (index != null) {
     switch (index) {
       case 'NDVI':
-        if (sensor == 'L5') {
+        if (sensor == 'L5' || sensor == 'L7') {
           var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
           var newImage = image.addBands(i_ndvi);
           return newImage;
@@ -525,7 +525,7 @@ exports.spectralIndices = function (image, sensor, index) {
         }
         break;
       case 'NDWI':
-        if (sensor == 'L5') {
+        if (sensor == 'L5' || sensor == 'L7') {
           var i_ndwi = image.normalizedDifference(['B3', 'B5']).rename('NDWI');
           var newImage = image.addBands(i_ndwi);
           return newImage;
@@ -542,7 +542,7 @@ exports.spectralIndices = function (image, sensor, index) {
         }
         break;
       case 'NDBI':
-        if (sensor == 'L5') {
+        if (sensor == 'L5' || sensor == 'L7') {
           var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
           var newImage = image.addBands(i_ndbi);
           return newImage;
@@ -559,7 +559,7 @@ exports.spectralIndices = function (image, sensor, index) {
         }
         break;
       case 'NRVI':
-        if (sensor == 'L5') {
+        if (sensor == 'L5' || sensor == 'L7') {
           var i_nrvi = image.expression(
             '(RED/NIR - 1) / (RED/NIR + 1)', {
               'NIR': image.select('B4'),
@@ -580,7 +580,7 @@ exports.spectralIndices = function (image, sensor, index) {
         }
         break;
       case 'EVI':
-        if (sensor == 'L5') {
+        if (sensor == 'L5' || sensor == 'L7') {
           var i_evi = image.expression(
             '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
               'NIR': image.select('B4'),
@@ -612,7 +612,7 @@ exports.spectralIndices = function (image, sensor, index) {
         }
         break;
       case 'SAVI':
-        if (sensor == 'L5') {
+        if (sensor == 'L5' || sensor == 'L7') {
           var i_savi = image.expression(
             '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
               'NIR': image.select('B4'),
@@ -644,7 +644,7 @@ exports.spectralIndices = function (image, sensor, index) {
         }
         break;
       case 'GOSAVI':
-        if (sensor == 'L5') {
+        if (sensor == 'L5' || sensor == 'L7') {
           var i_gosavi = image.expression(
             '(NIR - GREEN) / (NIR + GREEN + Y)', {
               'NIR': image.select('B4'),
@@ -678,7 +678,7 @@ exports.spectralIndices = function (image, sensor, index) {
     }
   } else { // END OF SWITCH 
     // Gen ALL indices
-    if (sensor == 'L5') {
+    if (sensor == 'L5' || sensor == 'L7') {
       var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
       var i_ndwi = image.normalizedDifference(['B2', 'B5']).rename('NDWI');
       var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
