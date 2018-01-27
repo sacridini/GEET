@@ -7,7 +7,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.0 - Beta):
+All functions implemented (Version 1.3 - Beta):
 [svm](#svm), [cart](#cart), [rf](#rf), [kmeans](#kmeans), [simpleNDVIChangeDetection](#simplendvichangedetection), [simpleNDWIChangeDetection](#simplendwichangedetection), [simpleNDBIChangeDetection](#simplendbichangedetection), [texture](#texture), [majority](#majority), [color](#color), [plotRGB](#plotrgb), [plotNDVI](#plotndvi), [plotNDWI](#plotndwi), [plotClass](#plotclass), [spectralIndices](#spectralindices), [loadImg](#loadimg), [toaRadiance](#toaradiance), [toareflectance](#toareflectance), [toaReflectanceL8](#toareflectancel8), [brightnessTempL5_K](#brightnesstempl5_k), [brightnessTempL5_C](#brightnesstempl5_c), [brightnessTempL7_K](#brightnesstempl7_k), [brightnessTempL7_C](#brightnesstempl7_c), [brightnessTempL8_K](#brightnesstempl8_k), [brightnessTempL8_C](#brightnesstempl8_c), [resample](#resample), [resampleBand](#resampleband), [loadS2ById](#loads2byid), [s2Mosaic](#s2mosaic), [landsat5Mosaic](#landsat5mosaic), [landsat7Mosaic](#landsat7mosaic), [landsat8Mosaic](#landsat8mosaic), [modisNdviMosaic](#modisndvimosaic), [max](#max), [min](#min), [ndviL5](#ndvil5), [ndviL7](#ndvil7), [ndviL8](#ndvil8), [ndviS2](#ndvis2), [propVeg](#propveg), [landSurfaceEmissivity](#landsurfaceemissivity), [landSurfaceTemperature](#landsurfacetemperature), [exportImg](#exportimg)
 
 
@@ -46,8 +46,8 @@ _Function to apply SVM classification to a image._
 ##### Params:
   (ee.Image) image - The input image to classify.    
   (ee.List) trainingData - Training data (samples).      
-  (string) fieldName - The name of the column that contains the class names.      
-  (string) kernelType - the kernel type of the classifier.     
+  **optional** (string) fieldName - The name of the column that contains the class names.      
+  **optional** (string) kernelType - the kernel type of the classifier.     
   
 ##### Usage:
 ```js 
@@ -64,7 +64,7 @@ _Function to apply CART classification to a image._
 ##### Params:
   (ee.Image) image - The input image to classify.       
   (ee.List) trainingData - Training data (samples).     
-  (string) fieldName - The name of the column that contains the class names.       
+  **optional** (string) fieldName - The name of the column that contains the class names.       
   
 ##### Usage:
 ```js 
@@ -82,7 +82,7 @@ _Function to apply Random Forest classification to an image._
   (ee.Image) image - The input image to classify.   
   (ee.List) trainingData - Training data (samples).   
   (string) fieldName - the name of the column that contains the class names.   
-  (ee.Number) numOfTrees - the number of trees that the model will create.         
+  **optional** (ee.Number) numOfTrees - the number of trees that the model will create.         
   
 ##### Usage:
 ```js
@@ -234,7 +234,7 @@ _Function to plot a RGB image._
 
 ##### Params:
   (ee.Image) image - the image to display.  
-  (string) title - the layer title.                   
+  **optional** (string) title - the layer title.                   
   
 ##### Usage:
 ```js
@@ -284,7 +284,7 @@ _Function to plot the final classification map._
 ##### Params:
   (ee.Image) image - the image to process.  
   (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.  
-  (string) title - the layer title.                       
+  **optional** (string) title - the layer title.                       
   
 ##### Usage:
 ```js
@@ -326,8 +326,8 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 _Function to get an example image to debug or test some code._     
 
 ##### Params:
-  (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.  
-  (number) year - the year of the image that you want to get.  
+  **optional** (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.  
+  **optional** (number) year - the year of the image that you want to get.  
   **optional** (list) roi - the latitude and longitude of a roi.  
   **optional** (string) title - the title of the plotted image.                          
   
