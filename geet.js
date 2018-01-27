@@ -478,7 +478,7 @@ exports.plotClass = function (image, numClasses, title) {
   Params:
   (ee.Image) image - the image to process.
   (string) sensor - the sensor that you are working on Landsat 5 ('L5'), 7 ('L7') or 8 ('L8').
-  (string or string array) index (optional) - you can specify the index that you want
+  optional (string or string array) index  - you can specify the index that you want
                     if you dont specify any index the function will create all possible indices.
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/indexGen');
@@ -1180,7 +1180,7 @@ exports.brightnessTempL7_C = function (image) {
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightnessTempL8_K = function (image, _single) {
+exports.brightnessTempL8_K = function (image, single) {
   var single = (arguments[1] !== void 1 ? false : true);
   // default is true - double band (B10 and B11) processing
   if (single === true) {
@@ -1254,7 +1254,7 @@ Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
 K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
 K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightnessTempL8_C = function (image, _single) {
+exports.brightnessTempL8_C = function (image, single) {
   var single = (arguments[1] !== void 1 ? false : true);
   // false - double band (B10 and B11) processing
   if (single === false) {
