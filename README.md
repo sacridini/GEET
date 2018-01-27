@@ -807,6 +807,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 #### ndviS2
 (image)  
+
 _Function calculate the normalized difference vegetation index (NDVI) from Sentinel 2 data._     
 
 ##### Params:
@@ -821,6 +822,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Senti
 
 #### propVeg
 (image)  
+
 _Function calculate the proportional vegetation._     
 
 ##### Params:
@@ -835,6 +837,7 @@ _Function calculate the proportional vegetation._
 
 #### landSurfaceEmissivity
 (image)  
+
 _Function calculate the surface emissifity._     
 
 ##### Params:
@@ -849,6 +852,7 @@ _Function calculate the surface emissifity._
 
 #### landSurfaceTemperature
 (image)  
+
 _Function calculate the land surface temperature._     
 
 ##### Params:
@@ -863,7 +867,8 @@ _Function calculate the land surface temperature._
 ------------------------------------------------------------------------------
 
 #### exportImg
-(image, outFilename, _scale, _maxPixels)   
+(image, outFilename, _scale, _maxPixels)  
+ 
 _Function to export an image to your Google Drive account._     
 
 ##### Params:
