@@ -39,7 +39,8 @@ Depois de adicionar a biblioteca é possível chamar suas funções utilizando a
 ### References:
 
 #### svm
-(image, trainingData, fieldName, kernelType)  
+(image, trainingData, fieldName, kernelType) 
+
 _Function to apply SVM classification to a image._  
 
 ##### Params:
@@ -57,6 +58,7 @@ _Function to apply SVM classification to a image._
 
 #### cart
 (image, trainingData, fieldName)  
+
 _Function to apply CART classification to a image._
 
 ##### Params:
@@ -73,6 +75,7 @@ _Function to apply CART classification to a image._
 
 #### rf
 (image, trainingData, fieldName, _numOfTrees)  
+
 _Function to apply Random Forest classification to an image._ 
 
 ##### Params:
@@ -90,6 +93,7 @@ _Function to apply Random Forest classification to an image._
  
 #### kmeans 
 (image, roi, _numClusters, _scale, _numPixels)  
+
 _Function to apply RandomForest classification to an image._  
 
 ##### Params:
@@ -115,6 +119,7 @@ _Function to apply RandomForest classification to an image._
   
 #### simpleNDVIChangeDetection
 (img1, img2, sensor, threshold)  
+
 _Function to detect changes between two input images using the NDVI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndviChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -133,7 +138,8 @@ _Function to detect changes between two input images using the NDVI index and a 
 ------------------------------------------------------------------------------
    
 #### simpleNDWIChangeDetection
-(img1, img2, sensor, threshold)  
+(img1, img2, sensor, threshold) 
+
 _Function to detect changes between two input images using the NDWI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndwiChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -153,6 +159,7 @@ _Function to detect changes between two input images using the NDWI index and a 
 
 #### simpleNDBIChangeDetection
 (img1, img2, sensor, threshold)  
+
 _Function to detect changes between two input images using the NDBI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndbiChange, 3, 'change_detection');_ 
 
 ##### Params:
@@ -172,6 +179,7 @@ _Function to detect changes between two input images using the NDBI index and a 
 
 #### texture
 (image, radius)  
+
 _Function generate a texture filter on the image._ 
 
 ##### Params:
@@ -188,6 +196,7 @@ _Function generate a texture filter on the image._
 
 #### majority
 (image, radius)  
+
 _Function to filter the final classification image and clear the salt n' pepper effect._ 
 
 ##### Params:
@@ -204,6 +213,7 @@ _Function to filter the final classification image and clear the salt n' pepper 
 
 #### color
 (_color)  
+
 _Function to return a valid color value from the object COLOR._ 
 
 ##### Params:
@@ -219,6 +229,7 @@ _Function to return a valid color value from the object COLOR._
 
 #### plotRGB
 (image, _title)  
+
 _Function to plot a RGB image._ 
 
 ##### Params:
@@ -235,6 +246,7 @@ _Function to plot a RGB image._
 
 #### plotNDVI
 (image, _title)  
+
 _Function to plot a NDVI image index._ 
 
 ##### Params:
@@ -250,6 +262,7 @@ _Function to plot a NDVI image index._
 
 #### plotNDWI
 (image, _title)  
+
 _Function to plot a NDWI image index._ 
 
 ##### Params:
@@ -265,6 +278,7 @@ _Function to plot a NDWI image index._
 
 #### plotClass
 (image, numClasses, _title)  
+
 _Function to plot the final classification map._ 
 
 ##### Params:
@@ -281,6 +295,7 @@ _Function to plot the final classification map._
 
 #### spectralIndices  
 (image, sensor, index)  
+
 _Function to take an input image and generate indexes like: NDVI, NDWI, NDBI..._   
 More indices and features will be added in the future!  
 Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI  
@@ -307,6 +322,7 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 
 #### loadImg
 (_collection, _year, _roi, _title)  
+
 _Function to get an example image to debug or test some code._     
 
 ##### Params:
@@ -331,6 +347,7 @@ _Function to get an example image to debug or test some code._
 
 #### toaRadiance
 (image, band)  
+
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance._     
 
 ##### Params:
@@ -376,6 +393,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 #### toaReflectanceL8
 (image, band, _solarAngle)  
+
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance Landsat 8 version with Solar Angle correction._       
 
 ##### Params:
@@ -409,6 +427,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 #### brightnessTempL5_K
 (image)  
+
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance._     
 
 ##### Params:
@@ -430,6 +449,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 #### brightnessTempL5_C
 (image)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 5 data._     
 
 ##### Params:
@@ -450,6 +470,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 #### brightnessTempL7_K
 (image)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
 
 ##### Params:
@@ -492,6 +513,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 #### brightnessTempL8_K
 (image, _single)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
 
 ##### Params:
@@ -519,6 +541,7 @@ or
 
 #### brightnessTempL8_C
 (image, _single)  
+
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
 
 ##### Params:
@@ -546,6 +569,7 @@ or
 
 #### resample
 (image, scaleNumber)  
+
 _Function to resample an input image._     
 
 ##### Params:
@@ -562,6 +586,7 @@ _Function to resample an input image._
 
 #### resampleBand
 (band, scaleNumber)  
+
 _Function to resample just a single band._     
 
 ##### Params:
@@ -578,6 +603,7 @@ _Function to resample just a single band._
 
 #### loadS2ById
 (id)  
+
 _Function to filter the Sentinel-2 collection by Product ID obtained from the Copernicus Open Access Hub._     
 
 ##### Params:
@@ -592,6 +618,7 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 
 #### s2Mosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free mosaic using the Sentinel 2 dataset._     
 
 ##### Params:
@@ -621,6 +648,7 @@ or
 
 #### landsat5Mosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free mosaic using the Landsat 5 dataset._     
 
 ##### Params:
@@ -650,6 +678,7 @@ or
 
 #### landsat7Mosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free mosaic using the Landsat 7 dataset._     
 
 ##### Params:
@@ -679,6 +708,7 @@ or
 
 #### landsat8Mosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free mosaic using the Landsat 8 dataset._     
 
 ##### Params:
@@ -708,6 +738,7 @@ or
 
 #### modisNdviMosaic
 (startDate, endDate, roi, _showMosaic)  
+
 _Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._     
 
 ##### Params:
@@ -737,6 +768,7 @@ or
 
 #### max
 (image)  
+
 _Function the get the maximum value from an image._     
 
 ##### Params:
@@ -751,6 +783,7 @@ _Function the get the maximum value from an image._
 
 #### min
 (image)  
+
 _Function the get the minimum value from an image._     
 
 ##### Params:
@@ -765,6 +798,7 @@ _Function the get the minimum value from an image._
 
 #### ndviL5 
 (image)  
+
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 5 data._     
 
 ##### Params:
@@ -779,6 +813,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 #### ndviL7
 (image)  
+
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 7 data._     
 
 ##### Params:
@@ -793,6 +828,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 #### ndviL8
 (image)  
+
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 8 data._     
 
 ##### Params:
@@ -868,7 +904,7 @@ _Function calculate the land surface temperature._
 
 #### exportImg
 (image, outFilename, _scale, _maxPixels)  
- 
+
 _Function to export an image to your Google Drive account._     
 
 ##### Params:
