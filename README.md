@@ -74,7 +74,7 @@ _Function to apply CART classification to a image._
 ------------------------------------------------------------------------------
 
 #### rf
-(image, trainingData, fieldName, _numOfTrees)  
+(image, trainingData, fieldName, numOfTrees)  
 
 _Function to apply Random Forest classification to an image._ 
 
@@ -92,7 +92,7 @@ _Function to apply Random Forest classification to an image._
  ------------------------------------------------------------------------------
  
 #### kmeans 
-(image, roi, _numClusters, _scale, _numPixels)  
+(image, roi, numClusters, scale, numPixels)  
 
 _Function to apply RandomForest classification to an image._  
 
@@ -228,7 +228,7 @@ _Function to return a valid color value from the object COLOR._
 ------------------------------------------------------------------------------
 
 #### plotRGB
-(image, _title)  
+(image, title)  
 
 _Function to plot a RGB image._ 
 
@@ -245,7 +245,7 @@ _Function to plot a RGB image._
 ------------------------------------------------------------------------------
 
 #### plotNDVI
-(image, _title)  
+(image, title)  
 
 _Function to plot a NDVI image index._ 
 
@@ -261,7 +261,7 @@ _Function to plot a NDVI image index._
 ------------------------------------------------------------------------------
 
 #### plotNDWI
-(image, _title)  
+(image, title)  
 
 _Function to plot a NDWI image index._ 
 
@@ -277,7 +277,7 @@ _Function to plot a NDWI image index._
 ------------------------------------------------------------------------------
 
 #### plotClass
-(image, numClasses, _title)  
+(image, numClasses, title)  
 
 _Function to plot the final classification map._ 
 
@@ -321,7 +321,7 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 ------------------------------------------------------------------------------
 
 #### loadImg
-(_collection, _year, _roi, _title)  
+(collection, year, roi, title)  
 
 _Function to get an example image to debug or test some code._     
 
@@ -513,7 +513,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 ------------------------------------------------------------------------------
 
 #### brightnessTempL8_K
-(image, _single)  
+(image, single)  
 
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
 
@@ -541,7 +541,7 @@ or
 ------------------------------------------------------------------------------
 
 #### brightnessTempL8_C
-(image, _single)  
+(image, single)  
 
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
 
@@ -618,7 +618,7 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 ------------------------------------------------------------------------------
 
 #### s2Mosaic
-(startDate, endDate, roi, _showMosaic)  
+(startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free mosaic using the Sentinel 2 dataset._     
 
@@ -648,7 +648,7 @@ or
 ------------------------------------------------------------------------------
 
 #### landsat5Mosaic
-(startDate, endDate, roi, _showMosaic)  
+(startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free mosaic using the Landsat 5 dataset._     
 
@@ -678,7 +678,7 @@ or
 ------------------------------------------------------------------------------
 
 #### landsat7Mosaic
-(startDate, endDate, roi, _showMosaic)  
+(startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free mosaic using the Landsat 7 dataset._     
 
@@ -708,7 +708,7 @@ or
 ------------------------------------------------------------------------------
 
 #### landsat8Mosaic
-(startDate, endDate, roi, _showMosaic)  
+(startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free mosaic using the Landsat 8 dataset._     
 
@@ -738,7 +738,7 @@ or
 ------------------------------------------------------------------------------
 
 #### modisNdviMosaic
-(startDate, endDate, roi, _showMosaic)  
+(startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._     
 
@@ -904,7 +904,7 @@ _Function calculate the land surface temperature._
 ------------------------------------------------------------------------------
 
 #### exportImg
-(image, outFilename, _scale, _maxPixels)  
+(image, outFilename, scale, maxPixels)  
 
 _Function to export an image to your Google Drive account._     
 
