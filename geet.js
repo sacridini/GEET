@@ -1,11 +1,10 @@
-/* 
-  Name      : geet.js
-  Author    : Eduardo R. Lacerda
-  e-mail    : eduardolacerdageo@gmail.com
-  Version   : 0.1.4 (Beta)
-  Date      : 26-01-2018
-  Description: Lib to write small EE apps or big/complex apps with a lot less code.
+/** 
+ * Google Earth Engine Toolbox (GEET)
+ * Description: Lib to write small EE apps or big/complex apps with a lot less code.
+ * Version: 0.1.5
+ * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
 */
+
 
 /*
   svm:
@@ -833,6 +832,8 @@ exports.loadImg = function (collection, year, roi, title) {
   return image;
 };
 
+
+
 /*
   toaRadiance:
   Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance.
@@ -1369,6 +1370,94 @@ exports.loadS2ById = function (id) {
   return s2_filtered;
 }
 
+
+// TODO:
+exports.loadL5ByPathRow = function (collection, path, row, startYear, endYear) {
+  collection = typeof collection !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
+  switch (collection) {
+    case 'raw':
+    var l5_collection = ee.ImageCollection('LANDSAT/LT5_L1T')
+        .filterDate(ee.Date(startYear), ee.Date(endYear))
+        .filter(ee.Filter.eq('WRS_PATH', path))
+        .filter(ee.Filter.eq('WRS_ROW', row));
+    return l5_collection;
+    case 'toa':
+    var l5_collection = ee.ImageCollection('LANDSAT/LT5_L1T_TOA_FMASK')
+        .filterDate(ee.Date(startYear), ee.Date(endYear))
+        .filter(ee.Filter.eq('WRS_PATH', path))
+        .filter(ee.Filter.eq('WRS_ROW', row));
+    return l5_collection;
+    case 'sr':
+    var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+    .filterDate(ee.Date(startYear), ee.Date(endYear))
+    .filter(ee.Filter.eq('WRS_PATH', path))
+    .filter(ee.Filter.eq('WRS_ROW', row));
+    return l5_collection;
+    default:
+    print('Choose between "raw", "toa" or "sr" for the collection type!');
+      break;
+  }
+}
+
+
+// TODO:
+exports.loadL7ByPathRow = function (collection, path, row, startYear, endYear) {
+  collection = typeof collection !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
+  switch (collection) {
+    case 'raw':
+    var l7_collection = ee.ImageCollection('LANDSAT/LT5_L1T')
+        .filterDate(ee.Date(startYear), ee.Date(endYear))
+        .filter(ee.Filter.eq('WRS_PATH', path))
+        .filter(ee.Filter.eq('WRS_ROW', row));
+    return l7_collection;
+    case 'toa':
+    var l7_collection = ee.ImageCollection('LANDSAT/LT5_L1T_TOA_FMASK')
+        .filterDate(ee.Date(startYear), ee.Date(endYear))
+        .filter(ee.Filter.eq('WRS_PATH', path))
+        .filter(ee.Filter.eq('WRS_ROW', row));
+    return l7_collection;
+    case 'sr':
+    var l7_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+    .filterDate(ee.Date(startYear), ee.Date(endYear))
+    .filter(ee.Filter.eq('WRS_PATH', path))
+    .filter(ee.Filter.eq('WRS_ROW', row));
+    return l7_collection;
+    default:
+    print('Choose between "raw", "toa" or "sr" for the collection type!');
+      break;
+  }
+}
+
+
+// TODO:
+exports.loadL8ByPathRow = function (collection, path, row, startYear, endYear) {
+  collection = typeof collection !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
+  switch (collection) {
+    case 'raw':
+    var l8_collection = ee.ImageCollection('LANDSAT/LT5_L1T')
+        .filterDate(ee.Date(startYear), ee.Date(endYear))
+        .filter(ee.Filter.eq('WRS_PATH', path))
+        .filter(ee.Filter.eq('WRS_ROW', row));
+    return l8_collection;
+    case 'toa':
+    var l8_collection = ee.ImageCollection('LANDSAT/LT5_L1T_TOA_FMASK')
+        .filterDate(ee.Date(startYear), ee.Date(endYear))
+        .filter(ee.Filter.eq('WRS_PATH', path))
+        .filter(ee.Filter.eq('WRS_ROW', row));
+    return l8_collection;
+    case 'sr':
+    var l8_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+    .filterDate(ee.Date(startYear), ee.Date(endYear))
+    .filter(ee.Filter.eq('WRS_PATH', path))
+    .filter(ee.Filter.eq('WRS_ROW', row));
+    return l8_collection;
+    default:
+    print('Choose between "raw", "toa" or "sr" for the collection type!');
+      break;
+  }
+}
+
+
 /*
   s2Mosaic:
   Function to build a cloud free mosaic using the Sentinel 2 dataset.
@@ -1839,6 +1928,19 @@ exports.exportImg = function (image, outFilename, scale, maxPixels) {
     maxPixels: maxPixels
   });
 }
+
+
+exports.cloudMaskOLI = function(img) {
+  var mask = ee.Image(img).select(['cfmask']).neq(4).and(ee.Image(img).neq(2))
+  return ee.Image(img).updateMask(mask).select(['B2', 'B3','B4','B5','B6','B7']).rename(['B1','B2','B3','B4','B5','B7'])
+};
+
+
+exports.cloudMaskTM = function(img) {
+  var mask = ee.Image(img).select(['cfmask']).neq(4).and(ee.Image(img).neq(2))
+  return ee.Image(img).updateMask(mask).select(['B1','B2', 'B3','B4','B5','B7'])
+};
+
 
 
 /*
