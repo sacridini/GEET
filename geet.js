@@ -358,13 +358,13 @@ exports.color = function (_color) {
       return COLOR.WATER;
     case 'forest':
       return COLOR.FOREST;
-    case 'PASTURE':
+    case 'pasture':
       return COLOR.PASTURE;
-    case 'URBAN':
+    case 'urban':
       return COLOR.URBAN;
-    case 'SHADOW':
+    case 'shadow':
       return COLOR.SHADOW;
-    case 'NULL':
+    case 'null':
       return COLOR.NULL;
     default:
       return 'Error: Valid options are water, forest, pasture, urban, shadow or null! Remember to pass the argument as a string.';
