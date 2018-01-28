@@ -1997,7 +1997,7 @@ function imad1 (current, prev) {
   var s22 = covarArray.slice(0,nBands).slice(1,nBands);
   var s12 = covarArray.slice(0,0,nBands).slice(1,nBands);
   var s21 = covarArray.slice(0,nBands).slice(1,0,nBands);
-  var c1 = s12.matrixMultiply(s22.matrixInverse()).matrixMultiply(s21);
+  var c1 = s12.matrixMultiply(s22.matrixInverse()).matrixMultiply(s21); 
   var b1 = s11;
   var c2 = s21.matrixMultiply(s11.matrixInverse()).matrixMultiply(s12);
   var b2 = s22;
@@ -2046,5 +2046,98 @@ function imad1 (current, prev) {
   return ee.Dictionary({'done':done,'image':image,'allrhos':allrhos,'chi2':chi2,'MAD':MAD});
 }
 
+function radcal (current, prev) {
+  /* iterator function for orthogonal regression and interactive radiometric normalization */
+  var k = ee.Number(current);
+  var prev = ee.Dictionary(prev);
+  /* image is concatenation of reference and target */
+  var image = ee.Image(prev.get('image'));
+  var ncmask = ee.Image(prev.get('ncmask'));
+  var nbands = ee.Number(prev.get('nbands'));
+  var rect = ee.Geometry(prev.get('rect'));
+  var coeffs = ee.List(prev.get('coeffs'));
+  var normalized = ee.Image(prev.get('normalized'));
+  var scale = image.select(0).projection().nominalScale();
+  /* orthoregress reference onto target */
+  var image1 = image.clip(rect).select(k.add(nbands),k).updateMask(ncmask).rename(['x','y']);
+  var means = image1.reduceRegion({
+      reducer: ee.Reducer.mean(),
+       scale: scale,
+       maxPixels: 1e9
+  }).toArray().project([0]);
+  var Xm = means.get([0]);
+  var Ym = means.get([1]);
+  var S = ee.Array(image1.toArray().reduceRegion({
+      reducer: ee.Reducer.covariance(),
+      geometry: rect,
+      scale: scale,
+      maxPixels: 1e9
+  }).get('array'));
+  /* Pearson correlation */
+  var R = S.get([0,1]).divide(S.get([0,0]).multiply(S.get([1,1])).sqrt());
+  var eivs = S.eigen();
+  var e1 = eivs.get([0,1]);
+  var e2 = eivs.get([0,2]);
+  /* slope and intercept */
+  var b = e2.divide(e1);
+  var a = Ym.subtract(b.multiply(Xm));
+  var coeffs = coeffs.add(ee.List([b,a,R]));
+  /* normalize kth band in target */
+  var normalized = normalized.addBands(image.select(k.add(nbands)).multiply(b).add(a));
+  return ee.Dictionary({'image':image,'ncmask':ncmask,'nbands':nbands,'rect':rect,'coeffs':coeffs,'normalized':normalized});
+}
+
+
+function radcalbatch (current, prev) { 
+  /* Batch radiometric normalization */
+  var prev = ee.Dictionary(prev);
+  var target = ee.Image(current);
+  var reference = ee.Image(prev.get('reference'));
+  var normalizedimages = ee.List(prev.get('normalizedimages'));
+  var niter = ee.Number(prev.get('niter'));
+  var rect = ee.Geometry(prev.get('rect'));
+  var log = ee.List(prev.get('log'));
+  var nbands = reference.bandNames().length();
+  /* clip the images to subset and run iMAD */
+  var inputlist = ee.List.sequence(1,niter);
+  var image = reference.addBands(target);
+  var first = ee.Dictionary({'done':ee.Number(0),
+                             'image':image.clip(rect),
+                             'allrhos': [ee.List.sequence(1,nbands)],
+                             'chi2':ee.Image.constant(0),
+                             'MAD':ee.Image.constant(0)
+  });
+  var result = ee.Dictionary(inputlist.iterate(imad,first));
+  var chi2 = ee.Image(result.get('chi2')).rename(['chi2']);
+  var allrhos = ee.List(result.get('allrhos'));
+  /* run radcal */
+  var ncmask = chi2cdf(chi2,nbands).lt(ee.Image.constant(0.05));
+  var inputlist1 = ee.List.sequence(0,nbands.subtract(1));
+  var first = ee.Dictionary({'image':image,
+                             'ncmask':ncmask,
+                             'nbands':nbands,
+                             'rect':rect,
+                             'coeffs': ee.List([]),
+                             'normalized':ee.Image()
+  });
+  var result = ee.Dictionary(inputlist1.iterate(radcal,first));
+  var coeffs = ee.List(result.get('coeffs'));
+  /* update log */
+  var ninvar = ee.String(ncmask.reduceRegion({
+      reducer: ee.Reducer.sum().unweighted(),
+      maxPixels: 1e9
+  }).toArray().project([0]));
+  var log = log.add(target.get('system:id'));
+  var iters = allrhos.length().subtract(1);
+  var log = log.add(ee.Algorithms.If(iters.eq(niter),['No convergence, iterations:',iters], 
+                                                     ['Iterations:',iters]));
+  var log = log.add(['Invariant pixels:',ninvar]);
+  var log = ee.List(coeffs.iterate(addcoeffs,log));
+  /* first band in normalized result is empty */
+  var sel = ee.List.sequence(1,nbands);
+  var normalized = ee.Image(result.get('normalized')).select(sel);
+  var normalizedimages = normalizedimages.add(normalized);
+  return ee.Dictionary({'reference':reference,'rect':rect,'niter':niter,'log':log,'normalizedimages':normalizedimages});                                                   
+}
 
 /* ------------------------ TEST ZONE ------------------------ */
