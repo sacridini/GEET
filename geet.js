@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.1.5
+ * Version: 0.1.6
  * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
 */
 
@@ -1940,7 +1940,6 @@ exports.cloudMaskTM = function(img) {
   var mask = ee.Image(img).select(['cfmask']).neq(4).and(ee.Image(img).neq(2))
   return ee.Image(img).updateMask(mask).select(['B1','B2', 'B3','B4','B5','B7'])
 };
-
 
 
 /*
