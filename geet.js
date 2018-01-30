@@ -751,7 +751,48 @@
   };
 
 
-  // TODO:
+  /*
+    sentinel2Indices:
+    Function to take an input image and generate indexes using the Sentinel 2 dataset.
+
+    Supported indices:
+    ndvi: Normalized Difference Vegetation Index
+    ndwi: Normalized Difference Water Index
+    ndbi: Normalized Difference Built-Up Index
+    mndwi: Modifed Normalized Difference Water Index
+    mndvi: Modified Normalized Difference Vegetation Index
+    ngrdi: Normalized Difference Green/Red Edge Index. (Aka VIgreen)
+    ndsi: Normalized Difference Salinity Index
+    ri: Redness Index
+    ndmi: Normalized Difference Moisture Index
+    gndvi: Green NDVI
+    bndvi: Coastal Blue NDVI
+    nbr: Normalized Burn Ratio
+    ppr: Plant Pigment Ratio
+    ndre: Normalized Difference Red Edge
+    lci: Leaf Chlorophyll Index
+    savi: Soil Adjusted Vegetation Index
+    gosavi: Green Optimized Soil Adjusted Vegetation Index
+    evi: Enhanced Vegetation Index
+    evi2: Enhanced Vegetation Index 2
+    gemi: Global Environmental Monitoring Index
+    rvi: Ratio Vegetation Index
+    logr: Log Ratio
+    tvi: Transformed Vegetation Index
+
+    Params:
+    (ee.Image) image - the image to process.
+    optional (string or string array) index  - you can specify the index that you want
+                      if you dont specify any index the function will create all possible indices.
+
+    Usage:
+    var geet = require('users/eduardolacerdageo/default:Function/indexGen');
+    var result = geet.sentinel2Indices(image); // Will create all possible indices.
+
+    or specifying the index to generate:
+    var geet = require('users/elacerda/geet:geet'); 
+    var result = geet.sentinel2Indices(image, 'savi'); // This will create only SAVI.
+  */
   exports.sentinel2Indices = function (image, index) {
     if (image === undefined) print("Error: You need a valid Sentinel 2 input image.");
     if (index !== undefined) {
@@ -768,7 +809,7 @@
           var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
           var newImage = image.addBands(i_ndbi);
           return newImage;
-        case 'mndwi':
+        case 'mndwi': // Modifed Normalized Difference Water Index
           var i_mndwi = image.normalizedDifference(['B3', 'B12']).rename('MNDWI');
           var newImage = image.addBands(i_mndwi);
           return newImage;
