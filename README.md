@@ -7,7 +7,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.3 - Beta):
+All functions implemented (Version 1.6 - Beta):
 [svm](#svm), [cart](#cart), [rf](#rf), [kmeans](#kmeans), [simpleNDVIChangeDetection](#simplendvichangedetection), [simpleNDWIChangeDetection](#simplendwichangedetection), [simpleNDBIChangeDetection](#simplendbichangedetection), [texture](#texture), [majority](#majority), [color](#color), [plotRGB](#plotrgb), [plotNDVI](#plotndvi), [plotNDWI](#plotndwi), [plotClass](#plotclass), [spectralIndices](#spectralindices), [loadImg](#loadimg), [toaRadiance](#toaradiance), [toareflectance](#toareflectance), [toaReflectanceL8](#toareflectancel8), [brightnessTempL5_K](#brightnesstempl5_k), [brightnessTempL5_C](#brightnesstempl5_c), [brightnessTempL7_K](#brightnesstempl7_k), [brightnessTempL7_C](#brightnesstempl7_c), [brightnessTempL8_K](#brightnesstempl8_k), [brightnessTempL8_C](#brightnesstempl8_c), [resample](#resample), [resampleBand](#resampleband), [loadS2ById](#loads2byid), [s2Mosaic](#s2mosaic), [landsat5Mosaic](#landsat5mosaic), [landsat7Mosaic](#landsat7mosaic), [landsat8Mosaic](#landsat8mosaic), [modisNdviMosaic](#modisndvimosaic), [max](#max), [min](#min), [ndviL5](#ndvil5), [ndviL7](#ndvil7), [ndviL8](#ndvil8), [ndviS2](#ndvis2), [propVeg](#propveg), [landSurfaceEmissivity](#landsurfaceemissivity), [landSurfaceTemperature](#landsurfacetemperature), [exportImg](#exportimg)
 
 
@@ -936,7 +936,7 @@ or
 #### pca
 (image, nbands, scale, maxPixels)  
 
-_FFunction produce the principal components analysis of an image._     
+_Function produce the principal components analysis of an image._     
 
 ##### Params:
   (ee.Image) image - the input image.  
@@ -953,3 +953,5 @@ _FFunction produce the principal components analysis of an image._
 
 #### Information:  
   Modified from https://github.com/mortcanty/earthengine/blob/master/src/eePca.py
+
+------------------------------------------------------------------------------
