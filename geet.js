@@ -1954,7 +1954,7 @@ exports.cloudMaskTM = function(img) {
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var pca = geet.pca(img, 'output_img');
+  var pca = geet.pca(img);
   var pca_image = ee.Image(pca[0]);
   Map.addLayer(pca_image);
 
