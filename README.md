@@ -7,8 +7,8 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.6 - Beta):
-[svm](#svm), [cart](#cart), [rf](#rf), [kmeans](#kmeans), [simpleNDVIChangeDetection](#simplendvichangedetection), [simpleNDWIChangeDetection](#simplendwichangedetection), [simpleNDBIChangeDetection](#simplendbichangedetection), [texture](#texture), [majority](#majority), [color](#color), [plotRGB](#plotrgb), [plotNDVI](#plotndvi), [plotNDWI](#plotndwi), [plotClass](#plotclass), [spectralIndices](#spectralindices), [loadImg](#loadimg), [toaRadiance](#toaradiance), [toareflectance](#toareflectance), [toaReflectanceL8](#toareflectancel8), [brightnessTempL5_K](#brightnesstempl5_k), [brightnessTempL5_C](#brightnesstempl5_c), [brightnessTempL7_K](#brightnesstempl7_k), [brightnessTempL7_C](#brightnesstempl7_c), [brightnessTempL8_K](#brightnesstempl8_k), [brightnessTempL8_C](#brightnesstempl8_c), [resample](#resample), [resampleBand](#resampleband), [loadS2ById](#loads2byid), [s2Mosaic](#s2mosaic), [landsat5Mosaic](#landsat5mosaic), [landsat7Mosaic](#landsat7mosaic), [landsat8Mosaic](#landsat8mosaic), [modisNdviMosaic](#modisndvimosaic), [max](#max), [min](#min), [ndviL5](#ndvil5), [ndviL7](#ndvil7), [ndviL8](#ndvil8), [ndviS2](#ndvis2), [propVeg](#propveg), [landSurfaceEmissivity](#landsurfaceemissivity), [landSurfaceTemperature](#landsurfacetemperature), [exportImg](#exportimg)
+All functions implemented (Version 1.7 - Beta):
+[svm](#svm), [cart](#cart), [rf](#rf), [kmeans](#kmeans), [simpleNDVIChangeDetection](#simplendvichangedetection), [simpleNDWIChangeDetection](#simplendwichangedetection), [simpleNDBIChangeDetection](#simplendbichangedetection), [texture](#texture), [majority](#majority), [color](#color), [plotRGB](#plotrgb), [plotNDVI](#plotndvi), [plotNDWI](#plotndwi), [plotClass](#plotclass), [landsatIndices](#landsatindices), [sentinel2Indices](#sentinel2indices), [loadImg](#loadimg), [toaRadiance](#toaradiance), [toareflectance](#toareflectance), [toaReflectanceL8](#toareflectancel8), [brightnessTempL5_K](#brightnesstempl5_k), [brightnessTempL5_C](#brightnesstempl5_c), [brightnessTempL7_K](#brightnesstempl7_k), [brightnessTempL7_C](#brightnesstempl7_c), [brightnessTempL8_K](#brightnesstempl8_k), [brightnessTempL8_C](#brightnesstempl8_c), [resample](#resample), [resampleBand](#resampleband), [loadS2ById](#loads2byid), [s2Mosaic](#s2mosaic), [landsat5Mosaic](#landsat5mosaic), [landsat7Mosaic](#landsat7mosaic), [landsat8Mosaic](#landsat8mosaic), [modisNdviMosaic](#modisndvimosaic), [max](#max), [min](#min), [ndviL5](#ndvil5), [ndviL7](#ndvil7), [ndviL8](#ndvil8), [ndviS2](#ndvis2), [propVeg](#propveg), [landSurfaceEmissivity](#landsurfaceemissivity), [landSurfaceTemperature](#landsurfacetemperature), [exportImg](#exportimg), [pca](#pca)
 
 
 ------------------------------------------------------------------------------
@@ -293,7 +293,7 @@ _Function to plot the final classification map._
  
 ------------------------------------------------------------------------------
 
-#### spectralIndices  
+#### landsatIndices  
 (image, sensor, index)  
 
 _Function to take an input image and generate indexes like: NDVI, NDWI, NDBI..._   
@@ -302,20 +302,69 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 
 ##### Params:
   (ee.Image) image - the image to process.  
-  (string) sensor - the sensor that you are working on Landsat 5 ('L5') or 8 ('L8').  
+  (string) sensor - the sensor that you are working on Landsat 5 ('L5') 7 ('L7') and 8 ('L8').  
   **optional** (string or string array) index  - you can specify the index that you want
                     if you dont specify any index the function will create all possible indices.                        
   
 ##### Usage:
 ```js  
-    var result = geet.spectralIndices(image, 'L5'); // Will create all possible indices.  
+    var result = geet.landsatIndices(image, 'L5'); // Will create all possible indices.  
 ```
  
 
   or specifying the index to generate:
 
 ```js 
-    var result = geet.spectralIndices(image, 'L5', 'savi'); // This will create only SAVI.    
+    var result = geet.landsatIndices(image, 'L5', 'savi'); // This will create only SAVI.    
+```
+
+------------------------------------------------------------------------------
+
+#### sentinel2Indices
+(image, index)  
+
+_Function to take an input image and generate indexes using the Sentinel 2 dataset._   
+
+#### Supported indices:
+    ndvi: Normalized Difference Vegetation Index
+    ndwi: Normalized Difference Water Index
+    ndbi: Normalized Difference Built-Up Index
+    mndwi: Modifed Normalized Difference Water Index
+    mndvi: Modified Normalized Difference Vegetation Index
+    ngrdi: Normalized Difference Green/Red Edge Index. (Aka VIgreen)
+    ndsi: Normalized Difference Salinity Index
+    ri: Redness Index
+    ndmi: Normalized Difference Moisture Index
+    gndvi: Green NDVI
+    bndvi: Coastal Blue NDVI
+    nbr: Normalized Burn Ratio
+    ppr: Plant Pigment Ratio
+    ndre: Normalized Difference Red Edge
+    lci: Leaf Chlorophyll Index
+    savi: Soil Adjusted Vegetation Index
+    gosavi: Green Optimized Soil Adjusted Vegetation Index
+    evi: Enhanced Vegetation Index
+    evi2: Enhanced Vegetation Index 2
+    gemi: Global Environmental Monitoring Index
+    rvi: Ratio Vegetation Index
+    logr: Log Ratio
+    tvi: Transformed Vegetation Index
+
+##### Params:
+  (ee.Image) image - the image to process.   
+  **optional** (string or string array) index  - you can specify the index that you want
+                    if you dont specify any index the function will create all possible indices.                        
+  
+##### Usage:
+```js  
+    var result = geet.sentinel2Indices(image); // Will create all possible indices.  
+```
+ 
+
+  or specifying the index to generate:
+
+```js 
+    var result = geet.sentinel2Indices(image, 'savi'); // This will create only SAVI.    
 ```
 
 ------------------------------------------------------------------------------
