@@ -900,7 +900,7 @@ _Function calculate the land surface temperature._
 ```js
     var surfTemp_img = geet.landSurfaceTemperature(img);
 ```
-`
+
 ------------------------------------------------------------------------------
 
 #### exportImg
@@ -932,3 +932,24 @@ or
 ```
 
 ------------------------------------------------------------------------------
+
+#### pca
+(image, nbands, scale, maxPixels)  
+
+_FFunction produce the principal components analysis of an image._     
+
+##### Params:
+  (ee.Image) image - the input image.  
+  optional (number) nBands - the number of the bands of the image. Default is 12.  
+  optional (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.  
+  optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.                            
+  
+##### Usage:
+```js
+    var pca = geet.pca(img, 'output_img');
+    var pca_image = ee.Image(pca[0]);
+    Map.addLayer(pca_image);
+```
+
+#### Information:  
+  Modified from https://github.com/mortcanty/earthengine/blob/master/src/eePca.py
