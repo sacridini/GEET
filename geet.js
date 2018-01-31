@@ -1,9 +1,17 @@
   /** 
    * Google Earth Engine Toolbox (GEET)
    * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-   * Version: 0.1.7
+   * Version: 0.1.8
    * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
   */
+
+  // Error log function
+  function error(funcName, msg) {
+    print("------------------  GEET  --------------------");    
+    print("GEET Error in function: " + funcName.toString());
+    print(msg.toString());
+    print("----------------------------------------------");
+  }
 
 
   /*
@@ -1032,7 +1040,7 @@
           bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
         };
       } else if (collection === 'TOA') {
-        collection = 'LANDSAT/LC8_L1T_TOA';
+        collection = 'LANDSAT/LC8_L1T_TOA_FMASK';
       } else if (collection === 'SR') {
         collection = 'LANDSAT/LC8_SR';
         visParams = {
@@ -2175,15 +2183,21 @@
   }
 
 
-  exports.cloudMaskOLI = function(img) {
-    var mask = ee.Image(img).select(['cfmask']).neq(4).and(ee.Image(img).neq(2))
-    return ee.Image(img).updateMask(mask).select(['B2', 'B3','B4','B5','B6','B7']).rename(['B1','B2','B3','B4','B5','B7'])
-  };
+  /*
+    cloudMask:
+    Function create a cloud mask from a Landsat input image.
 
+    Params:
+    (ee.Image) image - the input image.
 
-  exports.cloudMaskTM = function(img) {
-    var mask = ee.Image(img).select(['cfmask']).neq(4).and(ee.Image(img).neq(2))
-    return ee.Image(img).updateMask(mask).select(['B1','B2', 'B3','B4','B5','B7'])
+    Usage:
+    var geet = require('users/elacerda/geet:geet'); 
+    var cloudmask_img = geet.cloudMask(img);
+  */
+  exports.cloudMask = function (image) {
+    if (image === undefined) error('cloudMask', 'You need to specify an input image.');
+    var mask = image.select(['fmask']).neq(4);
+    return image.updateMask(mask);
   };
 
 
