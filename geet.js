@@ -119,7 +119,7 @@
 
     /*
       kmeans:
-      Function to apply RandomForest classification to an image.
+      Function to apply kmeans classification to an image.
 
       Params:
       (ee.Image) image - The input image to classify.
@@ -139,7 +139,8 @@
     */
     exports.kmeans = function (image, roi, numClusters, scale, numPixels) {
       if (roi === undefined) {
-        print("Error: You need to define and pass a roi as argument to collect the samples for the classfication process.")
+        error('kmeans', 'You need to define and pass a roi as argument to collect the samples for the classfication process.');
+        // print("Error: You need to define and pass a roi as argument to collect the samples for the classfication process.")
       }
 
       // Default params
