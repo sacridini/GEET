@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.1.8
+     * Version: 0.1.9
      * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1031,14 +1031,14 @@
       // Check collection
       if (year >= 2013) {
         if (collection === 'RAW') {
-          collection = 'LANDSAT/LC8_L1T';
+          collection = 'LANDSAT/LC08/C01/T1';
           visParams = {
             bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
           };
         } else if (collection === 'TOA') {
-          collection = 'LANDSAT/LC8_L1T_TOA_FMASK';
+          collection = 'LANDSAT/LC08/C01/T1_TOA';
         } else if (collection === 'SR') {
-          collection = 'LANDSAT/LC8_SR';
+          collection = 'LANDSAT/LC08/C01/T1_SR';
           visParams = {
             bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
           };
@@ -1047,14 +1047,14 @@
         }
       } else if (year < 2013 && year >= 1985) {
         if (collection === 'RAW') {
-          collection = 'LANDSAT/LT5_L1T';
+          collection = 'LANDSAT/LT05/C01/T1';
           visParams = {
             bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
           };
         } else if (collection === 'TOA') {
-          collection = 'LANDSAT/LT5_L1T_TOA_FMASK';
+          collection = 'LANDSAT/LT05/C01/T1_TOA';
         } else if (collection === 'SR') {
-          collection = 'LANDSAT/LT5_SR';
+          collection = 'LANDSAT/LT05/C01/T1_SR';
           visParams = {
             bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
           };
