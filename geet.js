@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.1.9
+     * Version: 0.2.0
      * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1641,13 +1641,13 @@
       collection = typeof collection !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
       switch (collection) {
         case 'raw':
-        var l5_collection = ee.ImageCollection('LANDSAT/LT5_L1T')
+          var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
             .filterDate(ee.Date(startYear), ee.Date(endYear))
             .filter(ee.Filter.eq('WRS_PATH', path))
             .filter(ee.Filter.eq('WRS_ROW', row));
         return l5_collection;
         case 'toa':
-        var l5_collection = ee.ImageCollection('LANDSAT/LT5_L1T_TOA_FMASK')
+          var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
             .filterDate(ee.Date(startYear), ee.Date(endYear))
             .filter(ee.Filter.eq('WRS_PATH', path))
             .filter(ee.Filter.eq('WRS_ROW', row));
@@ -1670,19 +1670,19 @@
       collection = typeof collection !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
       switch (collection) {
         case 'raw':
-        var l7_collection = ee.ImageCollection('LANDSAT/LT5_L1T')
+          var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
             .filterDate(ee.Date(startYear), ee.Date(endYear))
             .filter(ee.Filter.eq('WRS_PATH', path))
             .filter(ee.Filter.eq('WRS_ROW', row));
         return l7_collection;
         case 'toa':
-        var l7_collection = ee.ImageCollection('LANDSAT/LT5_L1T_TOA_FMASK')
+          var l7_collection = ee.ImageCollection('LANDSAT/LT07/C01/T1_TOA')
             .filterDate(ee.Date(startYear), ee.Date(endYear))
             .filter(ee.Filter.eq('WRS_PATH', path))
             .filter(ee.Filter.eq('WRS_ROW', row));
         return l7_collection;
         case 'sr':
-        var l7_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+        var l7_collection = ee.ImageCollection('LANDSAT/LT07/C01/T1_SR')
         .filterDate(ee.Date(startYear), ee.Date(endYear))
         .filter(ee.Filter.eq('WRS_PATH', path))
         .filter(ee.Filter.eq('WRS_ROW', row));
@@ -1699,19 +1699,19 @@
       collection = typeof collection !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
       switch (collection) {
         case 'raw':
-        var l8_collection = ee.ImageCollection('LANDSAT/LT5_L1T')
+          var l8_collection = ee.ImageCollection('LANDSAT/LE08/C01/T1')
             .filterDate(ee.Date(startYear), ee.Date(endYear))
             .filter(ee.Filter.eq('WRS_PATH', path))
             .filter(ee.Filter.eq('WRS_ROW', row));
         return l8_collection;
         case 'toa':
-        var l8_collection = ee.ImageCollection('LANDSAT/LT5_L1T_TOA_FMASK')
+          var l8_collection = ee.ImageCollection('LANDSAT/LT08/C01/T1_TOA')
             .filterDate(ee.Date(startYear), ee.Date(endYear))
             .filter(ee.Filter.eq('WRS_PATH', path))
             .filter(ee.Filter.eq('WRS_ROW', row));
         return l8_collection;
         case 'sr':
-        var l8_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+        var l8_collection = ee.ImageCollection('LANDSAT/LT08/C01/T1_SR')
         .filterDate(ee.Date(startYear), ee.Date(endYear))
         .filter(ee.Filter.eq('WRS_PATH', path))
         .filter(ee.Filter.eq('WRS_ROW', row));
@@ -1801,7 +1801,7 @@
       var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
     */
     exports.landsat5Mosaic = function (startDate, endDate, roi, showMosaic) {
-      var l5 = ee.ImageCollection('LANDSAT/LT5_L1T_TOA');
+      var l5 = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA');
 
       // Default params
       showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
@@ -1853,7 +1853,7 @@
       var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
     */
     exports.landsat7Mosaic = function (startDate, endDate, roi, showMosaic) {
-      var l7 = ee.ImageCollection('LANDSAT/LE7_L1T_TOA');
+      var l7 = ee.ImageCollection('LANDSAT/LT07/C01/T1_TOA');
 
       // Default params
       showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
@@ -1905,7 +1905,7 @@
       var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
     */
     exports.landsat8Mosaic = function (startDate, endDate, roi, showMosaic) {
-      var l8 = ee.ImageCollection('LANDSAT/LC8_L1T_TOA');
+      var l8 = ee.ImageCollection('LANDSAT/LT08/C01/T1_TOA');
 
       // Default params
       showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
@@ -1960,7 +1960,7 @@
       // Default params
       showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
 
-      var modis = ee.ImageCollection('MODIS/MOD13Q1')
+      var modis = ee.ImageCollection('MODIS/006/MOD13Q1')
         .filterDate(ee.Date(startDate), ee.Date(endDate))
 
       var rescale_ndvi = function (img) {
