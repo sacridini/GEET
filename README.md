@@ -851,9 +851,9 @@ _Function the get the minimum value from an image._
 _Function the get the mean value of a region of interest (roi)_
 
 ##### Params:
-  (ee.Image) image - the input image.
-  (ee.Geometry) region - the region of interest 
-   optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+  (ee.Image) image - the input image.  
+  (ee.Geometry) region - the region of interest.  
+   optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.  
 
 ##### Usage:     
 ```js
