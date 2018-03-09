@@ -167,7 +167,7 @@
     }
 
     /*
-      simpleNDVIChangeDetection:
+      ndvi_change_detection:
       Function to detect changes between two input images using the NDVI index 
       and a threshold paramter. 
       The function adds the two masked indices and return the sum of the two.
@@ -184,9 +184,9 @@
                               
       Usage: 
       var geet = require('users/elacerda/geet:geet'); 
-      var ndviChange = geet.simpleNDVIChangeDetection(image_2014, image_2015, 'L8', 0.5);
+      var ndviChange = geet.ndvi_change_detection(image_2014, image_2015, 'L8', 0.5);
     */
-    exports.simpleNDVIChangeDetection = function (img1, img2, sensor, threshold) {
+    exports.ndvi_change_detection = function (img1, img2, sensor, threshold) {
       if (sensor === 'L8') {
         var i_ndvi_1 = img1.normalizedDifference(['B5', 'B4']).rename('NDVI');
         var i_ndvi_2 = img2.normalizedDifference(['B5', 'B4']).rename('NDVI');
@@ -208,7 +208,7 @@
     }
 
     /*
-      simpleNDWIChangeDetection:
+      ndwi_change_detection:
       Function to detect changes between two input images using the NDWI index 
       and a threshold paramter. 
       The function adds the two masked indices and return the sum of the two.
@@ -225,9 +225,9 @@
                               
       Usage: 
       var geet = require('users/elacerda/geet:geet'); 
-      var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);
+      var ndwiChange = geet.ndwi_change_detection( image_2014, image_2015, 'L8', 0.5);
     */
-    exports.simpleNDWIChangeDetection = function (img1, img2, sensor, threshold) {
+    exports.ndwi_change_detection = function (img1, img2, sensor, threshold) {
       if (sensor === 'L8') {
         var i_ndwi_1 = img1.normalizedDifference(['B4', 'B6']).rename('NDWI');
         var i_ndwi_2 = img2.normalizedDifference(['B4', 'B6']).rename('NDWI');
@@ -249,7 +249,7 @@
     }
 
     /*
-      simpleNDBIChangeDetection:
+      ndbi_change_detection:
       Function to detect changes between two input images using the NDBI index 
       and a threshold paramter. 
       The function adds the two masked indices and return the sum of the two.
@@ -266,9 +266,9 @@
                               
       Usage: 
       var geet = require('users/elacerda/geet:geet'); 
-      var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);
+      var ndbiChange = geet.ndbi_change_detection(image_2014, image_2015, 'L8', 0.5);
     */
-    exports.simpleNDBIChangeDetection = function (img1, img2, sensor, threshold) {
+    exports.ndbi_change_detection = function (img1, img2, sensor, threshold) {
       if (sensor === 'L8') {
         var i_ndbi_1 = img1.normalizedDifference(['B6', 'B5']).rename('NDBI');
         var i_ndbi_2 = img2.normalizedDifference(['B6', 'B5']).rename('NDBI');
