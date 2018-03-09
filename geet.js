@@ -1090,7 +1090,7 @@
           .first());
       }
 
-      var title = "loadImg";
+      var title = "load_image";
       var titleName = title + '_' + year.toString();
       Map.addLayer(result_image, visParams, titleName);
       print(result_image);
@@ -2193,7 +2193,7 @@
 
 
     /*
-      export_img:
+      export_image:
       Function to export an image to your Google Drive account.
 
       Params:
@@ -2204,9 +2204,9 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      geet.export_img(img, 'output_img');
+      geet.export_image(img, 'output_img');
     */
-    exports.export_img = function (image, outFilename, scale, maxPixels) {
+    exports.export_image = function (image, outFilename, scale, maxPixels) {
       // Default params
       scale = typeof scale !== 'undefined' ? scale : 30;
       maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;

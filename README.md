@@ -8,7 +8,7 @@ The library also can be used to teach new developers to use the plataform even w
 
 ## Documentation: 
 All functions implemented (Version 1.7 - Beta):
-[svm](#svm), [cart](#cart), [rf](#rf), [kmeans](#kmeans), [simpleNDVIChangeDetection](#simplendvichangedetection), [simpleNDWIChangeDetection](#simplendwichangedetection), [simpleNDBIChangeDetection](#simplendbichangedetection), [texture](#texture), [majority](#majority), [color](#color), [plotRGB](#plotrgb), [plotNDVI](#plotndvi), [plotNDWI](#plotndwi), [plotClass](#plotclass), [landsatIndices](#landsatindices), [sentinel2Indices](#sentinel2indices), [loadImg](#loadimg), [toaRadiance](#toaradiance), [toareflectance](#toareflectance), [toaReflectanceL8](#toareflectancel8), [brightnessTempL5_K](#brightnesstempl5_k), [brightnessTempL5_C](#brightnesstempl5_c), [brightnessTempL7_K](#brightnesstempl7_k), [brightnessTempL7_C](#brightnesstempl7_c), [brightnessTempL8_K](#brightnesstempl8_k), [brightnessTempL8_C](#brightnesstempl8_c), [resample](#resample), [resampleBand](#resampleband), [loadS2ById](#loads2byid), [s2Mosaic](#s2mosaic), [landsat5Mosaic](#landsat5mosaic), [landsat7Mosaic](#landsat7mosaic), [landsat8Mosaic](#landsat8mosaic), [modisNdviMosaic](#modisndvimosaic), [max](#max), [min](#min), [ndviL5](#ndvil5), [ndviL7](#ndvil7), [ndviL8](#ndvil8), [ndviS2](#ndvis2), [propVeg](#propveg), [landSurfaceEmissivity](#landsurfaceemissivity), [landSurfaceTemperature](#landsurfacetemperature), [exportImg](#exportimg), [pca](#pca)
+[svm](#svm), [cart](#cart), [rf](#rf), [kmeans](#kmeans), [ndvi_change_detection](#ndvi_change_detection), [ndwi_change_detection](#ndwi_change_detection), [ndbi_change_detection](#ndbi_change_detection), [texture](#texture), [majority](#majority), [color](#color), [plot_rgb](#plot_rgb), [plot_ndvi](#plot_ndvi), [plot_ndwi](#plot_ndwi), [plot_class](#plot_class), [landsat_indices](#landsat_indices), [sentinel2_indices](#sentinel2_indices), [load_image](#load_image), [toa_radiance](#toa_radiance), [toa_reflectance](#toa_reflectance), [toa_reflectance_l8](#toa_reflectance_l8), [brightness_temp_l5k](#brightness_temp_l5k), [brightness_temp_l5c](#brightness_temp_l5c), [brightness_temp_l7k](#brightness_temp_l7k), [brightness_temp_l7c](#brightness_temp_l7c), [brightness_temp_l8k](#brightness_temp_l8k), [bribrightness_temp_l8c](#bribrightness_temp_l8c), [resample](#resample), [resample_band](#resample_band), [load_id_s2](#load_id_s2), [mosaic_s2](#mosaic_s2), [mosaic_l5](#mosaic_l5), [mosaic_l7](#mosaic_l7), [mosaic_l8](#mosaic_l8), [modis_ndvi_mosaic](#modis_ndvi_mosaic), [max](#max), [min](#min), [ndvi_l5](#ndvi_l5), [ndvi_l7](#ndvi_l7), [ndvi_l8](#ndvi_l8), [ndviS2](#ndvis2), [prop_veg](#prop_veg), [surface_emissivity](#surface_emissivity), [surface_temperature](#surface_temperature), [export_image](#export_image), [pca](#pca)
 
 
 ------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ After adding the library you can call its functions using the function **_requir
 
 ```js 
     var geet = require('users/elacerda/geet:geet'); 
-    var image = geet.loadImg('TOA', 2015); // Returns and loads an image on the map.
+    var image = geet.load_image('TOA', 2015); // Returns and loads an image on the map.
 ```
 
 ### (Português)
@@ -31,7 +31,7 @@ Depois de adicionar a biblioteca é possível chamar suas funções utilizando a
 
 ```js 
     var geet = require('users/elacerda/geet:geet'); 
-    var image = geet.loadImg('TOA', 2015); // Retorna e carrega no mapa uma imagem.
+    var image = geet.load_image('TOA', 2015); // Retorna e carrega no mapa uma imagem.
 ```
 
 ------------------------------------------------------------------------------
@@ -117,10 +117,10 @@ _Function to apply RandomForest classification to an image._
   
   ------------------------------------------------------------------------------
   
-#### simpleNDVIChangeDetection
+#### ndvi_change_detection
 (img1, img2, sensor, threshold)  
 
-_Function to detect changes between two input images using the NDVI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndviChange, 3, 'change_detection');_ 
+_Function to detect changes between two input images using the NDVI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndviChange, 3, 'change_detection');_ 
 
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
@@ -137,10 +137,10 @@ _Function to detect changes between two input images using the NDVI index and a 
    
 ------------------------------------------------------------------------------
    
-#### simpleNDWIChangeDetection
+#### ndwi_change_detection
 (img1, img2, sensor, threshold) 
 
-_Function to detect changes between two input images using the NDWI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndwiChange, 3, 'change_detection');_ 
+_Function to detect changes between two input images using the NDWI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndwiChange, 3, 'change_detection');_ 
 
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
@@ -152,15 +152,15 @@ _Function to detect changes between two input images using the NDWI index and a 
   
 ##### Usage:
 ```js    
-    var ndwiChange = geet.simpleNDWIChangeDetection( image_2014, image_2015, 'L8', 0.5);  
+    var ndwiChange = geet.ndwi_change_detection( image_2014, image_2015, 'L8', 0.5);  
 ```
     
 ------------------------------------------------------------------------------
 
-#### simpleNDBIChangeDetection
+#### ndbi_change_detection
 (img1, img2, sensor, threshold)  
 
-_Function to detect changes between two input images using the NDBI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plotClass function to visualize the result. Ex: geet.plotClass(ndbiChange, 3, 'change_detection');_ 
+_Function to detect changes between two input images using the NDBI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndbiChange, 3, 'change_detection');_ 
 
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
@@ -172,7 +172,7 @@ _Function to detect changes between two input images using the NDBI index and a 
   
 ##### Usage:
 ```js
-    var ndbiChange = geet.simpleNDBIChangeDetection(image_2014, image_2015, 'L8', 0.5);  
+    var ndbiChange = geet.ndbi_change_detection(image_2014, image_2015, 'L8', 0.5);  
 ```
    
 ------------------------------------------------------------------------------
@@ -227,7 +227,7 @@ _Function to return a valid color value from the object COLOR._
 
 ------------------------------------------------------------------------------
 
-#### plotRGB
+#### plot_rgb
 (image, title)  
 
 _Function to plot a RGB image._ 
@@ -239,12 +239,12 @@ _Function to plot a RGB image._
 ##### Usage:
 ```js
         
-    geet.plotRGB(image, 'rgb_image');  
+    geet.plot_rgb(image, 'rgb_image');  
 ```
   
 ------------------------------------------------------------------------------
 
-#### plotNDVI
+#### plot_ndvi
 (image, title)  
 
 _Function to plot a NDVI image index._ 
@@ -255,12 +255,12 @@ _Function to plot a NDVI image index._
   
 ##### Usage:
 ```js
-    geet.plotNDVI(ndvi, 'ndvi_image'); 
+    geet.plot_ndvi(ndvi, 'ndvi_image'); 
 ```
 
 ------------------------------------------------------------------------------
 
-#### plotNDWI
+#### plot_ndwi
 (image, title)  
 
 _Function to plot a NDWI image index._ 
@@ -271,12 +271,12 @@ _Function to plot a NDWI image index._
   
 ##### Usage:
 ```js
-    geet.plotNDWI(ndwi, 'ndwi_image'); 
+    geet.plot_ndwi(ndwi, 'ndwi_image'); 
 ```
 
 ------------------------------------------------------------------------------
 
-#### plotClass
+#### plot_class
 (image, numClasses, title)  
 
 _Function to plot the final classification map._ 
@@ -288,12 +288,12 @@ _Function to plot the final classification map._
   
 ##### Usage:
 ```js
-    geet.plotClass(classified, 4, 'class_final'); 
+    geet.plot_class(classified, 4, 'class_final'); 
 ```
  
 ------------------------------------------------------------------------------
 
-#### landsatIndices  
+#### landsat_indices  
 (image, sensor, index)  
 
 _Function to take an input image and generate indexes like: NDVI, NDWI, NDBI..._   
@@ -308,19 +308,19 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
   
 ##### Usage:
 ```js  
-    var result = geet.landsatIndices(image, 'L5'); // Will create all possible indices.  
+    var result = geet.landsat_indices(image, 'L5'); // Will create all possible indices.  
 ```
  
 
   or specifying the index to generate:
 
 ```js 
-    var result = geet.landsatIndices(image, 'L5', 'savi'); // This will create only SAVI.    
+    var result = geet.landsat_indices(image, 'L5', 'savi'); // This will create only SAVI.    
 ```
 
 ------------------------------------------------------------------------------
 
-#### sentinel2Indices
+#### sentinel2_indices
 (image, index)  
 
 _Function to take an input image and generate indexes using the Sentinel 2 dataset._   
@@ -357,19 +357,19 @@ _Function to take an input image and generate indexes using the Sentinel 2 datas
   
 ##### Usage:
 ```js  
-    var result = geet.sentinel2Indices(image); // Will create all possible indices.  
+    var result = geet.sentinel2_indices(image); // Will create all possible indices.  
 ```
  
 
   or specifying the index to generate:
 
 ```js 
-    var result = geet.sentinel2Indices(image, 'savi'); // This will create only SAVI.    
+    var result = geet.sentinel2_indices(image, 'savi'); // This will create only SAVI.    
 ```
 
 ------------------------------------------------------------------------------
 
-#### loadImg
+#### load_image
 (collection, year, roi, title)  
 
 _Function to get an example image to debug or test some code._     
@@ -382,19 +382,19 @@ _Function to get an example image to debug or test some code._
   
 ##### Usage:
 ```js 
-    var image = geet.loadImg(); // Returns a TOA image   
+    var image = geet.load_image(); // Returns a TOA image   
 ```
 
 
   or
 
 ```js
-    var image = geet.loadImg('SR', 2015); // Returns a SR image   
+    var image = geet.load_image('SR', 2015); // Returns a SR image   
 ```
 
 ------------------------------------------------------------------------------
 
-#### toaRadiance
+#### toa_radiance
 (image, band)  
 
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance._     
@@ -405,7 +405,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   
 ##### Usage:
 ```js
-    var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image    
+    var new_toa_radiance = geet.toa_radiance(img, 10); // ee.Image    
 ```
   
 
@@ -418,7 +418,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
-#### toaReflectance
+#### toa_reflectance
 (image, band)  
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance._     
 
@@ -428,7 +428,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   
 ##### Usage:
 ```js   
-    var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image    
+    var new_toa_reflectance = geet.toa_reflectance(img, 10); // ee.Image    
 ```
 
 #### Information:
@@ -440,7 +440,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
-#### toaReflectanceL8
+#### toa_reflectance_l8
 (image, band, _solarAngle)  
 
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance Landsat 8 version with Solar Angle correction._       
@@ -452,14 +452,14 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   
 ##### Usage:
 ```js
-    var new_toa_reflectance_sz = geet.toaReflectanceL8(img, 10, 'SZ'); // ee.Image   
+    var new_toa_reflectance_sz = geet.toa_reflectance_l8(img, 10, 'SZ'); // ee.Image   
 ```
 
 
   or
 
 ```js
-    var new_toa_reflectance_se = geet.toaReflectanceL8(img, 10, 'SE'); // ee.Image    
+    var new_toa_reflectance_se = geet.toa_reflectance_l8(img, 10, 'SE'); // ee.Image    
 ``` 
 
 #### Information:
@@ -474,7 +474,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
-#### brightnessTempL5_K
+#### brightness_temp_l5k
 (image)  
 
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance._     
@@ -484,7 +484,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   
 ##### Usage:  
 ```js
-    var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image  
+    var brightness_temp_img = geet.brightness_temp_l5k(toa_image); // ee.Image  
 ```
      
 
@@ -496,7 +496,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
-#### brightnessTempL5_C
+#### brightness_temp_l5c
 (image)  
 
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 5 data._     
@@ -506,7 +506,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   
 ##### Usage:
 ```js   
-    var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image    
+    var brightness_temp_img = geet.brightness_temp_l5c(toa_image); // ee.Image    
 ```   
 
 #### Information:
@@ -517,7 +517,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 ------------------------------------------------------------------------------
 
-#### brightnessTempL7_K
+#### brightness_temp_l7k
 (image)  
 
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
@@ -527,7 +527,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   
 ##### Usage:
 ```js    
-    var brightness_temp_img = geet.brightnessTempL7_K(toa_image); // ee.Image      
+    var brightness_temp_img = geet.brightness_temp_l7k(toa_image); // ee.Image      
 ```   
 
 #### Information:
@@ -538,7 +538,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 ------------------------------------------------------------------------------
 
-#### brightnessTempL7_C
+#### brightness_temp_l7c
 (image)  
 
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
@@ -549,7 +549,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   
 ##### Usage:
 ```js  
-    var brightness_temp_img = geet.brightnessTempL7_C(toa_image); // ee.Image  
+    var brightness_temp_img = geet.brightness_temp_l7c(toa_image); // ee.Image  
 ```   
 
 
@@ -561,7 +561,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 ------------------------------------------------------------------------------
 
-#### brightnessTempL8_K
+#### brightness_temp_l8k
 (image, single)  
 
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
@@ -572,13 +572,13 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   
 ##### Usage:
 ```js 
-    var brightness_temp_img = geet.brightnessTempL8_K(toa_image); // ee.Image      
+    var brightness_temp_img = geet.brightness_temp_l8k(toa_image); // ee.Image      
 ``` 
 
 or
 
  ```js
-    var brightness_temp_img = geet.brightnessTempL8_K(toa_image, false); // ee.Image    
+    var brightness_temp_img = geet.brightness_temp_l8k(toa_image, false); // ee.Image    
 ``` 
 
 #### Information:
@@ -589,7 +589,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### brightnessTempL8_C
+#### bribrightness_temp_l8c
 (image, single)  
 
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
@@ -600,13 +600,13 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   
 ##### Usage:
 ```js  
-    var brightness_temp_img = geet.brightnessTempL8_C(toa_image); // ee.Image  
+    var brightness_temp_img = geet.bribrightness_temp_l8c(toa_image); // ee.Image  
 ``` 
 
 or
 
  ```js
-    var brightness_temp_img = geet.brightnessTempL8_C(toa_image, false); // ee.Image   
+    var brightness_temp_img = geet.bribrightness_temp_l8c(toa_image, false); // ee.Image   
 ``` 
 
 #### Information:
@@ -634,7 +634,7 @@ _Function to resample an input image._
 
 ------------------------------------------------------------------------------
 
-#### resampleBand
+#### resample_band
 (band, scaleNumber)  
 
 _Function to resample just a single band._     
@@ -646,12 +646,12 @@ _Function to resample just a single band._
   
 ##### Usage:
 ```js
-    var landsatB10_60m = geet.resampleBand(b10, 60);  
+    var landsatB10_60m = geet.resample_band(b10, 60);  
 ```
 
 ------------------------------------------------------------------------------
 
-#### loadS2ById
+#### load_id_s2
 (id)  
 
 _Function to filter the Sentinel-2 collection by Product ID obtained from the Copernicus Open Access Hub._     
@@ -661,12 +661,12 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
   
 ##### Usage:
 ```js
-    var s2_image = geet.loadS2ById('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');  
+    var s2_image = geet.load_id_s2('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');  
 ```
 
 ------------------------------------------------------------------------------
 
-#### s2Mosaic
+#### mosaic_s2
 (startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free mosaic using the Sentinel 2 dataset._     
@@ -679,24 +679,24 @@ _Function to build a cloud free mosaic using the Sentinel 2 dataset._
   
 ##### Usage:
 ```js  
-    var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31'); // Display the final world mosaic.  
+    var s2_mosaic = geet.mosaic_s2('2016-01-01', '2016-12-31'); // Display the final world mosaic.  
 ```
 
 or
 
 ```js   
-    var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi  
+    var s2_mosaic = geet.mosaic_s2('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi  
 ```
 
 or 
 
 ```js 
-    var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic  
+    var s2_mosaic = geet.mosaic_s2('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic  
 ```
 
 ------------------------------------------------------------------------------
 
-#### landsat5Mosaic
+#### mosaic_l5
 (startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free mosaic using the Landsat 5 dataset._     
@@ -709,24 +709,24 @@ _Function to build a cloud free mosaic using the Landsat 5 dataset._
     
 ##### Usage:
 ```js
-    var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31'); // Display the final world mosaic. 
+    var l5_mosaic = geet.mosaic_l5('2005-01-01', '2005-12-31'); // Display the final world mosaic. 
 ```
 
 or
 
 ```js
-    var l5_mosaic = geet.landsat5Mosaic(start, finish, roi); // Display the final mosaic of the roi
+    var l5_mosaic = geet.mosaic_l5(start, finish, roi); // Display the final mosaic of the roi
 ```
 
 or 
 
 ```js
-    var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
+    var l5_mosaic = geet.mosaic_l5('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
 ```
 
 ------------------------------------------------------------------------------
 
-#### landsat7Mosaic
+#### mosaic_l7
 (startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free mosaic using the Landsat 7 dataset._     
@@ -739,24 +739,24 @@ _Function to build a cloud free mosaic using the Landsat 7 dataset._
     
 ##### Usage:
 ```js
-    var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31'); // Display the final world mosaic. 
+    var l7_mosaic = geet.mosaic_l7('2003-01-01', '2003-12-31'); // Display the final world mosaic. 
 ```
 
 or
 
 ```js
-    var l7_mosaic = geet.landsat7Mosaic(start, finish, roi); // Display the final mosaic of the roi
+    var l7_mosaic = geet.mosaic_l7(start, finish, roi); // Display the final mosaic of the roi
 ```
 
 or 
 
 ```js
-    var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
+    var l7_mosaic = geet.mosaic_l7('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
 ```
 
 ------------------------------------------------------------------------------
 
-#### landsat8Mosaic
+#### mosaic_l8
 (startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free mosaic using the Landsat 8 dataset._     
@@ -769,24 +769,24 @@ _Function to build a cloud free mosaic using the Landsat 8 dataset._
     
 ##### Usage:
 ```js
-    var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
+    var l8_mosaic = geet.mosaic_l8('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
 ```
 
 or
 
 ```js
-    var l8_mosaic = geet.landsat8Mosaic(start, finish, roi); // Display the final mosaic of the roi
+    var l8_mosaic = geet.mosaic_l8(start, finish, roi); // Display the final mosaic of the roi
 ```
 
 or 
 
 ```js
-    var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+    var l8_mosaic = geet.mosaic_l8('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 ```
 
 ------------------------------------------------------------------------------
 
-#### modisNdviMosaic
+#### modis_ndvi_mosaic
 (startDate, endDate, roi, showMosaic)  
 
 _Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._     
@@ -799,19 +799,19 @@ _Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._
     
 ##### Usage:
 ```js
-    var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
+    var modis_ndvi_mosaic = geet.modis_ndvi_mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
 ```
 
 or
 
 ```js
-    var modis_ndvi_mosaic = geet.modisNdviMosaic(start, finish, roi); // Display the final mosaic of the roi
+    var modis_ndvi_mosaic = geet.modis_ndvi_mosaic(start, finish, roi); // Display the final mosaic of the roi
 ```
 
 or 
 
 ```js
-    var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+    var modis_ndvi_mosaic = geet.modis_ndvi_mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 ```
 
 ------------------------------------------------------------------------------
@@ -846,7 +846,7 @@ _Function the get the minimum value from an image._
 
 ------------------------------------------------------------------------------
 
-#### ndviL5 
+#### ndvi_l5 
 (image)  
 
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 5 data._     
@@ -856,12 +856,12 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
   
 ##### Usage:
 ```js
-    var l5_ndvi = geet.ndviL5(img);  
+    var l5_ndvi = geet.ndvi_l5(img);  
 ```
 
 ------------------------------------------------------------------------------
 
-#### ndviL7
+#### ndvi_l7
 (image)  
 
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 7 data._     
@@ -871,12 +871,12 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
   
 ##### Usage:
 ```js
-    var l7_ndvi = geet.ndviL7(img);  
+    var l7_ndvi = geet.ndvi_l7(img);  
 ```
 
 ------------------------------------------------------------------------------
 
-#### ndviL8
+#### ndvi_l8
 (image)  
 
 _Function calculate the normalized difference vegetation index (NDVI) from Landsat 8 data._     
@@ -886,7 +886,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
   
 ##### Usage:
 ```js
-    var l8_ndvi = geet.ndviL8(img);  
+    var l8_ndvi = geet.ndvi_l8(img);  
 ```
 
 ------------------------------------------------------------------------------
@@ -906,7 +906,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Senti
 
 ------------------------------------------------------------------------------
 
-#### propVeg
+#### prop_veg
 (image)  
 
 _Function calculate the proportional vegetation._     
@@ -916,12 +916,12 @@ _Function calculate the proportional vegetation._
   
 ##### Usage:
 ```js
-    var img_pv = geet.propVeg(img);
+    var img_pv = geet.prop_veg(img);
 ```
 
 ------------------------------------------------------------------------------
 
-#### landSurfaceEmissivity
+#### surface_emissivity
 (image)  
 
 _Function calculate the surface emissifity._     
@@ -931,28 +931,28 @@ _Function calculate the surface emissifity._
   
 ##### Usage:
 ```js
-    var lse = geet.landSurfaceEmissivity(pv);
+    var lse = geet.surface_emissivity(pv);
 ```
 
 ------------------------------------------------------------------------------
 
-#### landSurfaceTemperature
+#### surface_temperature
 (image)  
 
 _Function calculate the land surface temperature._     
 
 ##### Params:
   (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
-                     NDVI, PropVeg and LSE bands.                            
+                     NDVI, prop_veg and LSE bands.                            
   
 ##### Usage:
 ```js
-    var surfTemp_img = geet.landSurfaceTemperature(img);
+    var surfTemp_img = geet.surface_temperature(img);
 ```
 
 ------------------------------------------------------------------------------
 
-#### exportImg
+#### export_image
 (image, outFilename, scale, maxPixels)  
 
 _Function to export an image to your Google Drive account._     
@@ -965,19 +965,19 @@ _Function to export an image to your Google Drive account._
   
 ##### Usage:
 ```js
-    geet.exportImg(img, 'output_classification');
+    geet.export_image(img, 'output_classification');
 ```
 
 or
 
 ```js
-    geet.exportImg(img, 'output_sentinel2_classification', 10);
+    geet.export_image(img, 'output_sentinel2_classification', 10);
 ```
 
 or 
 
 ```js
-    geet.exportImg(img, 'output_sentinel2_classification', 10, 1e13);
+    geet.export_image(img, 'output_sentinel2_classification', 10, 1e13);
 ```
 
 ------------------------------------------------------------------------------
