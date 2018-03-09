@@ -858,7 +858,7 @@ _Function the get the mean value of a region of interest (roi)_
 ##### Usage:     
 ```js
     var geet = require('users/elacerda/geet:geet'); 
-    var mean_roi = geet.mean_region(img);  
+    var mean_roi = geet.mean_region(img, roi, 30);  
 ```
 
 ------------------------------------------------------------------------------
