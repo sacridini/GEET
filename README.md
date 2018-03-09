@@ -848,7 +848,7 @@ _Function the get the minimum value from an image._
 
 #### mean_region
 
-_Function the get the mean value of a region of interest (roi)
+_Function the get the mean value of a region of interest (roi)_
 
 ##### Params:
   (ee.Image) image - the input image.
