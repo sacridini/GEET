@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.2.0
+     * Version: 0.2.1
      * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -374,7 +374,7 @@
     };
 
     /*
-      plotRGB:
+      plot_rgb:
       Function to plot a RGB image.
 
       Params:
@@ -383,9 +383,9 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      geet.plotRGB(image, 'rgb_image');
+      geet.plot_rgb(image, 'rgb_image');
     */
-    exports.plotRGB = function (image, title) {
+    exports.plot_rgb = function (image, title) {
       title = typeof title !== 'undefined' ? title : 'image_RGB';
       
 
@@ -400,7 +400,7 @@
     };
 
     /*
-      plotNDVI:
+      plot_ndvi:
       Function to plot a NDVI image index.
 
       Params:
@@ -409,14 +409,14 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      geet.plotNDVI(ndvi, 'ndvi_image');
+      geet.plot_ndvi(ndvi, 'ndvi_image');
     */
-    exports.plotNDVI = function (image, title) {
+    exports.plot_ndvi = function (image, title) {
       Map.addLayer(image, { min: -1, max: 1, palette: ['FF0000', '00FF00'] }, title);
     };
 
     /*
-      plotNDWI:
+      plot_ndwi:
       Function to plot a NDWI image index.
 
       Params:
@@ -425,14 +425,14 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      geet.plotNDWI(ndwi, 'ndwi_image');
+      geet.plot_ndwi(ndwi, 'ndwi_image');
     */
-    exports.plotNDWI = function (image, title) {
+    exports.plot_ndwi = function (image, title) {
       Map.addLayer(image, { min: -1, max: 1, palette: ['00FFFF', '0000FF'] }, title);
     };
 
     /*
-      plotClass:
+      plot_class:
       Function to plot the final classification map.
       
       Params:
@@ -442,9 +442,9 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      geet.plotClass(classified, 4, 'class_final');
+      geet.plot_class(classified, 4, 'class_final');
     */
-    exports.plotClass = function (image, numClasses, title) {
+    exports.plot_class = function (image, numClasses, title) {
       title = typeof title !== 'undefined' ? title : 'class_final';
 
       switch (numClasses) {
@@ -468,7 +468,7 @@
 
 
     /*
-      landsatIndices:
+      landsat_indices:
       Function to take an input image and generate indexes using the landsat (5, 7 and 8) dataset like:
       NDVI, NDWI, NDBI...
       
@@ -484,13 +484,13 @@
                         if you dont specify any index the function will create all possible indices.
       Usage:
       var geet = require('users/eduardolacerdageo/default:Function/indexGen');
-      var result = geet.landsatIndices(image, 'L5'); // Will create all possible indices.
+      var result = geet.landsat_indices(image, 'L5'); // Will create all possible indices.
 
       or specifying the index to generate:
       var geet = require('users/elacerda/geet:geet'); 
-      var result = geet.landsatIndices(image, 'L5', 'savi'); // This will create only SAVI.
+      var result = geet.landsat_indices(image, 'L5', 'savi'); // This will create only SAVI.
     */
-    exports.landsatIndices = function (image, sensor, index) {
+    exports.landsat_indices = function (image, sensor, index) {
       if (index != null) {
         switch (index) {
           case 'NDVI':
@@ -755,7 +755,7 @@
 
 
     /*
-      sentinel2Indices:
+      sentinel2_indices:
       Function to take an input image and generate indexes using the Sentinel 2 dataset.
 
       Supported indices:
@@ -790,13 +790,13 @@
 
       Usage:
       var geet = require('users/eduardolacerdageo/default:Function/indexGen');
-      var result = geet.sentinel2Indices(image); // Will create all possible indices.
+      var result = geet.sentinel2_indices(image); // Will create all possible indices.
 
       or specifying the index to generate:
       var geet = require('users/elacerda/geet:geet'); 
-      var result = geet.sentinel2Indices(image, 'savi'); // This will create only SAVI.
+      var result = geet.sentinel2_indices(image, 'savi'); // This will create only SAVI.
     */
-    exports.sentinel2Indices = function (image, index) {
+    exports.sentinel2_indices = function (image, index) {
       if (image === undefined) print("Error: You need a valid Sentinel 2 input image.");
       if (index !== undefined) {
         switch (index.toLowerCase()) {
@@ -999,7 +999,7 @@
   
 
     /*
-      loadImg:
+      load_image:
       Function to get an example image to debug or test some code. 
 
       Params:
@@ -1011,14 +1011,14 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var image = geet.loadImg(); // Returns a TOA image
+      var image = geet.load_image(); // Returns a TOA image
 
       or 
 
       var geet = require('users/elacerda/geet:geet'); 
-      var image = geet.loadImg('SR', 2015); // Returns a SR image
+      var image = geet.load_image('SR', 2015); // Returns a SR image
     */
-    exports.loadImg = function (collection, year, roi, cloudFree) {
+    exports.load_image = function (collection, year, roi, cloudFree) {
       // Setup
       var visParams = { bands: ['B4', 'B3', 'B2'], max: 0.3 };
 
@@ -1100,7 +1100,7 @@
 
 
     /*
-      toaRadiance:
+      toa_radiance:
       Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance.
 
       Params:
@@ -1109,7 +1109,7 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var new_toa_radiance = geet.toaRadiance(img, 10); // ee.Image
+      var new_toa_radiance = geet.toa_radiance(img, 10); // ee.Image
 
       Information:
       Formula:     Lλ = MLQcal + AL
@@ -1118,7 +1118,7 @@
       AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
       Qcal         = Quantized and calibrated standard product pixel values (DN)
     */
-    exports.toaRadiance = function (image, band) {
+    exports.toa_radiance = function (image, band) {
       var band_to_toa = image.select('B' + band.toString());
       var radiance_multi_band = ee.Number(image.get('RADIANCE_MULT_BAND_' + band.toString())); // Ml
       var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
@@ -1133,7 +1133,7 @@
     }
 
     /*
-      toaReflectance:
+      toa_reflectance:
       Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance.
 
       Params:
@@ -1142,7 +1142,7 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var new_toa_reflectance = geet.toaReflectance(img, 10); // ee.Image
+      var new_toa_reflectance = geet.toa_reflectance(img, 10); // ee.Image
 
       Information:
       Formula:      ρλ' = MρQcal + Aρ
@@ -1151,7 +1151,7 @@
       Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)
       Qcal          = Quantized and calibrated standard product pixel values (DN)
     */
-    exports.toaReflectance = function (image, band) {
+    exports.toa_reflectance = function (image, band) {
       var band_to_toa = image.select('B' + band.toString());
       var reflectance_multi_band = ee.Number(image.get('REFLECTANCE_MULT_BAND_' + band.toString())); // Mp
       var reflectance_add_band = ee.Number(image.get('REFLECTANCE_ADD_BAND_' + band.toString())); // Ap
@@ -1182,7 +1182,7 @@
     }
 
     /*
-      toaReflectanceL8:
+      toa_reflectance_l8:
       Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance
       Landsat 8 version with Solar Angle correction.
 
@@ -1193,12 +1193,12 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var new_toa_reflectance_sz = geet.toaReflectanceL8(img, 10, 'SZ'); // ee.Image
+      var new_toa_reflectance_sz = geet.toa_reflectance_l8(img, 10, 'SZ'); // ee.Image
 
       or
 
       var geet = require('users/elacerda/geet:geet'); 
-      var new_toa_reflectance_se = geet.toaReflectanceL8(img, 10, 'SE'); // ee.Image
+      var new_toa_reflectance_se = geet.toa_reflectance_l8(img, 10, 'SE'); // ee.Image
 
       Information:
       Formula:      ρλ' = MρQcal + Aρ
@@ -1210,7 +1210,7 @@
       SE = Local sun elevation angle. The scene center sun elevation angle in degrees is provided in the metadata (SUN_ELEVATION).
       SZ = Local solar zenith angle: SZ = 90° - SE
     */
-    exports.toaReflectanceL8 = function (image, band, _solarAngle) {
+    exports.toa_reflectance_l8 = function (image, band, _solarAngle) {
       if (_solarAngle !== undefined) {
         var solarAngle = _solarAngle;
         if (solarAngle !== 'SZ' && solarAngle !== 'SE') {
@@ -1254,7 +1254,7 @@
 
 
     /*
-      brightnessTempL5_K:
+      brightness_temp_l5k:
       Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
       This one works only for Landsat 5 data.
 
@@ -1263,7 +1263,7 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var brightness_temp_img = geet.brightnessTempL5_K(toa_image); // ee.Image
+      var brightness_temp_img = geet.brightness_temp_l5k(toa_image); // ee.Image
 
       Information:
       T           = Top of atmosphere brightness temperature (K)
@@ -1271,7 +1271,7 @@
       K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
       K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
     */
-    exports.brightnessTempL5_K = function (image) {
+    exports.brightness_temp_l5k = function (image) {
       // landsat 5 constants
       var K1 = 607.76
       var K2 = 1260.56
@@ -1296,7 +1296,7 @@
 
 
     /*
-    brightnessTempL5_C:
+    brightness_temp_l5c:
     Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
     This one works only for Landsat 5 data.
 
@@ -1305,7 +1305,7 @@
     
     Usage:
     var geet = require('users/elacerda/geet:geet'); 
-    var brightness_temp_img = geet.brightnessTempL5_C(toa_image); // ee.Image
+    var brightness_temp_img = geet.brightness_temp_l5c(toa_image); // ee.Image
 
     Information:
     T           = Top of atmosphere brightness temperature (K)
@@ -1313,7 +1313,7 @@
     K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
     K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
     */
-    exports.brightnessTempL5_C = function (image) {
+    exports.brightness_temp_l5c = function (image) {
       // landsat 5 constants
       var K1 = 607.76
       var K2 = 1260.56
@@ -1338,7 +1338,7 @@
     }
 
     /*
-      brightnessTempL7_K:
+      brightness_temp_l7k:
       Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
       This one works only for Landsat 7 data.
 
@@ -1347,7 +1347,7 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var brightness_temp_img = geet.brightnessTempL7_K(toa_image); // ee.Image
+      var brightness_temp_img = geet.brightness_temp_l7k(toa_image); // ee.Image
 
       Information:
       T           = Top of atmosphere brightness temperature (K)
@@ -1355,7 +1355,7 @@
       K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
       K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
     */
-    exports.brightnessTempL7_K = function (image) {
+    exports.brightness_temp_l7k = function (image) {
       // landsat 7 constants
       var K1 = 666.09
       var K2 = 1282.71
@@ -1380,7 +1380,7 @@
 
 
     /*
-    brightnessTempL7_C:
+    brightness_temp_l7c:
     Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
     This one works only for Landsat 7 data.
 
@@ -1389,7 +1389,7 @@
     
     Usage:
     var geet = require('users/elacerda/geet:geet'); 
-    var brightness_temp_img = geet.brightnessTempL7_C(toa_image); // ee.Image
+    var brightness_temp_img = geet.brightness_temp_l7c(toa_image); // ee.Image
 
     Information:
     T           = Top of atmosphere brightness temperature (K)
@@ -1397,7 +1397,7 @@
     K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
     K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
     */
-    exports.brightnessTempL7_C = function (image) {
+    exports.brightness_temp_l7c = function (image) {
       // landsat 7 constants
       var K1 = 666.09
       var K2 = 1282.71
@@ -1423,7 +1423,7 @@
 
 
     /*
-      brightnessTempL8_K:
+      brightness_temp_l8k:
       Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
       This one works only for Landsat 8 data.
 
@@ -1433,12 +1433,12 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var brightness_temp_img = geet.brightnessTempL8_K(toa_image); // ee.Image
+      var brightness_temp_img = geet.brightness_temp_l8k(toa_image); // ee.Image
 
       or 
 
       var geet = require('users/elacerda/geet:geet'); 
-      var brightness_temp_img = geet.brightnessTempL8_K(toa_image, false); // ee.Image
+      var brightness_temp_img = geet.brightness_temp_l8k(toa_image, false); // ee.Image
 
       Information:
       T           = Top of atmosphere brightness temperature (K)
@@ -1446,7 +1446,7 @@
       K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
       K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
     */
-    exports.brightnessTempL8_K = function (image, single) {
+    exports.brightness_temp_l8k = function (image, single) {
       var single = (arguments[1] !== void 1 ? false : true);
       // default is true - double band (B10 and B11) processing
       if (single === true) {
@@ -1497,7 +1497,7 @@
 
 
     /*
-    brightnessTempL8_C:
+    brightness_temp_l8c:
     Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
     This one works only for Landsat 8 data.
 
@@ -1507,12 +1507,12 @@
     
     Usage:
     var geet = require('users/elacerda/geet:geet'); 
-    var brightness_temp_img = geet.brightnessTempL8_C(toa_image); // ee.Image
+    var brightness_temp_img = geet.brightness_temp_l8c(toa_image); // ee.Image
 
     or 
 
     var geet = require('users/elacerda/geet:geet'); 
-    var brightness_temp_img = geet.brightnessTempL8_C(toa_image, false); // ee.Image
+    var brightness_temp_img = geet.brightness_temp_l8c(toa_image, false); // ee.Image
 
     Information:
     T           = Top of atmosphere brightness temperature (K)
@@ -1520,7 +1520,7 @@
     K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
     K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
     */
-    exports.brightnessTempL8_C = function (image, single) {
+    exports.brightness_temp_l8c = function (image, single) {
       var single = (arguments[1] !== void 1 ? false : true);
       // false - double band (B10 and B11) processing
       if (single === false) {
@@ -1597,7 +1597,7 @@
     }
 
     /*
-      resampleBand:
+      resample_band:
       Function to resample just a single band.
 
       Params:
@@ -1607,9 +1607,9 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var landsatB10_60m = geet.resampleBand(b10, 60);
+      var landsatB10_60m = geet.resample_band(b10, 60);
     */
-    exports.resampleBand = function (band, scaleNumber) {
+    exports.resample_band = function (band, scaleNumber) {
       var resampled_band = band.resample('bilinear').reproject({
         crs: band.projection().crs(),
         scale: scaleNumber
@@ -1618,7 +1618,7 @@
     }
 
     /*
-      loadS2ById:
+      load_id_s2:
       Function to filter the Sentinel-2 collection by Product ID obtained from the
       Copernicus Open Access Hub.
 
@@ -1627,9 +1627,9 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var s2_image = geet.loadS2ById('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');
+      var s2_image = geet.load_id_s2('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');
     */
-    exports.loadS2ById = function (id) {
+    exports.load_id_s2 = function (id) {
       var s2 = ee.ImageCollection("COPERNICUS/S2");
       var s2_filtered = s2.filterMetadata('PRODUCT_ID', 'equals', id);
       return s2_filtered;
@@ -1724,7 +1724,7 @@
 
 
     /*
-      s2Mosaic:
+      mosaic_s2:
       Function to build a cloud free mosaic using the Sentinel 2 dataset.
 
       Params:
@@ -1740,14 +1740,14 @@
       or
 
       var geet = require('users/elacerda/geet:geet'); 
-      var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi
+      var s2_mosaic = geet.mosaic_s2('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi
 
       or 
 
       var geet = require('users/elacerda/geet:geet'); 
-      var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic
+      var s2_mosaic = geet.mosaic_s2('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic
     */
-    exports.s2Mosaic = function (startDate, endDate, roi, showMosaic) {
+    exports.mosaic_s2 = function (startDate, endDate, roi, showMosaic) {
       var s2 = ee.ImageCollection('COPERNICUS/S2');
 
       // Default params
@@ -1777,7 +1777,7 @@
 
 
     /*
-      landsat5Mosaic:
+      mosaic_l5:
       Function to build a cloud free mosaic using the Landsat 5 dataset.
 
       Params:
@@ -1788,19 +1788,19 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31'); // Display the final world mosaic.
+      var l5_mosaic = geet.mosaic_l5('2005-01-01', '2005-12-31'); // Display the final world mosaic.
 
       or
 
       var geet = require('users/elacerda/geet:geet'); 
-      var l5_mosaic = geet.landsat5Mosaic(start, finish, roi); // Display the final mosaic of the roi
+      var l5_mosaic = geet.mosaic_l5(start, finish, roi); // Display the final mosaic of the roi
 
       or 
 
       var geet = require('users/elacerda/geet:geet'); 
-      var l5_mosaic = geet.landsat5Mosaic('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
+      var l5_mosaic = geet.mosaic_l5('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
     */
-    exports.landsat5Mosaic = function (startDate, endDate, roi, showMosaic) {
+    exports.mosaic_l5 = function (startDate, endDate, roi, showMosaic) {
       var l5 = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA');
 
       // Default params
@@ -1829,7 +1829,7 @@
 
 
     /*
-      landsat7Mosaic:
+      mosaic_l7:
       Function to build a cloud free mosaic using the Landsat 7 dataset.
 
       Params:
@@ -1840,19 +1840,19 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31'); // Display the final world mosaic.
+      var l7_mosaic = geet.mosaic_l7('2003-01-01', '2003-12-31'); // Display the final world mosaic.
 
       or
 
       var geet = require('users/elacerda/geet:geet'); 
-      var l7_mosaic = geet.landsat7Mosaic(start, finish, roi); // Display the final mosaic of the roi
+      var l7_mosaic = geet.mosaic_l7(start, finish, roi); // Display the final mosaic of the roi
 
       or 
 
       var geet = require('users/elacerda/geet:geet'); 
-      var l7_mosaic = geet.landsat7Mosaic('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
+      var l7_mosaic = geet.mosaic_l7('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
     */
-    exports.landsat7Mosaic = function (startDate, endDate, roi, showMosaic) {
+    exports.mosaic_l7 = function (startDate, endDate, roi, showMosaic) {
       var l7 = ee.ImageCollection('LANDSAT/LT07/C01/T1_TOA');
 
       // Default params
@@ -1881,7 +1881,7 @@
 
 
     /*
-      landsat8Mosaic:
+      mosaic_l8:
       Function to build a cloud free mosaic using the Landsat 7 dataset.
 
       Params:
@@ -1892,19 +1892,19 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic.
+      var l8_mosaic = geet.mosaic_l8('2015-01-01', '2015-12-31'); // Display the final world mosaic.
 
       or
 
       var geet = require('users/elacerda/geet:geet'); 
-      var l8_mosaic = geet.landsat8Mosaic(start, finish, roi); // Display the final mosaic of the roi
+      var l8_mosaic = geet.mosaic_l8(start, finish, roi); // Display the final mosaic of the roi
 
       or 
 
       var geet = require('users/elacerda/geet:geet'); 
-      var l8_mosaic = geet.landsat8Mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+      var l8_mosaic = geet.mosaic_l8('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
     */
-    exports.landsat8Mosaic = function (startDate, endDate, roi, showMosaic) {
+    exports.mosaic_l8 = function (startDate, endDate, roi, showMosaic) {
       var l8 = ee.ImageCollection('LANDSAT/LT08/C01/T1_TOA');
 
       // Default params
@@ -1933,7 +1933,7 @@
 
 
     /*
-      modisNdviMosaic:
+      modis_ndvi_mosaic:
       Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset.
 
       Params:
@@ -1944,19 +1944,19 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic.
+      var modis_ndvi_mosaic = geet.modis_ndvi_mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic.
 
       or
 
       var geet = require('users/elacerda/geet:geet'); 
-      var modis_ndvi_mosaic = geet.modisNdviMosaic(start, finish, roi); // Display the final mosaic of the roi
+      var modis_ndvi_mosaic = geet.modis_ndvi_mosaic(start, finish, roi); // Display the final mosaic of the roi
 
       or 
 
       var geet = require('users/elacerda/geet:geet'); 
-      var modis_ndvi_mosaic = geet.modisNdviMosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+      var modis_ndvi_mosaic = geet.modis_ndvi_mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
     */
-    exports.modisNdviMosaic = function (startDate, endDate, roi, showMosaic) {
+    exports.modis_ndvi_mosaic = function (startDate, endDate, roi, showMosaic) {
       // Default params
       showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
 
@@ -2015,9 +2015,35 @@
       return minValue;
     }
 
+    
+    /*
+      mean_region:
+      Function the get the mean value of a region of interest (roi)
+
+      Params:
+      (ee.Image) image - the input image.
+      (ee.Geometry) region - the region of interest 
+      optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+      
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var mean_roi = geet.mean_region(img);
+    */
+    exports.mean_region = function (image, region, scale) {
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      var meanDict = image.reduceRegion({
+        reducer: ee.Reducer.mean(),
+        geometry: region,
+        scale: scale,
+        maxPixels: 1e9
+      });
+      return meanDict;
+    }
+
+
 
     /*
-      ndviL5:
+      ndvi_l5:
       Function calculate the normalized difference vegetation index (NDVI) from Landsat 5 data.
 
       Params:
@@ -2025,9 +2051,9 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var l5_ndvi = geet.ndviL5(img);
+      var l5_ndvi = geet.ndvi_l5(img);
     */
-    exports.ndviL5 = function (image) {
+    exports.ndvi_l5 = function (image) {
       var l5_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
       var image_with_ndvi = image.addBands(l5_ndvi);
       return image_with_ndvi;
@@ -2035,7 +2061,7 @@
 
 
     /*
-      ndviL7:
+      ndvi_l7:
       Function calculate the normalized difference vegetation index (NDVI) from Landsat 7 data.
 
       Params:
@@ -2043,9 +2069,9 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var l7_ndvi = geet.ndviL7(img);
+      var l7_ndvi = geet.ndvi_l7(img);
     */
-    exports.ndviL7 = function (image) {
+    exports.ndvi_l7 = function (image) {
       var l7_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
       var image_with_ndvi = image.addBands(l7_ndvi);
       return image_with_ndvi;
@@ -2053,7 +2079,7 @@
 
 
     /*
-      ndviL8:
+      ndvi_l8:
       Function calculate the normalized difference vegetation index (NDVI) from Landsat 8 data.
 
       Params:
@@ -2061,9 +2087,9 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var l8_ndvi = geet.ndviL8(img);
+      var l8_ndvi = geet.ndvi_l8(img);
     */
-    exports.ndviL8 = function (image) {
+    exports.ndvi_l8 = function (image) {
       var l8_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
       var image_with_ndvi = image.addBands(l8_ndvi);
       return image_with_ndvi;
@@ -2071,7 +2097,7 @@
 
 
     /*
-      ndviS2:
+      ndvi_s2:
       Function calculate the normalized difference vegetation index (NDVI) from Sentinel 2 data.
 
       Params:
@@ -2079,9 +2105,9 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var s2_ndvi = geet.ndviS2(img);
+      var s2_ndvi = geet.ndvi_s2(img);
     */
-    exports.ndviS2 = function (image) {
+    exports.ndvi_s2 = function (image) {
       var s2_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
       var image_with_ndvi = image.addBands(s2_ndvi);
       return image_with_ndvi;
@@ -2089,7 +2115,7 @@
 
 
     /*
-      propVeg:
+      prop_veg:
       Function calculate the proportional vegetation.
 
       Params:
@@ -2097,9 +2123,9 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var img_pv = geet.propVeg(img);
+      var img_pv = geet.prop_veg(img);
     */
-    exports.propVeg = function (image) {
+    exports.prop_veg = function (image) {
       // var ndvi_max = ndvi_img.reduce(ee.Reducer.max());
       // var ndvi_min = ee.Number(ndvi_img.reduce(ee.Reducer.min()));
       var ndvi = image.select('NDVI');
@@ -2115,7 +2141,7 @@
 
 
     /*
-      landSurfaceEmissivity:
+      surface_emissivity:
       Function calculate the surface emissifity.
 
       Params:
@@ -2123,9 +2149,9 @@
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var lse = geet.landSurfaceEmissivity(pv);
+      var lse = geet.surface_emissivity(pv);
     */
-    exports.landSurfaceEmissivity = function (image) {
+    exports.surface_emissivity = function (image) {
       var lse = image.expression(
         '(0.004 * pv_img) + 0.986', {
           'pv_img': image.select('propVeg')
@@ -2136,7 +2162,7 @@
 
 
     /*
-      landSurfaceTemperature:
+      surface_temperature:
       Function calculate the land surface temperature.
 
       Params:
@@ -2145,9 +2171,9 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var surfTemp_img = geet.landSurfaceTemperature(img);
+      var surfTemp_img = geet.surface_temperature(img);
     */
-    exports.landSurfaceTemperature = function (image) {
+    exports.surface_temperature = function (image) {
       var p = 14380;
       var lse_band = image.select('LSE');
       var lse_log = lse_band.log();
@@ -2167,7 +2193,7 @@
 
 
     /*
-      exportImg:
+      export_img:
       Function to export an image to your Google Drive account.
 
       Params:
@@ -2178,9 +2204,9 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      geet.exportImg(img, 'output_img');
+      geet.export_img(img, 'output_img');
     */
-    exports.exportImg = function (image, outFilename, scale, maxPixels) {
+    exports.export_img = function (image, outFilename, scale, maxPixels) {
       // Default params
       scale = typeof scale !== 'undefined' ? scale : 30;
       maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
@@ -2196,7 +2222,7 @@
 
 
     /*
-      cloudMask:
+      cloudmask:
       Function create a cloud mask from a Landsat input image.
 
       Params:
@@ -2204,9 +2230,9 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var cloudmask_img = geet.cloudMask(img);
+      var cloudmask_img = geet.cloudmask(img);
     */
-    exports.cloudMask = function (image) {
+    exports.cloudmask = function (image) {
       if (image === undefined) error('cloudMask', 'You need to specify an input image.');
       var mask = image.select(['fmask']).neq(4);
       return image.updateMask(mask);
