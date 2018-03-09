@@ -50,10 +50,10 @@ All functions implemented (Version 0.2.1 - Beta):
 [ndvi_l8](#ndvi_l8)  
 [ndviS2](#ndvis2)  
 [prop_veg](#prop_veg)  
-[surface_emissivity](#surface_emissivity)  
-[surface_temperature](#surface_temperature) 
-[export_image](#export_image)  
-[pca](#pca)    
+[surface_emissivity](#surface_emissivity)    
+[surface_temperature](#surface_temperature)   
+[export_image](#export_image)      
+[pca](#pca)      
 
 
 ------------------------------------------------------------------------------
