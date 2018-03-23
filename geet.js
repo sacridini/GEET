@@ -2206,18 +2206,31 @@
       var geet = require('users/elacerda/geet:geet'); 
       geet.export_image(img, 'output_img');
     */
-    exports.export_image = function (image, outFilename, scale, maxPixels) {
+    exports.export_image = function (image, outFilename, scale, maxPixels, roi) {
       // Default params
       scale = typeof scale !== 'undefined' ? scale : 30;
       maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
 
-      // Export the image, specifying scale and region.
-      Export.image.toDrive({
-        image: image,
-        description: outFilename,
-        scale: scale,
-        maxPixels: maxPixels
-      });
+      if (roi !== 'undefined') {
+        // Export the image, specifying scale and region.
+        Export.image.toDrive({
+          image: image,
+          description: outFilename,
+          scale: scale,
+          roi: roi,
+          maxPixels: maxPixels
+        });
+      } else {
+        // Export the image, specifying scale and region.
+        Export.image.toDrive({
+          image: image,
+          description: outFilename,
+          scale: scale,
+          maxPixels: maxPixels
+        });
+      }
+
+
     }
 
 
