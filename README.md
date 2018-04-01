@@ -1299,10 +1299,10 @@ _Function produce the principal components analysis of an image._
 _Function filter a geometry/feature by value._     
 
 ##### Params:
-  (ee.Geometry) geom - the input geometry.
-  (string) column - the column name.
-  (string) symbol - the symbol. Ex: >, >=, <, <= or =.
-  (number) value - the value that will be used by the filter.                           
+  (ee.Geometry) geom - the input geometry.  
+  (string) column - the column name.  
+  (string) symbol - the symbol. Ex: >, >=, <, <= or =.  
+  (number) value - the value that will be used by the filter.                               
   
 ##### Usage:
 ```js
