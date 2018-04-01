@@ -921,7 +921,7 @@ _Function the get the mean value from an image and returns a dictionary with all
 
 ##### Params:
   (ee.Image) image - the input image.      
-  **optional** (ee.Geometry) region - the region of interest.      
+  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.            
   **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.   
   **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.       
 
