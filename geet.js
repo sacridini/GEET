@@ -2,7 +2,7 @@
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
      * Version: 0.2.4
-     * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
+     * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
     // Error log function
@@ -2258,7 +2258,7 @@
     
     Usage:
     var geet = require('users/elacerda/geet:geet'); 
-    var spearmansCorrelation = geet.spearmans_correlation(img);
+    var spearmansCorrelation = geet.spearmans_correlation(img1, img2, roi);
     */
     exports.spearmans_correlation = function (image1, image2, roi, scale, maxPixels) {
       // Error handling
