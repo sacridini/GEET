@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.1
+     * Version: 0.3.2
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2742,6 +2742,51 @@
         .arrayProject([0])
         .arrayFlatten([pcNames]);
       return [ pcs, lambdas ];
+    }
+
+    /*
+      geom_filter:
+      Function filter a geometry/feature by value.
+
+      Params:
+      (ee.Geometry) geom - the input geometry.
+      (string) column - the column name.
+      (string) symbol - the symbol. Ex: >, >=, <, <= or =.
+      (number) value - the value that will be used by the filter.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var geom_filtered = geet.geom_filter(geom, 'AreaSqKm', '>', 25000);
+    */
+    exports.geom_filter = function(geom, column, symbol, value) {
+      // Error handling
+      if (geom === undefined) error('geom_filter', 'You need to specify an input geometry.');
+      if (column === undefined) error('geom_filter', 'You need to specify the column name');
+      if (symbol === undefined) error('geom_filter', 'You need to specify the symbol. Ex: >, >=, <, <= or =');
+      if (value === undefined) error('geom_filter', 'You need to specify the value to filter');
+
+      var column = column.toString();      
+      var symbol = symbol.toString();
+
+      switch (symbol) {
+        case '>':
+          var filtro = geom.filter(ee.Filter.gt(column, value));
+          return filtro;          
+        case '>=':
+          var filtro = geom.filter(ee.Filter.gte(column, value));
+          return filtro;          
+        case '<':
+          var filtro = geom.filter(ee.Filter.lt(column, value));
+          return filtro;          
+        case '<=':
+          var filtro = geom.filter(ee.Filter.lte(column, value));
+          return filtro;
+        case '=':
+          var filtro = geom.filter(ee.Filter.eq(column, value));
+          return filtro;
+        default: 
+          print("You need to specify the symbol first. Ex: >, >=, <, <= or =");
+      }
     }
 
     /* ------------------------ TEST ZONE ------------------------ */

@@ -13,7 +13,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.3.1 - Beta):  
+All functions implemented (Version 0.3.2 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -68,6 +68,7 @@ All functions implemented (Version 0.3.1 - Beta):
 [export_image](#export_image)      
 [cloudmask](#cloudmask)      
 [pca](#pca)      
+[geom_filter](#geom_filter)      
 
 
 ------------------------------------------------------------------------------
@@ -1289,5 +1290,23 @@ _Function produce the principal components analysis of an image._
 
 #### Information:  
   Modified from https://github.com/mortcanty/earthengine/blob/master/src/eePca.py
+
+------------------------------------------------------------------------------
+
+#### geom_filter
+(geom, column, symbol, value) 
+
+_Function filter a geometry/feature by value._     
+
+##### Params:
+  (ee.Geometry) geom - the input geometry.
+  (string) column - the column name.
+  (string) symbol - the symbol. Ex: >, >=, <, <= or =.
+  (number) value - the value that will be used by the filter.                           
+  
+##### Usage:
+```js
+      var geom_filtered = geet.geom_filter(geom, 'AreaSqKm', '>', 25000);
+```
 
 ------------------------------------------------------------------------------
