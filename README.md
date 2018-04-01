@@ -13,7 +13,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.2.5 - Beta):  
+All functions implemented (Version 0.2.6 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -682,7 +682,7 @@ _Function to resample an input image._
 
 ##### Params:
   (ee.Image) image - the image to resample.  
-  (number) scaleNumber - the number of the spatial resolution that you
+  (number) scaler - the number of the spatial resolution that you
                         want to use to  resample the input image.                            
   
 ##### Usage:
@@ -699,7 +699,7 @@ _Function to resample just a single band._
 
 ##### Params:
   (ee.Image) band - the band to resample.  
-  (number) scaleNumber - the number of the spatial resolution that you
+  (number) scale - the number of the spatial resolution that you
                         want to use to  resample the input band.                           
   
 ##### Usage:
