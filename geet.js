@@ -2282,7 +2282,7 @@
 
     /*
     linear_fit:
-    Function that computes the slope and offset for a (weighted) linear regression of 2 inputs.
+    Function that computes the slope and offset for a (weighted) linear regression of 2 inputs. It returns a dictionary.
 
     Params:
     (ee.Image) image1 - the first input image.
