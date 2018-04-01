@@ -51,6 +51,12 @@ All functions implemented (Version 0.2.1 - Beta):
 [max](#max)  
 [min](#min)  
 [mean](#mean)  
+[median](#median)  
+[mode](#mode)  
+[sd](#sd)  
+[variance](#variance)  
+[amplitude](#amplitude)  
+[spearmans_correlation](#spearmans_correlation)  
 [ndvi_l5](#ndvi_l5)  
 [ndvi_l7](#ndvi_l7)  
 [ndvi_l8](#ndvi_l8)  
@@ -938,6 +944,144 @@ or
 
 ------------------------------------------------------------------------------
 
+#### median
+
+_Function the get the median value from an image and returns a dictionary with all band values._
+
+##### Params:
+  (ee.Image) image - the input image.        
+  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
+
+##### Usage: 
+```js 
+    var median = geet.median(img);  
+```
+
+or
+
+```js 
+    var median = geet.median(img, roi, 30, 1e12);  
+```
+
+------------------------------------------------------------------------------
+
+#### mode
+
+_Function the get the mode value from an image and returns a dictionary with all band values._
+
+##### Params:
+  (ee.Image) image - the input image.        
+  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
+
+##### Usage: 
+```js 
+    var mode = geet.mode(img);  
+```
+
+or
+
+```js 
+    var mode = geet.mode(img, roi, 30, 1e12);  
+```
+
+------------------------------------------------------------------------------
+
+#### sd
+
+_Function the get the standard deviation value from an image and returns a dictionary with all band values._
+
+##### Params:
+  (ee.Image) image - the input image.        
+  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
+
+##### Usage: 
+```js 
+    var standardDeviation = geet.sd(img);  
+```
+
+or
+
+```js 
+    var standardDeviation = geet.sd(img, roi, 30, 1e12);  
+```
+
+------------------------------------------------------------------------------
+
+#### variance
+
+_Function the get the variance value from an image and returns a dictionary with all band values._
+
+##### Params:
+  (ee.Image) image - the input image.        
+  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
+
+##### Usage: 
+```js 
+    var variance = geet.variance(img);  
+```
+
+or
+
+```js 
+    var variance = geet.variance(img, roi, 30, 1e12);  
+```
+
+------------------------------------------------------------------------------
+
+#### amplitude
+
+_Function the get the amplitude value from an image and returns a dictionary with all band values._
+
+##### Params:
+  (ee.Image) image - the input image.        
+  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
+
+##### Usage: 
+```js 
+    var amplitude = geet.amplitude(img);  
+```
+
+or
+
+```js 
+    var amplitude = geet.amplitude(img, roi, 30, 1e12);  
+```
+
+------------------------------------------------------------------------------
+
+#### spearmans_correlation
+
+_Function the get the spearmans correlation value from an image and returns a dictionary with all band values._
+
+##### Params:
+  (ee.Image) image1 - the first input image.    
+  (ee.Image) image2 - the second input image.    
+  (ee.Geometry) roi - the region of interest.     
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.    
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.             
+
+##### Usage: 
+```js 
+    var spearmansCorrelation = geet.spearmans_correlation(img1, img2, roi);  
+```
+
+or
+
+```js 
+    var spearmansCorrelation = geet.spearmans_correlation(img1, img2, roi, 30, 1e12);  
+```
+
+------------------------------------------------------------------------------
 
 #### ndvi_l5 
 (image)  

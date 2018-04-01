@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.2.3
+     * Version: 0.2.4
      * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1997,6 +1997,8 @@
       var img_max = geet.max(img);
     */
     exports.max = function (image, roi, scale, maxPixels) {
+      if (image === undefined) error('max', 'You need to specify an input image.');     
+      
       // Default params
       roi = typeof roi !== 'undefined' ? roi : image;
       scale = typeof scale !== 'undefined' ? scale : 30;
@@ -2027,7 +2029,10 @@
       var img_min = geet.min(img);
     */
     exports.min = function (image, roi, scale, maxPixels) {
-      // Default params
+      // Error handling
+      if (image === undefined) error('min', 'You need to specify an input image.'); 
+
+      // Default params           
       roi = typeof roi !== 'undefined' ? roi : image;      
       scale = typeof scale !== 'undefined' ? scale : 30;
       maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
@@ -2043,19 +2048,24 @@
 
     
     /*
-      mean_region:
+      mean:
       Function the get the mean value from an image and returns a dictionary with all band values.
 
       Params:
       (ee.Image) image - the input image.
       optional (ee.Geometry) roi - the region of interest 
       optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
-      
+      optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var mean_roi = geet.mean_region(img);
+      var mean_roi = geet.mean(img);
     */
     exports.mean = function (image, roi, scale, maxPixels) {
+      // Error handling
+      if (image === undefined) error('mean', 'You need to specify an input image.');   
+      
+      // Default params
       roi = typeof roi !== 'undefined' ? roi : image;            
       scale = typeof scale !== 'undefined' ? scale : 30;
       maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
@@ -2069,6 +2079,205 @@
       return meanDict;
     }
 
+
+    /*
+    median:
+    Function the get the median value from an image and returns a dictionary with all band values.
+
+    Params:
+    (ee.Image) image - the input image.
+    optional (ee.Geometry) roi - the region of interest 
+    optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+    optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+
+    Usage:
+    var geet = require('users/elacerda/geet:geet'); 
+    var median = geet.median(img);
+    */
+    exports.median = function (image, roi, scale, maxPixels) {
+      // Error handling
+      if (image === undefined) error('median', 'You need to specify an input image.');  
+      
+      // Default params
+      roi = typeof roi !== 'undefined' ? roi : image;
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var medianDict = image.reduceRegion({
+        reducer: ee.Reducer.median(),
+        geometry: roi,
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return medianDict;
+    }
+
+
+    /*
+    mode:
+    Function the get the mode value from an image and returns a dictionary with all band values.
+
+    Params:
+    (ee.Image) image - the input image.
+    optional (ee.Geometry) roi - the region of interest 
+    optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+    optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+    
+    Usage:
+    var geet = require('users/elacerda/geet:geet'); 
+    var mode = geet.mode(img);
+    */
+    exports.mode = function (image, roi, scale, maxPixels) {
+      // Error handling
+      if (image === undefined) error('mode', 'You need to specify an input image.');  
+      
+      // Default params
+      roi = typeof roi !== 'undefined' ? roi : image;
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var modeDict = image.reduceRegion({
+        reducer: ee.Reducer.mode(),
+        geometry: roi,
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return modeDict;
+    }
+
+
+    /*
+    sd:
+    Function the get the standard deviation value from an image and returns a dictionary with all band values.
+
+    Params:
+    (ee.Image) image - the input image.
+    optional (ee.Geometry) roi - the region of interest 
+    optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+    optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+    
+    Usage:
+    var geet = require('users/elacerda/geet:geet'); 
+    var sd = geet.sd(img);
+    */
+    exports.sd = function (image, roi, scale, maxPixels) {
+      // Error handling
+      if (image === undefined) error('sd', 'You need to specify an input image.');  
+      
+      // Default params
+      roi = typeof roi !== 'undefined' ? roi : image;
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var sd = image.reduceRegion({
+        reducer: ee.Reducer.stdDev(),
+        geometry: roi,
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return sd;
+    }
+
+
+    /*
+    variance:
+    Function the get the variance value from an image and returns a dictionary with all band values.
+
+    Params:
+    (ee.Image) image - the input image.
+    optional (ee.Geometry) roi - the region of interest 
+    optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+    optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+    
+    Usage:
+    var geet = require('users/elacerda/geet:geet'); 
+    var variance = geet.variance(img);
+    */
+    exports.variance = function (image, roi, scale, maxPixels) {
+      // Error handling
+      if (image === undefined) error('variance', 'You need to specify an input image.');  
+
+      // Default params
+      roi = typeof roi !== 'undefined' ? roi : image;
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var variance = image.reduceRegion({
+        reducer: ee.Reducer.variance(),
+        geometry: roi,
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return variance;
+    }
+
+
+    /*
+    amplitude:
+    Function the get the amplitude values from an image and returns a dictionary with all band values.
+
+    Params:
+    (ee.Image) image - the input image.
+    optional (ee.Geometry) roi - the region of interest 
+    optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+    optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+    
+    Usage:
+    var geet = require('users/elacerda/geet:geet'); 
+    var amplitude = geet.amplitude(img);
+    */
+    exports.amplitude = function (image, roi, scale, maxPixels) {
+      // Error handling
+      if (image === undefined) error('amplitude', 'You need to specify an input image.');  
+      
+      // Default params
+      roi = typeof roi !== 'undefined' ? roi : image;
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var amplitude = image.reduceRegion({
+        reducer: ee.Reducer.minMax(),
+        geometry: roi,
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return amplitude;
+    }
+
+
+    /*
+    spearmans_correlation:
+    Function the calculate the spearmans correlation between two input images inside a roi.
+
+    Params:
+    (ee.Image) image1 - the first input image.
+    (ee.Image) image2 - the second input image.
+    (ee.Geometry) roi - the region of interest 
+    optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+    optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+    
+    Usage:
+    var geet = require('users/elacerda/geet:geet'); 
+    var spearmansCorrelation = geet.spearmans_correlation(img);
+    */
+    exports.spearmans_correlation = function (image1, image2, roi, scale, maxPixels) {
+      // Error handling
+      if (image1 === undefined) error('spearmans_correlation', 'You need to specify an input image.');
+      if (image2 === undefined) error('spearmans_correlation', 'You need to specify an input image.');
+      if (roi === undefined) error('spearmans_correlation', 'You need to specify an roi.');
+
+      // Default params
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var spearmansCorrelation = image.reduceRegion({
+        reducer: ee.Reducer.spearmansCorrelation(),
+        geometry: roi,
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return spearmansCorrelation;
+    }
 
 
     /*
