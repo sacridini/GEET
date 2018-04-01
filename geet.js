@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.2.4
+     * Version: 0.2.5
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1984,7 +1984,7 @@
 
     /*
       max:
-     Function the get the maximum value from an image and returns an dictionary with all band values.
+     Function to get the maximum value from an image and returns an dictionary with all band values.
 
       Params:
       (ee.Image) image - the input image.
@@ -2016,7 +2016,7 @@
 
     /*
       min:
-      Function the get the minimum value from an image and returns an dictionary with all band values.
+      Function to get the minimum value from an image and returns an dictionary with all band values.
 
       Params:
       (ee.Image) image - the input image.
@@ -2049,7 +2049,7 @@
     
     /*
       mean:
-      Function the get the mean value from an image and returns a dictionary with all band values.
+      Function to get the mean value from an image and returns a dictionary with all band values.
 
       Params:
       (ee.Image) image - the input image.
@@ -2082,7 +2082,7 @@
 
     /*
     median:
-    Function the get the median value from an image and returns a dictionary with all band values.
+    Function to get the median value from an image and returns a dictionary with all band values.
 
     Params:
     (ee.Image) image - the input image.
@@ -2115,7 +2115,7 @@
 
     /*
     mode:
-    Function the get the mode value from an image and returns a dictionary with all band values.
+    Function to get the mode value from an image and returns a dictionary with all band values.
 
     Params:
     (ee.Image) image - the input image.
@@ -2148,7 +2148,7 @@
 
     /*
     sd:
-    Function the get the standard deviation value from an image and returns a dictionary with all band values.
+    Function to get the standard deviation value from an image and returns a dictionary with all band values.
 
     Params:
     (ee.Image) image - the input image.
@@ -2181,7 +2181,7 @@
 
     /*
     variance:
-    Function the get the variance value from an image and returns a dictionary with all band values.
+    Function to get the variance value from an image and returns a dictionary with all band values.
 
     Params:
     (ee.Image) image - the input image.
@@ -2214,7 +2214,7 @@
 
     /*
     amplitude:
-    Function the get the amplitude values from an image and returns a dictionary with all band values.
+    Function to get the amplitude values from an image and returns a dictionary with all band values.
 
     Params:
     (ee.Image) image - the input image.
@@ -2247,7 +2247,7 @@
 
     /*
     spearmans_correlation:
-    Function the calculate the spearmans correlation between two input images inside a roi.
+    Function to calculate the spearmans correlation between two input images inside a roi.
 
     Params:
     (ee.Image) image1 - the first input image.
@@ -2277,6 +2277,41 @@
         maxPixels: maxPixels
       });
       return spearmansCorrelation;
+    }
+
+
+    /*
+    linear_fit:
+    Function that computes the slope and offset for a (weighted) linear regression of 2 inputs.
+
+    Params:
+    (ee.Image) image1 - the first input image.
+    (ee.Image) image2 - the second input image.
+    (ee.Geometry) roi - the region of interest 
+    optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
+    optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+    
+    Usage:
+    var geet = require('users/elacerda/geet:geet'); 
+    var linearFit = geet.linear_fit(img1, img2, roi);
+    */
+    exports.linear_fit = function (image1, image2, roi, scale, maxPixels) {
+      // Error handling
+      if (image1 === undefined) error('spearmans_correlation', 'You need to specify an input image.');
+      if (image2 === undefined) error('spearmans_correlation', 'You need to specify an input image.');
+      if (roi === undefined) error('spearmans_correlation', 'You need to specify an roi.');
+
+      // Default params
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var linearFit = image.reduceRegion({
+        reducer: ee.Reducer.linearFit(),
+        geometry: roi,
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return linearFit;
     }
 
 

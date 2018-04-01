@@ -13,7 +13,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.2.4 - Beta):  
+All functions implemented (Version 0.2.5 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -57,6 +57,7 @@ All functions implemented (Version 0.2.4 - Beta):
 [variance](#variance)  
 [amplitude](#amplitude)  
 [spearmans_correlation](#spearmans_correlation)  
+[linear_fit](#linear_fit)  
 [ndvi_l5](#ndvi_l5)  
 [ndvi_l7](#ndvi_l7)  
 [ndvi_l8](#ndvi_l8)  
@@ -1079,6 +1080,30 @@ or
 
 ```js 
     var spearmansCorrelation = geet.spearmans_correlation(img1, img2, roi, 30, 1e12);  
+```
+
+------------------------------------------------------------------------------
+
+#### linear_fit
+
+_Function that computes the slope and offset for a (weighted) linear regression of 2 inputs._
+
+##### Params:
+  (ee.Image) image1 - the first input image.    
+  (ee.Image) image2 - the second input image.    
+  (ee.Geometry) roi - the region of interest.     
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.    
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.             
+
+##### Usage: 
+```js 
+    var linearFit = geet.linear_fit(img1, img2, roi);  
+```
+
+or
+
+```js 
+    var linearFit = geet.linear_fit(img1, img2, roi, 30, 1e12);  
 ```
 
 ------------------------------------------------------------------------------
