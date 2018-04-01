@@ -870,7 +870,7 @@ or
 #### max
 (image)  
 
-_Function the get the maximum value from an image._     
+_Function the get the maximum value from an image as an image._     
 
 ##### Params:
   (ee.Image) image - the input image.                             
@@ -885,7 +885,7 @@ _Function the get the maximum value from an image._
 #### min
 (image)  
 
-_Function the get the minimum value from an image._     
+_Function the get the minimum value from an image as an image._     
 
 ##### Params:
   (ee.Image) image - the input image.                             

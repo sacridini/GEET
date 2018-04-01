@@ -1984,7 +1984,7 @@
 
     /*
       max:
-      Function the get the maximum value from an image.
+      Function the get the maximum value from an image as an image.
 
       Params:
       (ee.Image) image - the input image.
@@ -2001,7 +2001,7 @@
 
     /*
       min:
-      Function the get the minimum value from an image.
+      Function the get the minimum value from an image as an image.
 
       Params:
       (ee.Image) image - the input image.
