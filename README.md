@@ -870,14 +870,23 @@ or
 #### max
 (image)  
 
-_Function the get the maximum value from an image as an image._     
+_Function the get the maximum value from an image and returns an dictionary with all band values._     
 
 ##### Params:
-  (ee.Image) image - the input image.                             
+  (ee.Image) image - the input image.   
+  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.  
+  **optional** (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.  
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.                              
   
 ##### Usage:
 ```js
     var img_max = geet.max(img);     
+```
+
+or
+
+```js
+   var img_max = geet.max(img, roi, 30, 1e12); 
 ```
 
 ------------------------------------------------------------------------------
@@ -885,14 +894,23 @@ _Function the get the maximum value from an image as an image._
 #### min
 (image)  
 
-_Function the get the minimum value from an image as an image._     
+_Function the get the minimum value from an image and returns an dictionary with all band values._     
 
 ##### Params:
-  (ee.Image) image - the input image.                             
+  (ee.Image) image - the input image.  
+  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.      
+  **optional** (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.    
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.                               
   
 ##### Usage:
 ```js
-    var img_max = geet.min(img);    
+    var img_min = geet.min(img);    
+```
+
+or
+
+```js
+   var img_min = geet.min(img, roi, 30, 1e12); 
 ```
 
 ------------------------------------------------------------------------------
@@ -902,9 +920,9 @@ _Function the get the minimum value from an image as an image._
 _Function the get the mean value of a region of interest (roi)._
 
 ##### Params:
-  (ee.Image) image - the input image.  
-  (ee.Geometry) region - the region of interest.  
-   optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.  
+  (ee.Image) image - the input image.    
+  (ee.Geometry) region - the region of interest.    
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.    
 
 ##### Usage:     
 ```js
