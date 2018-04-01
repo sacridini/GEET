@@ -50,7 +50,7 @@ All functions implemented (Version 0.2.1 - Beta):
 [modis_ndvi_mosaic](#modis_ndvi_mosaic)  
 [max](#max)  
 [min](#min)  
-[mean_region](#mean_region)  
+[mean](#mean)  
 [ndvi_l5](#ndvi_l5)  
 [ndvi_l7](#ndvi_l7)  
 [ndvi_l8](#ndvi_l8)  
