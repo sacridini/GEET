@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.2.2
+     * Version: 0.2.3
      * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2044,24 +2044,25 @@
     
     /*
       mean_region:
-      Function the get the mean value of a region of interest (roi)
+      Function the get the mean value from an image and returns a dictionary with all band values.
 
       Params:
       (ee.Image) image - the input image.
-      (ee.Geometry) roi - the region of interest 
+      optional (ee.Geometry) roi - the region of interest 
       optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
       var mean_roi = geet.mean_region(img);
     */
-    exports.mean_region = function (image, roi, scale, maxPixels) {
+    exports.mean = function (image, roi, scale, maxPixels) {
+      roi = typeof roi !== 'undefined' ? roi : image;            
       scale = typeof scale !== 'undefined' ? scale : 30;
-      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
       
       var meanDict = image.reduceRegion({
         reducer: ee.Reducer.mean(),
-        geometry: region,
+        geometry: roi,
         scale: scale,
         maxPixels: maxPixels
       });

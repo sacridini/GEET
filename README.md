@@ -915,19 +915,25 @@ or
 
 ------------------------------------------------------------------------------
 
-#### mean_region
+#### mean
 
-_Function the get the mean value of a region of interest (roi)._
+_Function the get the mean value from an image and returns a dictionary with all band values._
 
 ##### Params:
-  (ee.Image) image - the input image.    
-  (ee.Geometry) region - the region of interest.    
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.    
+  (ee.Image) image - the input image.      
+  **optional** (ee.Geometry) region - the region of interest.      
+  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.   
+  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.       
 
-##### Usage:     
-```js
-    var geet = require('users/elacerda/geet:geet'); 
-    var mean_roi = geet.mean_region(img, roi, 30);  
+##### Usage: 
+```js 
+    var mean = geet.mean(img);  
+```
+
+or
+
+```js 
+    var mean = geet.mean(img, roi, 30, 1e12);  
 ```
 
 ------------------------------------------------------------------------------
