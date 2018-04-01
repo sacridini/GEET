@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.2.1
+     * Version: 0.2.2
      * MIT (c) Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1984,35 +1984,61 @@
 
     /*
       max:
-      Function the get the maximum value from an image as an image.
+     Function the get the maximum value from an image and returns an dictionary with all band values.
 
       Params:
       (ee.Image) image - the input image.
+      optional (ee.Geometry) roi - the region of interest. Default is set to the image geometry.
+      optional (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
+      optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
       var img_max = geet.max(img);
     */
-    exports.max = function (image) {
-      var maxValue = image.reduce(ee.Reducer.max());
-      return maxValue;
+    exports.max = function (image, roi, scale, maxPixels) {
+      // Default params
+      roi = typeof roi !== 'undefined' ? roi : image;
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var maxDictionary = image.reduceRegion({
+        reducer: ee.Reducer.max(),
+        geometry: roi.geometry(),
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return maxDictionary;
     }
 
 
     /*
       min:
-      Function the get the minimum value from an image as an image.
+      Function the get the minimum value from an image and returns an dictionary with all band values.
 
       Params:
       (ee.Image) image - the input image.
-      
+      optional (ee.Geometry) roi - the region of interest. Default is set to the image geometry.
+      optional (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
+      optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
+
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
       var img_min = geet.min(img);
     */
-    exports.min = function (image) {
-      var minValue = image.reduce(ee.Reducer.min());
-      return minValue;
+    exports.min = function (image, roi, scale, maxPixels) {
+      // Default params
+      roi = typeof roi !== 'undefined' ? roi : image;      
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+
+      var minDictionary = image.reduceRegion({
+        reducer: ee.Reducer.min(),
+        geometry: roi.geometry(),
+        scale: scale,
+        maxPixels: maxPixels
+      });
+      return minDictionary;
     }
 
     
@@ -2022,20 +2048,22 @@
 
       Params:
       (ee.Image) image - the input image.
-      (ee.Geometry) region - the region of interest 
+      (ee.Geometry) roi - the region of interest 
       optional (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
       var mean_roi = geet.mean_region(img);
     */
-    exports.mean_region = function (image, region, scale) {
+    exports.mean_region = function (image, roi, scale, maxPixels) {
       scale = typeof scale !== 'undefined' ? scale : 30;
+      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
+      
       var meanDict = image.reduceRegion({
         reducer: ee.Reducer.mean(),
         geometry: region,
         scale: scale,
-        maxPixels: 1e9
+        maxPixels: maxPixels
       });
       return meanDict;
     }
