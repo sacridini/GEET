@@ -66,6 +66,7 @@ All functions implemented (Version 0.2.6 - Beta):
 [surface_emissivity](#surface_emissivity)    
 [surface_temperature](#surface_temperature)   
 [export_image](#export_image)      
+[cloudmask](#cloudmask)      
 [pca](#pca)      
 
 
@@ -676,13 +677,13 @@ or
 ------------------------------------------------------------------------------
 
 #### resample
-(image, scaleNumber)  
+(image, scale)  
 
 _Function to resample an input image._     
 
 ##### Params:
   (ee.Image) image - the image to resample.  
-  (number) scaler - the number of the spatial resolution that you
+  (number) scale - the number of the spatial resolution that you
                         want to use to  resample the input image.                            
   
 ##### Usage:
@@ -693,7 +694,7 @@ _Function to resample an input image._
 ------------------------------------------------------------------------------
 
 #### resample_band
-(band, scaleNumber)  
+(band, scale)  
 
 _Function to resample just a single band._     
 
@@ -875,7 +876,7 @@ or
 ------------------------------------------------------------------------------
 
 #### max
-(image)  
+(image, roi, scale, maxPixels)  
 
 _Function the get the maximum value from an image and returns an dictionary with all band values._     
 
@@ -899,7 +900,7 @@ or
 ------------------------------------------------------------------------------
 
 #### min
-(image)  
+(image, roi, scale, maxPixels)  
 
 _Function the get the minimum value from an image and returns an dictionary with all band values._     
 
@@ -923,6 +924,7 @@ or
 ------------------------------------------------------------------------------
 
 #### mean
+(image, roi, scale, maxPixels)  
 
 _Function the get the mean value from an image and returns a dictionary with all band values._
 
@@ -946,6 +948,7 @@ or
 ------------------------------------------------------------------------------
 
 #### median
+(image, roi, scale, maxPixels)   
 
 _Function the get the median value from an image and returns a dictionary with all band values._
 
@@ -969,6 +972,7 @@ or
 ------------------------------------------------------------------------------
 
 #### mode
+(image, roi, scale, maxPixels)  
 
 _Function the get the mode value from an image and returns a dictionary with all band values._
 
@@ -992,6 +996,7 @@ or
 ------------------------------------------------------------------------------
 
 #### sd
+(image, roi, scale, maxPixels)  
 
 _Function the get the standard deviation value from an image and returns a dictionary with all band values._
 
@@ -1015,6 +1020,8 @@ or
 ------------------------------------------------------------------------------
 
 #### variance
+(image, roi, scale, maxPixels)  
+
 
 _Function the get the variance value from an image and returns a dictionary with all band values._
 
@@ -1038,6 +1045,7 @@ or
 ------------------------------------------------------------------------------
 
 #### amplitude
+(image, roi, scale, maxPixels)  
 
 _Function the get the amplitude value from an image and returns a dictionary with all band values._
 
@@ -1061,6 +1069,7 @@ or
 ------------------------------------------------------------------------------
 
 #### spearmans_correlation
+(image, roi, scale, maxPixels)  
 
 _Function the get the spearmans correlation value from an image and returns a dictionary with all band values._
 
@@ -1085,6 +1094,7 @@ or
 ------------------------------------------------------------------------------
 
 #### linear_fit
+(image, roi, scale, maxPixels)  
 
 _Function that computes the slope and offset for a (weighted) linear regression of 2 inputs. It returns a dictionary._
 
@@ -1240,6 +1250,21 @@ or
 
 ```js
     geet.export_image(img, 'output_sentinel2_classification', 10, 1e13);
+```
+
+------------------------------------------------------------------------------
+
+#### cloudmask
+(image)  
+
+_Function create a cloud mask from a Landsat input image._     
+
+##### Params:
+  (ee.Image) image - the input image.                             
+  
+##### Usage:
+```js
+    var cloudmask_img = geet.cloudmask(img);
 ```
 
 ------------------------------------------------------------------------------
