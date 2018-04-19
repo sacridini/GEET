@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.2
+     * Version: 0.3.3
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2786,6 +2786,35 @@
           return filtro;
         default: 
           print("You need to specify the symbol first. Ex: >, >=, <, <= or =");
+      }
+    }
+
+    /*
+      download:
+      Function filter a geometry/feature by value.
+
+      Params:
+      (ee.Image) image - the input image.
+      (ee.Geometry) roi - the input region of interest.
+      optional (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      geet.download(img_landsat);
+      
+      or      
+      
+      geet.download(img, region, 250);
+    */
+    exports.download = function (image, roi, scale) {
+      if (image === undefined) error('download', 'You need to specify an input image.');
+
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      
+      if (roi === undefined) {
+        print(image.getDownloadURL({ scale: scale  }));
+      } else {
+        print(image.getDownloadURL({ scale: scale, roi: roi  }));
       }
     }
 
