@@ -2674,9 +2674,8 @@
     */
     exports.cloudmask = function (image) {
       // Error handling
-      if (image1 === undefined) error('cloudmask', 'You need to specify an input image.');
-
       if (image === undefined) error('cloudMask', 'You need to specify an input image.');
+      
       var mask = image.select(['fmask']).neq(4);
       return image.updateMask(mask);
     };
