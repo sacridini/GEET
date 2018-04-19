@@ -2658,8 +2658,6 @@
           maxPixels: maxPixels
         });
       }
-
-
     }
 
 
