@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.3
+     * Version: 0.3.4
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2459,7 +2459,7 @@
     */
     exports.ndvi_l5 = function (image) {
       // Error handling
-      if (image1 === undefined) error('ndvi_l5', 'You need to specify an input image.');
+      if (image === undefined) error('ndvi_l5', 'You need to specify an input image.');
 
       var l5_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
       var image_with_ndvi = image.addBands(l5_ndvi);
@@ -2480,7 +2480,7 @@
     */
     exports.ndvi_l7 = function (image) {
       // Error handling
-      if (image1 === undefined) error('ndvi_l7', 'You need to specify an input image.');
+      if (image === undefined) error('ndvi_l7', 'You need to specify an input image.');
 
       var l7_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
       var image_with_ndvi = image.addBands(l7_ndvi);
@@ -2501,7 +2501,7 @@
     */
     exports.ndvi_l8 = function (image) {
       // Error handling
-      if (image1 === undefined) error('ndvi_l8', 'You need to specify an input image.');
+      if (image === undefined) error('ndvi_l8', 'You need to specify an input image.');
 
       var l8_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
       var image_with_ndvi = image.addBands(l8_ndvi);
@@ -2522,7 +2522,7 @@
     */
     exports.ndvi_s2 = function (image) {
       // Error handling
-      if (image1 === undefined) error('ndvi_s2', 'You need to specify an input image.');
+      if (image === undefined) error('ndvi_s2', 'You need to specify an input image.');
 
       var s2_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
       var image_with_ndvi = image.addBands(s2_ndvi);
@@ -2543,7 +2543,7 @@
     */
     exports.prop_veg = function (image) {
       // Error handling
-      if (image1 === undefined) error('prop_veg', 'You need to specify an input image.');
+      if (image === undefined) error('prop_veg', 'You need to specify an input image.');
 
       // var ndvi_max = ndvi_img.reduce(ee.Reducer.max());
       // var ndvi_min = ee.Number(ndvi_img.reduce(ee.Reducer.min()));
@@ -2572,7 +2572,7 @@
     */
     exports.surface_emissivity = function (image) {
       // Error handling
-      if (image1 === undefined) error('surface_emissivity', 'You need to specify an input image.');
+      if (image === undefined) error('surface_emissivity', 'You need to specify an input image.');
 
       var lse = image.expression(
         '(0.004 * pv_img) + 0.986', {
@@ -2597,7 +2597,7 @@
     */
     exports.surface_temperature = function (image) {
       // Error handling
-      if (image1 === undefined) error('surface_temperature', 'You need to specify an input image.');
+      if (image === undefined) error('surface_temperature', 'You need to specify an input image.');
 
       var p = 14380;
       var lse_band = image.select('LSE');
@@ -2633,8 +2633,8 @@
     */
     exports.export_image = function (image, outFilename, scale, maxPixels, roi) {
       // Error handling
-      if (image1 === undefined) error('export_image', 'You need to specify an input image.');
-      if (image1 === undefined) error('export_image', 'You need to specify the output filename.');
+      if (image === undefined) error('export_image', 'You need to specify an input image.');
+      if (image === undefined) error('export_image', 'You need to specify the output filename.');
 
       // Default params
       scale = typeof scale !== 'undefined' ? scale : 30;
@@ -2702,7 +2702,7 @@
     */
     exports.pca = function (image, nbands, scale, maxPixels) {
       // Error handling
-      if (image1 === undefined) error('pca', 'You need to specify an input image.');
+      if (image === undefined) error('pca', 'You need to specify an input image.');
 
       // Default params
       scale = typeof scale !== 'undefined' ? scale : 30;
