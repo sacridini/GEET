@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.4
+     * Version: 0.3.5
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2445,6 +2445,18 @@
       return linearFit;
     }
 
+    // TODO WCI = 100 x NDWI - NDWI_MIN / NDWI_MAX - NDWI_MIN
+    exports.wci = function (ndwi_collection) {
+      var ndwi_min = ndwi_collection.reduce(ee.Reducer.min());
+      var ndwi_max = ndwi_collection.reduce(ee.Reducer.max());
+      var ndwi = ee.Image(ndwi_collection.median());
+      var wci_cima = ndwi.subtract(ndwi_min);
+      var wci_baixo = ndwi_max.subtract(ndwi_min);
+      var wci_div = wci_cima.divide(wci_baixo);
+      var wci = wci_div.multiply(100).rename('WCI');
+      return wci;
+    }
+
 
     /*
       ndvi_l5:
@@ -2646,7 +2658,7 @@
           image: image,
           description: outFilename,
           scale: scale,
-          roi: roi,
+          region: roi,
           maxPixels: maxPixels
         });
       } else {
