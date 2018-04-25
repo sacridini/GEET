@@ -2823,7 +2823,7 @@
       if (roi === undefined) {
         print(image.getDownloadURL({ scale: scale  }));
       } else {
-        print(image.getDownloadURL({ scale: scale, roi: roi  }));
+        print(image.getDownloadURL({ scale: scale, region: roi  }));
       }
     }
 
