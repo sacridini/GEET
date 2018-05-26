@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.5
+     * Version: 0.3.6
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2826,6 +2826,55 @@
         print(image.getDownloadURL({ scale: scale, region: roi  }));
       }
     }
+
+
+        /*
+      brovey_transform:
+      Function make a landsat 8 image fusion for better visualisation
+
+      Params:
+      (ee.Image) image - the input image.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      geet.brovey_transform(img_landsat);
+    */
+    exports.brovey_transform = function (image) {
+      var fusion_b4 = image.expression(
+        '(B4 / B4 + B5 + B6) * B8', 
+        {
+         'B4': image.select('B4'),
+         'B5': image.select('B5'),
+         'B6': image.select('B6'),
+         'B8': image.select('B8')
+        });
+
+      var fusion_b5 = image.expression(
+        '(B5 / B4 + B5 + B6) * B8', 
+        {
+         'B4': image.select('B4'),
+         'B5': image.select('B5'),
+         'B6': image.select('B6'),
+         'B8': image.select('B8')
+        });
+
+      var fusion_b6 = image.expression(
+        '(B6 / B4 + B5 + B6) * B8', 
+        {
+         'B4': image.select('B4'),
+         'B5': image.select('B5'),
+         'B6': image.select('B6'),
+         'B8': image.select('B8')
+        });
+
+      var img_fus = ee.Image.cat(fusion_b6, fusion_b5, fusion_b4);
+      var image_with_fusion = image.addBands(img_fus);
+      return image_with_fusion;    
+    }
+
+      // var sensor_info = ee.String(image.get('SATELLITE'));
+      // if (sensor_info.getInfo() === 'LANDSAT_8') {
+
 
     /* ------------------------ TEST ZONE ------------------------ */
 
