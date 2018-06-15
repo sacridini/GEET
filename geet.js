@@ -2562,8 +2562,8 @@
       var ndvi = image.select('NDVI');
       var propVeg = ndvi.expression(
         '((ndvi - ndvi_min) / (ndvi_max - ndvi_min)) * ((ndvi - ndvi_min) / (ndvi_max - ndvi_min))', {
-          'ndvi_max': 0.7,
-          'ndvi_min': 0.05,
+          'ndvi_max': 1,
+          'ndvi_min': -1,
           'ndvi': ndvi
         }).rename('propVeg');
       var img_with_pv = image.addBands(propVeg);
@@ -2596,8 +2596,8 @@
 
 
     /*
-      surface_temperature:
-      Function calculate the land surface temperature.
+      surface_temperature_ls5:
+      Function calculate the land surface temperature from a Landsat 5.
 
       Params:
       (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
@@ -2605,7 +2605,40 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var surfTemp_img = geet.surface_temperature(img);
+      var surfTemp_img = geet.surface_temperature_ls5(img);
+    */
+/*    exports.surface_temperature_ls5 = function (image) {
+      // Error handling
+      if (image === undefined) error('surface_temperature', 'You need to specify an input image.');
+
+      var p = 14380;
+      var lse_band = image.select('LSE');
+      var lse_log = lse_band.log();
+
+      var lst = image.expression(
+        'BT / 1 + B6 * (BT / p) * lse_log', {
+          'p': p,
+          'BT': image.select('Brightness_Temperature'),
+          'B6': image.select('B6'),
+          'lse_log': lse_log
+        }).rename('LST');
+
+      var image_with_lst = image.addBands(lst);
+      return image_with_lst;
+    }*/
+
+
+     /*
+      surface_temperature:
+      Function calculate the land surface temperature from a Landsat 8.
+
+      Params:
+      (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
+                        NDVI, PropVeg and LSE bands.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var surfTemp_img = geet.surface_temperature_ls8(img);
     */
     exports.surface_temperature = function (image) {
       // Error handling
