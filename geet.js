@@ -2669,7 +2669,7 @@
 
 
      /*
-      surface_temperature:
+      surface_temperature_ls8:
       Function calculate the land surface temperature from a Landsat 8.
 
       Params:
@@ -2683,7 +2683,7 @@
       Reference:
       http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
     */
-    exports.surface_temperature = function (image) {
+    exports.surface_temperature_ls8 = function (image) {
       // Error handling
       if (image === undefined) error('surface_temperature', 'You need to specify an input image.');
 

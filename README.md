@@ -39,7 +39,7 @@ All functions implemented (Version 0.3.8 - Beta):
 [brightness_temp_l7k](#brightness_temp_l7k)  
 [brightness_temp_l7c](#brightness_temp_l7c)  
 [brightness_temp_l8k](#brightness_temp_l8k)  
-[bribrightness_temp_l8c](#bribrightness_temp_l8c)  
+[brightness_temp_l8c](#bribrightness_temp_l8c)  
 [resample](#resample)  
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
@@ -63,8 +63,9 @@ All functions implemented (Version 0.3.8 - Beta):
 [ndvi_l8](#ndvi_l8)  
 [ndviS2](#ndvis2)  
 [prop_veg](#prop_veg)  
-[surface_emissivity](#surface_emissivity)    
-[surface_temperature](#surface_temperature)   
+[surface_emissivity](#surface_emissivity) 
+[surface_temperature_ls5](#surface_temperature_ls5)    
+[surface_temperature_ls8](#surface_temperature_ls8)   
 [export_image](#export_image)      
 [cloudmask](#cloudmask)      
 [pca](#pca)      
@@ -1209,10 +1210,26 @@ _Function calculate the surface emissifity._
 
 ------------------------------------------------------------------------------
 
-#### surface_temperature
+#### surface_temperature_ls5
 (image)  
 
-_Function calculate the land surface temperature._     
+_Function calculate the land surface temperature (Landsat 5)._     
+
+##### Params:
+  (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
+                     NDVI, prop_veg and LSE bands.                            
+  
+##### Usage:
+```js
+    var surfTemp_img = geet.surface_temperature(img);
+```
+
+------------------------------------------------------------------------------
+
+#### surface_temperature_ls8
+(image)  
+
+_Function calculate the land surface temperature (Landsat 8)._     
 
 ##### Params:
   (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
