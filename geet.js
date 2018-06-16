@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.7
+     * Version: 0.3.8
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2710,39 +2710,48 @@
 
       Params:
       (ee.Image) image - the input image.
-      (string) outFilename - the name of the output file that will be exported.
       optional (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.
-      optional (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
       geet.export_image(img, 'output_img');
     */
-    exports.export_image = function (image, outFilename, scale, maxPixels, roi) {
+    exports.export_image = function (image, scale, roi) {
       // Error handling
       if (image === undefined) error('export_image', 'You need to specify an input image.');
       if (image === undefined) error('export_image', 'You need to specify the output filename.');
 
       // Default params
-      scale = typeof scale !== 'undefined' ? scale : 30;
-      maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
+      // scale = typeof scale !== 'undefined' ? scale : 30;
 
-      if (roi !== 'undefined') {
+      if (roi !== 'undefined' && scale !== 'undefined') {
         // Export the image, specifying scale and region.
         Export.image.toDrive({
           image: image,
-          description: outFilename,
           scale: scale,
           region: roi,
-          maxPixels: maxPixels
+          maxPixels: 1e13
         });
-      } else {
+      } else if (scale !== 'undefined') {
+        var bandNames = image.bandNames();
+        var roi = image.geometry(scale);
         // Export the image, specifying scale and region.
         Export.image.toDrive({
           image: image,
-          description: outFilename,
           scale: scale,
-          maxPixels: maxPixels
+          region: roi,
+          maxPixels: 1e13
+        });
+      } else {
+        var bandNames = image.bandNames();
+        var scale = image.select(bandNames.get(1).getInfo()).projection().nominalScale().getInfo();
+        var roi = image.geometry(scale);
+        // Export the image, specifying scale and region.
+        Export.image.toDrive({
+          image: image,
+          scale: scale,
+          region: roi,
+          maxPixels: 1e13
         });
       }
     }
@@ -2896,6 +2905,9 @@
       scale = typeof scale !== 'undefined' ? scale : 30;
       
       if (roi === undefined) {
+        var bandNames = image.bandNames();
+        var scale = image.select(bandNames.get(1).getInfo()).projection().nominalScale().getInfo();
+        var roi = image.geometry(scale);
         print(image.getDownloadURL({ scale: scale  }));
       } else {
         print(image.getDownloadURL({ scale: scale, region: roi  }));
