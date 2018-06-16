@@ -1226,7 +1226,7 @@ _Function calculate the land surface temperature._
 ------------------------------------------------------------------------------
 
 #### export_image
-(image, outFilename, scale, maxPixels)  
+(image, scale, roi)  
 
 _Function to export an image to your Google Drive account._     
 
