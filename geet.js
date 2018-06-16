@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.6
+     * Version: 0.3.7
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1162,9 +1162,8 @@
     };
 
 
-
     /*
-      toa_radiance:
+      toa_radiance_ls5:
       Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance.
 
       Params:
@@ -1173,7 +1172,7 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var new_toa_radiance = geet.toa_radiance(img, 10); // ee.Image
+      var new_toa_radiance = geet.toa_radiance_ls5(img, 10); // ee.Image
 
       Information:
       Formula:     Lλ = MLQcal + AL
@@ -1182,7 +1181,45 @@
       AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
       Qcal         = Quantized and calibrated standard product pixel values (DN)
     */
-    exports.toa_radiance = function (image, band) {
+    exports.toa_radiance_ls5 = function (image, band) {
+      // Error Handling
+      if (image === undefined) error('toa_radiance', 'You need to specify an input image.');
+      if (band === undefined) error('toa_radiance', 'You need to specify the number of the band that you want to process.');
+
+      var band_to_toa = image.select('B' + band.toString());
+      var radiance_multi_band = ee.Number(image.get('RADIANCE_MULT_BAND_' + band.toString())); // Ml
+      var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
+      var toa_radiance = band_to_toa.expression(
+        '(Ml * band) + Al', {
+          'Ml': radiance_multi_band,
+          'Al': radiance_add_band,
+          'band': band_to_toa
+        }).rename('TOA_Radiance');
+      var img_radiance = image.addBands(toa_radiance);
+      return img_radiance;
+    }
+
+
+    /*
+      toa_radiance_ls8:
+      Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance.
+
+      Params:
+      (ee.Image) image - The image to process.
+      (number) band - The number of the band that you want to process.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var new_toa_radiance = geet.toa_radiance_ls8(img, 10); // ee.Image
+
+      Information:
+      Formula:     Lλ = MLQcal + AL
+      Lλ           = TOA spectral radiance (Watts/( m2 * srad * μm))
+      ML           = Band-specific multiplicative rescaling factor from the metadata (RADIANCE_MULT_BAND_x, where x is the band number)
+      AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
+      Qcal         = Quantized and calibrated standard product pixel values (DN)
+    */
+    exports.toa_radiance_ls8 = function (image, band) {
       // Error Handling
       if (image === undefined) error('toa_radiance', 'You need to specify an input image.');
       if (band === undefined) error('toa_radiance', 'You need to specify the number of the band that you want to process.');
@@ -1518,7 +1555,7 @@
 
       Params:
       (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
-      (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
+      (boolean) two_channel - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
@@ -1535,14 +1572,14 @@
       K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
       K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
     */
-    exports.brightness_temp_l8k = function (image, single) {
+    exports.brightness_temp_l8k = function (image, two_channel) {
       // Error Handling
       if (image === undefined) error('brightness_temp_l8k', 'You need to specify an input image.');
-      if (single === undefined) error('brightness_temp_l8k', 'You need to specify an boolean value to process only B10 or B10 and B11.');
+      if (two_channel === undefined) error('brightness_temp_l8k', 'You need to specify an boolean value to process only B10 or B10 and B11.');
 
-      var single = (arguments[1] !== void 1 ? false : true);
+      var two_channel = (arguments[1] !== void 1 ? false : true);
       // default is true - double band (B10 and B11) processing
-      if (single === true) {
+      if (two_channel === true) {
         var K1_10 = ee.Number(image.get('K1_CONSTANT_BAND_10'));
         var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
         var K1_11 = ee.Number(image.get('K1_CONSTANT_BAND_11'));
@@ -1596,7 +1633,7 @@
 
     Params:
     (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
-    (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
+    (boolean) two_channel - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
     
     Usage:
     var geet = require('users/elacerda/geet:geet'); 
@@ -1613,14 +1650,14 @@
     K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
     K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
     */
-    exports.brightness_temp_l8c = function (image, single) {
+    exports.brightness_temp_l8c = function (image, two_channel) {
       // Error Handling
       if (image === undefined) error('brightness_temp_l8c', 'You need to specify an input image.');
-      if (single === undefined) error('brightness_temp_l8c', 'You need to specify an boolean value to process only B10 or B10 and B11.');
+      if (two_channel === undefined) error('brightness_temp_l8c', 'You need to specify an boolean value to process only B10 or B10 and B11.');
 
-      var single = (arguments[1] !== void 1 ? false : true);
+      var two_channel = (arguments[1] !== void 1 ? false : true);
       // false - double band (B10 and B11) processing
-      if (single === false) {
+      if (two_channel === false) {
         var K1_10 = ee.Number(image.get('K1_CONSTANT_BAND_10'));
         var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
         var K1_11 = ee.Number(image.get('K1_CONSTANT_BAND_11'));
@@ -2561,12 +2598,13 @@
       // var ndvi_min = ee.Number(ndvi_img.reduce(ee.Reducer.min()));
       var ndvi = image.select('NDVI');
       var propVeg = ndvi.expression(
-        '((ndvi - ndvi_min) / (ndvi_max - ndvi_min)) * ((ndvi - ndvi_min) / (ndvi_max - ndvi_min))', {
-          'ndvi_max': 1,
-          'ndvi_min': -1,
+        '(ndvi - ndvi_min) / (ndvi_max - ndvi_min)', {
+          'ndvi_max': 0.5,
+          'ndvi_min': 0.2,
           'ndvi': ndvi
-        }).rename('propVeg');
-      var img_with_pv = image.addBands(propVeg);
+        });
+      var propVeg_pow = propVeg.pow(2).rename('propVeg');
+      var img_with_pv = image.addBands(propVeg_pow);
       return img_with_pv;
     }
 
@@ -2606,26 +2644,28 @@
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
       var surfTemp_img = geet.surface_temperature_ls5(img);
+
+      Reference:
+      http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
     */
-/*    exports.surface_temperature_ls5 = function (image) {
+    exports.surface_temperature_ls5 = function (image) {
       // Error handling
-      if (image === undefined) error('surface_temperature', 'You need to specify an input image.');
+      if (image === undefined) error('surface_temperature_ls5', 'You need to specify an input image.');
 
       var p = 14380;
       var lse_band = image.select('LSE');
       var lse_log = lse_band.log();
 
       var lst = image.expression(
-        'BT / 1 + B6 * (BT / p) * lse_log', {
+        'BT / (1 + (11.5 * BT / p) * lse_log)', {
           'p': p,
           'BT': image.select('Brightness_Temperature'),
-          'B6': image.select('B6'),
           'lse_log': lse_log
         }).rename('LST');
 
       var image_with_lst = image.addBands(lst);
       return image_with_lst;
-    }*/
+    }
 
 
      /*
@@ -2639,6 +2679,9 @@
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
       var surfTemp_img = geet.surface_temperature_ls8(img);
+
+      Reference:
+      http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
     */
     exports.surface_temperature = function (image) {
       // Error handling
@@ -2649,10 +2692,9 @@
       var lse_log = lse_band.log();
 
       var lst = image.expression(
-        'BT / 1 + B10 * (BT / p) * lse_log', {
+        'BT / (1 + (10.89 * BT / p) * lse_log)', {
           'p': p,
           'BT': image.select('Brightness_Temperature'),
-          'B10': image.select('B10'),
           'lse_log': lse_log
         }).rename('LST');
 
