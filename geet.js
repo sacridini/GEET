@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.8
+     * Version: 0.3.9
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2634,7 +2634,7 @@
 
 
     /*
-      surface_temperature_ls5:
+      surface_temperature_tm:
       Function calculate the land surface temperature from a Landsat 5.
 
       Params:
@@ -2643,12 +2643,12 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var surfTemp_img = geet.surface_temperature_ls5(img);
+      var surfTemp_img = geet.surface_temperature_tm(img);
 
       Reference:
       http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
     */
-    exports.surface_temperature_ls5 = function (image) {
+    exports.surface_temperature_tm = function (image) {
       // Error handling
       if (image === undefined) error('surface_temperature_ls5', 'You need to specify an input image.');
 
@@ -2669,7 +2669,7 @@
 
 
      /*
-      surface_temperature_ls8:
+      surface_temperature_oli:
       Function calculate the land surface temperature from a Landsat 8.
 
       Params:
@@ -2678,12 +2678,12 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var surfTemp_img = geet.surface_temperature_ls8(img);
+      var surfTemp_img = geet.surface_temperature_oli(img);
 
       Reference:
       http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
     */
-    exports.surface_temperature_ls8 = function (image) {
+    exports.surface_temperature_oli = function (image) {
       // Error handling
       if (image === undefined) error('surface_temperature', 'You need to specify an input image.');
 

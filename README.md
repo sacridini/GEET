@@ -13,7 +13,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.3.8 - Beta):  
+All functions implemented (Version 0.3.9 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -64,8 +64,8 @@ All functions implemented (Version 0.3.8 - Beta):
 [ndviS2](#ndvis2)  
 [prop_veg](#prop_veg)  
 [surface_emissivity](#surface_emissivity)     
-[surface_temperature_ls5](#surface_temperature_ls5)        
-[surface_temperature_ls8](#surface_temperature_ls8)     
+[surface_temperature_tm](#surface_temperature_tm)        
+[surface_temperature_oli](#surface_temperature_oli)     
 [export_image](#export_image)      
 [cloudmask](#cloudmask)      
 [pca](#pca)      
@@ -1210,7 +1210,7 @@ _Function calculate the surface emissifity._
 
 ------------------------------------------------------------------------------
 
-#### surface_temperature_ls5
+#### surface_temperature_tm
 (image)  
 
 _Function calculate the land surface temperature (Landsat 5)._     
@@ -1226,7 +1226,7 @@ _Function calculate the land surface temperature (Landsat 5)._
 
 ------------------------------------------------------------------------------
 
-#### surface_temperature_ls8
+#### surface_temperature_oli
 (image)  
 
 _Function calculate the land surface temperature (Landsat 8)._     
