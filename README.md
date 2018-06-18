@@ -1221,7 +1221,7 @@ _Function calculate the land surface temperature (Landsat 5)._
   
 ##### Usage:
 ```js
-    var surfTemp_img = geet.surface_temperature_ls5(img);
+    var surfTemp_img = geet.surface_temperature_tm(img);
 ```
 
 ------------------------------------------------------------------------------
@@ -1237,7 +1237,7 @@ _Function calculate the land surface temperature (Landsat 8)._
   
 ##### Usage:
 ```js
-    var surfTemp_img = geet.surface_temperature_ls8(img);
+    var surfTemp_img = geet.surface_temperature_oli(img);
 ```
 
 ------------------------------------------------------------------------------
