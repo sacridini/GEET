@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.0
+     * Version: 0.4.1
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -627,6 +627,29 @@
               print('Error: Wrong sensor!');
             }
             break;
+          case 'gli':
+            if (sensor == 'L5' || sensor == 'L7') {
+              var i_gli = image.expression(
+                '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+                  'BLUE': image.select('B1'),
+                  'GREEN': image.select('B2'),
+                  'RED': image.select('B3')
+                }).rename('GLI');
+              var newImage = image.addBands(i_gli);
+              return newImage;
+            } else if (sensor == 'L8') {
+                            var i_gli = image.expression(
+                '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+                  'BLUE': image.select('B2'),
+                  'GREEN': image.select('B3'),
+                  'RED': image.select('B4')
+                }).rename('GLI');
+              var newImage = image.addBands(i_ndbi);
+              return newImage;
+            } else {
+              print('Error: Wrong sensor!');
+            }
+            break;
           case 'evi':
             if (sensor == 'L5' || sensor == 'L7') {
               var i_evi = image.expression(
@@ -730,6 +753,12 @@
           var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
           var i_ndwi = image.normalizedDifference(['B2', 'B5']).rename('NDWI');
           var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
+          var i_gli = image.expression(
+            '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+              'BLUE': image.select('B1'),
+              'GREEN': image.select('B2'),
+              'RED': image.select('B3')
+            }).rename('GLI');
           var i_nrvi = image.expression(
             '(RED/NIR - 1) / (RED/NIR + 1)', {
               'NIR': image.select('B4'),
@@ -759,6 +788,12 @@
           var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
           var i_ndwi = image.normalizedDifference(['B3', 'B6']).rename('NDWI');
           var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
+          var i_gli = image.expression(
+            '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+              'BLUE': image.select('B2'),
+              'GREEN': image.select('B3'),
+              'RED': image.select('B4')
+            }).rename('GLI');
           var i_nrvi = image.expression(
             '(RED/NIR - 1) / (RED/NIR + 1)', {
               'NIR': image.select('B5'),
