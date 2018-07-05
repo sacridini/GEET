@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.3.9
+     * Version: 0.4.0
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -554,8 +554,8 @@
       if (sensor === undefined) error('landsat_indices', 'You need to specify the sensor name.');
 
       if (index != null) {
-        switch (index) {
-          case 'NDVI':
+        switch (index.toLowerCase()) {
+          case 'ndvi':
             if (sensor == 'L5' || sensor == 'L7') {
               var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
               var newImage = image.addBands(i_ndvi);
@@ -572,7 +572,7 @@
               print('Error: Wrong sensor!');
             }
             break;
-          case 'NDWI':
+          case 'ndwi':
             if (sensor == 'L5' || sensor == 'L7') {
               var i_ndwi = image.normalizedDifference(['B3', 'B5']).rename('NDWI');
               var newImage = image.addBands(i_ndwi);
@@ -589,7 +589,7 @@
               print('Error: Wrong sensor!');
             }
             break;
-          case 'NDBI':
+          case 'ndbi':
             if (sensor == 'L5' || sensor == 'L7') {
               var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
               var newImage = image.addBands(i_ndbi);
@@ -606,7 +606,7 @@
               print('Error: Wrong sensor!');
             }
             break;
-          case 'NRVI':
+          case 'nrvi':
             if (sensor == 'L5' || sensor == 'L7') {
               var i_nrvi = image.expression(
                 '(RED/NIR - 1) / (RED/NIR + 1)', {
@@ -627,7 +627,7 @@
               print('Error: Wrong sensor!');
             }
             break;
-          case 'EVI':
+          case 'evi':
             if (sensor == 'L5' || sensor == 'L7') {
               var i_evi = image.expression(
                 '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
@@ -659,7 +659,7 @@
               print('Error: Wrong sensor!');
             }
             break;
-          case 'SAVI':
+          case 'savi':
             if (sensor == 'L5' || sensor == 'L7') {
               var i_savi = image.expression(
                 '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
@@ -691,7 +691,7 @@
               print('Error: Wrong sensor!');
             }
             break;
-          case 'GOSAVI':
+          case 'gosavi':
             if (sensor == 'L5' || sensor == 'L7') {
               var i_gosavi = image.expression(
                 '(NIR - GREEN) / (NIR + GREEN + Y)', {
