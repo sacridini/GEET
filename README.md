@@ -69,7 +69,7 @@ All functions implemented (Version 0.3.9 - Beta):
 [export_image](#export_image)      
 [cloudmask](#cloudmask)      
 [pca](#pca)      
-[geom_filter](#geom_filter)
+[geom_filter](#geom_filter)  
 [tasselledcap_oli](#tasselledcap_oli)      
 
 
@@ -274,7 +274,7 @@ _Function to filter the final classification image and clear the salt n' pepper 
   ------------------------------------------------------------------------------
 
 #### color
-(_color)  
+(_color_)  
 
 _Function to return a valid color value from the object COLOR._ 
 
