@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.1
+     * Version: 0.4.2
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2950,7 +2950,7 @@
     }
 
 
-        /*
+    /*
       brovey_transform:
       Function make a landsat 8 image fusion for better visualisation
 
@@ -2992,6 +2992,53 @@
       var img_fus = ee.Image.cat(fusion_b6, fusion_b5, fusion_b4);
       var image_with_fusion = image.addBands(img_fus);
       return image_with_fusion;    
+    }
+
+
+    /*
+      tasseledcap_oli:
+      Function make a Tasseled Cap on a Landsat 8 image.
+
+      Params:
+      (ee.Image) image - the input image.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var image_tcap = geet.tasseledcap_oli(img);
+    */
+    exports.tasseledcap_oli = function (image) {
+      var Brightness = image.expression(
+        '(BLUE * 0.3029) + (GREEN * 0.2786) + (RED * 0.4733) + (NIR * 0.5599) + (SWIR1 * 0.508) + (SWIR2 * 0.1872)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B6'),
+          'NIR': image.select('B5'),
+          'RED': image.select('B4'),
+          'GREEN': image.select('B3'),
+          'BLUE': image.select('B2')
+      }).rename('Brightness');
+      
+      var Greenness = image.expression(
+        '(BLUE * -0.2941) + (GREEN * -0.243) + (RED * -0.5424) + (NIR * 0.7276) + (SWIR1 * 0.0713) + (SWIR2 * -0.1608)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B6'),
+          'NIR': image.select('B5'),
+          'RED': image.select('B4'),
+          'GREEN': image.select('B3'),
+          'BLUE': image.select('B2')
+      }).rename('Greenness');
+      
+      var Wetness = image.expression(
+        '(BLUE * 0.1511) + (GREEN * 0.1973) + (RED * 0.3283) + (NIR * 0.3407) + (SWIR1 * -0.7117) + (SWIR2 * -0.4559)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B6'),
+          'NIR': image.select('B5'),
+          'RED': image.select('B4'),
+          'GREEN': image.select('B3'),
+          'BLUE': image.select('B2')
+      }).rename('Wetness');
+      
+      var image_idx = image.addBands([Brightness, Greenness, Wetness]);
+      return image_idx;
     }
 
       // var sensor_info = ee.String(image.get('SATELLITE'));
