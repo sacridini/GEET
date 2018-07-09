@@ -2997,7 +2997,7 @@
 
     /*
       tasseledcap_oli:
-      Function make a Tasselled Cap on a Landsat 8 image.
+      Function to create a Tasselled Cap on a Landsat 8 image.
 
       Params:
       (ee.Image) image - the input image.
@@ -3044,7 +3044,7 @@
 
     /*
       tasseledcap_tm5:
-      Function make a Tasselled Cap on a Landsat 5 image.
+      Function to create a Tasselled Cap on a Landsat 5 image.
 
       Params:
       (ee.Image) image - the input image.
@@ -3091,7 +3091,7 @@
 
     /*
       tasseledcap_tm7:
-      Function make a Tasselled Cap on a Landsat 7 image.
+      Function to create a Tasselled Cap on a Landsat 7 image.
 
       Params:
       (ee.Image) image - the input image.

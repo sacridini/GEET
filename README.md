@@ -505,7 +505,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 ------------------------------------------------------------------------------
 
 #### toa_reflectance_l8
-(image, band, _solarAngle)  
+(image, band, _solarAngle_)
 
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance Landsat 8 version with Solar Angle correction._       
 
@@ -1332,7 +1332,7 @@ _Function filter a geometry/feature by value._
 #### tasseledcap_oli
 (image) 
 
-_Function create a Tasselled Cap using an Landsat 8 image._     
+_Function to create a Tasselled Cap using an Landsat 8 image._     
 
 ##### Params:
   (ee.Image) image - the input image.                                   
@@ -1347,7 +1347,7 @@ _Function create a Tasselled Cap using an Landsat 8 image._
 #### tasseledcap_tm5
 (image) 
 
-_Function create a Tasselled Cap using an Landsat 5 image._     
+_Function to create a Tasselled Cap using an Landsat 5 image._     
 
 ##### Params:
   (ee.Image) image - the input image.                                   
@@ -1362,7 +1362,7 @@ _Function create a Tasselled Cap using an Landsat 5 image._
 #### tasseledcap_tm7
 (image) 
 
-_Function create a Tasselled Cap using an Landsat 7 image._     
+_Function to create a Tasselled Cap using an Landsat 7 image._     
 
 ##### Params:
   (ee.Image) image - the input image.                                   
