@@ -13,7 +13,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.3.9 - Beta):  
+All functions implemented (Version 0.4.3 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -70,7 +70,9 @@ All functions implemented (Version 0.3.9 - Beta):
 [cloudmask](#cloudmask)      
 [pca](#pca)      
 [geom_filter](#geom_filter)  
-[tasselledcap_oli](#tasselledcap_oli)      
+[tasseledcap_oli](#tasselledcap_oli)  
+[tasseledcap_tm5](#tasseledcap_tm5)  
+[tasseledcap_tm7](#tasseledcap_tm7)          
 
 
 ------------------------------------------------------------------------------
@@ -1327,7 +1329,7 @@ _Function filter a geometry/feature by value._
 
 ------------------------------------------------------------------------------
 
-#### tasselledcap_oli
+#### tasseledcap_oli
 (image) 
 
 _Function create a Tasselled Cap using an Landsat 8 image._     
@@ -1337,7 +1339,37 @@ _Function create a Tasselled Cap using an Landsat 8 image._
   
 ##### Usage:
 ```js
-      var image_tcap = geet.tasselledcap_oli(img);  
+      var image_tcap = geet.tasseledcap_oli(img);  
+```
+
+------------------------------------------------------------------------------
+
+#### tasseledcap_tm5
+(image) 
+
+_Function create a Tasselled Cap using an Landsat 5 image._     
+
+##### Params:
+  (ee.Image) image - the input image.                                   
+  
+##### Usage:
+```js
+      var image_tcap = geet.tasseledcap_tm5(img);  
+```
+
+------------------------------------------------------------------------------
+
+#### tasseledcap_tm7
+(image) 
+
+_Function create a Tasselled Cap using an Landsat 7 image._     
+
+##### Params:
+  (ee.Image) image - the input image.                                   
+  
+##### Usage:
+```js
+      var image_tcap = geet.tasseledcap_tm7(img);  
 ```
 
 ------------------------------------------------------------------------------

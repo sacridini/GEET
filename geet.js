@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.2
+     * Version: 0.4.3
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2996,7 +2996,7 @@
 
 
     /*
-      tasselledcap_oli:
+      tasseledcap_oli:
       Function make a Tasselled Cap on a Landsat 8 image.
 
       Params:
@@ -3004,9 +3004,9 @@
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var image_tcap = geet.tasselledcap_oli(img);
+      var image_tcap = geet.tasseledcap_oli(img);
     */
-    exports.tasselledcap_oli = function (image) {
+    exports.tasseledcap_oli = function (image) {
       var Brightness = image.expression(
         '(BLUE * 0.3029) + (GREEN * 0.2786) + (RED * 0.4733) + (NIR * 0.5599) + (SWIR1 * 0.508) + (SWIR2 * 0.1872)', {
           'SWIR2': image.select('B7'),
@@ -3035,6 +3035,100 @@
           'RED': image.select('B4'),
           'GREEN': image.select('B3'),
           'BLUE': image.select('B2')
+      }).rename('Wetness');
+      
+      var image_idx = image.addBands([Brightness, Greenness, Wetness]);
+      return image_idx;
+    }
+
+
+    /*
+      tasseledcap_tm5:
+      Function make a Tasselled Cap on a Landsat 5 image.
+
+      Params:
+      (ee.Image) image - the input image.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var image_tcap = geet.tasseledcap_tm5(img);
+    */
+    exports.tasseledcap_tm5 = function (image) {
+      var Brightness = image.expression(
+        '(BLUE * 0.2043) + (GREEN * 0.4158) + (RED * 0.5524) + (NIR * 0.5741) + (SWIR1 * 0.3124) + (SWIR2 * 0.2303)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B5'),
+          'NIR': image.select('B4'),
+          'RED': image.select('B3'),
+          'GREEN': image.select('B2'),
+          'BLUE': image.select('B1')
+      }).rename('Brightness');
+      
+      var Greenness = image.expression(
+        '(BLUE * -0.1603) + (GREEN * -0.2819) + (RED * -0.4934) + (NIR * 0.7940) + (SWIR1 * -0.0002) + (SWIR2 * -0.1446)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B5'),
+          'NIR': image.select('B4'),
+          'RED': image.select('B3'),
+          'GREEN': image.select('B2'),
+          'BLUE': image.select('B1')
+      }).rename('Greenness');
+      
+      var Wetness = image.expression(
+        '(BLUE * 0.0315) + (GREEN * 0.2021) + (RED * 0.3102) + (NIR * 0.1594) + (SWIR1 * -0.6806) + (SWIR2 * -0.6109)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B5'),
+          'NIR': image.select('B4'),
+          'RED': image.select('B3'),
+          'GREEN': image.select('B2'),
+          'BLUE': image.select('B1')
+      }).rename('Wetness');
+      
+      var image_idx = image.addBands([Brightness, Greenness, Wetness]);
+      return image_idx;
+    }
+
+
+    /*
+      tasseledcap_tm7:
+      Function make a Tasselled Cap on a Landsat 7 image.
+
+      Params:
+      (ee.Image) image - the input image.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var image_tcap = geet.tasseledcap_tm7(img);
+    */
+    exports.tasseledcap_tm7 = function (image) {
+      var Brightness = image.expression(
+        '(BLUE * 0.3561) + (GREEN * 0.3972) + (RED * 0.3904) + (NIR * 0.6966) + (SWIR1 * 0.2286) + (SWIR2 * 0.1596)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B5'),
+          'NIR': image.select('B4'),
+          'RED': image.select('B3'),
+          'GREEN': image.select('B2'),
+          'BLUE': image.select('B1')
+      }).rename('Brightness');
+      
+      var Greenness = image.expression(
+        '(BLUE * -0.3344) + (GREEN * -0.3544) + (RED * -0.4556) + (NIR * 0.6966) + (SWIR1 * -0.0242) + (SWIR2 * -0.2630)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B5'),
+          'NIR': image.select('B4'),
+          'RED': image.select('B3'),
+          'GREEN': image.select('B2'),
+          'BLUE': image.select('B1')
+      }).rename('Greenness');
+      
+      var Wetness = image.expression(
+        '(BLUE * 0.2626) + (GREEN * 0.2141) + (RED * 0.0926) + (NIR * 0.0656) + (SWIR1 * -0.7629) + (SWIR2 * -0.5388)', {
+          'SWIR2': image.select('B7'),
+          'SWIR1': image.select('B5'),
+          'NIR': image.select('B4'),
+          'RED': image.select('B3'),
+          'GREEN': image.select('B2'),
+          'BLUE': image.select('B1')
       }).rename('Wetness');
       
       var image_idx = image.addBands([Brightness, Greenness, Wetness]);
