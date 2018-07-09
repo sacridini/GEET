@@ -1330,7 +1330,7 @@ _Function filter a geometry/feature by value._
 #### tasselledcap_oli
 (image) 
 
-_Function make a Tasselled Cap on a Landsat 8 image._     
+_Function create a Tasselled Cap using an Landsat 8 image._     
 
 ##### Params:
   (ee.Image) image - the input image.                                   
