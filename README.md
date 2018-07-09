@@ -69,7 +69,8 @@ All functions implemented (Version 0.3.9 - Beta):
 [export_image](#export_image)      
 [cloudmask](#cloudmask)      
 [pca](#pca)      
-[geom_filter](#geom_filter)      
+[geom_filter](#geom_filter)
+[tasselledcap_oli](#tasselledcap_oli)      
 
 
 ------------------------------------------------------------------------------
@@ -1322,6 +1323,21 @@ _Function filter a geometry/feature by value._
 ##### Usage:
 ```js
       var geom_filtered = geet.geom_filter(geom, 'AreaSqKm', '>', 25000);
+```
+
+------------------------------------------------------------------------------
+
+#### tasselledcap_oli
+(image) 
+
+_Function make a Tasselled Cap on a Landsat 8 image._     
+
+##### Params:
+  (ee.Image) image - the input image.                                   
+  
+##### Usage:
+```js
+      var image_tcap = geet.tasselledcap_oli(img);  
 ```
 
 ------------------------------------------------------------------------------

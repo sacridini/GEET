@@ -2996,17 +2996,17 @@
 
 
     /*
-      tasseledcap_oli:
-      Function make a Tasseled Cap on a Landsat 8 image.
+      tasselledcap_oli:
+      Function make a Tasselled Cap on a Landsat 8 image.
 
       Params:
       (ee.Image) image - the input image.
 
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
-      var image_tcap = geet.tasseledcap_oli(img);
+      var image_tcap = geet.tasselledcap_oli(img);
     */
-    exports.tasseledcap_oli = function (image) {
+    exports.tasselledcap_oli = function (image) {
       var Brightness = image.expression(
         '(BLUE * 0.3029) + (GREEN * 0.2786) + (RED * 0.4733) + (NIR * 0.5599) + (SWIR1 * 0.508) + (SWIR2 * 0.1872)', {
           'SWIR2': image.select('B7'),
