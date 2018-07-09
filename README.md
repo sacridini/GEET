@@ -70,7 +70,7 @@ All functions implemented (Version 0.4.3 - Beta):
 [cloudmask](#cloudmask)      
 [pca](#pca)      
 [geom_filter](#geom_filter)  
-[tasseledcap_oli](#tasselledcap_oli)  
+[tasseledcap_oli](#tasseledcap_oli)  
 [tasseledcap_tm5](#tasseledcap_tm5)  
 [tasseledcap_tm7](#tasseledcap_tm7)          
 
