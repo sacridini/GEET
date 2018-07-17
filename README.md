@@ -147,8 +147,7 @@ _Function to apply Random Forest classification to an image._
 ##### Params:
   (ee.Image) image - The input image to classify.   
   (ee.List) trainingData - Training data (samples).   
-  (string) fieldName - the name of the column that contains the class names.   
-  **optional** (ee.Number) numOfTrees - the number of trees that the model will create.         
+  (string) fieldName - the name of the column that contains the class names.           
   
 ##### Usage:
 ```js
@@ -158,15 +157,15 @@ _Function to apply Random Forest classification to an image._
  ------------------------------------------------------------------------------
 
  #### naive_bayes
-(image, trainingData, fieldName, numOfTrees)  
+(image, trainingData, fieldName, scale)  
 
 _Function to apply the Fast Naive Bayes classification to a image._ 
 
 ##### Params:
-  (ee.Image) image - The input image to classify.   
-  (ee.List) trainingData - Training data (samples).   
-  (string) fieldName - the name of the column that contains the class names.   
-  **optional** (ee.Number) numOfTrees - the number of trees that the model will create.         
+  (ee.Image) image - The input image to classify.       
+  (ee.List) trainingData - Training data (samples).     
+  **optional** (string) fieldName - The name of the column that contains the class names.    
+  **optional** (number) scale - The spatial resolution of the input image. Default is 30 (landsat).   
   
 ##### Usage:
 ```js
@@ -176,15 +175,15 @@ _Function to apply the Fast Naive Bayes classification to a image._
  ------------------------------------------------------------------------------
 
  #### gmo_max_ent
-(image, trainingData, fieldName, numOfTrees)  
+(image, trainingData, fieldName, scale) 
 
 _Function to apply the GMO Maximum Entropy classification to a image._ 
 
 ##### Params:
-  (ee.Image) image - The input image to classify.   
-  (ee.List) trainingData - Training data (samples).   
-  (string) fieldName - the name of the column that contains the class names.   
-  **optional** (ee.Number) numOfTrees - the number of trees that the model will create.         
+  (ee.Image) image - The input image to classify.       
+  (ee.List) trainingData - Training data (samples).     
+  **optional** (string) fieldName - The name of the column that contains the class names.    
+  **optional** (number) scale - The spatial resolution of the input image. Default is 30 (landsat).     
   
 ##### Usage:
 ```js
