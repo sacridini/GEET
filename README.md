@@ -13,10 +13,12 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.4.3 - Beta):  
+All functions implemented (Version 0.4.4 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
+[naive_bayes](#naive_bayes)  
+[gmo_max_ent](#gmo_max_ent)    
 [kmeans](#kmeans)   
 [ndvi_change_detection](#ndvi_change_detection)  
 [ndwi_change_detection](#ndwi_change_detection)  
@@ -151,6 +153,42 @@ _Function to apply Random Forest classification to an image._
 ##### Usage:
 ```js
     var imgClass = geet.rf(image, samplesfc, landcover, 10);   
+```
+  
+ ------------------------------------------------------------------------------
+
+ #### naive_bayes
+(image, trainingData, fieldName, numOfTrees)  
+
+_Function to apply the Fast Naive Bayes classification to a image._ 
+
+##### Params:
+  (ee.Image) image - The input image to classify.   
+  (ee.List) trainingData - Training data (samples).   
+  (string) fieldName - the name of the column that contains the class names.   
+  **optional** (ee.Number) numOfTrees - the number of trees that the model will create.         
+  
+##### Usage:
+```js
+    var imgClass = geet.naive_bayes(image, samplesfc, landcover, 10);   
+```
+  
+ ------------------------------------------------------------------------------
+
+ #### gmo_max_ent
+(image, trainingData, fieldName, numOfTrees)  
+
+_Function to apply the GMO Maximum Entropy classification to a image._ 
+
+##### Params:
+  (ee.Image) image - The input image to classify.   
+  (ee.List) trainingData - Training data (samples).   
+  (string) fieldName - the name of the column that contains the class names.   
+  **optional** (ee.Number) numOfTrees - the number of trees that the model will create.         
+  
+##### Usage:
+```js
+    var imgClass = geet.gmo_max_ent(image, samplesfc, landcover, 10);   
 ```
   
  ------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.3
+     * Version: 0.4.4
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -54,6 +54,7 @@
       var classified = image.classify(trained);
       return classified;
     };
+
 
     /*
       cart:
@@ -131,6 +132,85 @@
       var classified = image.classify(classifier);
       return classified;
     };
+
+
+    /*
+      naive_bayes:
+      Function to apply the Fast Naive Bayes classification to a image.
+
+      Params:
+      (ee.Image) image - The input image to classify.
+      (ee.List) trainingData - Training data (samples).
+      (string) fieldName - The name of the column that contains the class names.
+      optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var imgClass = geet.naive_bayes(image, samplesfc, landcover);
+    */
+    exports.naive_bayes = function (image, trainingData, fieldName, scale) {
+      // Error Handling
+      if (image === undefined) error('naive_bayes', 'You need to specify an input image.');
+      if (trainingData === undefined) error('naive_bayes', 'You need to specify the training data.');
+      if (fieldName === undefined) error('naive_bayes', 'You need to specify the field name.');
+
+      // Default params
+      scale = typeof scale !== 'undefined' ? scale : 30;
+
+      var training = image.sampleRegions({
+        collection: trainingData,
+        properties: [fieldName],
+        scale: scale
+      });
+
+      var classifier = ee.Classifier.naive_bayes().train({
+        features: training,
+        classProperty: fieldName
+      });
+
+      var classified = image.classify(classifier);
+      return classified;
+    };
+
+
+    /*
+      gmo_max_ent:
+      Function to apply the GMO Maximum Entropy classification to a image.
+
+      Params:
+      (ee.Image) image - The input image to classify.
+      (ee.List) trainingData - Training data (samples).
+      (string) fieldName - The name of the column that contains the class names.
+      optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var imgClass = geet.gmo_max_ent(image, samplesfc, landcover);
+    */
+    exports.gmo_max_ent = function (image, trainingData, fieldName, scale) {
+      // Error Handling
+      if (image === undefined) error('gmo_max_ent', 'You need to specify an input image.');
+      if (trainingData === undefined) error('gmo_max_ent', 'You need to specify the training data.');
+      if (fieldName === undefined) error('gmo_max_ent', 'You need to specify the field name.');
+
+      // Default params
+      scale = typeof scale !== 'undefined' ? scale : 30;
+
+      var training = image.sampleRegions({
+        collection: trainingData,
+        properties: [fieldName],
+        scale: scale
+      });
+
+      var classifier = ee.Classifier.gmo_max_ent().train({
+        features: training,
+        classProperty: fieldName
+      });
+
+      var classified = image.classify(classifier);
+      return classified;
+    };
+
 
     /*
       kmeans:
