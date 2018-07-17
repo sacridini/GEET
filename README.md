@@ -74,7 +74,7 @@ All functions implemented (Version 0.4.5 - Beta):
 [geom_filter](#geom_filter)  
 [tasseledcap_oli](#tasseledcap_oli)  
 [tasseledcap_tm5](#tasseledcap_tm5)  
-[tasseledcap_tm7](#tasseledcap_tm7) 
+[tasseledcap_tm7](#tasseledcap_tm7)  
 [tasseledcap_s2](#tasseledcap_s2)           
 
 
