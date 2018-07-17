@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.4
+     * Version: 0.4.5
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -3209,6 +3209,53 @@
           'RED': image.select('B3'),
           'GREEN': image.select('B2'),
           'BLUE': image.select('B1')
+      }).rename('Wetness');
+      
+      var image_idx = image.addBands([Brightness, Greenness, Wetness]);
+      return image_idx;
+    }
+
+
+    /*
+      tasseledcap_s2:
+      Function to create a Tasselled Cap on a Sentinel 2 image.
+
+      Params:
+      (ee.Image) image - the input image.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var image_tcap = geet.tasseledcap_s2(img);
+    */
+    exports.tasseledcap_s2 = function (image) {
+      var Brightness = image.expression(
+        '(BLUE * 0.3037) + (GREEN * 0.2793) + (RED * 0.4743) + (NIR * 0.5585) + (SWIR1 * 0.5082) + (SWIR2 * 0.1863)', {
+          'SWIR2': image.select('B12'),
+          'SWIR1': image.select('B11'),
+          'NIR': image.select('B8'),
+          'RED': image.select('B4'),
+          'GREEN': image.select('B3'),
+          'BLUE': image.select('B2')
+      }).rename('Brightness');
+      
+      var Greenness = image.expression(
+        '(BLUE * -0.2848) + (GREEN * -0.243) + (RED * -0.5436) + (NIR * 0.7243) + (SWIR1 * -0.0840) + (SWIR2 * -0.1800)', {
+          'SWIR2': image.select('B12'),
+          'SWIR1': image.select('B11'),
+          'NIR': image.select('B8'),
+          'RED': image.select('B4'),
+          'GREEN': image.select('B3'),
+          'BLUE': image.select('B2')
+      }).rename('Greenness');
+      
+      var Wetness = image.expression(
+        '(BLUE * 0.1509) + (GREEN * 0.1973) + (RED * 0.3279) + (NIR * 0.3406) + (SWIR1 * -0.7112) + (SWIR2 * -0.4572)', {
+          'SWIR2': image.select('B12'),
+          'SWIR1': image.select('B11'),
+          'NIR': image.select('B8'),
+          'RED': image.select('B4'),
+          'GREEN': image.select('B3'),
+          'BLUE': image.select('B2')
       }).rename('Wetness');
       
       var image_idx = image.addBands([Brightness, Greenness, Wetness]);

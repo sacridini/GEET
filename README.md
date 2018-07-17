@@ -13,7 +13,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.4.4 - Beta):  
+All functions implemented (Version 0.4.5 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -74,7 +74,8 @@ All functions implemented (Version 0.4.4 - Beta):
 [geom_filter](#geom_filter)  
 [tasseledcap_oli](#tasseledcap_oli)  
 [tasseledcap_tm5](#tasseledcap_tm5)  
-[tasseledcap_tm7](#tasseledcap_tm7)          
+[tasseledcap_tm7](#tasseledcap_tm7) 
+[tasseledcap_s2](#tasseledcap_s2)           
 
 
 ------------------------------------------------------------------------------
@@ -1418,6 +1419,21 @@ _Function to create a Tasselled Cap using an Landsat 7 image._
 ##### Usage:
 ```js
       var image_tcap = geet.tasseledcap_tm7(img);  
+```
+
+------------------------------------------------------------------------------
+
+#### tasseledcap_s2
+(image) 
+
+_Function to create a Tasselled Cap on a Sentinel 2 image._     
+
+##### Params:
+  (ee.Image) image - the input image.                                   
+  
+##### Usage:
+```js
+      var image_tcap = geet.tasseledcap_s2(img);  
 ```
 
 ------------------------------------------------------------------------------
