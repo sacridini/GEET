@@ -169,7 +169,13 @@ _Function to apply the Fast Naive Bayes classification to a image._
   
 ##### Usage:
 ```js
-    var imgClass = geet.naive_bayes(image, samplesfc, landcover, 10);   
+    var imgClass = geet.naive_bayes(image, samplesfc, landcover);    
+```
+  
+  or
+
+```js
+    var imgClass = geet.naive_bayes(image, samplesfc, landcover, 30);  
 ```
   
  ------------------------------------------------------------------------------
@@ -187,7 +193,13 @@ _Function to apply the GMO Maximum Entropy classification to a image._
   
 ##### Usage:
 ```js
-    var imgClass = geet.gmo_max_ent(image, samplesfc, landcover, 10);   
+    var imgClass = geet.gmo_max_ent(image, samplesfc, landcover);   
+```
+  
+  or
+
+```js
+   var imgClass = geet.naive_bayes(image, samplesfc, landcover, 30);   
 ```
   
  ------------------------------------------------------------------------------
@@ -209,7 +221,6 @@ _Function to apply RandomForest classification to an image._
     var imgClass = geet.kmeans(image, roi);    
 ```
   
-
   or
 
 ```js
