@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.5
+     * Version: 0.4.6
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2831,44 +2831,23 @@
       var geet = require('users/elacerda/geet:geet'); 
       geet.export_image(img, 'output_img');
     */
-    exports.export_image = function (image, scale, roi) {
+    exports.export_image = function (image, scale) {
       // Error handling
       if (image === undefined) error('export_image', 'You need to specify an input image.');
       if (image === undefined) error('export_image', 'You need to specify the output filename.');
 
       // Default params
       // scale = typeof scale !== 'undefined' ? scale : 30;
+      var bandNames = image.bandNames();
+      var scale = image.select(bandNames.get(1).getInfo()).projection().nominalScale().getInfo();
+      // var roi = image.geometry(scale);
 
-      if (roi !== 'undefined' && scale !== 'undefined') {
-        // Export the image, specifying scale and region.
-        Export.image.toDrive({
+      Export.image.toDrive({
           image: image,
           scale: scale,
           region: roi,
           maxPixels: 1e13
         });
-      } else if (scale !== 'undefined') {
-        var bandNames = image.bandNames();
-        var roi = image.geometry(scale);
-        // Export the image, specifying scale and region.
-        Export.image.toDrive({
-          image: image,
-          scale: scale,
-          region: roi,
-          maxPixels: 1e13
-        });
-      } else {
-        var bandNames = image.bandNames();
-        var scale = image.select(bandNames.get(1).getInfo()).projection().nominalScale().getInfo();
-        var roi = image.geometry(scale);
-        // Export the image, specifying scale and region.
-        Export.image.toDrive({
-          image: image,
-          scale: scale,
-          region: roi,
-          maxPixels: 1e13
-        });
-      }
     }
 
 
