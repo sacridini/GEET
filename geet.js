@@ -2837,15 +2837,14 @@
       if (image === undefined) error('export_image', 'You need to specify the output filename.');
 
       // Default params
-      // scale = typeof scale !== 'undefined' ? scale : 30;
-      var bandNames = image.bandNames();
-      var scale = image.select(bandNames.get(1).getInfo()).projection().nominalScale().getInfo();
+      scale = typeof scale !== 'undefined' ? scale : 30;
+      // var bandNames = image.bandNames();
+      // var scale = image.select(bandNames.get(1).getInfo()).projection().nominalScale().getInfo();
       // var roi = image.geometry(scale);
 
       Export.image.toDrive({
           image: image,
           scale: scale,
-          region: roi,
           maxPixels: 1e13
         });
     }
