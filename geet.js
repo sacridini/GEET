@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.6
+     * Version: 0.4.7
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1278,7 +1278,7 @@
 
 
     /*
-      toa_radiance_ls5:
+      toa_radiance:
       Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance.
 
       Params:
@@ -1296,7 +1296,7 @@
       AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
       Qcal         = Quantized and calibrated standard product pixel values (DN)
     */
-    exports.toa_radiance_ls5 = function (image, band) {
+    exports.toa_radiance = function (image, band) {
       // Error Handling
       if (image === undefined) error('toa_radiance', 'You need to specify an input image.');
       if (band === undefined) error('toa_radiance', 'You need to specify the number of the band that you want to process.');
@@ -1314,43 +1314,6 @@
       return img_radiance;
     }
 
-
-    /*
-      toa_radiance_ls8:
-      Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance.
-
-      Params:
-      (ee.Image) image - The image to process.
-      (number) band - The number of the band that you want to process.
-
-      Usage:
-      var geet = require('users/elacerda/geet:geet'); 
-      var new_toa_radiance = geet.toa_radiance_ls8(img, 10); // ee.Image
-
-      Information:
-      Formula:     Lλ = MLQcal + AL
-      Lλ           = TOA spectral radiance (Watts/( m2 * srad * μm))
-      ML           = Band-specific multiplicative rescaling factor from the metadata (RADIANCE_MULT_BAND_x, where x is the band number)
-      AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
-      Qcal         = Quantized and calibrated standard product pixel values (DN)
-    */
-    exports.toa_radiance_ls8 = function (image, band) {
-      // Error Handling
-      if (image === undefined) error('toa_radiance', 'You need to specify an input image.');
-      if (band === undefined) error('toa_radiance', 'You need to specify the number of the band that you want to process.');
-
-      var band_to_toa = image.select('B' + band.toString());
-      var radiance_multi_band = ee.Number(image.get('RADIANCE_MULT_BAND_' + band.toString())); // Ml
-      var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
-      var toa_radiance = band_to_toa.expression(
-        '(Ml * band) + Al', {
-          'Ml': radiance_multi_band,
-          'Al': radiance_add_band,
-          'band': band_to_toa
-        }).rename('TOA_Radiance');
-      var img_radiance = image.addBands(toa_radiance);
-      return img_radiance;
-    }
 
     /*
       toa_reflectance:
