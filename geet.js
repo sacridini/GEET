@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.7
+     * Version: 0.4.8
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1186,7 +1186,6 @@
       optional (number) year - the year of the image that you want to get.
       optional (list) roi - the latitude and longitude of a roi.
       optional (bool) cloudFree - true for cloud mask processing and mean calculation. 
-                                  cloudFree only works with TOA data.
       
       Usage:
       var geet = require('users/elacerda/geet:geet'); 
@@ -1248,9 +1247,12 @@
       var finish = '-12-31';
       var ic = ee.ImageCollection(collection);
 
-      if (cloudFree === true && collection === 'TOA') {
+      if (cloudFree === true) {
         var noclouds = function (image) {
-          var mask = image.select(['fmask']).neq(4);
+          // var mask = image.select(['fmask']).neq(4);
+          // return image.updateMask(mask);
+          var scored = ee.Algorithms.Landsat.simpleCloudScore(image);
+          var mask = scored.select(['cloud']).lte(20);
           return image.updateMask(mask);
         };
 

@@ -483,7 +483,7 @@ _Function to take an input image and generate indexes using the Sentinel 2 datas
 ------------------------------------------------------------------------------
 
 #### load_image
-(collection, year, roi, title)  
+(collection, year, roi, cloudfree)  
 
 _Function to get an example image to debug or test some code._     
 
@@ -491,7 +491,7 @@ _Function to get an example image to debug or test some code._
   **optional** (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.  
   **optional** (number) year - the year of the image that you want to get.  
   **optional** (list) roi - the latitude and longitude of a roi.  
-  **optional** (string) title - the title of the plotted image.                          
+  **optional** (bool) cloudFree - true for cloud mask processing and mean calculation.                           
   
 ##### Usage:
 ```js 
