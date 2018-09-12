@@ -1295,7 +1295,7 @@ _Function calculate the land surface temperature (Landsat 8)._
 ------------------------------------------------------------------------------
 
 #### export_image
-(image, scale, roi)  
+(image, scale)  
 
 _Function to export an image to your Google Drive account._     
 
