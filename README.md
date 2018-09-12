@@ -1305,19 +1305,13 @@ _Function to export an image to your Google Drive account._
   
 ##### Usage:
 ```js
-    geet.export_image(img, 'output_classification');
+    geet.export_image(img);
 ```
 
 or
 
 ```js
-    geet.export_image(img, 'output_sentinel2_classification', 10);
-```
-
-or 
-
-```js
-    geet.export_image(img, 'output_sentinel2_classification', 10, 1e13);
+    geet.export_image(sentinel2_img, 10);
 ```
 
 ------------------------------------------------------------------------------
