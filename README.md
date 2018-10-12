@@ -212,7 +212,7 @@ _Function to apply RandomForest classification to an image._
 
 ##### Params:
   (ee.Image) image - The input image to classify.     
-  (list) roi - Coordenates or just a polygon of the sample area.   
+  (list) roi - A polygon containing the study area.
   **optional** (number) _numClusters - the number of clusters that will be used. Default is 15.  
   **optional** (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.  
   **optional** (number) _numPixels - the number of pixels that the classifier will take samples from the roi.           
