@@ -1,5 +1,7 @@
 # GEET (Google Earth Engine Toolbox)
 
+[![DOI](https://zenodo.org/badge/105400884.svg)](https://zenodo.org/badge/latestdoi/105400884)
+
 Google Earth Engine website: https://earthengine.google.com/  
 JavaScript Code Editor: https://code.earthengine.google.com/  
 Documentation: https://developers.google.com/earth-engine/  
