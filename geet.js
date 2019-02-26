@@ -2848,17 +2848,16 @@
       var masked_img = geet.cloudmask_sr(img, QA);
     */
     exports.cloudmask_sr = function (original_image, qa_band) {
-      // Error handling
-      // if (image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
+      Error handling
+      if (original_image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
+      if (qa_band === undefined) error('cloudmask_sr', 'You need to specify an input QA band.');
 
       var getQABits = function(qa_band, start, end, newName) {
-          // Compute the bits we need to extract.
           var pattern = 0;
           for (var i = start; i <= end; i++) {
              pattern += Math.pow(2, i);
           }
-          // Return a single band image of the extracted QA bits, giving the band
-          // a new name.
+
           return qa_band.select([0], [newName])
                         .bitwiseAnd(pattern)
                         .rightShift(start);
