@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.8
+     * Version: 0.4.9
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -2828,10 +2828,41 @@
     */
     exports.cloudmask = function (image) {
       // Error handling
-      if (image === undefined) error('cloudMask', 'You need to specify an input image.');
+      if (image === undefined) error('cloudmask', 'You need to specify an input image.');
       
       var mask = image.select(['fmask']).neq(4);
       return image.updateMask(mask);
+    };
+
+
+    /*
+      cloudmask_sr:
+      Function create a cloud mask from a Landsat input image.
+
+      Params:
+      (ee.Image) image - the input image.
+      (ee.Number) start - the start BQA bit flag.
+      (ee.Number) end - the end BQA bit flag.
+      (string) new_name - the new name for the cleaned image.
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var cloudmask_img = geet.cloudmask_sr(img, 3, 3, 'cloud_shadows');
+    */
+    exports.cloudmask_sr = function (image, start, end, new_name) {
+      // Error handling
+      if (image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
+
+
+      var getQABits = function(image, start, end, newName) {
+      pattern = 0;
+      for (vr i = start; i <= end; i++) {
+        pattern += Math.powe(2, i);
+      }
+
+      // Return a single band image of the extracted QA bits, giving the band
+      // a new name.
+        return image.select([0], [new_name]).bitwiseAnd(pattern).rightShift(start);
     };
 
 
