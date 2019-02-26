@@ -2835,12 +2835,13 @@
     };
 
 
+    // TODO:
     /*
       cloudmask_sr:
       Function create a cloud mask from a Landsat input image.
 
       Params:
-      (ee.Image) image - the input image.
+      (ee.Image) image - the input image (pixel_qa band).
       (ee.Number) start - the start BQA bit flag.
       (ee.Number) end - the end BQA bit flag.
       (string) new_name - the new name for the cleaned image.
