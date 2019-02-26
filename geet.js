@@ -2855,7 +2855,7 @@
 
       pattern = 0;
       for (vr i = start; i <= end; i++) {
-        pattern += Math.powe(2, i);
+        pattern += Math.pow(2, i);
       }
 
       // Return a single band image of the extracted QA bits, giving the band
