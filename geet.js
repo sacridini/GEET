@@ -2853,8 +2853,6 @@
       // Error handling
       if (image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
 
-
-      var getQABits = function(image, start, end, newName) {
       pattern = 0;
       for (vr i = start; i <= end; i++) {
         pattern += Math.powe(2, i);
