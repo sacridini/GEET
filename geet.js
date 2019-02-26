@@ -2823,7 +2823,6 @@
       (ee.Image) image - the input image.
 
       Usage:
-      var geet = require('users/elacerda/geet:geet'); 
       var cloudmask_img = geet.cloudmask(img);
     */
     exports.cloudmask = function (image) {
@@ -2841,18 +2840,18 @@
 
       Params:
       (ee.Image) original_image - the original input image with all the bands.
-      (ee.Image) qa_image - the input image (pixel_qa band).
+      (ee.Image) qa_band - the input QA band (pixel_qa band).
 
       Usage:
       var img = images.first();
       var QA = img.select(['pixel_qa']);
       var masked_img = geet.cloudmask_sr(img, QA);
     */
-    exports.cloudmask_sr = function (original_image, qa_image) {
+    exports.cloudmask_sr = function (original_image, qa_band) {
       // Error handling
       // if (image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
 
-      var getQABits = function(qa_image, start, end, newName) {
+      var getQABits = function(qa_band, start, end, newName) {
           // Compute the bits we need to extract.
           var pattern = 0;
           for (var i = start; i <= end; i++) {
@@ -2860,13 +2859,13 @@
           }
           // Return a single band image of the extracted QA bits, giving the band
           // a new name.
-          return qa_image.select([0], [newName])
+          return qa_band.select([0], [newName])
                         .bitwiseAnd(pattern)
                         .rightShift(start);
       };
 
-      var cs = getQABits(qa_image, 3,3, 'Cloud_shadows').eq(0);
-      var c = getQABits(qa_image, 5,5, 'Cloud').eq(0);
+      var cs = getQABits(qa_band, 3,3, 'Cloud_shadows').eq(0);
+      var c = getQABits(qa_band, 5,5, 'Cloud').eq(0);
 
       original_image = original_image.updateMask(cs);
       return original_image.updateMask(c);

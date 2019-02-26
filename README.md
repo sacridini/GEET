@@ -1341,7 +1341,7 @@ _Function create a cloud mask from a Surface Reflectance Landsat input image._
 
 ##### Params:
   (ee.Image) original_image - the original input image with all the bands.  
-  (ee.Image) qa_image - the input image (pixel_qa band).  
+  (ee.Image) qa_band - the input QA band (pixel_qa band).  
                            
   
 ##### Usage:
