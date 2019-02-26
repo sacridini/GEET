@@ -2849,17 +2849,28 @@
       var geet = require('users/elacerda/geet:geet'); 
       var cloudmask_img = geet.cloudmask_sr(img, 3, 3, 'cloud_shadows');
     */
-    exports.cloudmask_sr = function (image, start, end, new_name) {
+    exports.cloudmask_sr = function (original_image, qa_image) {
       // Error handling
-      if (image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
+      // if (image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
 
-      var pattern = 0;
-      for (var i = start; i <= end; i++) {
-        pattern += Math.pow(2, i);
-      }
+      var getQABits = function(qa_image, start, end, newName) {
+          // Compute the bits we need to extract.
+          var pattern = 0;
+          for (var i = start; i <= end; i++) {
+             pattern += Math.pow(2, i);
+          }
+          // Return a single band image of the extracted QA bits, giving the band
+          // a new name.
+          return qa_image.select([0], [newName])
+                        .bitwiseAnd(pattern)
+                        .rightShift(start);
+      };
 
-      var clouds = image.select([0], [new_name]).bitwiseAnd(pattern).rightShift(start);
-      return image.updateMask(clouds);
+      var cs = getQABits(qa_image, 3,3, 'Cloud_shadows').eq(0);
+      var c = getQABits(qa_image, 5,5, 'Cloud').eq(0);
+
+      original_image = original_image.updateMask(cs);
+      return original_image.updateMask(c);
     };
 
 
