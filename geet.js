@@ -2835,7 +2835,6 @@
     };
 
 
-    // TODO:
     /*
       cloudmask_sr:
       Function create a cloud mask from a Landsat input image.
@@ -2855,13 +2854,12 @@
       if (image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
 
       pattern = 0;
-      for (vr i = start; i <= end; i++) {
+      for (var i = start; i <= end; i++) {
         pattern += Math.pow(2, i);
       }
 
-      // Return a single band image of the extracted QA bits, giving the band
-      // a new name.
-        return image.select([0], [new_name]).bitwiseAnd(pattern).rightShift(start);
+      var clouds = image.select([0], [new_name]).bitwiseAnd(pattern).rightShift(start);
+      return image.updateMask(clouds);
     };
 
 
