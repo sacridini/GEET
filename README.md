@@ -15,7 +15,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.4.8 - Beta):  
+All functions implemented (Version 0.4.9 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -71,7 +71,8 @@ All functions implemented (Version 0.4.8 - Beta):
 [surface_temperature_tm](#surface_temperature_tm)        
 [surface_temperature_oli](#surface_temperature_oli)     
 [export_image](#export_image)      
-[cloudmask](#cloudmask)      
+[cloudmask](#cloudmask)    
+[cloudmask_sr](#cloudmask_sr)      
 [pca](#pca)      
 [geom_filter](#geom_filter)  
 [tasseledcap_oli](#tasseledcap_oli)  
@@ -1329,6 +1330,26 @@ _Function create a cloud mask from a Landsat input image._
 ##### Usage:
 ```js
     var cloudmask_img = geet.cloudmask(img);
+```
+
+------------------------------------------------------------------------------
+
+#### cloudmask_sr
+(image, start, end, new_name)   
+
+_Function create a cloud mask from a Surface Reflectance Landsat input image._     
+
+##### Params:
+  (ee.Image) image - the input image (pixel_qa band).  
+  (ee.Number) start - the start BQA bit flag.  
+  (ee.Number) end - the end BQA bit flag.  
+  (string) new_name - the new name for the cleaned image.  
+                           
+  
+##### Usage:
+```js  
+    var QA = img.select(['pixel_qa']);  
+    var cloudmask_img = geet.cloudmask_sr(QA, 5, 5, 'cloud_mask');  
 ```
 
 ------------------------------------------------------------------------------
