@@ -2837,7 +2837,7 @@
 
     /*
       cloudmask_sr:
-      Function create a cloud mask from a Landsat input image.
+      Function create a cloud mask from a Surface Reflectance Landsat input image.
 
       Params:
       (ee.Image) image - the input image (pixel_qa band).
@@ -2853,7 +2853,7 @@
       // Error handling
       if (image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
 
-      pattern = 0;
+      var pattern = 0;
       for (var i = start; i <= end; i++) {
         pattern += Math.pow(2, i);
       }
