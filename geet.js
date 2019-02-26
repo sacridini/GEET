@@ -2840,14 +2840,13 @@
       Function create a cloud mask from a Surface Reflectance Landsat input image.
 
       Params:
-      (ee.Image) image - the input image (pixel_qa band).
-      (ee.Number) start - the start BQA bit flag.
-      (ee.Number) end - the end BQA bit flag.
-      (string) new_name - the new name for the cleaned image.
+      (ee.Image) original_image - the original input image with all the bands.
+      (ee.Image) qa_image - the input image (pixel_qa band).
 
       Usage:
-      var geet = require('users/elacerda/geet:geet'); 
-      var cloudmask_img = geet.cloudmask_sr(img, 3, 3, 'cloud_shadows');
+      var img = images.first();
+      var QA = img.select(['pixel_qa']);
+      var masked_img = geet.cloudmask_sr(img, QA);
     */
     exports.cloudmask_sr = function (original_image, qa_image) {
       // Error handling
