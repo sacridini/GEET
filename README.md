@@ -35,7 +35,7 @@ All functions implemented (Version 0.5.0 - Beta):
 [landsat_indices](#landsat_indices)  
 [sentinel2_indices](#sentinel2_indices)  
 [load_image](#load_image)      
-[collection2image](#collection2image)
+[collection2image](#collection2image)  
 [toa_radiance](#toa_radiance)  
 [toa_reflectance](#toa_reflectance)  
 [toa_reflectance_l8](#toa_reflectance_l8)  
