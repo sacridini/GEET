@@ -1294,7 +1294,7 @@
     exports.collection2image = function (image, previous) {
       return ee.Image(previous).addBands(image);
     };
-
+ 
 
     /*
       toa_radiance:
