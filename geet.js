@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.4.9
+     * Version: 0.5.0
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1276,6 +1276,23 @@
       Map.addLayer(result_image, visParams, titleName);
       print(result_image);
       return result_image;
+    };
+
+
+    /*
+      collection2image:
+      Function to merge all imagens of one image collection into a single band. 
+
+      Params:
+      (ee.Image) image - The image of the image collection to add as a band.
+      (ee.Image) previous - The output image.
+      
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var merged_image = image_collection.iterate(geet.collection2image, ee.Image([]));
+    */
+    exports.collection2image = function (image, previous) {
+      return ee.Image(previous).addBands(image);
     };
 
 
@@ -2848,7 +2865,7 @@
       var masked_img = geet.cloudmask_sr(img, QA);
     */
     exports.cloudmask_sr = function (original_image, qa_band) {
-      Error handling
+      // Error handling
       if (original_image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
       if (qa_band === undefined) error('cloudmask_sr', 'You need to specify an input QA band.');
 

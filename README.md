@@ -15,7 +15,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.4.9 - Beta):  
+All functions implemented (Version 0.5.0 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -34,7 +34,8 @@ All functions implemented (Version 0.4.9 - Beta):
 [plot_class](#plot_class)  
 [landsat_indices](#landsat_indices)  
 [sentinel2_indices](#sentinel2_indices)  
-[load_image](#load_image)  
+[load_image](#load_image)      
+[collection2image](#collection2image)
 [toa_radiance](#toa_radiance)  
 [toa_reflectance](#toa_reflectance)  
 [toa_reflectance_l8](#toa_reflectance_l8)  
@@ -509,6 +510,24 @@ _Function to get an example image to debug or test some code._
 ```
 
 ------------------------------------------------------------------------------
+
+#### collection2image
+(image, previous)    
+
+_Function to merge all imagens of one image collection into a single band._       
+
+##### Params:
+  (ee.Image) image - The image of the image collection to add as a band.  
+  (ee.Image) previous - The output image.                              
+  
+##### Usage:
+```js 
+    var geet = require('users/elacerda/geet:geet'); 
+    var merged_image = image_collection.iterate(geet.collection2image, ee.Image([]));   
+```
+
+------------------------------------------------------------------------------
+
 
 #### toa_radiance
 (image, band)  
