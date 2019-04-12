@@ -44,7 +44,7 @@ All functions implemented (Version 0.5.0 - Beta):
 [brightness_temp_l7k](#brightness_temp_l7k)  
 [brightness_temp_l7c](#brightness_temp_l7c)  
 [brightness_temp_l8k](#brightness_temp_l8k)  
-[brightness_temp_l8c](#bribrightness_temp_l8c)  
+[brightness_temp_l8c](#brightness_temp_l8c)  
 [resample](#resample)  
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
@@ -724,7 +724,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### bribrightness_temp_l8c
+#### brightness_temp_l8c
 (image, single)  
 
 _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
@@ -735,13 +735,13 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
   
 ##### Usage:
 ```js  
-    var brightness_temp_img = geet.bribrightness_temp_l8c(toa_image); // ee.Image  
+    var brightness_temp_img = geet.brightness_temp_l8c(toa_image); // ee.Image  
 ``` 
 
 or
 
  ```js
-    var brightness_temp_img = geet.bribrightness_temp_l8c(toa_image, false); // ee.Image   
+    var brightness_temp_img = geet.brightness_temp_l8c(toa_image, false); // ee.Image   
 ``` 
 
 #### Information:
