@@ -8,7 +8,7 @@ Documentation: https://developers.google.com/earth-engine/
 Python API: https://developers.google.com/earth-engine/python_install  
 
 #### Development Info
-**Author**: Eduardo Ribeiro Lacerda - Associate Researcher @ IIS - International Institute for Sustaninability / PhD Candidate @ UFF - Universidade Federal Fluminense (Brazil - Rio de Janeiro)  
+**Author**: Eduardo Ribeiro Lacerda - Associate Researcher @ IIS - International Institute for Sustainability / PhD Candidate @ UFF - Universidade Federal Fluminense (Brazil - Rio de Janeiro)  
 **Contact**: elacerda@id.uff.br
 
 ## Introduction:
