@@ -841,8 +841,8 @@ _Function that return a image collection with all landsat 5 images from a define
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet'); 
-  	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+	var geet = require('users/elacerda/geet:geet');
+	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------
@@ -860,8 +860,8 @@ _Function that return a image collection with all landsat 7 images from a define
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet'); 
-  	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+	var geet = require('users/elacerda/geet:geet');
+	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------
@@ -879,8 +879,8 @@ _Function that return a image collection with all landsat 8 images from a define
   
 ##### Usage:
 ```js
-    var geet = require('users/elacerda/geet:geet'); 
-  	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+	var geet = require('users/elacerda/geet:geet');
+	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------
