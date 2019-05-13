@@ -51,7 +51,7 @@ All functions implemented (Version 0.5.2 - Beta):
 [brightness_temp_l8c](#brightness_temp_l8c)  
 [resample](#resample)  
 [resample_band](#resample_band)  
-[load_id_s2](#load_id_s2)
+[load_id_s2](#load_id_s2)  
 [landsat_collection_by_pathrow](#landsat_collection_by_pathrow)  
 [mosaic_s2](#mosaic_s2)  
 [mosaic_l5](#mosaic_l5)  
@@ -818,8 +818,8 @@ _Function that return a image collection with all landsat images (5, 7 and 8) fr
   
 ##### Usage:
 ```js 
-	  	var geet = require('users/elacerda/geet:geet');   
-  		var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);   
+	var geet = require('users/elacerda/geet:geet');   
+  	var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);   
 ```			
 
 ------------------------------------------------------------------------------
