@@ -817,8 +817,7 @@ _Function that return a image collection with all landsat images (5, 7 and 8) fr
   (number) row - the row number of the image                              
   
 ##### Usage:
-```js 
-	var geet = require('users/elacerda/geet:geet');   
+```js   
   	var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);   
 ```			
 
