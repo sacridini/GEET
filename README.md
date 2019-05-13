@@ -812,7 +812,7 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 _Function that return a image collection with all landsat images (5, 7 and 8) from a defined path row. Remember to specify the type of the collection (raw, toa or sr)._  
 
 ##### Params:
-  (string) id - the type of the collection (RAW, TOA or SR)  
+  (string) type - the type of the collection (RAW, TOA or SR)  
   (number) path - the path number of the image  
   (number) row - the row number of the image                              
   
