@@ -1,2 +1,0 @@
-* TODO Function to gen annual landsat timeseries using Landsat 5, 7 and 8
-* TODO MAD Function
