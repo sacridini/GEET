@@ -1,7 +1,7 @@
     /** 
      * Google Earth Engine Toolbox (GEET)
      * Description: Lib to write small EE apps or big/complex apps with a lot less code.
-     * Version: 0.5.0
+     * Version: 0.5.1
      * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
     */
 
@@ -1879,31 +1879,71 @@
     }
 
 
-    // TODO:
-    exports.loadL5ByPathRow = function (collection, path, row, startYear, endYear) {
-      collection = typeof collection !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
-      switch (collection) {
+    /*
+      landsat_collection_by_pathrow:
+      Function that return a image collection with all landsat images (5, 7 and 8) 
+	  from a defined path row. Remember to specify the type of the collection (raw, toa or sr).
+
+      Params:
+      (string) id - the type of the collection (RAW, TOA or SR)
+	  (number) path - the path number of the image
+	  (number) row - the row number of the image
+
+      Usage:
+      var geet = require('users/elacerda/geet:geet'); 
+      var s2_image = geet.landsat_collection_by_pathrow('SR', 220, 77);
+    */
+    exports.landsat_collection_by_pathrow = function (type, path, row) {
+      collection = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'raw';
+      switch (type) {
         case 'raw':
           var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
-            .filterDate(ee.Date(startYear), ee.Date(endYear))
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-        return l5_collection;
+              .filter(ee.Filter.eq('WRS_PATH', path))
+              .filter(ee.Filter.eq('WRS_ROW', row));
+		  var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
+              .filter(ee.Filter.eq('WRS_PATH', path))
+			  .filter(ee.Filter.eq('WRS_ROW', row));
+		  var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+              .filter(ee.Filter.eq('WRS_PATH', path))
+              .filter(ee.Filter.eq('WRS_ROW', row));
+		  var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+        return all_ls_collection;
         case 'toa':
           var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
-            .filterDate(ee.Date(startYear), ee.Date(endYear))
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-        return l5_collection;
+              .filter(ee.Filter.eq('WRS_PATH', path))
+              .filter(ee.Filter.eq('WRS_ROW', row));
+		  var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
+              .filter(ee.Filter.eq('WRS_PATH', path))
+			  .filter(ee.Filter.eq('WRS_ROW', row));
+		  var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+              .filter(ee.Filter.eq('WRS_PATH', path))
+              .filter(ee.Filter.eq('WRS_ROW', row));
+		  var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+        return all_ls_collection;
         case 'sr':
-        var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
-        .filterDate(ee.Date(startYear), ee.Date(endYear))
-        .filter(ee.Filter.eq('WRS_PATH', path))
-        .filter(ee.Filter.eq('WRS_ROW', row));
-        return l5_collection;
+          var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+			  .filter(ee.Filter.eq('WRS_PATH', path))
+			  .filter(ee.Filter.eq('WRS_ROW', row));
+		  var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+			  .filter(ee.Filter.eq('WRS_PATH', path))
+			  .filter(ee.Filter.eq('WRS_ROW', row));
+		  var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+			  .filter(ee.Filter.eq('WRS_PATH', path))
+			  .filter(ee.Filter.eq('WRS_ROW', row));
+		  var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+        return all_ls_collection;
         default:
-        print('Choose between "raw", "toa" or "sr" for the collection type!');
-          break;
+          var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+              .filter(ee.Filter.eq('WRS_PATH', path))
+              .filter(ee.Filter.eq('WRS_ROW', row));
+		  var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
+              .filter(ee.Filter.eq('WRS_PATH', path))
+			  .filter(ee.Filter.eq('WRS_ROW', row));
+		  var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+              .filter(ee.Filter.eq('WRS_PATH', path))
+              .filter(ee.Filter.eq('WRS_ROW', row));
+		  var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+        return all_ls_collection;
       }
     }
 
