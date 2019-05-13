@@ -758,35 +758,37 @@ or
 ------------------------------------------------------------------------------
 
 #### resample
-(image, scale)  
+(image, scale, mode)  
 
 _Function to resample an input image._     
 
 ##### Params:
   (ee.Image) image - the image to resample.  
   (number) scale - the number of the spatial resolution that you
-                        want to use to  resample the input image.                            
+                        want to use to  resample the input image.  
+  (string) mode - The interpolation mode to use. One of 'bilinear' or 'bicubic'.  
   
 ##### Usage:
 ```js
-    var landsat_10m = geet.resample(L8_img, 10);      
+    var landsat_10m = geet.resample(L8_img, 10, 'bilinear');      
 ``` 
 
 ------------------------------------------------------------------------------
 
 #### resample_band
-(band, scale)  
+(band, scale, mode)  
 
 _Function to resample just a single band._     
 
 ##### Params:
   (ee.Image) band - the band to resample.  
   (number) scale - the number of the spatial resolution that you
-                        want to use to  resample the input band.                           
+                        want to use to  resample the input band.  
+  (string) mode - The interpolation mode to use. One of 'bilinear' or 'bicubic'.    
   
 ##### Usage:
 ```js
-    var landsatB10_60m = geet.resample_band(b10, 60);  
+    var landsatB10_60m = geet.resample_band(b10, 60, 'bicubic');  
 ```
 
 ------------------------------------------------------------------------------

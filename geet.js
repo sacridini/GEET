@@ -1810,20 +1810,22 @@ exports.brightness_temp_l8c = function (image, two_channel) {
   (ee.Image) image - the image to resample.
   (number) scale - the number of the spatial resolution that you
   want to use to  resample the input image.
+  (string) mode - The interpolation mode to use. One of 'bilinear' or 'bicubic'.
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var landsat_10m = geet.resample(L8_img, 10); 
+  var landsat_10m = geet.resample(L8_img, 10, 'bilinear'); 
 */
-exports.resample = function (image, scale) {
+exports.resample = function (image, scale, mode) {
     // Error Handling
     if (image === undefined) error('resample', 'You need to specify an input image.');
     if (scale === undefined) error('resample', 'You need to specify the scale number.');
+    if (mode === undefined) error('resample', 'You need to specify the resample mode (bilinear or bicubic).');
 
     // Get the projection information from a band.
     var band = image.select('B2');
 
-    var resampled_image = image.resample('bilinear').reproject({
+    var resampled_image = image.resample(mode).reproject({
         crs: band.projection().crs(),
         scale: scale
     });
@@ -1839,17 +1841,19 @@ exports.resample = function (image, scale) {
   (ee.Image) band - the band to resample.
   (number) scale - the number of the spatial resolution that you
   want to use to  resample the input band.
+  (string) mode - The interpolation mode to use. One of 'bilinear' or 'bicubic'.
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
   var landsatB10_60m = geet.resample_band(b10, 60);
 */
-exports.resample_band = function (band, scale) {
+exports.resample_band = function (band, scale, mode) {
     // Error Handling
     if (image === undefined) error('resample_band', 'You need to specify an input image.');
     if (scale === undefined) error('resample_band', 'You need to specify the scale number.');
+	if (mode === undefined) error('resample', 'You need to specify the resample mode (bilinear or bicubic).');
 
-    var resampled_band = band.resample('bilinear').reproject({
+    var resampled_band = band.resample(mode).reproject({
         crs: band.projection().crs(),
         scale: scale
     });
