@@ -1945,7 +1945,7 @@ exports.landsat_collection_by_pathrow = function (type, path, row) {
 
 
 /*
-  landsatls5_collection_by_pathrow:
+  ls5_collection_by_pathrow:
   Function that return a image collection with all landsat 5 images from a defined path row.
 
   Params:

@@ -19,7 +19,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.5.2 - Beta):  
+All functions implemented (Version 0.5.3 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -53,6 +53,9 @@ All functions implemented (Version 0.5.2 - Beta):
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
 [landsat_collection_by_pathrow](#landsat_collection_by_pathrow)  
+[ls5_collection_by_pathrow](#ls5_collection_by_pathrow)    
+[ls7_collection_by_pathrow](#ls7_collection_by_pathrow)    
+[ls8_collection_by_pathrow](#ls8_collection_by_pathrow)    
 [mosaic_s2](#mosaic_s2)  
 [mosaic_l5](#mosaic_l5)  
 [mosaic_l7](#mosaic_l7)  
@@ -824,6 +827,64 @@ _Function that return a image collection with all landsat images (5, 7 and 8) fr
 ```			
 
 ------------------------------------------------------------------------------
+
+#### ls5_collection_by_pathrow  
+(type, path, row)   
+
+_Function that return a image collection with all landsat 5 images from a defined path row._     
+
+##### Params:
+  (string) type - the type of the collection (RAW, TOA or SR)
+  (number) path - the path number of the image
+  (number) row - the row number of the image
+                            
+  
+##### Usage:
+```js
+    var geet = require('users/elacerda/geet:geet'); 
+  	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+```
+
+------------------------------------------------------------------------------
+
+#### ls8_collection_by_pathrow  
+(type, path, row)   
+
+_Function that return a image collection with all landsat 7 images from a defined path row._     
+
+##### Params:
+  (string) type - the type of the collection (RAW, TOA or SR)
+  (number) path - the path number of the image
+  (number) row - the row number of the image
+                            
+  
+##### Usage:
+```js
+    var geet = require('users/elacerda/geet:geet'); 
+  	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+```
+
+------------------------------------------------------------------------------
+
+#### ls8_collection_by_pathrow  
+(type, path, row)   
+
+_Function that return a image collection with all landsat 8 images from a defined path row._     
+
+##### Params:
+  (string) type - the type of the collection (RAW, TOA or SR)
+  (number) path - the path number of the image
+  (number) row - the row number of the image
+                            
+  
+##### Usage:
+```js
+    var geet = require('users/elacerda/geet:geet'); 
+  	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+```
+
+------------------------------------------------------------------------------
+
 #### mosaic_s2
 (startDate, endDate, roi, showMosaic)  
 
