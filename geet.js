@@ -1894,7 +1894,11 @@ exports.load_id_s2 = function (id) {
   var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);
 */
 exports.landsat_collection_by_pathrow = function (type, path, row) {
-	var type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'raw';
+	
+    type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
+	path = typeof path !== 'undefined' ? path : 217;
+	row = typeof row !== 'undefined' ? row : 76;
+	
 	switch (type) {
     case 'raw':
         var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
@@ -1950,7 +1954,11 @@ exports.landsat_collection_by_pathrow = function (type, path, row) {
   var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77);
 */
 exports.ls5_collection_by_pathrow = function (type, path, row) {
-    type = typeof type !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
+	
+    type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
+	path = typeof path !== 'undefined' ? path : 217;
+	row = typeof row !== 'undefined' ? row : 76;
+	
     switch (type) {
     case 'raw':
         var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
@@ -1985,7 +1993,11 @@ exports.ls5_collection_by_pathrow = function (type, path, row) {
   var ls_collection = geet.ls7_collection_by_pathrow('SR', 220, 77);
 */
 exports.ls7_collection_by_pathrow = function (type, path, row) {
-    type = typeof type !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
+	
+    type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
+	path = typeof path !== 'undefined' ? path : 217;
+	row = typeof row !== 'undefined' ? row : 76;
+	
     switch (type) {
     case 'raw':
         var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
@@ -2020,7 +2032,11 @@ exports.ls7_collection_by_pathrow = function (type, path, row) {
   var ls_collection = geet.ls8_collection_by_pathrow('SR', 220, 77);
 */
 exports.ls8_collection_by_pathrow = function (type, path, row) {
-    type = typeof type !== 'undefined' ? collection.toString().toLowerCase() : 'raw';
+	
+    type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
+	path = typeof path !== 'undefined' ? path : 217;
+	row = typeof row !== 'undefined' ? row : 76;
+	
     switch (type) {
     case 'raw':
         var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
