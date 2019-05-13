@@ -1891,7 +1891,7 @@ exports.load_id_s2 = function (id) {
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var s2_image = geet.landsat_collection_by_pathrow('SR', 220, 77);
+  var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);
 */
 exports.landsat_collection_by_pathrow = function (type, path, row) {
 	var type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'raw';

@@ -19,7 +19,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.5.0 - Beta):  
+All functions implemented (Version 0.5.2 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -51,7 +51,8 @@ All functions implemented (Version 0.5.0 - Beta):
 [brightness_temp_l8c](#brightness_temp_l8c)  
 [resample](#resample)  
 [resample_band](#resample_band)  
-[load_id_s2](#load_id_s2)  
+[load_id_s2](#load_id_s2)
+[landsat_collection_by_pathrow](#landsat_collection_by_pathrow)  
 [mosaic_s2](#mosaic_s2)  
 [mosaic_l5](#mosaic_l5)  
 [mosaic_l7](#mosaic_l7)  
@@ -805,6 +806,23 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 
 ------------------------------------------------------------------------------
 
+#### landsat_collection_by_pathrow
+(type, path, row)
+
+_Function that return a image collection with all landsat images (5, 7 and 8) from a defined path row. Remember to specify the type of the collection (raw, toa or sr)._  
+
+##### Params:
+  (string) id - the type of the collection (RAW, TOA or SR)  
+  (number) path - the path number of the image  
+  (number) row - the row number of the image                              
+  
+##### Usage:
+```js 
+	  	var geet = require('users/elacerda/geet:geet');   
+  		var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);   
+```			
+
+------------------------------------------------------------------------------
 #### mosaic_s2
 (startDate, endDate, roi, showMosaic)  
 
