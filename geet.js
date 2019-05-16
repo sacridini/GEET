@@ -1886,6 +1886,7 @@ var load_id_s2 = function (id) {
 /*
   build_landsat_timeseries:
   Function to build a annual Landsat surface reflectance timeseries from 1985 to 2017.
+  The function also mask clouds and shadow and create some indices bands like NDVI, NDWI and SAVI.
 
   Params:
   (ee.Point) roi - the region of interest that will define the study area and the landsat path row  
@@ -1914,6 +1915,7 @@ var build_landsat_timeseries = function (roi) {
 		.filterBounds(roi)
 		.filterDate('2013-05-01', '2017-12-31')
 
+	
 	function rename_bands_tm(image) {
 		var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI'];
 		var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
@@ -1936,8 +1938,7 @@ var build_landsat_timeseries = function (roi) {
 		return masked_image;
 	}
 
-	
-	var merge_bands = function (image, previous) {
+	function merge_bands (image, previous) {
 		return ee.Image(previous).addBands(image);
 	};
 
@@ -1954,6 +1955,7 @@ var build_landsat_timeseries = function (roi) {
 		.map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
 		.map(rename_bands_oli);
 
+	
 	function collection_by_year_tm(collection_ls5, collection_ls7) {
 		var start = '-01-01';
 		var finish = '-12-31';

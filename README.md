@@ -816,7 +816,7 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 #### build_landsat_timeseries
 (roi)
 
-_Function to build a annual Landsat surface reflectance timeseries from 1985 to 2017._  
+_Function to build a annual Landsat surface reflectance timeseries from 1985 to 2017. The function also mask clouds and shadow and create some indices bands like NDVI, NDWI and SAVI._  
 
 ##### Params:  
   (ee.Point) roi - the region of interest that will define the study area and the landsat path row  
