@@ -2049,6 +2049,19 @@ var build_landsat_timeseries = function (roi) {
 	var oli_by_year = collection_by_year_oli(ls8_ic_idx);
 
 	var merged_collections_by_year = tm_by_year.merge(oli_by_year);
+
+	// Add Metadata to merged_collections_by_year (year of each image)
+	var merged_list = merged_collections_by_year.toList(merged_collections_by_year.size());
+	var num_of_imgs = merged_collections_by_year.size().getInfo();
+	var temp_merged_list = ee.List([]);
+	for(var i = 0; i <= num_of_imgs - 1; i++) {
+		var img = ee.Image(merged_list.get(i));
+		img = img.set("Year", (i + 1985).toString());
+		temp_merged_list = temp_merged_list.add(img);
+	}
+	merged_collections_by_year = ee.ImageCollection(temp_merged_list);
+
+	
 	return(merged_collections_by_year);
 }
 
