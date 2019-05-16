@@ -52,6 +52,7 @@ All functions implemented (Version 0.5.3 - Beta):
 [resample](#resample)  
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
+[build_landsat_timeseries](#build_landsat_timeseries)  
 [landsat_collection_by_pathrow](#landsat_collection_by_pathrow)  
 [ls5_collection_by_pathrow](#ls5_collection_by_pathrow)    
 [ls7_collection_by_pathrow](#ls7_collection_by_pathrow)    
@@ -808,6 +809,23 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 ```js
     var s2_image = geet.load_id_s2('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');  
 ```
+
+------------------------------------------------------------------------------
+
+
+#### build_landsat_timeseries
+(roi)
+
+_Function to build a annual Landsat surface reflectance timeseries from 1985 to 2017._  
+
+##### Params:  
+  (ee.Point) roi - the region of interest that will define the study area and the landsat path row  
+                        
+  
+##### Usage:
+```js   
+    var ls_timeserie = geet.build_landsat_timeseries(roi);     
+```     
 
 ------------------------------------------------------------------------------
 

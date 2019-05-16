@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.5.3
+ * Version: 0.5.4
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -29,7 +29,7 @@ function error(funcName, msg) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.svm(image, samplesfc, landcover);
 */
-exports.svm = function (image, trainingData, fieldName, kernelType, scale) {
+var svm = function (image, trainingData, fieldName, kernelType, scale) {
     // Error Handling
     if (image === undefined) error('svm', 'You need to specify an input image.');  
     if (trainingData === undefined) error('svm', 'You need to specify the training data.');  
@@ -70,7 +70,7 @@ exports.svm = function (image, trainingData, fieldName, kernelType, scale) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.cart(image, samplesfc, landcover);
 */
-exports.cart = function (image, trainingData, fieldName, scale) {
+var cart = function (image, trainingData, fieldName, scale) {
     // Error Handling
     if (image === undefined) error('cart', 'You need to specify an input image.');
     if (trainingData === undefined) error('cart', 'You need to specify the training data.');
@@ -109,7 +109,7 @@ exports.cart = function (image, trainingData, fieldName, scale) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
-exports.rf = function (image, trainingData, fieldName, numOfTrees) {
+var rf = function (image, trainingData, fieldName, numOfTrees) {
     // Error Handling
     if (image === undefined) error('rf', 'You need to specify an input image.');
     if (trainingData === undefined) error('rf', 'You need to specify the training data.');
@@ -148,7 +148,7 @@ exports.rf = function (image, trainingData, fieldName, numOfTrees) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.naive_bayes(image, samplesfc, landcover);
 */
-exports.naive_bayes = function (image, trainingData, fieldName, scale) {
+var naive_bayes = function (image, trainingData, fieldName, scale) {
     // Error Handling
     if (image === undefined) error('naive_bayes', 'You need to specify an input image.');
     if (trainingData === undefined) error('naive_bayes', 'You need to specify the training data.');
@@ -187,7 +187,7 @@ exports.naive_bayes = function (image, trainingData, fieldName, scale) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.gmo_max_ent(image, samplesfc, landcover);
 */
-exports.gmo_max_ent = function (image, trainingData, fieldName, scale) {
+var gmo_max_ent = function (image, trainingData, fieldName, scale) {
     // Error Handling
     if (image === undefined) error('gmo_max_ent', 'You need to specify an input image.');
     if (trainingData === undefined) error('gmo_max_ent', 'You need to specify the training data.');
@@ -232,7 +232,7 @@ exports.gmo_max_ent = function (image, trainingData, fieldName, scale) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.kmeans(image, roi, 20, 10, 6000);
 */
-exports.kmeans = function (image, roi, numClusters, scale, numPixels) {
+var kmeans = function (image, roi, numClusters, scale, numPixels) {
     // Error Handling
     if (image === undefined) error('kmeans', 'You need to specify an input image.');
     if (roi === undefined) error('kmeans', 'You need to define and pass a roi as argument to collect the samples for the classfication process.');
@@ -280,7 +280,7 @@ exports.kmeans = function (image, roi, numClusters, scale, numPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var ndviChange = geet.ndvi_change_detection(image_2014, image_2015, 'L8', 0.5);
 */
-exports.ndvi_change_detection = function (img1, img2, sensor, threshold) {
+var ndvi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
     if (img1 === undefined) error('ndvi_change_detection', 'You need to specify an input image.');
     if (img2 === undefined) error('ndvi_change_detection', 'You need to specify an input image.');
@@ -327,7 +327,7 @@ exports.ndvi_change_detection = function (img1, img2, sensor, threshold) {
   var geet = require('users/elacerda/geet:geet'); 
   var ndwiChange = geet.ndwi_change_detection( image_2014, image_2015, 'L8', 0.5);
 */
-exports.ndwi_change_detection = function (img1, img2, sensor, threshold) {
+var ndwi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
     if (img1 === undefined) error('ndwi_change_detection', 'You need to specify an input image.');
     if (img2 === undefined) error('ndwi_change_detection', 'You need to specify an input image.');
@@ -374,7 +374,7 @@ exports.ndwi_change_detection = function (img1, img2, sensor, threshold) {
   var geet = require('users/elacerda/geet:geet'); 
   var ndbiChange = geet.ndbi_change_detection(image_2014, image_2015, 'L8', 0.5);
 */
-exports.ndbi_change_detection = function (img1, img2, sensor, threshold) {
+var ndbi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
     if (img1 === undefined) error('ndbi_change_detection', 'You need to specify an input image.');
     if (img2 === undefined) error('ndbi_change_detection', 'You need to specify an input image.');
@@ -414,7 +414,7 @@ exports.ndbi_change_detection = function (img1, img2, sensor, threshold) {
   var geet = require('users/elacerda/geet:geet'); 
   var texture = geet.texture(image_from_rio, 1);
 */
-exports.texture = function (image, radius) {
+var texture = function (image, radius) {
     // Error Handling
     if (image === undefined) error('texture', 'You need to specify an input image.');
     if (radius === undefined) error('texture', 'You need to specify the radius number.');
@@ -439,7 +439,7 @@ exports.texture = function (image, radius) {
   var geet = require('users/elacerda/geet:geet'); 
   var majority = geet.majority(image_from_rio, 1);
 */
-exports.majority = function (image, radius) {
+var majority = function (image, radius) {
     // Error Handling
     if (image === undefined) error('majority', 'You need to specify an input image.');
     if (radius === undefined) error('majority', 'You need to specify the radius number.');
@@ -473,7 +473,7 @@ var COLOR = {
   var geet = require('users/elacerda/geet:geet'); 
   geet.color('water');
 */
-exports.color = function (_color) {
+var color = function (_color) {
     // Error Handling
     if (_color === undefined) error('color', 'You need to specify the color name.');
 
@@ -508,7 +508,7 @@ exports.color = function (_color) {
   var geet = require('users/elacerda/geet:geet'); 
   geet.plot_rgb(image, 'rgb_image');
 */
-exports.plot_rgb = function (image, title) {
+var plot_rgb = function (image, title) {
     // Error Handling
     if (image === undefined) error('plot_rgb', 'You need to specify an input image.');
 
@@ -538,7 +538,7 @@ exports.plot_rgb = function (image, title) {
   var geet = require('users/elacerda/geet:geet'); 
   geet.plot_ndvi(ndvi, 'ndvi_image');
 */
-exports.plot_ndvi = function (image, title) {
+var plot_ndvi = function (image, title) {
     // Error Handling
     if (image === undefined) error('plot_ndvi', 'You need to specify an input image.');
 
@@ -557,7 +557,7 @@ exports.plot_ndvi = function (image, title) {
   var geet = require('users/elacerda/geet:geet'); 
   geet.plot_ndwi(ndwi, 'ndwi_image');
 */
-exports.plot_ndwi = function (image, title) {
+var plot_ndwi = function (image, title) {
     // Error Handling
     if (image === undefined) error('plot_ndwi', 'You need to specify an input image.');
 
@@ -577,7 +577,7 @@ exports.plot_ndwi = function (image, title) {
   var geet = require('users/elacerda/geet:geet'); 
   geet.plot_class(classified, 4, 'class_final');
 */
-exports.plot_class = function (image, numClasses, title) {
+var plot_class = function (image, numClasses, title) {
     // Error Handling
     if (image === undefined) error('plot_class', 'You need to specify an input image.');
     if (numClasses === undefined) error('plot_class', 'You need to specify the number of classes to plot.');
@@ -628,7 +628,7 @@ exports.plot_class = function (image, numClasses, title) {
   var geet = require('users/elacerda/geet:geet'); 
   var result = geet.landsat_indices(image, 'L5', 'savi'); // This will create only SAVI.
 */
-exports.landsat_indices = function (image, sensor, index) {
+var landsat_indices = function (image, sensor, index) {
     // Error Handling
     if (image === undefined) error('landsat_indices', 'You need to specify an input image.');
     if (sensor === undefined) error('landsat_indices', 'You need to specify the sensor name.');
@@ -973,7 +973,7 @@ exports.landsat_indices = function (image, sensor, index) {
   var geet = require('users/elacerda/geet:geet'); 
   var result = geet.sentinel2_indices(image, 'savi'); // This will create only SAVI.
 */
-exports.sentinel2_indices = function (image, index) {
+var sentinel2_indices = function (image, index) {
     // Error Handling
     if (image === undefined) error('sentinel2_indices', 'You need to specify an input image.');
     
@@ -1196,7 +1196,7 @@ exports.sentinel2_indices = function (image, index) {
   var geet = require('users/elacerda/geet:geet'); 
   var image = geet.load_image('SR', 2015); // Returns a SR image
 */
-exports.load_image = function (collection, year, roi, cloudFree) {
+var load_image = function (collection, year, roi, cloudFree) {
     // Setup
     var visParams = { bands: ['B4', 'B3', 'B2'], max: 0.3 };
 
@@ -1291,7 +1291,7 @@ exports.load_image = function (collection, year, roi, cloudFree) {
   var geet = require('users/elacerda/geet:geet'); 
   var merged_image = image_collection.iterate(geet.collection2image, ee.Image([]));
 */
-exports.collection2image = function (image, previous) {
+var collection2image = function (image, previous) {
     return ee.Image(previous).addBands(image);
 };
 
@@ -1315,7 +1315,7 @@ exports.collection2image = function (image, previous) {
   AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
   Qcal         = Quantized and calibrated standard product pixel values (DN)
 */
-exports.toa_radiance = function (image, band) {
+var toa_radiance = function (image, band) {
     // Error Handling
     if (image === undefined) error('toa_radiance', 'You need to specify an input image.');
     if (band === undefined) error('toa_radiance', 'You need to specify the number of the band that you want to process.');
@@ -1353,7 +1353,7 @@ exports.toa_radiance = function (image, band) {
   Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)
   Qcal          = Quantized and calibrated standard product pixel values (DN)
 */
-exports.toa_reflectance = function (image, band) {
+var toa_reflectance = function (image, band) {
     // Error Handling
     if (image === undefined) error('toa_reflectance', 'You need to specify an input image.');
     if (band === undefined) error('toa_reflectance', 'You need to specify the number of the band that you want to process.');
@@ -1416,7 +1416,7 @@ function solarAngleZenith(original_img, raw_reflectance) {
   SE = Local sun elevation angle. The scene center sun elevation angle in degrees is provided in the metadata (SUN_ELEVATION).
   SZ = Local solar zenith angle: SZ = 90° - SE
 */
-exports.toa_reflectance_l8 = function (image, band, _solarAngle) {
+var toa_reflectance_l8 = function (image, band, _solarAngle) {
     // Error Handling
     if (image === undefined) error('toa_reflectance_l8', 'You need to specify an input image.');
     if (band === undefined) error('toa_reflectance_l8', 'You need to specify the number of the band that you want to process.');
@@ -1482,7 +1482,7 @@ exports.toa_reflectance_l8 = function (image, band, _solarAngle) {
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightness_temp_l5k = function (image) {
+var brightness_temp_l5k = function (image) {
     // Error Handling
     if (image === undefined) error('brightness_temp_l5k', 'You need to specify an input image.');
 
@@ -1527,7 +1527,7 @@ exports.brightness_temp_l5k = function (image) {
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightness_temp_l5c = function (image) {
+var brightness_temp_l5c = function (image) {
     // Error Handling
     if (image === undefined) error('brightness_temp_l5c', 'You need to specify an input image.');
 
@@ -1572,7 +1572,7 @@ exports.brightness_temp_l5c = function (image) {
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightness_temp_l7k = function (image) {
+var brightness_temp_l7k = function (image) {
     // Error Handling
     if (image === undefined) error('brightness_temp_l7k', 'You need to specify an input image.');
 
@@ -1617,7 +1617,7 @@ exports.brightness_temp_l7k = function (image) {
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightness_temp_l7c = function (image) {
+var brightness_temp_l7c = function (image) {
     // Error Handling
     if (image === undefined) error('brightness_temp_l7c', 'You need to specify an input image.');
 
@@ -1669,7 +1669,7 @@ exports.brightness_temp_l7c = function (image) {
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightness_temp_l8k = function (image, two_channel) {
+var brightness_temp_l8k = function (image, two_channel) {
     // Error Handling
     if (image === undefined) error('brightness_temp_l8k', 'You need to specify an input image.');
     if (two_channel === undefined) error('brightness_temp_l8k', 'You need to specify an boolean value to process only B10 or B10 and B11.');
@@ -1747,7 +1747,7 @@ exports.brightness_temp_l8k = function (image, two_channel) {
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 */
-exports.brightness_temp_l8c = function (image, two_channel) {
+var brightness_temp_l8c = function (image, two_channel) {
     // Error Handling
     if (image === undefined) error('brightness_temp_l8c', 'You need to specify an input image.');
     if (two_channel === undefined) error('brightness_temp_l8c', 'You need to specify an boolean value to process only B10 or B10 and B11.');
@@ -1816,7 +1816,7 @@ exports.brightness_temp_l8c = function (image, two_channel) {
   var geet = require('users/elacerda/geet:geet'); 
   var landsat_10m = geet.resample(L8_img, 10, 'bilinear'); 
 */
-exports.resample = function (image, scale, mode) {
+var resample = function (image, scale, mode) {
     // Error Handling
     if (image === undefined) error('resample', 'You need to specify an input image.');
     if (scale === undefined) error('resample', 'You need to specify the scale number.');
@@ -1847,7 +1847,7 @@ exports.resample = function (image, scale, mode) {
   var geet = require('users/elacerda/geet:geet'); 
   var landsatB10_60m = geet.resample_band(b10, 60);
 */
-exports.resample_band = function (band, scale, mode) {
+var resample_band = function (band, scale, mode) {
     // Error Handling
     if (image === undefined) error('resample_band', 'You need to specify an input image.');
     if (scale === undefined) error('resample_band', 'You need to specify the scale number.');
@@ -1872,7 +1872,7 @@ exports.resample_band = function (band, scale, mode) {
   var geet = require('users/elacerda/geet:geet'); 
   var s2_image = geet.load_id_s2('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');
 */
-exports.load_id_s2 = function (id) {
+var load_id_s2 = function (id) {
     // Error Handling
     if (id === undefined) error('load_id_s2', 'You need to specify the id number.');
 
@@ -1880,6 +1880,174 @@ exports.load_id_s2 = function (id) {
     var s2 = ee.ImageCollection("COPERNICUS/S2");
     var s2_filtered = s2.filterMetadata('PRODUCT_ID', 'equals', id);
     return s2_filtered;
+}
+
+
+/*
+  build_landsat_timeseries:
+  Function to build a annual Landsat surface reflectance timeseries from 1985 to 2017.
+
+  Params:
+  (ee.Point) roi - the region of interest that will define the study area and the landsat path row  
+
+  Usage:
+  var geet = require('users/elacerda/geet:geet'); 
+  var ls_timeserie = geet.build_landsat_timeseries(roi);
+*/
+var build_landsat_timeseries = function (roi) {
+
+	roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point([-43.0879, -22.8632]);
+
+	var ls5_sr = ee.ImageCollection("LANDSAT/LT05/C01/T1_SR"),
+		ls7_sr = ee.ImageCollection("LANDSAT/LE07/C01/T1_SR"),
+		ls8_sr = ee.ImageCollection("LANDSAT/LC08/C01/T1_SR");
+		
+	var ls5_ic = ee.ImageCollection(ls5_sr)
+		.filterBounds(roi)
+		.filterDate('1985-01-01', '2011-12-31')
+
+	var ls7_ic = ee.ImageCollection(ls7_sr)
+		.filterBounds(roi)
+		.filterDate('1999-01-01', '2017-12-31')
+
+	var ls8_ic = ee.ImageCollection(ls8_sr)
+		.filterBounds(roi)
+		.filterDate('2013-05-01', '2017-12-31')
+
+	function rename_bands_tm(image) {
+		var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI'];
+		var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
+		return image.select(bands).rename(new_bands);
+	}
+
+	function rename_bands_oli(image) {
+		var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI'];
+		var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
+		return image.select(bands).rename(new_bands);
+	}
+	
+	function calc_indices(image, satellite) {
+		var ls_idx = landsat_indices(image, satellite);
+		return ls_idx;
+	}
+
+	function mask_clouds(original_image, qa_band) {
+		var masked_image = cloudmask_sr(original_image, qa_band);
+		return masked_image;
+	}
+
+	
+	var merge_bands = function (image, previous) {
+		return ee.Image(previous).addBands(image);
+	};
+
+	
+	var ls5_ic_idx = ls5_ic.map(function (image) { return calc_indices(image, "L5"); })
+		.map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+		.map(rename_bands_tm);
+
+	var ls7_ic_idx = ls7_ic.map(function (image) { return calc_indices(image, "L7"); })
+		.map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+		.map(rename_bands_tm);
+
+	var ls8_ic_idx = ls8_ic.map(function (image) { return calc_indices(image, "L8"); })
+		.map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+		.map(rename_bands_oli);
+
+	function collection_by_year_tm(collection_ls5, collection_ls7) {
+		var start = '-01-01';
+		var finish = '-12-31';
+		var year_col_list = ee.List([]);
+		
+		
+		for (var year = 1985; year <= 2012; year++) {
+			
+			var temp_col_list = ee.List([]);
+			
+			if (year >= 1999)
+			{
+				var year_col_ls5 = collection_ls5.filterDate(year.toString() + start, year.toString() + finish);
+				var year_col_ls7 = collection_ls7.filterDate(year.toString() + start, year.toString() + finish);
+				var collection = year_col_ls5.merge(year_col_ls7);
+			}
+			else
+			{
+				var collection = collection_ls5.filterDate(year.toString() + start, year.toString() + finish);
+			}
+
+			var new_blue = collection.select('BLUE').median();
+			temp_col_list = temp_col_list.add(new_blue);
+			var new_green = collection.select('GREEN').median();
+			temp_col_list = temp_col_list.add(new_green);
+			var new_red = collection.select('RED').median();
+			temp_col_list = temp_col_list.add(new_red);
+			var new_nir = collection.select('NIR').median();
+			temp_col_list = temp_col_list.add(new_nir);
+			var new_swir1 = collection.select('SWIR1').median();
+			temp_col_list = temp_col_list.add(new_swir1);
+			var new_swir2 = collection.select('SWIR2').median();
+			temp_col_list = temp_col_list.add(new_swir2);
+			var new_ndvi = collection.select('NDVI').max();
+			temp_col_list = temp_col_list.add(new_ndvi);
+			var new_ndwi = collection.select('NDWI').max();
+			temp_col_list = temp_col_list.add(new_ndwi);
+			var new_savi = collection.select('SAVI').max();
+			temp_col_list = temp_col_list.add(new_savi);
+			
+			var by_year_temp = ee.ImageCollection(temp_col_list);
+			var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
+			year_col_list = year_col_list.add(merged);
+		}
+
+		var by_year = ee.ImageCollection(year_col_list)
+		return by_year;
+	}
+
+
+	function collection_by_year_oli(collection_ls8) {
+		var start = '-01-01';
+		var finish = '-12-31';
+		var year_col_list = ee.List([]);
+		
+		
+		for (var year = 2013; year <= 2017; year++) {
+			var temp_col_list = ee.List([]);
+			var collection = collection_ls8.filterDate(year.toString() + start, year.toString() + finish);
+
+			var new_blue = collection.select('BLUE').median();
+			temp_col_list = temp_col_list.add(new_blue);
+			var new_green = collection.select('GREEN').median();
+			temp_col_list = temp_col_list.add(new_green);
+			var new_red = collection.select('RED').median();
+			temp_col_list = temp_col_list.add(new_red);
+			var new_nir = collection.select('NIR').median();
+			temp_col_list = temp_col_list.add(new_nir);
+			var new_swir1 = collection.select('SWIR1').median();
+			temp_col_list = temp_col_list.add(new_swir1);
+			var new_swir2 = collection.select('SWIR2').median();
+			temp_col_list = temp_col_list.add(new_swir2);
+			var new_ndvi = collection.select('NDVI').max();
+			temp_col_list = temp_col_list.add(new_ndvi);
+			var new_ndwi = collection.select('NDWI').max();
+			temp_col_list = temp_col_list.add(new_ndwi);
+			var new_savi = collection.select('SAVI').max();
+			temp_col_list = temp_col_list.add(new_savi);
+
+			var by_year_temp = ee.ImageCollection(temp_col_list);
+			var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
+			year_col_list = year_col_list.add(merged);
+		}
+		
+		var by_year = ee.ImageCollection(year_col_list)
+		return by_year;
+	}
+	
+
+	var tm_by_year = collection_by_year_tm(ls5_ic_idx, ls7_ic_idx);
+	var oli_by_year = collection_by_year_oli(ls8_ic_idx);
+
+	var merged_collections_by_year = tm_by_year.merge(oli_by_year);
+	return(merged_collections_by_year);
 }
 
 
@@ -1897,7 +2065,7 @@ exports.load_id_s2 = function (id) {
   var geet = require('users/elacerda/geet:geet'); 
   var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);
 */
-exports.landsat_collection_by_pathrow = function (type, path, row) {
+var landsat_collection_by_pathrow = function (type, path, row) {
 	
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
 	path = typeof path !== 'undefined' ? path : 217;
@@ -1957,7 +2125,7 @@ exports.landsat_collection_by_pathrow = function (type, path, row) {
   var geet = require('users/elacerda/geet:geet'); 
   var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77);
 */
-exports.ls5_collection_by_pathrow = function (type, path, row) {
+var ls5_collection_by_pathrow = function (type, path, row) {
 	
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
 	path = typeof path !== 'undefined' ? path : 217;
@@ -1996,7 +2164,7 @@ exports.ls5_collection_by_pathrow = function (type, path, row) {
   var geet = require('users/elacerda/geet:geet'); 
   var ls_collection = geet.ls7_collection_by_pathrow('SR', 220, 77);
 */
-exports.ls7_collection_by_pathrow = function (type, path, row) {
+var ls7_collection_by_pathrow = function (type, path, row) {
 	
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
 	path = typeof path !== 'undefined' ? path : 217;
@@ -2035,7 +2203,7 @@ exports.ls7_collection_by_pathrow = function (type, path, row) {
   var geet = require('users/elacerda/geet:geet'); 
   var ls_collection = geet.ls8_collection_by_pathrow('SR', 220, 77);
 */
-exports.ls8_collection_by_pathrow = function (type, path, row) {
+var ls8_collection_by_pathrow = function (type, path, row) {
 	
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
 	path = typeof path !== 'undefined' ? path : 217;
@@ -2085,7 +2253,7 @@ exports.ls8_collection_by_pathrow = function (type, path, row) {
   var geet = require('users/elacerda/geet:geet'); 
   var s2_mosaic = geet.mosaic_s2('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.mosaic_s2 = function (startDate, endDate, roi, showMosaic) {
+var mosaic_s2 = function (startDate, endDate, roi, showMosaic) {
     // Error Handling
     if (startDate === undefined) error('mosaic_s2', 'You need to specify the start date of the image series.');
     if (endDate === undefined) error('mosaic_s2', 'You need to specify the end  date of the image series.');
@@ -2143,7 +2311,7 @@ exports.mosaic_s2 = function (startDate, endDate, roi, showMosaic) {
   var geet = require('users/elacerda/geet:geet'); 
   var l5_mosaic = geet.mosaic_l5('2005-01-01', '2005-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.mosaic_l5 = function (startDate, endDate, roi, showMosaic) {
+var mosaic_l5 = function (startDate, endDate, roi, showMosaic) {
     // Error Handling
     if (startDate === undefined) error('mosaic_l5', 'You need to specify the start date of the image series.');
     if (endDate === undefined) error('mosaic_l5', 'You need to specify the end  date of the image series.');
@@ -2200,7 +2368,7 @@ exports.mosaic_l5 = function (startDate, endDate, roi, showMosaic) {
   var geet = require('users/elacerda/geet:geet'); 
   var l7_mosaic = geet.mosaic_l7('2003-01-01', '2003-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.mosaic_l7 = function (startDate, endDate, roi, showMosaic) {
+var mosaic_l7 = function (startDate, endDate, roi, showMosaic) {
     // Error Handling
     if (startDate === undefined) error('mosaic_l7', 'You need to specify the start date of the image series.');
     if (endDate === undefined) error('mosaic_l7', 'You need to specify the end  date of the image series.');
@@ -2256,7 +2424,7 @@ exports.mosaic_l7 = function (startDate, endDate, roi, showMosaic) {
   var geet = require('users/elacerda/geet:geet'); 
   var l8_mosaic = geet.mosaic_l8('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.mosaic_l8 = function (startDate, endDate, roi, showMosaic) {
+var mosaic_l8 = function (startDate, endDate, roi, showMosaic) {
     // Error Handling
     if (startDate === undefined) error('mosaic_l8', 'You need to specify the start date of the image series.');
     if (endDate === undefined) error('mosaic_l8', 'You need to specify the end  date of the image series.');
@@ -2312,7 +2480,7 @@ exports.mosaic_l8 = function (startDate, endDate, roi, showMosaic) {
   var geet = require('users/elacerda/geet:geet'); 
   var modis_ndvi_mosaic = geet.modis_ndvi_mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 */
-exports.modis_ndvi_mosaic = function (startDate, endDate, roi, showMosaic) {
+var modis_ndvi_mosaic = function (startDate, endDate, roi, showMosaic) {
     // Error Handling
     if (startDate === undefined) error('modis_ndvi_mosaic', 'You need to specify the start date of the image series.');
     if (endDate === undefined) error('modis_ndvi_mosaic', 'You need to specify the end  date of the image series.');
@@ -2356,7 +2524,7 @@ exports.modis_ndvi_mosaic = function (startDate, endDate, roi, showMosaic) {
   var geet = require('users/elacerda/geet:geet'); 
   var img_max = geet.max(img);
 */
-exports.max = function (image, roi, scale, maxPixels) {
+var max = function (image, roi, scale, maxPixels) {
     if (image === undefined) error('max', 'You need to specify an input image.');     
     
     // Default params
@@ -2388,7 +2556,7 @@ exports.max = function (image, roi, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var img_min = geet.min(img);
 */
-exports.min = function (image, roi, scale, maxPixels) {
+var min = function (image, roi, scale, maxPixels) {
     // Error handling
     if (image === undefined) error('min', 'You need to specify an input image.'); 
 
@@ -2421,7 +2589,7 @@ exports.min = function (image, roi, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var mean_roi = geet.mean(img);
 */
-exports.mean = function (image, roi, scale, maxPixels) {
+var mean = function (image, roi, scale, maxPixels) {
     // Error handling
     if (image === undefined) error('mean', 'You need to specify an input image.');   
     
@@ -2454,7 +2622,7 @@ exports.mean = function (image, roi, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var median = geet.median(img);
 */
-exports.median = function (image, roi, scale, maxPixels) {
+var median = function (image, roi, scale, maxPixels) {
     // Error handling
     if (image === undefined) error('median', 'You need to specify an input image.');  
     
@@ -2487,7 +2655,7 @@ exports.median = function (image, roi, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var mode = geet.mode(img);
 */
-exports.mode = function (image, roi, scale, maxPixels) {
+var mode = function (image, roi, scale, maxPixels) {
     // Error handling
     if (image === undefined) error('mode', 'You need to specify an input image.');  
     
@@ -2520,7 +2688,7 @@ exports.mode = function (image, roi, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var sd = geet.sd(img);
 */
-exports.sd = function (image, roi, scale, maxPixels) {
+var sd = function (image, roi, scale, maxPixels) {
     // Error handling
     if (image === undefined) error('sd', 'You need to specify an input image.');  
     
@@ -2553,7 +2721,7 @@ exports.sd = function (image, roi, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var variance = geet.variance(img);
 */
-exports.variance = function (image, roi, scale, maxPixels) {
+var variance = function (image, roi, scale, maxPixels) {
     // Error handling
     if (image === undefined) error('variance', 'You need to specify an input image.');  
 
@@ -2586,7 +2754,7 @@ exports.variance = function (image, roi, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var amplitude = geet.amplitude(img);
 */
-exports.amplitude = function (image, roi, scale, maxPixels) {
+var amplitude = function (image, roi, scale, maxPixels) {
     // Error handling
     if (image === undefined) error('amplitude', 'You need to specify an input image.');  
     
@@ -2620,7 +2788,7 @@ exports.amplitude = function (image, roi, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var spearmansCorrelation = geet.spearmans_correlation(img1, img2, roi);
 */
-exports.spearmans_correlation = function (image1, image2, roi, scale, maxPixels) {
+var spearmans_correlation = function (image1, image2, roi, scale, maxPixels) {
     // Error handling
     if (image1 === undefined) error('spearmans_correlation', 'You need to specify an input image.');
     if (image2 === undefined) error('spearmans_correlation', 'You need to specify an input image.');
@@ -2655,7 +2823,7 @@ exports.spearmans_correlation = function (image1, image2, roi, scale, maxPixels)
   var geet = require('users/elacerda/geet:geet'); 
   var linearFit = geet.linear_fit(img1, img2, roi);
 */
-exports.linear_fit = function (image1, image2, roi, scale, maxPixels) {
+var linear_fit = function (image1, image2, roi, scale, maxPixels) {
     // Error handling
     if (image1 === undefined) error('spearmans_correlation', 'You need to specify an input image.');
     if (image2 === undefined) error('spearmans_correlation', 'You need to specify an input image.');
@@ -2675,7 +2843,7 @@ exports.linear_fit = function (image1, image2, roi, scale, maxPixels) {
 }
 
 // TODO WCI = 100 x NDWI - NDWI_MIN / NDWI_MAX - NDWI_MIN
-exports.wci = function (ndwi_collection) {
+var wci = function (ndwi_collection) {
     var ndwi_min = ndwi_collection.reduce(ee.Reducer.min());
     var ndwi_max = ndwi_collection.reduce(ee.Reducer.max());
     var ndwi = ee.Image(ndwi_collection.median());
@@ -2698,7 +2866,7 @@ exports.wci = function (ndwi_collection) {
   var geet = require('users/elacerda/geet:geet'); 
   var l5_ndvi = geet.ndvi_l5(img);
 */
-exports.ndvi_l5 = function (image) {
+var ndvi_l5 = function (image) {
     // Error handling
     if (image === undefined) error('ndvi_l5', 'You need to specify an input image.');
 
@@ -2719,7 +2887,7 @@ exports.ndvi_l5 = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var l7_ndvi = geet.ndvi_l7(img);
 */
-exports.ndvi_l7 = function (image) {
+var ndvi_l7 = function (image) {
     // Error handling
     if (image === undefined) error('ndvi_l7', 'You need to specify an input image.');
 
@@ -2740,7 +2908,7 @@ exports.ndvi_l7 = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var l8_ndvi = geet.ndvi_l8(img);
 */
-exports.ndvi_l8 = function (image) {
+var ndvi_l8 = function (image) {
     // Error handling
     if (image === undefined) error('ndvi_l8', 'You need to specify an input image.');
 
@@ -2761,7 +2929,7 @@ exports.ndvi_l8 = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var s2_ndvi = geet.ndvi_s2(img);
 */
-exports.ndvi_s2 = function (image) {
+var ndvi_s2 = function (image) {
     // Error handling
     if (image === undefined) error('ndvi_s2', 'You need to specify an input image.');
 
@@ -2782,7 +2950,7 @@ exports.ndvi_s2 = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var img_pv = geet.prop_veg(img);
 */
-exports.prop_veg = function (image) {
+var prop_veg = function (image) {
     // Error handling
     if (image === undefined) error('prop_veg', 'You need to specify an input image.');
 
@@ -2812,7 +2980,7 @@ exports.prop_veg = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var lse = geet.surface_emissivity(pv);
 */
-exports.surface_emissivity = function (image) {
+var surface_emissivity = function (image) {
     // Error handling
     if (image === undefined) error('surface_emissivity', 'You need to specify an input image.');
 
@@ -2840,7 +3008,7 @@ exports.surface_emissivity = function (image) {
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
 */
-exports.surface_temperature_tm = function (image) {
+var surface_temperature_tm = function (image) {
     // Error handling
     if (image === undefined) error('surface_temperature_ls5', 'You need to specify an input image.');
 
@@ -2875,7 +3043,7 @@ exports.surface_temperature_tm = function (image) {
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
 */
-exports.surface_temperature_oli = function (image) {
+var surface_temperature_oli = function (image) {
     // Error handling
     if (image === undefined) error('surface_temperature', 'You need to specify an input image.');
 
@@ -2908,7 +3076,7 @@ exports.surface_temperature_oli = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   geet.export_image(img, 'output_img');
 */
-exports.export_image = function (image, scale) {
+var export_image = function (image, scale) {
     // Error handling
     if (image === undefined) error('export_image', 'You need to specify an input image.');
     if (image === undefined) error('export_image', 'You need to specify the output filename.');
@@ -2937,7 +3105,7 @@ exports.export_image = function (image, scale) {
   Usage:
   var cloudmask_img = geet.cloudmask(img);
 */
-exports.cloudmask = function (image) {
+var cloudmask = function (image) {
     // Error handling
     if (image === undefined) error('cloudmask', 'You need to specify an input image.');
     
@@ -2959,7 +3127,7 @@ exports.cloudmask = function (image) {
   var QA = img.select(['pixel_qa']);
   var masked_img = geet.cloudmask_sr(img, QA);
 */
-exports.cloudmask_sr = function (original_image, qa_band) {
+var cloudmask_sr = function (original_image, qa_band) {
     // Error handling
     if (original_image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
     if (qa_band === undefined) error('cloudmask_sr', 'You need to specify an input QA band.');
@@ -3002,7 +3170,7 @@ exports.cloudmask_sr = function (original_image, qa_band) {
   Information: 
   Modified from https://github.com/mortcanty/earthengine/blob/master/src/eePca.py
 */
-exports.pca = function (image, nbands, scale, maxPixels) {
+var pca = function (image, nbands, scale, maxPixels) {
     // Error handling
     if (image === undefined) error('pca', 'You need to specify an input image.');
 
@@ -3057,7 +3225,7 @@ exports.pca = function (image, nbands, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var geom_filtered = geet.geom_filter(geom, 'AreaSqKm', '>', 25000);
 */
-exports.geom_filter = function(geom, column, symbol, value) {
+var geom_filter = function(geom, column, symbol, value) {
     // Error handling
     if (geom === undefined) error('geom_filter', 'You need to specify an input geometry.');
     if (column === undefined) error('geom_filter', 'You need to specify the column name');
@@ -3105,7 +3273,7 @@ exports.geom_filter = function(geom, column, symbol, value) {
   
   geet.download(img, region, 250);
 */
-exports.download = function (image, roi, scale) {
+var download = function (image, roi, scale) {
     if (image === undefined) error('download', 'You need to specify an input image.');
 
     scale = typeof scale !== 'undefined' ? scale : 30;
@@ -3132,7 +3300,7 @@ exports.download = function (image, roi, scale) {
   var geet = require('users/elacerda/geet:geet'); 
   geet.brovey_transform(img_landsat);
 */
-exports.brovey_transform = function (image) {
+var brovey_transform = function (image) {
     var fusion_b4 = image.expression(
         '(B4 / B4 + B5 + B6) * B8', 
         {
@@ -3177,7 +3345,7 @@ exports.brovey_transform = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var image_tcap = geet.tasseledcap_oli(img);
 */
-exports.tasseledcap_oli = function (image) {
+var tasseledcap_oli = function (image) {
     var Brightness = image.expression(
         '(BLUE * 0.3029) + (GREEN * 0.2786) + (RED * 0.4733) + (NIR * 0.5599) + (SWIR1 * 0.508) + (SWIR2 * 0.1872)', {
 			'SWIR2': image.select('B7'),
@@ -3224,7 +3392,7 @@ exports.tasseledcap_oli = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var image_tcap = geet.tasseledcap_tm5(img);
 */
-exports.tasseledcap_tm5 = function (image) {
+var tasseledcap_tm5 = function (image) {
     var Brightness = image.expression(
         '(BLUE * 0.2043) + (GREEN * 0.4158) + (RED * 0.5524) + (NIR * 0.5741) + (SWIR1 * 0.3124) + (SWIR2 * 0.2303)', {
 			'SWIR2': image.select('B7'),
@@ -3271,7 +3439,7 @@ exports.tasseledcap_tm5 = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var image_tcap = geet.tasseledcap_tm7(img);
 */
-exports.tasseledcap_tm7 = function (image) {
+var tasseledcap_tm7 = function (image) {
     var Brightness = image.expression(
         '(BLUE * 0.3561) + (GREEN * 0.3972) + (RED * 0.3904) + (NIR * 0.6966) + (SWIR1 * 0.2286) + (SWIR2 * 0.1596)', {
 			'SWIR2': image.select('B7'),
@@ -3318,7 +3486,7 @@ exports.tasseledcap_tm7 = function (image) {
   var geet = require('users/elacerda/geet:geet'); 
   var image_tcap = geet.tasseledcap_s2(img);
 */
-exports.tasseledcap_s2 = function (image) {
+var tasseledcap_s2 = function (image) {
     var Brightness = image.expression(
         '(BLUE * 0.3037) + (GREEN * 0.2793) + (RED * 0.4743) + (NIR * 0.5585) + (SWIR1 * 0.5082) + (SWIR2 * 0.1863)', {
 			'SWIR2': image.select('B12'),
@@ -3600,3 +3768,75 @@ function radcalbatch (current, prev) {
 }
 
 /* ------------------------ TEST ZONE ------------------------ */
+
+/* ------------------------  EXPORTS  ------------------------ */
+
+exports.svm = svm
+exports.cart = cart
+exports.rf = rf
+exports.naive_bayes = naive_bayes
+exports.gmo_max_ent = gmo_max_ent
+exports.kmeans = kmeans
+exports.ndvi_change_detection = ndvi_change_detection
+exports.ndwi_change_detection = ndwi_change_detection
+exports.ndbi_change_detection = ndbi_change_detection
+exports.texture = texture
+exports.majority = majority
+exports.color = color
+exports.plot_rgb = plot_rgb
+exports.plot_ndvi = plot_ndvi
+exports.plot_ndwi = plot_ndwi
+exports.plot_class = plot_class
+exports.landsat_indices = landsat_indices
+exports.sentinel2_indices = sentinel2_indices
+exports.load_image = load_image
+exports.collection2image = collection2image
+exports.toa_radiance = toa_radiance
+exports.toa_reflectance = toa_reflectance
+exports.toa_reflectance_l8 = toa_reflectance_l8
+exports.brightness_temp_l5k = brightness_temp_l5k
+exports.brightness_temp_l5c = brightness_temp_l5c
+exports.brightness_temp_l7k = brightness_temp_l7k
+exports.brightness_temp_l7c = brightness_temp_l7c
+exports.brightness_temp_l8k = brightness_temp_l8k
+exports.brightness_temp_l8c = brightness_temp_l8c
+exports.resample = resample
+exports.resample_band = resample_band
+exports.load_id_s2 = load_id_s2
+exports.build_landsat_timeseries = build_landsat_timeseries
+exports.landsat_collection_by_pathrow = landsat_collection_by_pathrow
+exports.ls5_collection_by_pathrow = ls5_collection_by_pathrow
+exports.ls7_collection_by_pathrow = ls7_collection_by_pathrow
+exports.ls8_collection_by_pathrow = ls8_collection_by_pathrow
+exports.mosaic_s2 = mosaic_s2
+exports.mosaic_l5 = mosaic_l5
+exports.mosaic_l7 = mosaic_l7
+exports.mosaic_l8 = mosaic_l8
+exports.modis_ndvi_mosaic = modis_ndvi_mosaic
+exports.max = max
+exports.min = min
+exports.mean = mean
+exports.median = median
+exports.mode = mode
+exports.sd = sd
+exports.variance = variance
+exports.amplitude = amplitude
+exports.spearmans_correlation = spearmans_correlation
+exports.linear_fit = linear_fit
+exports.ndvi_l5 = ndvi_l5
+exports.ndvi_l7 = ndvi_l7
+exports.ndvi_l8 = ndvi_l8
+exports.ndvi_s2 = ndvi_s2
+exports.prop_veg = prop_veg
+exports.surface_emissivity = surface_emissivity
+exports.surface_temperature_tm = surface_temperature_tm
+exports.surface_temperature_oli = surface_temperature_oli
+exports.export_image = export_image
+exports.cloudmask = cloudmask
+exports.cloudmask_sr = cloudmask_sr
+exports.pca = pca
+exports.geom_filter = geom_filter
+exports.tasseledcap_oli = tasseledcap_oli
+exports.tasseledcap_s2 = tasseledcap_s2
+exports.tasseledcap_tm5 = tasseledcap_tm5
+exports.tasseledcap_tm7 = tasseledcap_tm7
