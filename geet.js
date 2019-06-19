@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.5.4
+ * Version: 0.5.5
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -1058,13 +1058,13 @@ var sentinel2_indices = function (image, index) {
             var newImage = image.addBands(i_gosavi);
             return newImage;
         case 'evi': // Enhanced Vegetation Index
-            var i_evi = image.expression('2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))',
+            var i_evi = image.expression('2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 10000))',
 										 {
 											 'NIR': image.select('B8'),
 											 'RED': image.select('B4'),
 											 'BLUE': image.select('B2')
 										 }).rename('EVI');
-            var newImage = image.addBands(i_evi);
+			var newImage = image.addBands(i_evi);
             return newImage;
         case 'evi2': // Enhanced Vegetation Index 2 (Without the blue band)
             var i_evi2 = image.expression('2.4 * ((NIR - RED) / (NIR + 2.4 * RED + 1))',
@@ -1140,7 +1140,7 @@ var sentinel2_indices = function (image, index) {
 											'GREEN': image.select('B3'),
 											'Y': 0.16
 										}).rename('GOSAVI');
-        var i_evi = image.expression('2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))',
+        var i_evi = image.expression('2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 10000))',
 									 {
 										 'NIR': image.select('B8'),
 										 'RED': image.select('B4'),
@@ -2246,7 +2246,7 @@ var ls8_collection_by_pathrow = function (type, path, row) {
 
 /*
   mosaic_s2:
-  Function to build a cloud free mosaic using the Sentinel 2 dataset.
+  Function to build a cloud free TOA mosaic using the Sentinel 2 dataset.
 
   Params:
   (string) startDate - the start date of the dataset.
