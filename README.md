@@ -903,7 +903,7 @@ _Function that return a image collection with all landsat 8 images from a define
 #### mosaic_s2
 (startDate, endDate, roi, showMosaic)  
 
-_Function to build a cloud free mosaic using the Sentinel 2 dataset._     
+_Function to build a cloud free TOA mosaic using the Sentinel 2 dataset._     
 
 ##### Params:
   (string) startDate - the start date of the dataset.  
