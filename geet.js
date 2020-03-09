@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.5.6
+ * Version: 0.5.7
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -3081,7 +3081,7 @@ var surface_temperature_oli = function (image) {
   Function calculate the land surface temperature from a Landsat 5 image doing all the process in a single function.
 
   Params:
-  (ee.Image) image - the input Landsat 5 or 7 image.
+  (ee.Image) image - the input Landsat 5 image.
 
   Usage:
   var geet = require('users/elacerda/geet:geet');
@@ -3100,6 +3100,55 @@ var lst_calc_ls5 = function (image) {
     return lst;
 }
 
+
+/*
+  lst_calc_ls7:
+  Function calculate the land surface temperature from a Landsat 7 image doing all the process in a single function.
+
+  Params:
+  (ee.Image) image - the input Landsat 7 image.
+
+  Usage:
+  var geet = require('users/elacerda/geet:geet');
+  var lst = geet.lst_calc_ls7(img);
+
+  Reference:
+  http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
+*/
+var lst_calc_ls7 = function (image) {
+    var toa = toa_radiance(image, 6);
+    var ndvi = ndvi_l7(toa);
+    var bt = brightness_temp_l7c(ndvi, true);
+    var propVeg = prop_veg(bt);
+    var lse = surface_emissivity(propVeg);
+    var lst = surface_temperature_tm(lse);
+    return lst;
+}
+
+
+/*
+  lst_calc_ls8:
+  Function calculate the land surface temperature from a Landsat 8 image doing all the process in a single function.
+
+  Params:
+  (ee.Image) image - the input Landsat 8 image.
+
+  Usage:
+  var geet = require('users/elacerda/geet:geet');
+  var lst = geet.lst_calc_ls8(img);
+
+  Reference:
+  http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
+*/
+var lst_calc_ls8 = function (image) {
+    var toa = toa_radiance(image, 10);
+    var ndvi = ndvi_l8(toa);
+    var bt = brightness_temp_l8c(ndvi, true);
+    var propVeg = prop_veg(bt);
+    var lse = surface_emissivity(propVeg);
+    var lst = surface_temperature_tm(lse);
+    return lst;
+}
 
 
 /*
@@ -3872,6 +3921,8 @@ exports.surface_emissivity = surface_emissivity
 exports.surface_temperature_tm = surface_temperature_tm
 exports.surface_temperature_oli = surface_temperature_oli
 exports.lst_calc_ls5 = lst_calc_ls5
+exports.lst_calc_ls7 = lst_calc_ls7
+exports.lst_calc_ls8 = lst_calc_ls8
 exports.export_image = export_image
 exports.cloudmask = cloudmask
 exports.cloudmask_sr = cloudmask_sr
