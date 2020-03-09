@@ -1,13 +1,13 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.5.5
+ * Version: 0.5.6
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
 // Error Handling function
 function error(funcName, msg) {
-    print("------------------  GEET  --------------------");    
+    print("------------------  GEET  --------------------");
     print("GEET Error in function: " + funcName.toString());
     print(msg.toString());
     print("----------------------------------------------");
@@ -31,9 +31,9 @@ function error(funcName, msg) {
 */
 var svm = function (image, trainingData, fieldName, kernelType, scale) {
     // Error Handling
-    if (image === undefined) error('svm', 'You need to specify an input image.');  
-    if (trainingData === undefined) error('svm', 'You need to specify the training data.');  
-    if (fieldName === undefined) error('svm', 'You need to specify the field name.');  
+    if (image === undefined) error('svm', 'You need to specify an input image.');
+    if (trainingData === undefined) error('svm', 'You need to specify the training data.');
+    if (fieldName === undefined) error('svm', 'You need to specify the field name.');
 
     // Default params
     kernelType = typeof kernelType !== 'undefined' ? kernelType : 'RBF';
@@ -479,20 +479,20 @@ var color = function (_color) {
 
     var color = _color.toLowerCase();
     switch (color) {
-    case 'water':
-        return COLOR.WATER;
-    case 'forest':
-        return COLOR.FOREST;
-    case 'pasture':
-        return COLOR.PASTURE;
-    case 'urban':
-        return COLOR.URBAN;
-    case 'shadow':
-        return COLOR.SHADOW;
-    case 'null':
-        return COLOR.NULL;
-    default:
-        return 'Error: Valid options are water, forest, pasture, urban, shadow or null! Remember to pass the argument as a string.';
+        case 'water':
+            return COLOR.WATER;
+        case 'forest':
+            return COLOR.FOREST;
+        case 'pasture':
+            return COLOR.PASTURE;
+        case 'urban':
+            return COLOR.URBAN;
+        case 'shadow':
+            return COLOR.SHADOW;
+        case 'null':
+            return COLOR.NULL;
+        default:
+            return 'Error: Valid options are water, forest, pasture, urban, shadow or null! Remember to pass the argument as a string.';
     }
 };
 
@@ -514,7 +514,7 @@ var plot_rgb = function (image, title) {
 
     // Default params
     title = typeof title !== 'undefined' ? title : 'image_RGB';
-    
+
 
     var vizParams = {
         'bands': 'B4,B3,B2',
@@ -586,21 +586,21 @@ var plot_class = function (image, numClasses, title) {
     title = typeof title !== 'undefined' ? title : 'class_final';
 
     switch (numClasses) {
-    case 2:
-        Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.SHADOW, COLOR.NULO] }, title);
-        break;
-    case 3:
-        Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.WATER] }, title);
-        break;
-    case 4:
-        Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER] }, title);
-        break;
-    case 5:
-        Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER, COLOR.SHADOW] }, title);
-        break;
-    default:
-        print("Error: Wrong number of classes. plotClass supports a number of classes from 2 to 5 only.");
-        break;
+        case 2:
+            Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.SHADOW, COLOR.NULO] }, title);
+            break;
+        case 3:
+            Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.WATER] }, title);
+            break;
+        case 4:
+            Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER] }, title);
+            break;
+        case 5:
+            Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER, COLOR.SHADOW] }, title);
+            break;
+        default:
+            print("Error: Wrong number of classes. plotClass supports a number of classes from 2 to 5 only.");
+            break;
     }
 };
 
@@ -635,297 +635,297 @@ var landsat_indices = function (image, sensor, index) {
 
     if (index != null) {
         switch (index.toLowerCase()) {
-        case 'ndvi':
-            if (sensor == 'L5' || sensor == 'L7') {
-				var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
-				var newImage = image.addBands(i_ndvi);
-				return newImage;
-            } else if (sensor == 'L8') {
-				var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
-				var newImage = image.addBands(i_ndvi);
-				return newImage;
-            } else if (sensor == 'S2') {
-				var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
-				var newImage = image.addBands(i_ndvi);
-				return newImage;
-            } else {
-				print('Error: Wrong sensor!');
-            }
-            break;
-        case 'ndwi':
-            if (sensor == 'L5' || sensor == 'L7') {
-				var i_ndwi = image.normalizedDifference(['B3', 'B5']).rename('NDWI');
-				var newImage = image.addBands(i_ndwi);
-				return newImage;
-            } else if (sensor == 'L8') {
-				var i_ndwi = image.normalizedDifference(['B4', 'B6']).rename('NDWI');
-				var newImage = image.addBands(i_ndwi);
-				return newImage;
-            } else if (sensor == 'S2') {
-				var i_ndwi = image.normalizedDifference(['B4', 'B11']).rename('NDWI');
-				var newImage = image.addBands(i_ndwi);
-				return newImage;
-            } else {
-				print('Error: Wrong sensor!');
-            }
-            break;
-        case 'ndbi':
-            if (sensor == 'L5' || sensor == 'L7') {
-				var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
-				var newImage = image.addBands(i_ndbi);
-				return newImage;
-            } else if (sensor == 'L8') {
-				var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
-				var newImage = image.addBands(i_ndbi);
-				return newImage;
-            } else if (sensor == 'S2') {
-				var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
-				var newImage = image.addBands(i_ndbi);
-				return newImage;
-            } else {
-				print('Error: Wrong sensor!');
-            }
-            break;
-        case 'nrvi':
-            if (sensor == 'L5' || sensor == 'L7') {
-				var i_nrvi = image.expression(
-					'(RED/NIR - 1) / (RED/NIR + 1)', {
-						'NIR': image.select('B4'),
-						'RED': image.select('B3')
-					}).rename('NRVI');
-				var newImage = image.addBands(i_nrvi);
-				return newImage;
-            } else if (sensor == 'L8') {
-				var i_nrvi = image.expression(
-					'(RED/NIR - 1) / (RED/NIR + 1)', {
-						'NIR': image.select('B5'),
-						'RED': image.select('B4')
-					}).rename('NRVI');
-				var newImage = image.addBands(i_nrvi);
-				return newImage;
-            } else {
-				print('Error: Wrong sensor!');
-            }
-            break;
-        case 'gli':
-            if (sensor == 'L5' || sensor == 'L7') {
-				var i_gli = image.expression(
-					'(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
-						'BLUE': image.select('B1'),
-						'GREEN': image.select('B2'),
-						'RED': image.select('B3')
-					}).rename('GLI');
-				var newImage = image.addBands(i_gli);
-				return newImage;
-            } else if (sensor == 'L8') {
-                var i_gli = image.expression(
-					'(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
-						'BLUE': image.select('B2'),
-						'GREEN': image.select('B3'),
-						'RED': image.select('B4')
-					}).rename('GLI');
-				var newImage = image.addBands(i_ndbi);
-				return newImage;
-            } else {
-				print('Error: Wrong sensor!');
-            }
-            break;
-        case 'evi':
-            if (sensor == 'L5' || sensor == 'L7') {
-				var i_evi = image.expression(
-					'2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
-						'NIR': image.select('B4'),
-						'RED': image.select('B3'),
-						'BLUE': image.select('B1')
-					}).rename('EVI');
-				var newImage = image.addBands(i_evi);
-				return newImage;
-            } else if (sensor == 'L8') {
-				var i_evi = image.expression(
-					'2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
-						'NIR': image.select('B5'),
-						'RED': image.select('B4'),
-						'BLUE': image.select('B2')
-					}).rename('EVI');
-				var newImage = image.addBands(i_evi);
-				return newImage;
-            } else if (sensor == 'S2') {
-				var i_evi = image.expression(
-					'2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
-						'NIR': image.select('B8'),
-						'RED': image.select('B4'),
-						'BLUE': image.select('B2')
-					}).rename('EVI');
-				var newImage = image.addBands(i_evi);
-				return newImage;
-            } else {
-				print('Error: Wrong sensor!');
-            }
-            break;
-        case 'savi':
-            if (sensor == 'L5' || sensor == 'L7') {
-				var i_savi = image.expression(
-					'(1 + L) * (NIR - RED) / (NIR + RED + L)', {
-						'NIR': image.select('B4'),
-						'RED': image.select('B3'),
-						'L': 0.2
-					}).rename('SAVI');
-				var newImage = image.addBands(i_savi);
-				return newImage;
-            } else if (sensor == 'L8') {
-				var i_savi = image.expression(
-					'(1 + L) * (NIR - RED) / (NIR + RED + L)', {
-						'NIR': image.select('B5'),
-						'RED': image.select('B4'),
-						'L': 0.2
-					}).rename('SAVI');
-				var newImage = image.addBands(i_savi);
-				return newImage;
-            } else if (sensor == 'S2') {
-				var i_savi = image.expression(
-					'(1 + L) * (NIR - RED) / (NIR + RED + L)', {
-						'NIR': image.select('B8'),
-						'RED': image.select('B4'),
-						'L': 0.2
-					}).rename('SAVI');
-				var newImage = image.addBands(i_savi);
-				return newImage;
-            } else {
-				print('Error: Wrong sensor!');
-            }
-            break;
-        case 'gosavi':
-            if (sensor == 'L5' || sensor == 'L7') {
-				var i_gosavi = image.expression(
-					'(NIR - GREEN) / (NIR + GREEN + Y)', {
-						'NIR': image.select('B4'),
-						'GREEN': image.select('B2'),
-						'Y': 0.16
-					}).rename('GOSAVI');
-				var newImage = image.addBands(i_gosavi);
-				return newImage;
-            } else if (sensor == 'L8') {
-				var i_gosavi = image.expression(
-					'(NIR - GREEN) / (NIR + GREEN + Y)', {
-						'NIR': image.select('B5'),
-						'GREEN': image.select('B3'),
-						'Y': 0.16
-					}).rename('GOSAVI');
-				var newImage = image.addBands(i_gosavi);
-				return newImage;
-            } else if (sensor == 'S2') {
-				var i_gosavi = image.expression(
-					'(NIR - GREEN) / (NIR + GREEN + Y)', {
-						'NIR': image.select('B8'),
-						'GREEN': image.select('B3'),
-						'Y': 0.16
-					}).rename('GOSAVI');
-				var newImage = image.addBands(i_gosavi);
-				return newImage;
-            } else {
-				print('Error: Wrong sensor!');
-            }
-            break;
+            case 'ndvi':
+                if (sensor == 'L5' || sensor == 'L7') {
+                    var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
+                    var newImage = image.addBands(i_ndvi);
+                    return newImage;
+                } else if (sensor == 'L8') {
+                    var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+                    var newImage = image.addBands(i_ndvi);
+                    return newImage;
+                } else if (sensor == 'S2') {
+                    var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
+                    var newImage = image.addBands(i_ndvi);
+                    return newImage;
+                } else {
+                    print('Error: Wrong sensor!');
+                }
+                break;
+            case 'ndwi':
+                if (sensor == 'L5' || sensor == 'L7') {
+                    var i_ndwi = image.normalizedDifference(['B3', 'B5']).rename('NDWI');
+                    var newImage = image.addBands(i_ndwi);
+                    return newImage;
+                } else if (sensor == 'L8') {
+                    var i_ndwi = image.normalizedDifference(['B4', 'B6']).rename('NDWI');
+                    var newImage = image.addBands(i_ndwi);
+                    return newImage;
+                } else if (sensor == 'S2') {
+                    var i_ndwi = image.normalizedDifference(['B4', 'B11']).rename('NDWI');
+                    var newImage = image.addBands(i_ndwi);
+                    return newImage;
+                } else {
+                    print('Error: Wrong sensor!');
+                }
+                break;
+            case 'ndbi':
+                if (sensor == 'L5' || sensor == 'L7') {
+                    var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
+                    var newImage = image.addBands(i_ndbi);
+                    return newImage;
+                } else if (sensor == 'L8') {
+                    var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
+                    var newImage = image.addBands(i_ndbi);
+                    return newImage;
+                } else if (sensor == 'S2') {
+                    var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
+                    var newImage = image.addBands(i_ndbi);
+                    return newImage;
+                } else {
+                    print('Error: Wrong sensor!');
+                }
+                break;
+            case 'nrvi':
+                if (sensor == 'L5' || sensor == 'L7') {
+                    var i_nrvi = image.expression(
+                        '(RED/NIR - 1) / (RED/NIR + 1)', {
+                        'NIR': image.select('B4'),
+                        'RED': image.select('B3')
+                    }).rename('NRVI');
+                    var newImage = image.addBands(i_nrvi);
+                    return newImage;
+                } else if (sensor == 'L8') {
+                    var i_nrvi = image.expression(
+                        '(RED/NIR - 1) / (RED/NIR + 1)', {
+                        'NIR': image.select('B5'),
+                        'RED': image.select('B4')
+                    }).rename('NRVI');
+                    var newImage = image.addBands(i_nrvi);
+                    return newImage;
+                } else {
+                    print('Error: Wrong sensor!');
+                }
+                break;
+            case 'gli':
+                if (sensor == 'L5' || sensor == 'L7') {
+                    var i_gli = image.expression(
+                        '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+                        'BLUE': image.select('B1'),
+                        'GREEN': image.select('B2'),
+                        'RED': image.select('B3')
+                    }).rename('GLI');
+                    var newImage = image.addBands(i_gli);
+                    return newImage;
+                } else if (sensor == 'L8') {
+                    var i_gli = image.expression(
+                        '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+                        'BLUE': image.select('B2'),
+                        'GREEN': image.select('B3'),
+                        'RED': image.select('B4')
+                    }).rename('GLI');
+                    var newImage = image.addBands(i_ndbi);
+                    return newImage;
+                } else {
+                    print('Error: Wrong sensor!');
+                }
+                break;
+            case 'evi':
+                if (sensor == 'L5' || sensor == 'L7') {
+                    var i_evi = image.expression(
+                        '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                        'NIR': image.select('B4'),
+                        'RED': image.select('B3'),
+                        'BLUE': image.select('B1')
+                    }).rename('EVI');
+                    var newImage = image.addBands(i_evi);
+                    return newImage;
+                } else if (sensor == 'L8') {
+                    var i_evi = image.expression(
+                        '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                        'NIR': image.select('B5'),
+                        'RED': image.select('B4'),
+                        'BLUE': image.select('B2')
+                    }).rename('EVI');
+                    var newImage = image.addBands(i_evi);
+                    return newImage;
+                } else if (sensor == 'S2') {
+                    var i_evi = image.expression(
+                        '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                        'NIR': image.select('B8'),
+                        'RED': image.select('B4'),
+                        'BLUE': image.select('B2')
+                    }).rename('EVI');
+                    var newImage = image.addBands(i_evi);
+                    return newImage;
+                } else {
+                    print('Error: Wrong sensor!');
+                }
+                break;
+            case 'savi':
+                if (sensor == 'L5' || sensor == 'L7') {
+                    var i_savi = image.expression(
+                        '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                        'NIR': image.select('B4'),
+                        'RED': image.select('B3'),
+                        'L': 0.2
+                    }).rename('SAVI');
+                    var newImage = image.addBands(i_savi);
+                    return newImage;
+                } else if (sensor == 'L8') {
+                    var i_savi = image.expression(
+                        '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                        'NIR': image.select('B5'),
+                        'RED': image.select('B4'),
+                        'L': 0.2
+                    }).rename('SAVI');
+                    var newImage = image.addBands(i_savi);
+                    return newImage;
+                } else if (sensor == 'S2') {
+                    var i_savi = image.expression(
+                        '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                        'NIR': image.select('B8'),
+                        'RED': image.select('B4'),
+                        'L': 0.2
+                    }).rename('SAVI');
+                    var newImage = image.addBands(i_savi);
+                    return newImage;
+                } else {
+                    print('Error: Wrong sensor!');
+                }
+                break;
+            case 'gosavi':
+                if (sensor == 'L5' || sensor == 'L7') {
+                    var i_gosavi = image.expression(
+                        '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                        'NIR': image.select('B4'),
+                        'GREEN': image.select('B2'),
+                        'Y': 0.16
+                    }).rename('GOSAVI');
+                    var newImage = image.addBands(i_gosavi);
+                    return newImage;
+                } else if (sensor == 'L8') {
+                    var i_gosavi = image.expression(
+                        '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                        'NIR': image.select('B5'),
+                        'GREEN': image.select('B3'),
+                        'Y': 0.16
+                    }).rename('GOSAVI');
+                    var newImage = image.addBands(i_gosavi);
+                    return newImage;
+                } else if (sensor == 'S2') {
+                    var i_gosavi = image.expression(
+                        '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                        'NIR': image.select('B8'),
+                        'GREEN': image.select('B3'),
+                        'Y': 0.16
+                    }).rename('GOSAVI');
+                    var newImage = image.addBands(i_gosavi);
+                    return newImage;
+                } else {
+                    print('Error: Wrong sensor!');
+                }
+                break;
         }
     } else { // END OF SWITCH 
         // Gen ALL indices
         if (sensor == 'L5' || sensor == 'L7') {
-			var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
-			var i_ndwi = image.normalizedDifference(['B2', 'B5']).rename('NDWI');
-			var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
-			var i_gli = image.expression(
-				'(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
-					'BLUE': image.select('B1'),
-					'GREEN': image.select('B2'),
-					'RED': image.select('B3')
-				}).rename('GLI');
-			var i_nrvi = image.expression(
-				'(RED/NIR - 1) / (RED/NIR + 1)', {
-					'NIR': image.select('B4'),
-					'RED': image.select('B3')
-				}).rename('NRVI');
-			var i_evi = image.expression(
-				'2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
-					'NIR': image.select('B4'),
-					'RED': image.select('B3'),
-					'BLUE': image.select('B1')
-				}).rename('EVI');
-			var i_savi = image.expression(
-				'(1 + L) * (NIR - RED) / (NIR + RED + L)', {
-					'NIR': image.select('B4'),
-					'RED': image.select('B3'),
-					'L': 0.2
-				}).rename('SAVI');
-			var i_gosavi = image.expression(
-				'(NIR - GREEN) / (NIR + GREEN + Y)', {
-					'NIR': image.select('B4'),
-					'GREEN': image.select('B2'),
-					'Y': 0.16
-				}).rename('GOSAVI');
-			var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
-			return newImage;
+            var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
+            var i_ndwi = image.normalizedDifference(['B2', 'B5']).rename('NDWI');
+            var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
+            var i_gli = image.expression(
+                '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+                'BLUE': image.select('B1'),
+                'GREEN': image.select('B2'),
+                'RED': image.select('B3')
+            }).rename('GLI');
+            var i_nrvi = image.expression(
+                '(RED/NIR - 1) / (RED/NIR + 1)', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3')
+            }).rename('NRVI');
+            var i_evi = image.expression(
+                '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'BLUE': image.select('B1')
+            }).rename('EVI');
+            var i_savi = image.expression(
+                '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'L': 0.2
+            }).rename('SAVI');
+            var i_gosavi = image.expression(
+                '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                'NIR': image.select('B4'),
+                'GREEN': image.select('B2'),
+                'Y': 0.16
+            }).rename('GOSAVI');
+            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
+            return newImage;
         } else if (sensor == 'L8') {
-			var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
-			var i_ndwi = image.normalizedDifference(['B3', 'B6']).rename('NDWI');
-			var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
-			var i_gli = image.expression(
-				'(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
-					'BLUE': image.select('B2'),
-					'GREEN': image.select('B3'),
-					'RED': image.select('B4')
-				}).rename('GLI');
-			var i_nrvi = image.expression(
-				'(RED/NIR - 1) / (RED/NIR + 1)', {
-					'NIR': image.select('B5'),
-					'RED': image.select('B4')
-				}).rename('NRVI');
-			var i_evi = image.expression(
-				'2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
-					'NIR': image.select('B5'),
-					'RED': image.select('B4'),
-					'BLUE': image.select('B2')
-				}).rename('EVI');
-			var i_savi = image.expression(
-				'(1 + L) * (NIR - RED) / (NIR + RED + L)', {
-					'NIR': image.select('B5'),
-					'RED': image.select('B4'),
-					'L': 0.2
-				}).rename('SAVI');
-			var i_gosavi = image.expression(
-				'(NIR - GREEN) / (NIR + GREEN + Y)', {
-					'NIR': image.select('B5'),
-					'GREEN': image.select('B3'),
-					'Y': 0.16
-				}).rename('GOSAVI');
-			var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
-			return newImage;
+            var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+            var i_ndwi = image.normalizedDifference(['B3', 'B6']).rename('NDWI');
+            var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
+            var i_gli = image.expression(
+                '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+                'BLUE': image.select('B2'),
+                'GREEN': image.select('B3'),
+                'RED': image.select('B4')
+            }).rename('GLI');
+            var i_nrvi = image.expression(
+                '(RED/NIR - 1) / (RED/NIR + 1)', {
+                'NIR': image.select('B5'),
+                'RED': image.select('B4')
+            }).rename('NRVI');
+            var i_evi = image.expression(
+                '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                'NIR': image.select('B5'),
+                'RED': image.select('B4'),
+                'BLUE': image.select('B2')
+            }).rename('EVI');
+            var i_savi = image.expression(
+                '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                'NIR': image.select('B5'),
+                'RED': image.select('B4'),
+                'L': 0.2
+            }).rename('SAVI');
+            var i_gosavi = image.expression(
+                '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                'NIR': image.select('B5'),
+                'GREEN': image.select('B3'),
+                'Y': 0.16
+            }).rename('GOSAVI');
+            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
+            return newImage;
         } else if (sensor == 'S2') {
-			var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
-			var i_ndwi = image.normalizedDifference(['B3', 'B11']).rename('NDWI');
-			var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
-			var i_evi = image.expression(
-				'2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
-					'NIR': image.select('B8'),
-					'RED': image.select('B4'),
-					'BLUE': image.select('B2')
-				}).rename('EVI');
-			var i_savi = image.expression(
-				'(1 + L) * (NIR - RED) / (NIR + RED + L)', {
-					'NIR': image.select('B8'),
-					'RED': image.select('B4'),
-					'L': 0.2
-				}).rename('SAVI');
-			var i_gosavi = image.expression(
-				'(NIR - GREEN) / (NIR + GREEN + Y)', {
-					'NIR': image.select('B8'),
-					'GREEN': image.select('B3'),
-					'Y': 0.16
-				}).rename('GOSAVI');
-			var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi, i_gosavi]);
-			return newImage;
+            var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
+            var i_ndwi = image.normalizedDifference(['B3', 'B11']).rename('NDWI');
+            var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
+            var i_evi = image.expression(
+                '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                'NIR': image.select('B8'),
+                'RED': image.select('B4'),
+                'BLUE': image.select('B2')
+            }).rename('EVI');
+            var i_savi = image.expression(
+                '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                'NIR': image.select('B8'),
+                'RED': image.select('B4'),
+                'L': 0.2
+            }).rename('SAVI');
+            var i_gosavi = image.expression(
+                '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                'NIR': image.select('B8'),
+                'GREEN': image.select('B3'),
+                'Y': 0.16
+            }).rename('GOSAVI');
+            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi, i_gosavi]);
+            return newImage;
         } else {
-			print("Error: Wrong sensor input!");
-			print("Choose 'L5' to process Landsat 5 images, 'L8' for Landsat 8 and S2 for Sentinel 2");
+            print("Error: Wrong sensor input!");
+            print("Choose 'L5' to process Landsat 5 images, 'L8' for Landsat 8 and S2 for Sentinel 2");
         }
     }
 };
@@ -976,140 +976,140 @@ var landsat_indices = function (image, sensor, index) {
 var sentinel2_indices = function (image, index) {
     // Error Handling
     if (image === undefined) error('sentinel2_indices', 'You need to specify an input image.');
-    
+
     if (index !== undefined) {
         switch (index.toLowerCase()) {
-        case 'ndvi': // Normalized Difference Vegetation Index
-            var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
-            var newImage = image.addBands(i_ndvi);
-            return newImage;
-        case 'ndwi': // Normalized Difference Water Index
-            var i_ndwi = image.normalizedDifference(['B3', 'B8']).rename('NDWI');
-            var newImage = image.addBands(i_ndwi);
-            return newImage;
-        case 'ndbi': // Normalized Difference Built-Up Index
-            var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
-            var newImage = image.addBands(i_ndbi);
-            return newImage;
-        case 'mndwi': // Modifed Normalized Difference Water Index
-            var i_mndwi = image.normalizedDifference(['B3', 'B12']).rename('MNDWI');
-            var newImage = image.addBands(i_mndwi);
-            return newImage;
-        case 'mndvi': // Modified Normalized Difference Vegetation Index
-            var i_mndvi = image.normalizedDifference(['B9', 'B12']).rename('MNDVI');
-            var newImage = image.addBands(i_mndvi);
-            return newImage;
-        case 'ngrdi': // Normalized Difference Green/Red Edge Index. Aka. VIgreen 
-            var i_ngrdi = image.normalizedDifference(['B3', 'B5']).rename('NGRDI');
-            var newImage = image.addBands(i_ngrdi);
-            return newImage;
-        case 'ndsi': // Normalized Difference Salinity Index
-            var i_ndsi = image.normalizedDifference(['B11', 'B12']).rename('NDSI');
-            var newImage = image.addBands(i_ndsi);
-            return newImage;
-        case 'ri': // Redness Index
-            var i_ri = image.normalizedDifference(['B5', 'B3']).rename('RI');
-            var newImage = image.addBands(i_ri);
-            return newImage;
-        case 'ndmi': // Normalized Difference Moisture Index
-            var i_ndmi = image.normalizedDifference(['B9', 'B12']).rename('NDMI');
-            var newImage = image.addBands(i_ndmi);
-            return newImage;
-        case 'gndvi': // Green NDVI
-            var i_gndvi = image.normalizedDifference(['B9', 'B3']).rename('GNDVI');
-            var newImage = image.addBands(i_gndvi);
-            return newImage;
-        case 'bndvi': // Coastal Blue NDVI
-            var i_bndvi = image.normalizedDifference(['B9', 'B1']).rename('BNDVI');
-            var newImage = image.addBands(i_bndvi);
-            return newImage;
-        case 'nbr': // Normalized Burn Ratio
-            var i_nbr = image.normalizedDifference(['B9', 'B12']).rename('NBR');
-            var newImage = image.addBands(i_nbr);
-            return newImage;
-        case 'ppr': // Plant Pigment Ratio
-            var i_ppr = image.normalizedDifference(['B9', 'B12']).rename('PPR');
-            var newImage = image.addBands(i_ppr);
-            return newImage;
-        case 'ndre': // Normalized Difference Red Edge
-            var i_ndre = image.normalizedDifference(['B9', 'B5']).rename('NDRE');
-            var newImage = image.addBands(i_ndre);
-            return newImage;
-        case 'lci': // Leaf Chlorophyll Index
-            var i_lci = image.normalizedDifference(['B8', 'B5']).rename('LCI');
-            var newImage = image.addBands(i_lci);
-            return newImage;
-        case 'savi': // Soil Adjusted Vegetation Index
-            var i_savi = image.expression('(1 + L) * (NIR - RED) / (NIR + RED + L)',
-										  {
-											  'NIR': image.select('B8'),
-											  'RED': image.select('B4'),
-											  'L': 0.5
-										  }).rename('SAVI');
-            var newImage = image.addBands(i_savi);
-            return newImage;
-        case 'gosavi': // Green Optimized Soil Adjusted Vegetation Index
-            var i_gosavi = image.expression('(NIR - GREEN) / (NIR + GREEN + Y)',
-											{
-												'NIR': image.select('B8'),
-												'GREEN': image.select('B3'),
-												'Y': 0.16
-											}).rename('GOSAVI');
-            var newImage = image.addBands(i_gosavi);
-            return newImage;
-        case 'evi': // Enhanced Vegetation Index
-            var i_evi = image.expression('2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 10000))',
-										 {
-											 'NIR': image.select('B8'),
-											 'RED': image.select('B4'),
-											 'BLUE': image.select('B2')
-										 }).rename('EVI');
-			var newImage = image.addBands(i_evi);
-            return newImage;
-        case 'evi2': // Enhanced Vegetation Index 2 (Without the blue band)
-            var i_evi2 = image.expression('2.4 * ((NIR - RED) / (NIR + 2.4 * RED + 1))',
-										  {
-											  'NIR': image.select('B8'),
-											  'RED': image.select('B4')
-										  }).rename('EVI2');
-            var newImage = image.addBands(i_evi2);
-            return newImage;
-        case 'gemi': // Global Environmental Monitoring Index
-            var i_gemi = image.expression('(((NIR_POW - RED_POW) * 2 + (NIR * 1.5) + (RED * 0.5))/(NIR + RED + 0.5)) * (1 - ((((NIR_POW - RED_POW) * 2 + (NIR * 1.5) + (RED * 0.5)) / (NIR + RED + 0.5)) * 0.25)) - ((RED - 0.125) / (1 - RED))',
-										  {
-											  'RED': image.select('B4'),
-											  'NIR': image.select('B8'),
-											  'RED_POW': image.select('B4').pow(2),
-											  'NIR_POW': image.select('B8').pow(2)
-										  }).rename('GEMI');
-            var newImage = image.addBands(i_gemi);
-            return newImage;
-        case 'rvi': // Ratio Vegetation Index
-            var i_rvi = image.expression('RED / NIR',
-										 {
-											 'NIR': image.select('B8'),
-											 'RED': image.select('B4')
-										 }).rename('RVI');
-            var newImage = image.addBands(i_rvi);
-            return newImage;
-        case 'logr': // Log Ratio
-            var i_logr_semlog = image.expression('RED / NIR',
-												 {
-													 'NIR': image.select('B8'),
-													 'RED': image.select('B4')
-												 });
-            var i_logr_comlog = i_logr_semlog.log().rename('logR');
-            var newImage = image.addBands(i_logr_comlog);
-            return newImage;
-        case 'tvi': // Transformed Vegetation Index
-            var i_ndvi_temp = image.normalizedDifference(['B8', 'B4']);
-            var i_tvi_temp = image.expression('NDVI + 0.5',
-											  {
-												  'NDVI': i_ndvi_temp
-											  });
-            var i_tvi = i_tvi_temp.sqrt().rename('TVI');
-            var newImage = image.addBands(i_tvi);
-            return newImage;
+            case 'ndvi': // Normalized Difference Vegetation Index
+                var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
+                var newImage = image.addBands(i_ndvi);
+                return newImage;
+            case 'ndwi': // Normalized Difference Water Index
+                var i_ndwi = image.normalizedDifference(['B3', 'B8']).rename('NDWI');
+                var newImage = image.addBands(i_ndwi);
+                return newImage;
+            case 'ndbi': // Normalized Difference Built-Up Index
+                var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
+                var newImage = image.addBands(i_ndbi);
+                return newImage;
+            case 'mndwi': // Modifed Normalized Difference Water Index
+                var i_mndwi = image.normalizedDifference(['B3', 'B12']).rename('MNDWI');
+                var newImage = image.addBands(i_mndwi);
+                return newImage;
+            case 'mndvi': // Modified Normalized Difference Vegetation Index
+                var i_mndvi = image.normalizedDifference(['B9', 'B12']).rename('MNDVI');
+                var newImage = image.addBands(i_mndvi);
+                return newImage;
+            case 'ngrdi': // Normalized Difference Green/Red Edge Index. Aka. VIgreen 
+                var i_ngrdi = image.normalizedDifference(['B3', 'B5']).rename('NGRDI');
+                var newImage = image.addBands(i_ngrdi);
+                return newImage;
+            case 'ndsi': // Normalized Difference Salinity Index
+                var i_ndsi = image.normalizedDifference(['B11', 'B12']).rename('NDSI');
+                var newImage = image.addBands(i_ndsi);
+                return newImage;
+            case 'ri': // Redness Index
+                var i_ri = image.normalizedDifference(['B5', 'B3']).rename('RI');
+                var newImage = image.addBands(i_ri);
+                return newImage;
+            case 'ndmi': // Normalized Difference Moisture Index
+                var i_ndmi = image.normalizedDifference(['B9', 'B12']).rename('NDMI');
+                var newImage = image.addBands(i_ndmi);
+                return newImage;
+            case 'gndvi': // Green NDVI
+                var i_gndvi = image.normalizedDifference(['B9', 'B3']).rename('GNDVI');
+                var newImage = image.addBands(i_gndvi);
+                return newImage;
+            case 'bndvi': // Coastal Blue NDVI
+                var i_bndvi = image.normalizedDifference(['B9', 'B1']).rename('BNDVI');
+                var newImage = image.addBands(i_bndvi);
+                return newImage;
+            case 'nbr': // Normalized Burn Ratio
+                var i_nbr = image.normalizedDifference(['B9', 'B12']).rename('NBR');
+                var newImage = image.addBands(i_nbr);
+                return newImage;
+            case 'ppr': // Plant Pigment Ratio
+                var i_ppr = image.normalizedDifference(['B9', 'B12']).rename('PPR');
+                var newImage = image.addBands(i_ppr);
+                return newImage;
+            case 'ndre': // Normalized Difference Red Edge
+                var i_ndre = image.normalizedDifference(['B9', 'B5']).rename('NDRE');
+                var newImage = image.addBands(i_ndre);
+                return newImage;
+            case 'lci': // Leaf Chlorophyll Index
+                var i_lci = image.normalizedDifference(['B8', 'B5']).rename('LCI');
+                var newImage = image.addBands(i_lci);
+                return newImage;
+            case 'savi': // Soil Adjusted Vegetation Index
+                var i_savi = image.expression('(1 + L) * (NIR - RED) / (NIR + RED + L)',
+                    {
+                        'NIR': image.select('B8'),
+                        'RED': image.select('B4'),
+                        'L': 0.5
+                    }).rename('SAVI');
+                var newImage = image.addBands(i_savi);
+                return newImage;
+            case 'gosavi': // Green Optimized Soil Adjusted Vegetation Index
+                var i_gosavi = image.expression('(NIR - GREEN) / (NIR + GREEN + Y)',
+                    {
+                        'NIR': image.select('B8'),
+                        'GREEN': image.select('B3'),
+                        'Y': 0.16
+                    }).rename('GOSAVI');
+                var newImage = image.addBands(i_gosavi);
+                return newImage;
+            case 'evi': // Enhanced Vegetation Index
+                var i_evi = image.expression('2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 10000))',
+                    {
+                        'NIR': image.select('B8'),
+                        'RED': image.select('B4'),
+                        'BLUE': image.select('B2')
+                    }).rename('EVI');
+                var newImage = image.addBands(i_evi);
+                return newImage;
+            case 'evi2': // Enhanced Vegetation Index 2 (Without the blue band)
+                var i_evi2 = image.expression('2.4 * ((NIR - RED) / (NIR + 2.4 * RED + 1))',
+                    {
+                        'NIR': image.select('B8'),
+                        'RED': image.select('B4')
+                    }).rename('EVI2');
+                var newImage = image.addBands(i_evi2);
+                return newImage;
+            case 'gemi': // Global Environmental Monitoring Index
+                var i_gemi = image.expression('(((NIR_POW - RED_POW) * 2 + (NIR * 1.5) + (RED * 0.5))/(NIR + RED + 0.5)) * (1 - ((((NIR_POW - RED_POW) * 2 + (NIR * 1.5) + (RED * 0.5)) / (NIR + RED + 0.5)) * 0.25)) - ((RED - 0.125) / (1 - RED))',
+                    {
+                        'RED': image.select('B4'),
+                        'NIR': image.select('B8'),
+                        'RED_POW': image.select('B4').pow(2),
+                        'NIR_POW': image.select('B8').pow(2)
+                    }).rename('GEMI');
+                var newImage = image.addBands(i_gemi);
+                return newImage;
+            case 'rvi': // Ratio Vegetation Index
+                var i_rvi = image.expression('RED / NIR',
+                    {
+                        'NIR': image.select('B8'),
+                        'RED': image.select('B4')
+                    }).rename('RVI');
+                var newImage = image.addBands(i_rvi);
+                return newImage;
+            case 'logr': // Log Ratio
+                var i_logr_semlog = image.expression('RED / NIR',
+                    {
+                        'NIR': image.select('B8'),
+                        'RED': image.select('B4')
+                    });
+                var i_logr_comlog = i_logr_semlog.log().rename('logR');
+                var newImage = image.addBands(i_logr_comlog);
+                return newImage;
+            case 'tvi': // Transformed Vegetation Index
+                var i_ndvi_temp = image.normalizedDifference(['B8', 'B4']);
+                var i_tvi_temp = image.expression('NDVI + 0.5',
+                    {
+                        'NDVI': i_ndvi_temp
+                    });
+                var i_tvi = i_tvi_temp.sqrt().rename('TVI');
+                var newImage = image.addBands(i_tvi);
+                return newImage;
         }
     } else { // END OF SWITCH 
         // Gen ALL indices
@@ -1129,49 +1129,49 @@ var sentinel2_indices = function (image, index) {
         var i_ndre = image.normalizedDifference(['B9', 'B5']).rename('NDRE');
         var i_lci = image.normalizedDifference(['B8', 'B5']).rename('LCI');
         var i_savi = image.expression('(1 + L) * (NIR - RED) / (NIR + RED + L)',
-									  {
-										  'NIR': image.select('B8'),
-										  'RED': image.select('B4'),
-										  'L': 0.5
-									  }).rename('SAVI');
+            {
+                'NIR': image.select('B8'),
+                'RED': image.select('B4'),
+                'L': 0.5
+            }).rename('SAVI');
         var i_gosavi = image.expression('(NIR - GREEN) / (NIR + GREEN + Y)',
-										{
-											'NIR': image.select('B8'),
-											'GREEN': image.select('B3'),
-											'Y': 0.16
-										}).rename('GOSAVI');
+            {
+                'NIR': image.select('B8'),
+                'GREEN': image.select('B3'),
+                'Y': 0.16
+            }).rename('GOSAVI');
         var i_evi = image.expression('2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 10000))',
-									 {
-										 'NIR': image.select('B8'),
-										 'RED': image.select('B4'),
-										 'BLUE': image.select('B2')
-									 }).rename('EVI');
+            {
+                'NIR': image.select('B8'),
+                'RED': image.select('B4'),
+                'BLUE': image.select('B2')
+            }).rename('EVI');
         var i_evi2 = image.expression('2.4 * ((NIR - RED) / (NIR + 2.4 * RED + 1))',
-									  {
-										  'NIR': image.select('B8'),
-										  'RED': image.select('B4')
-									  }).rename('EVI2');
+            {
+                'NIR': image.select('B8'),
+                'RED': image.select('B4')
+            }).rename('EVI2');
         var i_rvi = image.expression('RED / NIR',
-									 {
-										 'NIR': image.select('B8'),
-										 'RED': image.select('B4')
-									 }).rename('RVI');
+            {
+                'NIR': image.select('B8'),
+                'RED': image.select('B4')
+            }).rename('RVI');
         var i_logr_semlog = image.expression('RED / NIR',
-											 {
-												 'NIR': image.select('B8'),
-												 'RED': image.select('B4')
-											 });
+            {
+                'NIR': image.select('B8'),
+                'RED': image.select('B4')
+            });
         var i_logr_comlog = i_logr_semlog.log().rename('logR');
         var i_ndvi_temp = image.normalizedDifference(['B8', 'B4']);
         var i_tvi_temp = image.expression('NDVI + 0.5',
-										  {
-											  'NDVI': i_ndvi_temp
-										  });
+            {
+                'NDVI': i_ndvi_temp
+            });
         var i_tvi = i_tvi_temp.sqrt().rename('TVI');
         var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_mndwi, i_mndvi, i_ngrdi,
-                                       i_ndsi, i_ri, i_ndmi, i_gndvi, i_bndvi, i_nbr, i_ppr,
-                                       i_ndre, i_lci, i_savi, i_gosavi, i_evi, i_evi2, i_rvi,
-                                       i_logr_comlog, i_tvi]);
+            i_ndsi, i_ri, i_ndmi, i_gndvi, i_bndvi, i_nbr, i_ppr,
+            i_ndre, i_lci, i_savi, i_gosavi, i_evi, i_evi2, i_rvi,
+            i_logr_comlog, i_tvi]);
         return newImage;
     }
 }
@@ -1205,39 +1205,39 @@ var load_image = function (collection, year, roi, cloudFree) {
     roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point(-43.25, -22.90);
     year = typeof year !== 'undefined' ? year : 2015;
     cloudFree = typeof cloudFree !== 'undefined' ? cloudFree : true;
-    
+
     // Check collection
     if (year >= 2013) {
         if (collection === 'RAW') {
-			collection = 'LANDSAT/LC08/C01/T1';
-			visParams = {
-				bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
-			};
+            collection = 'LANDSAT/LC08/C01/T1';
+            visParams = {
+                bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
+            };
         } else if (collection === 'TOA') {
-			collection = 'LANDSAT/LC08/C01/T1_TOA';
+            collection = 'LANDSAT/LC08/C01/T1_TOA';
         } else if (collection === 'SR') {
-			collection = 'LANDSAT/LC08/C01/T1_SR';
-			visParams = {
-				bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
-			};
+            collection = 'LANDSAT/LC08/C01/T1_SR';
+            visParams = {
+                bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
+            };
         } else {
-			print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
+            print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
         }
     } else if (year < 2013 && year >= 1985) {
         if (collection === 'RAW') {
-			collection = 'LANDSAT/LT05/C01/T1';
-			visParams = {
-				bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
-			};
+            collection = 'LANDSAT/LT05/C01/T1';
+            visParams = {
+                bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
+            };
         } else if (collection === 'TOA') {
-			collection = 'LANDSAT/LT05/C01/T1_TOA';
+            collection = 'LANDSAT/LT05/C01/T1_TOA';
         } else if (collection === 'SR') {
-			collection = 'LANDSAT/LT05/C01/T1_SR';
-			visParams = {
-				bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
-			};
+            collection = 'LANDSAT/LT05/C01/T1_SR';
+            visParams = {
+                bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
+            };
         } else {
-			print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
+            print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
         }
     } else {
         print('Error: Wrong year parameter');
@@ -1249,26 +1249,26 @@ var load_image = function (collection, year, roi, cloudFree) {
 
     if (cloudFree === true) {
         var noclouds = function (image) {
-			// var mask = image.select(['fmask']).neq(4);
-			// return image.updateMask(mask);
-			var scored = ee.Algorithms.Landsat.simpleCloudScore(image);
-			var mask = scored.select(['cloud']).lte(20);
-			return image.updateMask(mask);
+            // var mask = image.select(['fmask']).neq(4);
+            // return image.updateMask(mask);
+            var scored = ee.Algorithms.Landsat.simpleCloudScore(image);
+            var mask = scored.select(['cloud']).lte(20);
+            return image.updateMask(mask);
         };
 
         var image = ee.ImageCollection(ic
-									   .filterBounds(roi)
-									   .filterDate(year.toString() + start, year.toString() + finish)
-									   .sort('CLOUD_COVER'))
-			.map(noclouds);
-        
+            .filterBounds(roi)
+            .filterDate(year.toString() + start, year.toString() + finish)
+            .sort('CLOUD_COVER'))
+            .map(noclouds);
+
         var result_image = image.median();
     } else {
         var result_image = ee.Image(ic
-									.filterBounds(roi)
-									.filterDate(year.toString() + start, year.toString() + finish)
-									.sort('CLOUD_COVER')
-									.first());
+            .filterBounds(roi)
+            .filterDate(year.toString() + start, year.toString() + finish)
+            .sort('CLOUD_COVER')
+            .first());
     }
 
     var title = "load_image";
@@ -1325,10 +1325,10 @@ var toa_radiance = function (image, band) {
     var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
     var toa_radiance = band_to_toa.expression(
         '(Ml * band) + Al', {
-			'Ml': radiance_multi_band,
-			'Al': radiance_add_band,
-			'band': band_to_toa
-        }).rename('TOA_Radiance');
+        'Ml': radiance_multi_band,
+        'Al': radiance_add_band,
+        'band': band_to_toa
+    }).rename('TOA_Radiance');
     var img_radiance = image.addBands(toa_radiance);
     return img_radiance;
 }
@@ -1363,10 +1363,10 @@ var toa_reflectance = function (image, band) {
     var reflectance_add_band = ee.Number(image.get('REFLECTANCE_ADD_BAND_' + band.toString())); // Ap
     var toa = band_to_toa.expression(
         '(Mp * image) + Ap', {
-			'Mp': reflectance_multi_band,
-			'Ap': reflectance_add_band,
-			'image': band_to_toa
-        }).rename('B' + band.toString() + '_TOA_Reflectance');
+        'Mp': reflectance_multi_band,
+        'Ap': reflectance_add_band,
+        'image': band_to_toa
+    }).rename('B' + band.toString() + '_TOA_Reflectance');
     return toa;
 }
 
@@ -1425,10 +1425,10 @@ var toa_reflectance_l8 = function (image, band, _solarAngle) {
     if (_solarAngle !== undefined) {
         var solarAngle = _solarAngle;
         if (solarAngle !== 'SZ' && solarAngle !== 'SE') {
-			print("Error: You need to choose one of two modes:");
-			print("Error: 'SE' for the local sun elevation angle or 'SZ' for the Local solar zenith angle.");
-			print("Warning: 'SZ' will be set as default mode.")
-			solarAngle = 'SZ';
+            print("Error: You need to choose one of two modes:");
+            print("Error: 'SE' for the local sun elevation angle or 'SZ' for the Local solar zenith angle.");
+            print("Warning: 'SZ' will be set as default mode.")
+            solarAngle = 'SZ';
         }
     } else {
         solarAngle = 'SZ';
@@ -1439,11 +1439,11 @@ var toa_reflectance_l8 = function (image, band, _solarAngle) {
         var reflectance_multi_band = ee.Number(image.get('REFLECTANCE_MULT_BAND_' + band.toString())); // Mp
         var reflectance_add_band = ee.Number(image.get('REFLECTANCE_ADD_BAND_' + band.toString())); // Ap
         var toa = band_to_toa.expression(
-			'(Mp * image) + Ap', {
-				'Mp': reflectance_multi_band,
-				'Ap': reflectance_add_band,
-				'image': band_to_toa
-			}).rename('B' + band.toString() + '_TOA_Reflectance_SE');
+            '(Mp * image) + Ap', {
+            'Mp': reflectance_multi_band,
+            'Ap': reflectance_add_band,
+            'image': band_to_toa
+        }).rename('B' + band.toString() + '_TOA_Reflectance_SE');
         var img_se = solarAngleElevation(image, toa);
         return img_se;
     }
@@ -1453,11 +1453,11 @@ var toa_reflectance_l8 = function (image, band, _solarAngle) {
         var reflectance_multi_band = ee.Number(image.get('REFLECTANCE_MULT_BAND_' + band.toString())); // Mp
         var reflectance_add_band = ee.Number(image.get('REFLECTANCE_ADD_BAND_' + band.toString())); // Ap
         var toa = band_to_toa.expression(
-			'(Mp * image) + Ap', {
-				'Mp': reflectance_multi_band,
-				'Ap': reflectance_add_band,
-				'image': band_to_toa
-			}).rename('B' + band.toString() + '_TOA_Reflectance_SZ');
+            '(Mp * image) + Ap', {
+            'Mp': reflectance_multi_band,
+            'Ap': reflectance_add_band,
+            'image': band_to_toa
+        }).rename('B' + band.toString() + '_TOA_Reflectance_SZ');
         var img_sz = solarAngleZenith(image, toa);
         return img_sz;
     }
@@ -1492,17 +1492,17 @@ var brightness_temp_l5k = function (image) {
 
     var brightness_temp_semlog = image.expression(
         'K1 / B6 + 1', {
-			'K1': K1,
-			'B6': image.select('TOA_Radiance')
-        });
+        'K1': K1,
+        'B6': image.select('TOA_Radiance')
+    });
 
     var brightness_temp_log = brightness_temp_semlog.log();
 
     var brightness_temp = image.expression(
         'K2 / brightness_temp_log', {
-			'K2': K2,
-			'brightness_temp_log': brightness_temp_log
-        }).rename('Brightness_Temperature');
+        'K2': K2,
+        'brightness_temp_log': brightness_temp_log
+    }).rename('Brightness_Temperature');
 
     var img_brightness_temp = image.addBands(brightness_temp);
     return img_brightness_temp;
@@ -1537,17 +1537,17 @@ var brightness_temp_l5c = function (image) {
 
     var brightness_temp_semlog = image.expression(
         'K1 / B6 + 1', {
-			'K1': K1,
-			'B6': image.select('TOA_Radiance')
-        });
+        'K1': K1,
+        'B6': image.select('TOA_Radiance')
+    });
 
     var brightness_temp_log = brightness_temp_semlog.log();
 
     var brightness_temp = image.expression(
         'K2 / brightness_temp_log', {
-			'K2': K2,
-			'brightness_temp_log': brightness_temp_log
-        }).rename('Brightness_Temperature');
+        'K2': K2,
+        'brightness_temp_log': brightness_temp_log
+    }).rename('Brightness_Temperature');
 
     var brightness_temp_celsius = brightness_temp.subtract(273.5);
     var img_brightness_temp = image.addBands(brightness_temp_celsius);
@@ -1582,17 +1582,17 @@ var brightness_temp_l7k = function (image) {
 
     var brightness_temp_semlog = image.expression(
         'K1 / B6 + 1', {
-			'K1': K1,
-			'B6': image.select('TOA_Radiance')
-        });
+        'K1': K1,
+        'B6': image.select('TOA_Radiance')
+    });
 
     var brightness_temp_log = brightness_temp_semlog.log();
 
     var brightness_temp = image.expression(
         'K2 / brightness_temp_log', {
-			'K2': K2,
-			'brightness_temp_log': brightness_temp_log
-        }).rename('Brightness_Temperature');
+        'K2': K2,
+        'brightness_temp_log': brightness_temp_log
+    }).rename('Brightness_Temperature');
 
     var img_brightness_temp = image.addBands(brightness_temp);
     return img_brightness_temp;
@@ -1627,17 +1627,17 @@ var brightness_temp_l7c = function (image) {
 
     var brightness_temp_semlog = image.expression(
         'K1 / B6 + 1', {
-			'K1': K1,
-			'B6': image.select('TOA_Radiance')
-        });
+        'K1': K1,
+        'B6': image.select('TOA_Radiance')
+    });
 
     var brightness_temp_log = brightness_temp_semlog.log();
 
     var brightness_temp = image.expression(
         'K2 / brightness_temp_log', {
-			'K2': K2,
-			'brightness_temp_log': brightness_temp_log
-        }).rename('Brightness_Temperature');
+        'K2': K2,
+        'brightness_temp_log': brightness_temp_log
+    }).rename('Brightness_Temperature');
 
     var brightness_temp_celsius = brightness_temp.subtract(273.5);
     var img_brightness_temp = image.addBands(brightness_temp_celsius);
@@ -1683,18 +1683,18 @@ var brightness_temp_l8k = function (image, two_channel) {
         var K2_11 = ee.Number(image.get('K2_CONSTANT_BAND_11'));
 
         var brightness_temp_semlog = image.expression(
-			'K1 / B10 + 1', {
-				'K1': K1_10,
-				'B10': image.select('TOA_Radiance')
-			});
+            'K1 / B10 + 1', {
+            'K1': K1_10,
+            'B10': image.select('TOA_Radiance')
+        });
 
         var brightness_temp_log = brightness_temp_semlog.log();
 
         var brightness_temp = image.expression(
-			'K2 / brightness_temp_log', {
-				'K2': K2_10,
-				'brightness_temp_log': brightness_temp_log
-			}).rename('Brightness_Temperature');
+            'K2 / brightness_temp_log', {
+            'K2': K2_10,
+            'brightness_temp_log': brightness_temp_log
+        }).rename('Brightness_Temperature');
 
         var img_brightness_temp = image.addBands(brightness_temp);
         return img_brightness_temp;
@@ -1704,18 +1704,18 @@ var brightness_temp_l8k = function (image, two_channel) {
         var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
 
         var brightness_temp_semlog = image.expression(
-			'K1 / B10 + 1', {
-				'K1': K1_10,
-				'B10': image.select('TOA_Radiance')
-			});
+            'K1 / B10 + 1', {
+            'K1': K1_10,
+            'B10': image.select('TOA_Radiance')
+        });
 
         var brightness_temp_log = brightness_temp_semlog.log();
 
         var brightness_temp = image.expression(
-			'K2 / brightness_temp_log', {
-				'K2': K2_10,
-				'brightness_temp_log': brightness_temp_log
-			}).rename('Brightness_Temperature');
+            'K2 / brightness_temp_log', {
+            'K2': K2_10,
+            'brightness_temp_log': brightness_temp_log
+        }).rename('Brightness_Temperature');
 
         var img_brightness_temp = image.addBands(brightness_temp);
         return img_brightness_temp;
@@ -1761,18 +1761,18 @@ var brightness_temp_l8c = function (image, two_channel) {
         var K2_11 = ee.Number(image.get('K2_CONSTANT_BAND_11'));
 
         var brightness_temp_semlog = image.expression(
-			'K1 / B10 + 1', {
-				'K1': K1_10,
-				'B10': image.select('TOA_Radiance')
-			});
+            'K1 / B10 + 1', {
+            'K1': K1_10,
+            'B10': image.select('TOA_Radiance')
+        });
 
         var brightness_temp_log = brightness_temp_semlog.log();
 
         var brightness_temp = image.expression(
-			'K2 / brightness_temp_log', {
-				'K2': K2_10,
-				'brightness_temp_log': brightness_temp_log
-			}).rename('Brightness_Temperature');
+            'K2 / brightness_temp_log', {
+            'K2': K2_10,
+            'brightness_temp_log': brightness_temp_log
+        }).rename('Brightness_Temperature');
 
         var brightness_temp_celsius = brightness_temp.subtract(273.5);
         var img_brightness_temp = image.addBands(brightness_temp_celsius);
@@ -1783,18 +1783,18 @@ var brightness_temp_l8c = function (image, two_channel) {
         var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
 
         var brightness_temp_semlog = image.expression(
-			'K1 / B10 + 1', {
-				'K1': K1_10,
-				'B10': image.select('TOA_Radiance')
-			});
+            'K1 / B10 + 1', {
+            'K1': K1_10,
+            'B10': image.select('TOA_Radiance')
+        });
 
         var brightness_temp_log = brightness_temp_semlog.log();
 
         var brightness_temp = image.expression(
-			'K2 / brightness_temp_log', {
-				'K2': K2_10,
-				'brightness_temp_log': brightness_temp_log
-			}).rename('Brightness_Temperature');
+            'K2 / brightness_temp_log', {
+            'K2': K2_10,
+            'brightness_temp_log': brightness_temp_log
+        }).rename('Brightness_Temperature');
 
         var brightness_temp_celsius = brightness_temp.subtract(273.5);
         var img_brightness_temp = image.addBands(brightness_temp_celsius);
@@ -1851,7 +1851,7 @@ var resample_band = function (band, scale, mode) {
     // Error Handling
     if (image === undefined) error('resample_band', 'You need to specify an input image.');
     if (scale === undefined) error('resample_band', 'You need to specify the scale number.');
-	if (mode === undefined) error('resample', 'You need to specify the resample mode (bilinear or bicubic).');
+    if (mode === undefined) error('resample', 'You need to specify the resample mode (bilinear or bicubic).');
 
     var resampled_band = band.resample(mode).reproject({
         crs: band.projection().crs(),
@@ -1897,172 +1897,170 @@ var load_id_s2 = function (id) {
 */
 var build_landsat_timeseries = function (roi) {
 
-	roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point([-43.0879, -22.8632]);
+    roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point([-43.0879, -22.8632]);
 
-	var ls5_sr = ee.ImageCollection("LANDSAT/LT05/C01/T1_SR"),
-		ls7_sr = ee.ImageCollection("LANDSAT/LE07/C01/T1_SR"),
-		ls8_sr = ee.ImageCollection("LANDSAT/LC08/C01/T1_SR");
-		
-	var ls5_ic = ee.ImageCollection(ls5_sr)
-		.filterBounds(roi)
-		.filterDate('1985-01-01', '2011-12-31')
+    var ls5_sr = ee.ImageCollection("LANDSAT/LT05/C01/T1_SR"),
+        ls7_sr = ee.ImageCollection("LANDSAT/LE07/C01/T1_SR"),
+        ls8_sr = ee.ImageCollection("LANDSAT/LC08/C01/T1_SR");
 
-	var ls7_ic = ee.ImageCollection(ls7_sr)
-		.filterBounds(roi)
-		.filterDate('1999-01-01', '2017-12-31')
+    var ls5_ic = ee.ImageCollection(ls5_sr)
+        .filterBounds(roi)
+        .filterDate('1985-01-01', '2011-12-31')
 
-	var ls8_ic = ee.ImageCollection(ls8_sr)
-		.filterBounds(roi)
-		.filterDate('2013-05-01', '2017-12-31')
+    var ls7_ic = ee.ImageCollection(ls7_sr)
+        .filterBounds(roi)
+        .filterDate('1999-01-01', '2017-12-31')
 
-	
-	function rename_bands_tm(image) {
-		var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI'];
-		var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
-		return image.select(bands).rename(new_bands);
-	}
-
-	function rename_bands_oli(image) {
-		var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI'];
-		var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
-		return image.select(bands).rename(new_bands);
-	}
-	
-	function calc_indices(image, satellite) {
-		var ls_idx = landsat_indices(image, satellite);
-		return ls_idx;
-	}
-
-	function mask_clouds(original_image, qa_band) {
-		var masked_image = cloudmask_sr(original_image, qa_band);
-		return masked_image;
-	}
-
-	function merge_bands (image, previous) {
-		return ee.Image(previous).addBands(image);
-	};
-
-	
-	var ls5_ic_idx = ls5_ic.map(function (image) { return calc_indices(image, "L5"); })
-		.map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
-		.map(rename_bands_tm);
-
-	var ls7_ic_idx = ls7_ic.map(function (image) { return calc_indices(image, "L7"); })
-		.map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
-		.map(rename_bands_tm);
-
-	var ls8_ic_idx = ls8_ic.map(function (image) { return calc_indices(image, "L8"); })
-		.map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
-		.map(rename_bands_oli);
-
-	
-	function collection_by_year_tm(collection_ls5, collection_ls7) {
-		var start = '-01-01';
-		var finish = '-12-31';
-		var year_col_list = ee.List([]);
-		
-		
-		for (var year = 1985; year <= 2012; year++) {
-			
-			var temp_col_list = ee.List([]);
-			
-			if (year >= 1999)
-			{
-				var year_col_ls5 = collection_ls5.filterDate(year.toString() + start, year.toString() + finish);
-				var year_col_ls7 = collection_ls7.filterDate(year.toString() + start, year.toString() + finish);
-				var collection = year_col_ls5.merge(year_col_ls7);
-			}
-			else
-			{
-				var collection = collection_ls5.filterDate(year.toString() + start, year.toString() + finish);
-			}
-
-			var new_blue = collection.select('BLUE').median();
-			temp_col_list = temp_col_list.add(new_blue);
-			var new_green = collection.select('GREEN').median();
-			temp_col_list = temp_col_list.add(new_green);
-			var new_red = collection.select('RED').median();
-			temp_col_list = temp_col_list.add(new_red);
-			var new_nir = collection.select('NIR').median();
-			temp_col_list = temp_col_list.add(new_nir);
-			var new_swir1 = collection.select('SWIR1').median();
-			temp_col_list = temp_col_list.add(new_swir1);
-			var new_swir2 = collection.select('SWIR2').median();
-			temp_col_list = temp_col_list.add(new_swir2);
-			var new_ndvi = collection.select('NDVI').max();
-			temp_col_list = temp_col_list.add(new_ndvi);
-			var new_ndwi = collection.select('NDWI').max();
-			temp_col_list = temp_col_list.add(new_ndwi);
-			var new_savi = collection.select('SAVI').max();
-			temp_col_list = temp_col_list.add(new_savi);
-			
-			var by_year_temp = ee.ImageCollection(temp_col_list);
-			var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
-			year_col_list = year_col_list.add(merged);
-		}
-
-		var by_year = ee.ImageCollection(year_col_list)
-		return by_year;
-	}
+    var ls8_ic = ee.ImageCollection(ls8_sr)
+        .filterBounds(roi)
+        .filterDate('2013-05-01', '2017-12-31')
 
 
-	function collection_by_year_oli(collection_ls8) {
-		var start = '-01-01';
-		var finish = '-12-31';
-		var year_col_list = ee.List([]);
-		
-		
-		for (var year = 2013; year <= 2017; year++) {
-			var temp_col_list = ee.List([]);
-			var collection = collection_ls8.filterDate(year.toString() + start, year.toString() + finish);
+    function rename_bands_tm(image) {
+        var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI'];
+        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
+        return image.select(bands).rename(new_bands);
+    }
 
-			var new_blue = collection.select('BLUE').median();
-			temp_col_list = temp_col_list.add(new_blue);
-			var new_green = collection.select('GREEN').median();
-			temp_col_list = temp_col_list.add(new_green);
-			var new_red = collection.select('RED').median();
-			temp_col_list = temp_col_list.add(new_red);
-			var new_nir = collection.select('NIR').median();
-			temp_col_list = temp_col_list.add(new_nir);
-			var new_swir1 = collection.select('SWIR1').median();
-			temp_col_list = temp_col_list.add(new_swir1);
-			var new_swir2 = collection.select('SWIR2').median();
-			temp_col_list = temp_col_list.add(new_swir2);
-			var new_ndvi = collection.select('NDVI').max();
-			temp_col_list = temp_col_list.add(new_ndvi);
-			var new_ndwi = collection.select('NDWI').max();
-			temp_col_list = temp_col_list.add(new_ndwi);
-			var new_savi = collection.select('SAVI').max();
-			temp_col_list = temp_col_list.add(new_savi);
+    function rename_bands_oli(image) {
+        var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI'];
+        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
+        return image.select(bands).rename(new_bands);
+    }
 
-			var by_year_temp = ee.ImageCollection(temp_col_list);
-			var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
-			year_col_list = year_col_list.add(merged);
-		}
-		
-		var by_year = ee.ImageCollection(year_col_list)
-		return by_year;
-	}
-	
+    function calc_indices(image, satellite) {
+        var ls_idx = landsat_indices(image, satellite);
+        return ls_idx;
+    }
 
-	var tm_by_year = collection_by_year_tm(ls5_ic_idx, ls7_ic_idx);
-	var oli_by_year = collection_by_year_oli(ls8_ic_idx);
+    function mask_clouds(original_image, qa_band) {
+        var masked_image = cloudmask_sr(original_image, qa_band);
+        return masked_image;
+    }
 
-	var merged_collections_by_year = tm_by_year.merge(oli_by_year);
+    function merge_bands(image, previous) {
+        return ee.Image(previous).addBands(image);
+    };
 
-	// Add Metadata to merged_collections_by_year (year of each image)
-	var merged_list = merged_collections_by_year.toList(merged_collections_by_year.size());
-	var temp_merged_list = ee.List([]);
-	var num_of_imgs = merged_collections_by_year.size().getInfo();
-	num_of_imgs--;
-	for(var i = 0; i <= num_of_imgs; i++) {
-		var img = ee.Image(merged_list.get(i));
-		img = img.set("Year", (i + 1985).toString());
-		temp_merged_list = temp_merged_list.add(img);
-	}
-	merged_collections_by_year = ee.ImageCollection(temp_merged_list);
-	
-	return(merged_collections_by_year);
+
+    var ls5_ic_idx = ls5_ic.map(function (image) { return calc_indices(image, "L5"); })
+        .map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+        .map(rename_bands_tm);
+
+    var ls7_ic_idx = ls7_ic.map(function (image) { return calc_indices(image, "L7"); })
+        .map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+        .map(rename_bands_tm);
+
+    var ls8_ic_idx = ls8_ic.map(function (image) { return calc_indices(image, "L8"); })
+        .map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+        .map(rename_bands_oli);
+
+
+    function collection_by_year_tm(collection_ls5, collection_ls7) {
+        var start = '-01-01';
+        var finish = '-12-31';
+        var year_col_list = ee.List([]);
+
+
+        for (var year = 1985; year <= 2012; year++) {
+
+            var temp_col_list = ee.List([]);
+
+            if (year >= 1999) {
+                var year_col_ls5 = collection_ls5.filterDate(year.toString() + start, year.toString() + finish);
+                var year_col_ls7 = collection_ls7.filterDate(year.toString() + start, year.toString() + finish);
+                var collection = year_col_ls5.merge(year_col_ls7);
+            }
+            else {
+                var collection = collection_ls5.filterDate(year.toString() + start, year.toString() + finish);
+            }
+
+            var new_blue = collection.select('BLUE').median();
+            temp_col_list = temp_col_list.add(new_blue);
+            var new_green = collection.select('GREEN').median();
+            temp_col_list = temp_col_list.add(new_green);
+            var new_red = collection.select('RED').median();
+            temp_col_list = temp_col_list.add(new_red);
+            var new_nir = collection.select('NIR').median();
+            temp_col_list = temp_col_list.add(new_nir);
+            var new_swir1 = collection.select('SWIR1').median();
+            temp_col_list = temp_col_list.add(new_swir1);
+            var new_swir2 = collection.select('SWIR2').median();
+            temp_col_list = temp_col_list.add(new_swir2);
+            var new_ndvi = collection.select('NDVI').max();
+            temp_col_list = temp_col_list.add(new_ndvi);
+            var new_ndwi = collection.select('NDWI').max();
+            temp_col_list = temp_col_list.add(new_ndwi);
+            var new_savi = collection.select('SAVI').max();
+            temp_col_list = temp_col_list.add(new_savi);
+
+            var by_year_temp = ee.ImageCollection(temp_col_list);
+            var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
+            year_col_list = year_col_list.add(merged);
+        }
+
+        var by_year = ee.ImageCollection(year_col_list)
+        return by_year;
+    }
+
+
+    function collection_by_year_oli(collection_ls8) {
+        var start = '-01-01';
+        var finish = '-12-31';
+        var year_col_list = ee.List([]);
+
+
+        for (var year = 2013; year <= 2017; year++) {
+            var temp_col_list = ee.List([]);
+            var collection = collection_ls8.filterDate(year.toString() + start, year.toString() + finish);
+
+            var new_blue = collection.select('BLUE').median();
+            temp_col_list = temp_col_list.add(new_blue);
+            var new_green = collection.select('GREEN').median();
+            temp_col_list = temp_col_list.add(new_green);
+            var new_red = collection.select('RED').median();
+            temp_col_list = temp_col_list.add(new_red);
+            var new_nir = collection.select('NIR').median();
+            temp_col_list = temp_col_list.add(new_nir);
+            var new_swir1 = collection.select('SWIR1').median();
+            temp_col_list = temp_col_list.add(new_swir1);
+            var new_swir2 = collection.select('SWIR2').median();
+            temp_col_list = temp_col_list.add(new_swir2);
+            var new_ndvi = collection.select('NDVI').max();
+            temp_col_list = temp_col_list.add(new_ndvi);
+            var new_ndwi = collection.select('NDWI').max();
+            temp_col_list = temp_col_list.add(new_ndwi);
+            var new_savi = collection.select('SAVI').max();
+            temp_col_list = temp_col_list.add(new_savi);
+
+            var by_year_temp = ee.ImageCollection(temp_col_list);
+            var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
+            year_col_list = year_col_list.add(merged);
+        }
+
+        var by_year = ee.ImageCollection(year_col_list)
+        return by_year;
+    }
+
+
+    var tm_by_year = collection_by_year_tm(ls5_ic_idx, ls7_ic_idx);
+    var oli_by_year = collection_by_year_oli(ls8_ic_idx);
+
+    var merged_collections_by_year = tm_by_year.merge(oli_by_year);
+
+    // Add Metadata to merged_collections_by_year (year of each image)
+    var merged_list = merged_collections_by_year.toList(merged_collections_by_year.size());
+    var temp_merged_list = ee.List([]);
+    var num_of_imgs = merged_collections_by_year.size().getInfo();
+    num_of_imgs--;
+    for (var i = 0; i <= num_of_imgs; i++) {
+        var img = ee.Image(merged_list.get(i));
+        img = img.set("Year", (i + 1985).toString());
+        temp_merged_list = temp_merged_list.add(img);
+    }
+    merged_collections_by_year = ee.ImageCollection(temp_merged_list);
+
+    return (merged_collections_by_year);
 }
 
 
@@ -2081,48 +2079,48 @@ var build_landsat_timeseries = function (roi) {
   var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);
 */
 var landsat_collection_by_pathrow = function (type, path, row) {
-	
+
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
-	path = typeof path !== 'undefined' ? path : 217;
-	row = typeof row !== 'undefined' ? row : 76;
-	
-	switch (type) {
-    case 'raw':
-        var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-    	var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-    		.filter(ee.Filter.eq('WRS_ROW', row));
-    	var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-		var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
-        return all_ls_collection;
-    case 'toa':
-        var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-    	var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-    		.filter(ee.Filter.eq('WRS_ROW', row));
-    	var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-		var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
-        return all_ls_collection;
-    case 'sr':
-        var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
-			.filter(ee.Filter.eq('WRS_PATH', path))
-			.filter(ee.Filter.eq('WRS_ROW', row));
-    	var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
-    		.filter(ee.Filter.eq('WRS_PATH', path))
-    		.filter(ee.Filter.eq('WRS_ROW', row));
-    	var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
-    		.filter(ee.Filter.eq('WRS_PATH', path))
-    		.filter(ee.Filter.eq('WRS_ROW', row));
-    	var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
-        return all_ls_collection;
+    path = typeof path !== 'undefined' ? path : 217;
+    row = typeof row !== 'undefined' ? row : 76;
+
+    switch (type) {
+        case 'raw':
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            return all_ls_collection;
+        case 'toa':
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            return all_ls_collection;
+        case 'sr':
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            return all_ls_collection;
     }
 }
 
@@ -2141,27 +2139,27 @@ var landsat_collection_by_pathrow = function (type, path, row) {
   var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77);
 */
 var ls5_collection_by_pathrow = function (type, path, row) {
-	
+
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
-	path = typeof path !== 'undefined' ? path : 217;
-	row = typeof row !== 'undefined' ? row : 76;
-	
+    path = typeof path !== 'undefined' ? path : 217;
+    row = typeof row !== 'undefined' ? row : 76;
+
     switch (type) {
-    case 'raw':
-        var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-        return l5_collection;
-    case 'toa':
-        var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-        return l5_collection;
-    case 'sr':
-        var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
-			.filter(ee.Filter.eq('WRS_PATH', path))
-			.filter(ee.Filter.eq('WRS_ROW', row));
-        return l5_collection;
+        case 'raw':
+            var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l5_collection;
+        case 'toa':
+            var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l5_collection;
+        case 'sr':
+            var l5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l5_collection;
     }
 }
 
@@ -2180,27 +2178,27 @@ var ls5_collection_by_pathrow = function (type, path, row) {
   var ls_collection = geet.ls7_collection_by_pathrow('SR', 220, 77);
 */
 var ls7_collection_by_pathrow = function (type, path, row) {
-	
+
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
-	path = typeof path !== 'undefined' ? path : 217;
-	row = typeof row !== 'undefined' ? row : 76;
-	
+    path = typeof path !== 'undefined' ? path : 217;
+    row = typeof row !== 'undefined' ? row : 76;
+
     switch (type) {
-    case 'raw':
-        var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-        return l7_collection;
-    case 'toa':
-        var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-        return l7_collection;
-    case 'sr':
-        var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
-			.filter(ee.Filter.eq('WRS_PATH', path))
-			.filter(ee.Filter.eq('WRS_ROW', row));
-        return l7_collection;
+        case 'raw':
+            var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l7_collection;
+        case 'toa':
+            var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l7_collection;
+        case 'sr':
+            var l7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l7_collection;
     }
 }
 
@@ -2219,27 +2217,27 @@ var ls7_collection_by_pathrow = function (type, path, row) {
   var ls_collection = geet.ls8_collection_by_pathrow('SR', 220, 77);
 */
 var ls8_collection_by_pathrow = function (type, path, row) {
-	
+
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
-	path = typeof path !== 'undefined' ? path : 217;
-	row = typeof row !== 'undefined' ? row : 76;
-	
+    path = typeof path !== 'undefined' ? path : 217;
+    row = typeof row !== 'undefined' ? row : 76;
+
     switch (type) {
-    case 'raw':
-        var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-        return l8_collection;
-    case 'toa':
-        var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
-            .filter(ee.Filter.eq('WRS_PATH', path))
-            .filter(ee.Filter.eq('WRS_ROW', row));
-        return l8_collection;
-    case 'sr':
-        var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
-			.filter(ee.Filter.eq('WRS_PATH', path))
-			.filter(ee.Filter.eq('WRS_ROW', row));
-        return l8_collection;
+        case 'raw':
+            var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l8_collection;
+        case 'toa':
+            var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l8_collection;
+        case 'sr':
+            var l8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l8_collection;
     }
 }
 
@@ -2281,16 +2279,16 @@ var mosaic_s2 = function (startDate, endDate, roi, showMosaic) {
 
     if (roi === undefined) {
         var composite = s2.filterDate(ee.Date(startDate), ee.Date(endDate))
-			.sort('CLOUDY_PIXEL_PERCENTAGE', false)
-			.map(function (image) {
-				return image.addBands(image.metadata('system:time_start'));
-			})
-			.mosaic();
+            .sort('CLOUDY_PIXEL_PERCENTAGE', false)
+            .map(function (image) {
+                return image.addBands(image.metadata('system:time_start'));
+            })
+            .mosaic();
     } else {
         composite = s2.filterDate(ee.Date(startDate), ee.Date(endDate))
-			.sort('CLOUDY_PIXEL_PERCENTAGE', false)
-			.filterBounds(roi)
-			.mosaic();
+            .sort('CLOUDY_PIXEL_PERCENTAGE', false)
+            .filterBounds(roi)
+            .mosaic();
     }
 
     if (showMosaic === true) {
@@ -2339,15 +2337,15 @@ var mosaic_l5 = function (startDate, endDate, roi, showMosaic) {
 
     if (roi === undefined) {
         var composite = l5
-			.filterDate(ee.Date(startDate), ee.Date(endDate))
-			.sort('CLOUD_COVER', false)
-			.mosaic();
+            .filterDate(ee.Date(startDate), ee.Date(endDate))
+            .sort('CLOUD_COVER', false)
+            .mosaic();
     } else {
         composite = l5
-			.filterBounds(roi)
-			.filterDate(ee.Date(startDate), ee.Date(endDate))
-			.sort('CLOUD_COVER', false)
-			.mosaic();
+            .filterBounds(roi)
+            .filterDate(ee.Date(startDate), ee.Date(endDate))
+            .sort('CLOUD_COVER', false)
+            .mosaic();
     }
 
     if (showMosaic === true) {
@@ -2395,15 +2393,15 @@ var mosaic_l7 = function (startDate, endDate, roi, showMosaic) {
 
     if (roi === undefined) {
         var composite = l7
-			.filterDate(ee.Date(startDate), ee.Date(endDate))
-			.sort('CLOUD_COVER', false)
-			.mosaic();
+            .filterDate(ee.Date(startDate), ee.Date(endDate))
+            .sort('CLOUD_COVER', false)
+            .mosaic();
     } else {
         composite = l7
-			.filterBounds(roi)
-			.filterDate(ee.Date(startDate), ee.Date(endDate))
-			.sort('CLOUD_COVER', false)
-			.mosaic();
+            .filterBounds(roi)
+            .filterDate(ee.Date(startDate), ee.Date(endDate))
+            .sort('CLOUD_COVER', false)
+            .mosaic();
     }
 
     if (showMosaic === true) {
@@ -2451,15 +2449,15 @@ var mosaic_l8 = function (startDate, endDate, roi, showMosaic) {
 
     if (roi === undefined) {
         var composite = l8
-			.filterDate(ee.Date(startDate), ee.Date(endDate))
-			.sort('CLOUD_COVER', false)
-			.mosaic();
+            .filterDate(ee.Date(startDate), ee.Date(endDate))
+            .sort('CLOUD_COVER', false)
+            .mosaic();
     } else {
         composite = l8
-			.filterBounds(roi)
-			.filterDate(ee.Date(startDate), ee.Date(endDate))
-			.sort('CLOUD_COVER', false)
-			.mosaic();
+            .filterBounds(roi)
+            .filterDate(ee.Date(startDate), ee.Date(endDate))
+            .sort('CLOUD_COVER', false)
+            .mosaic();
     }
 
     if (showMosaic === true) {
@@ -2508,8 +2506,8 @@ var modis_ndvi_mosaic = function (startDate, endDate, roi, showMosaic) {
 
     var rescale_ndvi = function (img) {
         var rescaled_NDVI = img.select('NDVI')
-			.multiply(0.0001)
-			.rename('NDVI_rescaled');
+            .multiply(0.0001)
+            .rename('NDVI_rescaled');
         return img.addBands(rescaled_NDVI);
     };
 
@@ -2540,8 +2538,8 @@ var modis_ndvi_mosaic = function (startDate, endDate, roi, showMosaic) {
   var img_max = geet.max(img);
 */
 var max = function (image, roi, scale, maxPixels) {
-    if (image === undefined) error('max', 'You need to specify an input image.');     
-    
+    if (image === undefined) error('max', 'You need to specify an input image.');
+
     // Default params
     roi = typeof roi !== 'undefined' ? roi : image;
     scale = typeof scale !== 'undefined' ? scale : 30;
@@ -2573,10 +2571,10 @@ var max = function (image, roi, scale, maxPixels) {
 */
 var min = function (image, roi, scale, maxPixels) {
     // Error handling
-    if (image === undefined) error('min', 'You need to specify an input image.'); 
+    if (image === undefined) error('min', 'You need to specify an input image.');
 
     // Default params           
-    roi = typeof roi !== 'undefined' ? roi : image;      
+    roi = typeof roi !== 'undefined' ? roi : image;
     scale = typeof scale !== 'undefined' ? scale : 30;
     maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
 
@@ -2606,13 +2604,13 @@ var min = function (image, roi, scale, maxPixels) {
 */
 var mean = function (image, roi, scale, maxPixels) {
     // Error handling
-    if (image === undefined) error('mean', 'You need to specify an input image.');   
-    
+    if (image === undefined) error('mean', 'You need to specify an input image.');
+
     // Default params
-    roi = typeof roi !== 'undefined' ? roi : image;            
+    roi = typeof roi !== 'undefined' ? roi : image;
     scale = typeof scale !== 'undefined' ? scale : 30;
     maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e10;
-    
+
     var meanDict = image.reduceRegion({
         reducer: ee.Reducer.mean(),
         geometry: roi,
@@ -2639,8 +2637,8 @@ var mean = function (image, roi, scale, maxPixels) {
 */
 var median = function (image, roi, scale, maxPixels) {
     // Error handling
-    if (image === undefined) error('median', 'You need to specify an input image.');  
-    
+    if (image === undefined) error('median', 'You need to specify an input image.');
+
     // Default params
     roi = typeof roi !== 'undefined' ? roi : image;
     scale = typeof scale !== 'undefined' ? scale : 30;
@@ -2672,8 +2670,8 @@ var median = function (image, roi, scale, maxPixels) {
 */
 var mode = function (image, roi, scale, maxPixels) {
     // Error handling
-    if (image === undefined) error('mode', 'You need to specify an input image.');  
-    
+    if (image === undefined) error('mode', 'You need to specify an input image.');
+
     // Default params
     roi = typeof roi !== 'undefined' ? roi : image;
     scale = typeof scale !== 'undefined' ? scale : 30;
@@ -2705,8 +2703,8 @@ var mode = function (image, roi, scale, maxPixels) {
 */
 var sd = function (image, roi, scale, maxPixels) {
     // Error handling
-    if (image === undefined) error('sd', 'You need to specify an input image.');  
-    
+    if (image === undefined) error('sd', 'You need to specify an input image.');
+
     // Default params
     roi = typeof roi !== 'undefined' ? roi : image;
     scale = typeof scale !== 'undefined' ? scale : 30;
@@ -2738,7 +2736,7 @@ var sd = function (image, roi, scale, maxPixels) {
 */
 var variance = function (image, roi, scale, maxPixels) {
     // Error handling
-    if (image === undefined) error('variance', 'You need to specify an input image.');  
+    if (image === undefined) error('variance', 'You need to specify an input image.');
 
     // Default params
     roi = typeof roi !== 'undefined' ? roi : image;
@@ -2771,8 +2769,8 @@ var variance = function (image, roi, scale, maxPixels) {
 */
 var amplitude = function (image, roi, scale, maxPixels) {
     // Error handling
-    if (image === undefined) error('amplitude', 'You need to specify an input image.');  
-    
+    if (image === undefined) error('amplitude', 'You need to specify an input image.');
+
     // Default params
     roi = typeof roi !== 'undefined' ? roi : image;
     scale = typeof scale !== 'undefined' ? scale : 30;
@@ -2974,10 +2972,10 @@ var prop_veg = function (image) {
     var ndvi = image.select('NDVI');
     var propVeg = ndvi.expression(
         '(ndvi - ndvi_min) / (ndvi_max - ndvi_min)', {
-			'ndvi_max': 0.5,
-			'ndvi_min': 0.2,
-			'ndvi': ndvi
-        });
+        'ndvi_max': 0.5,
+        'ndvi_min': 0.2,
+        'ndvi': ndvi
+    });
     var propVeg_pow = propVeg.pow(2).rename('propVeg');
     var img_with_pv = image.addBands(propVeg_pow);
     return img_with_pv;
@@ -3001,8 +2999,8 @@ var surface_emissivity = function (image) {
 
     var lse = image.expression(
         '(0.004 * pv_img) + 0.986', {
-			'pv_img': image.select('propVeg')
-        }).rename('LSE');
+        'pv_img': image.select('propVeg')
+    }).rename('LSE');
     var img_with_lse = image.addBands(lse);
     return img_with_lse;
 }
@@ -3033,10 +3031,10 @@ var surface_temperature_tm = function (image) {
 
     var lst = image.expression(
         'BT / (1 + (11.5 * BT / p) * lse_log)', {
-			'p': p,
-			'BT': image.select('Brightness_Temperature'),
-			'lse_log': lse_log
-        }).rename('LST');
+        'p': p,
+        'BT': image.select('Brightness_Temperature'),
+        'lse_log': lse_log
+    }).rename('LST');
 
     var image_with_lst = image.addBands(lst);
     return image_with_lst;
@@ -3068,13 +3066,38 @@ var surface_temperature_oli = function (image) {
 
     var lst = image.expression(
         'BT / (1 + (10.89 * BT / p) * lse_log)', {
-			'p': p,
-			'BT': image.select('Brightness_Temperature'),
-			'lse_log': lse_log
-        }).rename('LST');
+        'p': p,
+        'BT': image.select('Brightness_Temperature'),
+        'lse_log': lse_log
+    }).rename('LST');
 
     var image_with_lst = image.addBands(lst);
     return image_with_lst;
+}
+
+
+/*
+  lst_calc_ls5:
+  Function calculate the land surface temperature from a Landsat 5 image doing all the process in a single function.
+
+  Params:
+  (ee.Image) image - the input Landsat 5 or 7 image.
+
+  Usage:
+  var geet = require('users/elacerda/geet:geet');
+  var lst = geet.lst_calc_ls5(img);
+
+  Reference:
+  http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
+*/
+var lst_calc_ls5 = function (image) {
+    var toa = geet.toa_radiance(image, 6);
+    var ndvi = geet.ndvi_l5(toa);
+    var bt = geet.brightness_temp_l5c(ndvi, true);
+    var propVeg = geet.prop_veg(bt);
+    var lse = geet.surface_emissivity(propVeg);
+    var lst = geet.surface_temperature_tm(lse);
+    return lst;
 }
 
 
@@ -3123,7 +3146,7 @@ var export_image = function (image, scale) {
 var cloudmask = function (image) {
     // Error handling
     if (image === undefined) error('cloudmask', 'You need to specify an input image.');
-    
+
     var mask = image.select(['fmask']).neq(4);
     return image.updateMask(mask);
 };
@@ -3147,7 +3170,7 @@ var cloudmask_sr = function (original_image, qa_band) {
     if (original_image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
     if (qa_band === undefined) error('cloudmask_sr', 'You need to specify an input QA band.');
 
-    var getQABits = function(qa_band, start, end, newName) {
+    var getQABits = function (qa_band, start, end, newName) {
         var pattern = 0;
         for (var i = start; i <= end; i++) {
             pattern += Math.pow(2, i);
@@ -3158,8 +3181,8 @@ var cloudmask_sr = function (original_image, qa_band) {
             .rightShift(start);
     };
 
-    var cs = getQABits(qa_band, 3,3, 'Cloud_shadows').eq(0);
-    var c = getQABits(qa_band, 5,5, 'Cloud').eq(0);
+    var cs = getQABits(qa_band, 3, 3, 'Cloud_shadows').eq(0);
+    var c = getQABits(qa_band, 5, 5, 'Cloud').eq(0);
 
     original_image = original_image.updateMask(cs);
     return original_image.updateMask(c);
@@ -3200,7 +3223,7 @@ var pca = function (image, nbands, scale, maxPixels) {
     var meanDict = image.reduceRegion({
         reducer: ee.Reducer.mean(),
         scale: scale,
-        maxPixels : maxPixels
+        maxPixels: maxPixels
     });
     var means = ee.Image.constant(meanDict.values(bandNames));
     var centered = image.subtract(means);
@@ -3223,7 +3246,7 @@ var pca = function (image, nbands, scale, maxPixels) {
     var pcs = ee.Image(eivs).matrixMultiply(centered)
         .arrayProject([0])
         .arrayFlatten([pcNames]);
-    return [ pcs, lambdas ];
+    return [pcs, lambdas];
 }
 
 /*
@@ -3240,34 +3263,34 @@ var pca = function (image, nbands, scale, maxPixels) {
   var geet = require('users/elacerda/geet:geet'); 
   var geom_filtered = geet.geom_filter(geom, 'AreaSqKm', '>', 25000);
 */
-var geom_filter = function(geom, column, symbol, value) {
+var geom_filter = function (geom, column, symbol, value) {
     // Error handling
     if (geom === undefined) error('geom_filter', 'You need to specify an input geometry.');
     if (column === undefined) error('geom_filter', 'You need to specify the column name');
     if (symbol === undefined) error('geom_filter', 'You need to specify the symbol. Ex: >, >=, <, <= or =');
     if (value === undefined) error('geom_filter', 'You need to specify the value to filter');
 
-    var column = column.toString();      
+    var column = column.toString();
     var symbol = symbol.toString();
 
     switch (symbol) {
-    case '>':
-        var filtro = geom.filter(ee.Filter.gt(column, value));
-        return filtro;          
-    case '>=':
-        var filtro = geom.filter(ee.Filter.gte(column, value));
-        return filtro;          
-    case '<':
-        var filtro = geom.filter(ee.Filter.lt(column, value));
-        return filtro;          
-    case '<=':
-        var filtro = geom.filter(ee.Filter.lte(column, value));
-        return filtro;
-    case '=':
-        var filtro = geom.filter(ee.Filter.eq(column, value));
-        return filtro;
-    default: 
-        print("You need to specify the symbol first. Ex: >, >=, <, <= or =");
+        case '>':
+            var filtro = geom.filter(ee.Filter.gt(column, value));
+            return filtro;
+        case '>=':
+            var filtro = geom.filter(ee.Filter.gte(column, value));
+            return filtro;
+        case '<':
+            var filtro = geom.filter(ee.Filter.lt(column, value));
+            return filtro;
+        case '<=':
+            var filtro = geom.filter(ee.Filter.lte(column, value));
+            return filtro;
+        case '=':
+            var filtro = geom.filter(ee.Filter.eq(column, value));
+            return filtro;
+        default:
+            print("You need to specify the symbol first. Ex: >, >=, <, <= or =");
     }
 }
 
@@ -3292,14 +3315,14 @@ var download = function (image, roi, scale) {
     if (image === undefined) error('download', 'You need to specify an input image.');
 
     scale = typeof scale !== 'undefined' ? scale : 30;
-    
+
     if (roi === undefined) {
         var bandNames = image.bandNames();
         var scale = image.select(bandNames.get(1).getInfo()).projection().nominalScale().getInfo();
         var roi = image.geometry(scale);
-        print(image.getDownloadURL({ scale: scale  }));
+        print(image.getDownloadURL({ scale: scale }));
     } else {
-        print(image.getDownloadURL({ scale: scale, region: roi  }));
+        print(image.getDownloadURL({ scale: scale, region: roi }));
     }
 }
 
@@ -3317,35 +3340,35 @@ var download = function (image, roi, scale) {
 */
 var brovey_transform = function (image) {
     var fusion_b4 = image.expression(
-        '(B4 / B4 + B5 + B6) * B8', 
+        '(B4 / B4 + B5 + B6) * B8',
         {
-			'B4': image.select('B4'),
-			'B5': image.select('B5'),
-			'B6': image.select('B6'),
-			'B8': image.select('B8')
+            'B4': image.select('B4'),
+            'B5': image.select('B5'),
+            'B6': image.select('B6'),
+            'B8': image.select('B8')
         });
 
     var fusion_b5 = image.expression(
-        '(B5 / B4 + B5 + B6) * B8', 
+        '(B5 / B4 + B5 + B6) * B8',
         {
-			'B4': image.select('B4'),
-			'B5': image.select('B5'),
-			'B6': image.select('B6'),
-			'B8': image.select('B8')
+            'B4': image.select('B4'),
+            'B5': image.select('B5'),
+            'B6': image.select('B6'),
+            'B8': image.select('B8')
         });
 
     var fusion_b6 = image.expression(
-        '(B6 / B4 + B5 + B6) * B8', 
+        '(B6 / B4 + B5 + B6) * B8',
         {
-			'B4': image.select('B4'),
-			'B5': image.select('B5'),
-			'B6': image.select('B6'),
-			'B8': image.select('B8')
+            'B4': image.select('B4'),
+            'B5': image.select('B5'),
+            'B6': image.select('B6'),
+            'B8': image.select('B8')
         });
 
     var img_fus = ee.Image.cat(fusion_b6, fusion_b5, fusion_b4);
     var image_with_fusion = image.addBands(img_fus);
-    return image_with_fusion;    
+    return image_with_fusion;
 }
 
 
@@ -3363,34 +3386,34 @@ var brovey_transform = function (image) {
 var tasseledcap_oli = function (image) {
     var Brightness = image.expression(
         '(BLUE * 0.3029) + (GREEN * 0.2786) + (RED * 0.4733) + (NIR * 0.5599) + (SWIR1 * 0.508) + (SWIR2 * 0.1872)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B6'),
-			'NIR': image.select('B5'),
-			'RED': image.select('B4'),
-			'GREEN': image.select('B3'),
-			'BLUE': image.select('B2')
-		}).rename('Brightness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B6'),
+        'NIR': image.select('B5'),
+        'RED': image.select('B4'),
+        'GREEN': image.select('B3'),
+        'BLUE': image.select('B2')
+    }).rename('Brightness');
+
     var Greenness = image.expression(
         '(BLUE * -0.2941) + (GREEN * -0.243) + (RED * -0.5424) + (NIR * 0.7276) + (SWIR1 * 0.0713) + (SWIR2 * -0.1608)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B6'),
-			'NIR': image.select('B5'),
-			'RED': image.select('B4'),
-			'GREEN': image.select('B3'),
-			'BLUE': image.select('B2')
-		}).rename('Greenness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B6'),
+        'NIR': image.select('B5'),
+        'RED': image.select('B4'),
+        'GREEN': image.select('B3'),
+        'BLUE': image.select('B2')
+    }).rename('Greenness');
+
     var Wetness = image.expression(
         '(BLUE * 0.1511) + (GREEN * 0.1973) + (RED * 0.3283) + (NIR * 0.3407) + (SWIR1 * -0.7117) + (SWIR2 * -0.4559)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B6'),
-			'NIR': image.select('B5'),
-			'RED': image.select('B4'),
-			'GREEN': image.select('B3'),
-			'BLUE': image.select('B2')
-		}).rename('Wetness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B6'),
+        'NIR': image.select('B5'),
+        'RED': image.select('B4'),
+        'GREEN': image.select('B3'),
+        'BLUE': image.select('B2')
+    }).rename('Wetness');
+
     var image_idx = image.addBands([Brightness, Greenness, Wetness]);
     return image_idx;
 }
@@ -3410,34 +3433,34 @@ var tasseledcap_oli = function (image) {
 var tasseledcap_tm5 = function (image) {
     var Brightness = image.expression(
         '(BLUE * 0.2043) + (GREEN * 0.4158) + (RED * 0.5524) + (NIR * 0.5741) + (SWIR1 * 0.3124) + (SWIR2 * 0.2303)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B5'),
-			'NIR': image.select('B4'),
-			'RED': image.select('B3'),
-			'GREEN': image.select('B2'),
-			'BLUE': image.select('B1')
-		}).rename('Brightness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B5'),
+        'NIR': image.select('B4'),
+        'RED': image.select('B3'),
+        'GREEN': image.select('B2'),
+        'BLUE': image.select('B1')
+    }).rename('Brightness');
+
     var Greenness = image.expression(
         '(BLUE * -0.1603) + (GREEN * -0.2819) + (RED * -0.4934) + (NIR * 0.7940) + (SWIR1 * -0.0002) + (SWIR2 * -0.1446)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B5'),
-			'NIR': image.select('B4'),
-			'RED': image.select('B3'),
-			'GREEN': image.select('B2'),
-			'BLUE': image.select('B1')
-		}).rename('Greenness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B5'),
+        'NIR': image.select('B4'),
+        'RED': image.select('B3'),
+        'GREEN': image.select('B2'),
+        'BLUE': image.select('B1')
+    }).rename('Greenness');
+
     var Wetness = image.expression(
         '(BLUE * 0.0315) + (GREEN * 0.2021) + (RED * 0.3102) + (NIR * 0.1594) + (SWIR1 * -0.6806) + (SWIR2 * -0.6109)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B5'),
-			'NIR': image.select('B4'),
-			'RED': image.select('B3'),
-			'GREEN': image.select('B2'),
-			'BLUE': image.select('B1')
-		}).rename('Wetness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B5'),
+        'NIR': image.select('B4'),
+        'RED': image.select('B3'),
+        'GREEN': image.select('B2'),
+        'BLUE': image.select('B1')
+    }).rename('Wetness');
+
     var image_idx = image.addBands([Brightness, Greenness, Wetness]);
     return image_idx;
 }
@@ -3457,34 +3480,34 @@ var tasseledcap_tm5 = function (image) {
 var tasseledcap_tm7 = function (image) {
     var Brightness = image.expression(
         '(BLUE * 0.3561) + (GREEN * 0.3972) + (RED * 0.3904) + (NIR * 0.6966) + (SWIR1 * 0.2286) + (SWIR2 * 0.1596)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B5'),
-			'NIR': image.select('B4'),
-			'RED': image.select('B3'),
-			'GREEN': image.select('B2'),
-			'BLUE': image.select('B1')
-		}).rename('Brightness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B5'),
+        'NIR': image.select('B4'),
+        'RED': image.select('B3'),
+        'GREEN': image.select('B2'),
+        'BLUE': image.select('B1')
+    }).rename('Brightness');
+
     var Greenness = image.expression(
         '(BLUE * -0.3344) + (GREEN * -0.3544) + (RED * -0.4556) + (NIR * 0.6966) + (SWIR1 * -0.0242) + (SWIR2 * -0.2630)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B5'),
-			'NIR': image.select('B4'),
-			'RED': image.select('B3'),
-			'GREEN': image.select('B2'),
-			'BLUE': image.select('B1')
-		}).rename('Greenness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B5'),
+        'NIR': image.select('B4'),
+        'RED': image.select('B3'),
+        'GREEN': image.select('B2'),
+        'BLUE': image.select('B1')
+    }).rename('Greenness');
+
     var Wetness = image.expression(
         '(BLUE * 0.2626) + (GREEN * 0.2141) + (RED * 0.0926) + (NIR * 0.0656) + (SWIR1 * -0.7629) + (SWIR2 * -0.5388)', {
-			'SWIR2': image.select('B7'),
-			'SWIR1': image.select('B5'),
-			'NIR': image.select('B4'),
-			'RED': image.select('B3'),
-			'GREEN': image.select('B2'),
-			'BLUE': image.select('B1')
-		}).rename('Wetness');
-    
+        'SWIR2': image.select('B7'),
+        'SWIR1': image.select('B5'),
+        'NIR': image.select('B4'),
+        'RED': image.select('B3'),
+        'GREEN': image.select('B2'),
+        'BLUE': image.select('B1')
+    }).rename('Wetness');
+
     var image_idx = image.addBands([Brightness, Greenness, Wetness]);
     return image_idx;
 }
@@ -3504,34 +3527,34 @@ var tasseledcap_tm7 = function (image) {
 var tasseledcap_s2 = function (image) {
     var Brightness = image.expression(
         '(BLUE * 0.3037) + (GREEN * 0.2793) + (RED * 0.4743) + (NIR * 0.5585) + (SWIR1 * 0.5082) + (SWIR2 * 0.1863)', {
-			'SWIR2': image.select('B12'),
-			'SWIR1': image.select('B11'),
-			'NIR': image.select('B8'),
-			'RED': image.select('B4'),
-			'GREEN': image.select('B3'),
-			'BLUE': image.select('B2')
-		}).rename('Brightness');
-    
+        'SWIR2': image.select('B12'),
+        'SWIR1': image.select('B11'),
+        'NIR': image.select('B8'),
+        'RED': image.select('B4'),
+        'GREEN': image.select('B3'),
+        'BLUE': image.select('B2')
+    }).rename('Brightness');
+
     var Greenness = image.expression(
         '(BLUE * -0.2848) + (GREEN * -0.243) + (RED * -0.5436) + (NIR * 0.7243) + (SWIR1 * -0.0840) + (SWIR2 * -0.1800)', {
-			'SWIR2': image.select('B12'),
-			'SWIR1': image.select('B11'),
-			'NIR': image.select('B8'),
-			'RED': image.select('B4'),
-			'GREEN': image.select('B3'),
-			'BLUE': image.select('B2')
-		}).rename('Greenness');
-    
+        'SWIR2': image.select('B12'),
+        'SWIR1': image.select('B11'),
+        'NIR': image.select('B8'),
+        'RED': image.select('B4'),
+        'GREEN': image.select('B3'),
+        'BLUE': image.select('B2')
+    }).rename('Greenness');
+
     var Wetness = image.expression(
         '(BLUE * 0.1509) + (GREEN * 0.1973) + (RED * 0.3279) + (NIR * 0.3406) + (SWIR1 * -0.7112) + (SWIR2 * -0.4572)', {
-			'SWIR2': image.select('B12'),
-			'SWIR1': image.select('B11'),
-			'NIR': image.select('B8'),
-			'RED': image.select('B4'),
-			'GREEN': image.select('B3'),
-			'BLUE': image.select('B2')
-		}).rename('Wetness');
-    
+        'SWIR2': image.select('B12'),
+        'SWIR1': image.select('B11'),
+        'NIR': image.select('B8'),
+        'RED': image.select('B4'),
+        'GREEN': image.select('B3'),
+        'BLUE': image.select('B2')
+    }).rename('Wetness');
+
     var image_idx = image.addBands([Brightness, Greenness, Wetness]);
     return image_idx;
 }
@@ -3544,42 +3567,42 @@ var tasseledcap_s2 = function (image) {
 
 // JavaScript implementation of this great work: https://github.com/mortcanty/earthengine
 
-function imad (current, prev) {
-    var done =  ee.Number(ee.Dictionary(prev).get('done'))
-    return ee.Algorithms.If(done,prev,imad1(current,prev))
+function imad(current, prev) {
+    var done = ee.Number(ee.Dictionary(prev).get('done'))
+    return ee.Algorithms.If(done, prev, imad1(current, prev))
 }
 
-function chi2cdf (chi2, df) {
+function chi2cdf(chi2, df) {
     /* Chi square cumulative distribution function */
     return ee.Image(chi2.divide(2)).gammainc(ee.Number(df).divide(2))
 }
 
-function addcoeffs (current, prev) {
+function addcoeffs(current, prev) {
     var coeff = ee.List(current)
     var log = ee.List(prev)
     return log.add(coeff)
 }
 
-function geneiv (C, B) { 
+function geneiv(C, B) {
     /* Generalized eigenproblem C*X = lambda*B*X */
     var C = ee.Array(C)
-    var B = ee.Array(B)  
+    var B = ee.Array(B)
     // Li = choldc(B)^-1
     var Li = ee.Array(B.matrixCholeskyDecomposition().get('L')).matrixInverse()
     //  solve symmetric eigenproblem Li*C*Li^T*x = lambda*x
-    var Xa = Li.matrixMultiply(C) 
-        .matrixMultiply(Li.matrixTranspose()) 
+    var Xa = Li.matrixMultiply(C)
+        .matrixMultiply(Li.matrixTranspose())
         .eigen()
     // eigenvalues as a row vector
-    var lambdas = Xa.slice(1,0,1).matrixTranspose()
+    var lambdas = Xa.slice(1, 0, 1).matrixTranspose()
     // eigenvectors as columns
-    var X = Xa.slice(1,1).matrixTranspose()  
+    var X = Xa.slice(1, 1).matrixTranspose()
     // generalized eigenvectors as columns, Li^T*X
     var eigenvecs = Li.matrixTranspose().matrixMultiply(X)
-    return (lambdas,eigenvecs) 
+    return (lambdas, eigenvecs)
 }
 
-function covarw (image, weights, maxPixels) {
+function covarw(image, weights, maxPixels) {
     maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
 
     /* Return the weighted centered image and its weighted covariance matrix */
@@ -3614,48 +3637,48 @@ function covarw (image, weights, maxPixels) {
         maxPixels: maxPixels
     }).get('array');
     var covw = ee.Array(covw).multiply(nPixels).divide(sumWeights);
-    return [ centered.arrayFlatten([bandNames]), covw ]
+    return [centered.arrayFlatten([bandNames]), covw]
 }
 
-function imad1 (current, prev) {
+function imad1(current, prev) {
     /* Iteratively re-weighted MAD */
     var image = ee.Image(ee.Dictionary(prev).get('image'));
     var chi2 = ee.Image(ee.Dictionary(prev).get('chi2'));
     var allrhos = ee.List(ee.Dictionary(prev).get('allrhos'));
     var region = image.geometry();
     var nBands = image.bandNames().length().divide(2);
-    var weights = chi2cdf(chi2,nBands).subtract(1).multiply(-1);
+    var weights = chi2cdf(chi2, nBands).subtract(1).multiply(-1);
     // ---------- check later -----------
     // centeredImage,covarArray = covarw(image,weights) - python
-    var centeredImage  = covarw(image,weights)[0];
-    var covarArray = covarw(image,weights)[1];
+    var centeredImage = covarw(image, weights)[0];
+    var covarArray = covarw(image, weights)[1];
     // ---------- check later -----------
     var bNames = centeredImage.bandNames();
-    var bNames1 = bNames.slice(0,nBands);
+    var bNames1 = bNames.slice(0, nBands);
     var bNames2 = bNames.slice(nBands);
     var centeredImage1 = centeredImage.select(bNames1);
     var centeredImage2 = centeredImage.select(bNames2);
-    var s11 = covarArray.slice(0,0,nBands).slice(1,0,nBands);
-    var s22 = covarArray.slice(0,nBands).slice(1,nBands);
-    var s12 = covarArray.slice(0,0,nBands).slice(1,nBands);
-    var s21 = covarArray.slice(0,nBands).slice(1,0,nBands);
-    var c1 = s12.matrixMultiply(s22.matrixInverse()).matrixMultiply(s21); 
+    var s11 = covarArray.slice(0, 0, nBands).slice(1, 0, nBands);
+    var s22 = covarArray.slice(0, nBands).slice(1, nBands);
+    var s12 = covarArray.slice(0, 0, nBands).slice(1, nBands);
+    var s21 = covarArray.slice(0, nBands).slice(1, 0, nBands);
+    var c1 = s12.matrixMultiply(s22.matrixInverse()).matrixMultiply(s21);
     var b1 = s11;
     var c2 = s21.matrixMultiply(s11.matrixInverse()).matrixMultiply(s12);
     var b2 = s22;
     /* solution of generalized eigenproblems */
-    var lambdas = geneiv(c1,b1)[0];
-    var A = geneiv(c1,b1)[1];
-    var B = geneiv(c2,b2)[1];
+    var lambdas = geneiv(c1, b1)[0];
+    var A = geneiv(c1, b1)[1];
+    var B = geneiv(c2, b2)[1];
     var rhos = lambdas.sqrt().project(ee.List([1]));
     /* sort in increasing order */
-    var keys = ee.List.sequence(nBands,1,-1);
+    var keys = ee.List.sequence(nBands, 1, -1);
     A = A.sort([keys]);
     B = B.sort([keys]);
     rhos = rhos.sort(keys);
     /* test for convergence */
     var lastrhos = ee.Array(allrhos.get(-1));
-    var done = rhos.subtract(lastrhos).abs().reduce(ee.Reducer.max(),ee.List([0]))
+    var done = rhos.subtract(lastrhos).abs().reduce(ee.Reducer.max(), ee.List([0]))
         .lt(ee.Number(0.001))
         .toList()
         .get(0);
@@ -3667,7 +3690,7 @@ function imad1 (current, prev) {
     var tmp = s11.matrixDiagonal().sqrt();
     var ones = tmp.multiply(0).add(1);
     var tmp = ones.divide(tmp).matrixToDiag();
-    var s = tmp.matrixMultiply(s11).matrixMultiply(A).reduce(ee.Reducer.sum(),[0]).transpose();
+    var s = tmp.matrixMultiply(s11).matrixMultiply(A).reduce(ee.Reducer.sum(), [0]).transpose();
     var A = A.matrixMultiply(s.divide(s.abs()).matrixToDiag());
     /* ensure positive correlation */
     var tmp = A.transpose().matrixMultiply(s12).matrixMultiply(B).matrixDiagonal();
@@ -3685,10 +3708,10 @@ function imad1 (current, prev) {
     var MAD = U.subtract(V);
     /* chi square image */
     var chi2 = MAD.pow(2).divide(sigma2s).reduce(ee.Reducer.sum()).clip(region);
-    return ee.Dictionary({'done':done,'image':image,'allrhos':allrhos,'chi2':chi2,'MAD':MAD});
+    return ee.Dictionary({ 'done': done, 'image': image, 'allrhos': allrhos, 'chi2': chi2, 'MAD': MAD });
 }
 
-function radcal (current, prev) {
+function radcal(current, prev) {
     /* iterator function for orthogonal regression and interactive radiometric normalization */
     var k = ee.Number(current);
     var prev = ee.Dictionary(prev);
@@ -3701,7 +3724,7 @@ function radcal (current, prev) {
     var normalized = ee.Image(prev.get('normalized'));
     var scale = image.select(0).projection().nominalScale();
     /* orthoregress reference onto target */
-    var image1 = image.clip(rect).select(k.add(nbands),k).updateMask(ncmask).rename(['x','y']);
+    var image1 = image.clip(rect).select(k.add(nbands), k).updateMask(ncmask).rename(['x', 'y']);
     var means = image1.reduceRegion({
         reducer: ee.Reducer.mean(),
         scale: scale,
@@ -3716,21 +3739,21 @@ function radcal (current, prev) {
         maxPixels: 1e9
     }).get('array'));
     /* Pearson correlation */
-    var R = S.get([0,1]).divide(S.get([0,0]).multiply(S.get([1,1])).sqrt());
+    var R = S.get([0, 1]).divide(S.get([0, 0]).multiply(S.get([1, 1])).sqrt());
     var eivs = S.eigen();
-    var e1 = eivs.get([0,1]);
-    var e2 = eivs.get([0,2]);
+    var e1 = eivs.get([0, 1]);
+    var e2 = eivs.get([0, 2]);
     /* slope and intercept */
     var b = e2.divide(e1);
     var a = Ym.subtract(b.multiply(Xm));
-    var coeffs = coeffs.add(ee.List([b,a,R]));
+    var coeffs = coeffs.add(ee.List([b, a, R]));
     /* normalize kth band in target */
     var normalized = normalized.addBands(image.select(k.add(nbands)).multiply(b).add(a));
-    return ee.Dictionary({'image':image,'ncmask':ncmask,'nbands':nbands,'rect':rect,'coeffs':coeffs,'normalized':normalized});
+    return ee.Dictionary({ 'image': image, 'ncmask': ncmask, 'nbands': nbands, 'rect': rect, 'coeffs': coeffs, 'normalized': normalized });
 }
 
 
-function radcalbatch (current, prev) { 
+function radcalbatch(current, prev) {
     /* Batch radiometric normalization */
     var prev = ee.Dictionary(prev);
     var target = ee.Image(current);
@@ -3741,28 +3764,30 @@ function radcalbatch (current, prev) {
     var log = ee.List(prev.get('log'));
     var nbands = reference.bandNames().length();
     /* clip the images to subset and run iMAD */
-    var inputlist = ee.List.sequence(1,niter);
+    var inputlist = ee.List.sequence(1, niter);
     var image = reference.addBands(target);
-    var first = ee.Dictionary({'done':ee.Number(0),
-                               'image':image.clip(rect),
-                               'allrhos': [ee.List.sequence(1,nbands)],
-                               'chi2':ee.Image.constant(0),
-                               'MAD':ee.Image.constant(0)
-							  });
-    var result = ee.Dictionary(inputlist.iterate(imad,first));
+    var first = ee.Dictionary({
+        'done': ee.Number(0),
+        'image': image.clip(rect),
+        'allrhos': [ee.List.sequence(1, nbands)],
+        'chi2': ee.Image.constant(0),
+        'MAD': ee.Image.constant(0)
+    });
+    var result = ee.Dictionary(inputlist.iterate(imad, first));
     var chi2 = ee.Image(result.get('chi2')).rename(['chi2']);
     var allrhos = ee.List(result.get('allrhos'));
     /* run radcal */
-    var ncmask = chi2cdf(chi2,nbands).lt(ee.Image.constant(0.05));
-    var inputlist1 = ee.List.sequence(0,nbands.subtract(1));
-    var first = ee.Dictionary({'image':image,
-                               'ncmask':ncmask,
-                               'nbands':nbands,
-                               'rect':rect,
-                               'coeffs': ee.List([]),
-                               'normalized':ee.Image()
-							  });
-    var result = ee.Dictionary(inputlist1.iterate(radcal,first));
+    var ncmask = chi2cdf(chi2, nbands).lt(ee.Image.constant(0.05));
+    var inputlist1 = ee.List.sequence(0, nbands.subtract(1));
+    var first = ee.Dictionary({
+        'image': image,
+        'ncmask': ncmask,
+        'nbands': nbands,
+        'rect': rect,
+        'coeffs': ee.List([]),
+        'normalized': ee.Image()
+    });
+    var result = ee.Dictionary(inputlist1.iterate(radcal, first));
     var coeffs = ee.List(result.get('coeffs'));
     /* update log */
     var ninvar = ee.String(ncmask.reduceRegion({
@@ -3771,15 +3796,15 @@ function radcalbatch (current, prev) {
     }).toArray().project([0]));
     var log = log.add(target.get('system:id'));
     var iters = allrhos.length().subtract(1);
-    var log = log.add(ee.Algorithms.If(iters.eq(niter),['No convergence, iterations:',iters], 
-                                       ['Iterations:',iters]));
-    var log = log.add(['Invariant pixels:',ninvar]);
-    var log = ee.List(coeffs.iterate(addcoeffs,log));
+    var log = log.add(ee.Algorithms.If(iters.eq(niter), ['No convergence, iterations:', iters],
+        ['Iterations:', iters]));
+    var log = log.add(['Invariant pixels:', ninvar]);
+    var log = ee.List(coeffs.iterate(addcoeffs, log));
     /* first band in normalized result is empty */
-    var sel = ee.List.sequence(1,nbands);
+    var sel = ee.List.sequence(1, nbands);
     var normalized = ee.Image(result.get('normalized')).select(sel);
     var normalizedimages = normalizedimages.add(normalized);
-    return ee.Dictionary({'reference':reference,'rect':rect,'niter':niter,'log':log,'normalizedimages':normalizedimages});                                                   
+    return ee.Dictionary({ 'reference': reference, 'rect': rect, 'niter': niter, 'log': log, 'normalizedimages': normalizedimages });
 }
 
 /* ------------------------ TEST ZONE ------------------------ */
@@ -3846,6 +3871,7 @@ exports.prop_veg = prop_veg
 exports.surface_emissivity = surface_emissivity
 exports.surface_temperature_tm = surface_temperature_tm
 exports.surface_temperature_oli = surface_temperature_oli
+exports.lst_calc_ls5 = lst_calc_ls5
 exports.export_image = export_image
 exports.cloudmask = cloudmask
 exports.cloudmask_sr = cloudmask_sr
