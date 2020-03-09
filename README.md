@@ -19,7 +19,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.5.3 - Beta):  
+All functions implemented (Version 0.5.7 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -79,7 +79,10 @@ All functions implemented (Version 0.5.3 - Beta):
 [prop_veg](#prop_veg)  
 [surface_emissivity](#surface_emissivity)     
 [surface_temperature_tm](#surface_temperature_tm)        
-[surface_temperature_oli](#surface_temperature_oli)     
+[surface_temperature_oli](#surface_temperature_oli)  
+[lst_calc_ls5](#lst_calc_ls5)  
+[lst_calc_ls7](#lst_calc_ls7)  
+[lst_calc_ls8](#lst_calc_ls8)  
 [export_image](#export_image)      
 [cloudmask](#cloudmask)    
 [cloudmask_sr](#cloudmask_sr)      
@@ -1413,6 +1416,52 @@ _Function calculate the land surface temperature (Landsat 8)._
     var surfTemp_img = geet.surface_temperature_oli(img);
 ```
 
+------------------------------------------------------------------------------
+
+#### lst_calc_ls5
+(image)  
+
+_Function calculate the land surface temperature from a Landsat 5 image doing all the process in a single function._     
+
+##### Params:
+  (ee.Image) image - the input Landsat 5 image.                         
+  
+##### Usage:
+```js
+      var geet = require('users/elacerda/geet:geet');
+      var lst = geet.lst_calc_ls5(img);
+```
+
+------------------------------------------------------------------------------
+
+#### lst_calc_ls7
+(image)  
+
+_Function calculate the land surface temperature from a Landsat 7 image doing all the process in a single function._     
+
+##### Params:
+  (ee.Image) image - the input Landsat 7 image.                         
+  
+##### Usage:
+```js
+      var geet = require('users/elacerda/geet:geet');
+      var lst = geet.lst_calc_ls7(img);
+```
+------------------------------------------------------------------------------
+
+#### lst_calc_ls8
+(image)  
+
+_Function calculate the land surface temperature from a Landsat 8 image doing all the process in a single function._     
+
+##### Params:
+  (ee.Image) image - the input Landsat 8 image.                         
+  
+##### Usage:
+```js
+      var geet = require('users/elacerda/geet:geet');
+      var lst = geet.lst_calc_ls8(img);
+```
 ------------------------------------------------------------------------------
 
 #### export_image
