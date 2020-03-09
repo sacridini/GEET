@@ -3091,12 +3091,12 @@ var surface_temperature_oli = function (image) {
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
 */
 var lst_calc_ls5 = function (image) {
-    var toa = geet.toa_radiance(image, 6);
-    var ndvi = geet.ndvi_l5(toa);
-    var bt = geet.brightness_temp_l5c(ndvi, true);
-    var propVeg = geet.prop_veg(bt);
-    var lse = geet.surface_emissivity(propVeg);
-    var lst = geet.surface_temperature_tm(lse);
+    var toa = toa_radiance(image, 6);
+    var ndvi = ndvi_l5(toa);
+    var bt = brightness_temp_l5c(ndvi, true);
+    var propVeg = prop_veg(bt);
+    var lse = surface_emissivity(propVeg);
+    var lst = surface_temperature_tm(lse);
     return lst;
 }
 
