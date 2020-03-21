@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.5.7
+ * Version: 0.5.8
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -2386,7 +2386,7 @@ var mosaic_l7 = function (startDate, endDate, roi, showMosaic) {
     if (startDate === undefined) error('mosaic_l7', 'You need to specify the start date of the image series.');
     if (endDate === undefined) error('mosaic_l7', 'You need to specify the end  date of the image series.');
 
-    var l7 = ee.ImageCollection('LANDSAT/LT07/C01/T1_TOA');
+    var l7 = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA');
 
     // Default params
     showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
@@ -2442,7 +2442,7 @@ var mosaic_l8 = function (startDate, endDate, roi, showMosaic) {
     if (startDate === undefined) error('mosaic_l8', 'You need to specify the start date of the image series.');
     if (endDate === undefined) error('mosaic_l8', 'You need to specify the end  date of the image series.');
 
-    var l8 = ee.ImageCollection('LANDSAT/LT08/C01/T1_TOA');
+    var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
 
     // Default params
     showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
