@@ -1321,17 +1321,20 @@ var toa_radiance = function (image, band) {
     if (band === undefined) error('toa_radiance', 'You need to specify the number of the band that you want to process.');
 
     var band_to_toa = image.select('B' + band.toString());
+    var radiance_multi_band = ee.Number(image.get('RADIANCE_MULT_BAND_' + band.toString())); // Ml
+    var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
 
+    // Landsat 7 special case
     if (band === 6) {
       var id = ee.String(image.get('LANDSAT_PRODUCT_ID'))
       var id_split = id.split("_")
       if (ee.String(id_split.get(0)).getInfo() === "LE07") {
-        var band_to_toa = image.select('B6_VCID_1');
+        band_to_toa = image.select('B6_VCID_1');
+        radiance_multi_band = ee.Number(image.get('RADIANCE_MULT_BAND_6_VCID_1')); // Ml
+        radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_6_VCID_1')); // Al
       }
     }
     
-    var radiance_multi_band = ee.Number(image.get('RADIANCE_MULT_BAND_' + band.toString())); // Ml
-    var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
     var toa_radiance = band_to_toa.expression(
         '(Ml * band) + Al', {
         'Ml': radiance_multi_band,  
