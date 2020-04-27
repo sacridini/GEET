@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.5.8
+ * Version: 0.5.9
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -1321,7 +1321,7 @@ var toa_radiance = function (image, band) {
     if (band === undefined) error('toa_radiance', 'You need to specify the number of the band that you want to process.');
 
     var band_to_toa = image.select('B' + band.toString());
-    
+
     if (band === 6) {
       var id = ee.String(image.get('LANDSAT_PRODUCT_ID'))
       var id_split = id.split("_")
@@ -1334,7 +1334,7 @@ var toa_radiance = function (image, band) {
     var radiance_add_band = ee.Number(image.get('RADIANCE_ADD_BAND_' + band.toString())); // Al
     var toa_radiance = band_to_toa.expression(
         '(Ml * band) + Al', {
-        'Ml': radiance_multi_band,
+        'Ml': radiance_multi_band,  
         'Al': radiance_add_band,
         'band': band_to_toa
     }).rename('TOA_Radiance');
