@@ -1522,7 +1522,7 @@ _Function create a cloud mask from a Surface Reflectance Landsat input image._
 ------------------------------------------------------------------------------
 
 
-#### cloudmask_ls8
+#### cloudmask_ls8  
 (original_image)   
 
 _Function to cloud mask an Surface Reflectance Landsat input image._     
