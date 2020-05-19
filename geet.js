@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.5.9
+ * Version: 0.6.0
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -3251,6 +3251,31 @@ var cloudmask_sr = function (original_image, qa_band) {
 
 
 /*
+  cloudmask_ls8:
+  Function to cloud mask an Surface Reflectance Landsat input image.
+
+  Params:
+  (ee.Image) original_image - the original input image with all the bands.
+
+  Usage:
+  var masked_img = geet.cloudmask_ls8(img);
+
+  PS: Special thanks to "HMSP": https://gis.stackexchange.com/users/93552/hmsp
+*/
+var cloudmask_ls8 = function(image) {
+    // Bits 3 and 5 are cloud shadow and cloud, respectively.
+  var cloudShadowBitMask = (1 << 3);
+  var cloudsBitMask = (1 << 5);
+  // Get the pixel QA band.
+  var qa = image.select('pixel_qa');
+  // Both flags should be set to zero, indicating clear conditions.
+  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+                 .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  return image.updateMask(mask);
+}
+
+
+/*
   pca:
   Function produce the principal components analysis of an image.
 
@@ -3938,6 +3963,7 @@ exports.lst_calc_ls8 = lst_calc_ls8
 exports.export_image = export_image
 exports.cloudmask = cloudmask
 exports.cloudmask_sr = cloudmask_sr
+exports.cloudmask_ls8 = cloudmask_ls8
 exports.pca = pca
 exports.geom_filter = geom_filter
 exports.tasseledcap_oli = tasseledcap_oli
