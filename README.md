@@ -86,7 +86,7 @@ All functions implemented (Version 0.5.8 - Beta):
 [export_image](#export_image)      
 [cloudmask](#cloudmask)    
 [cloudmask_sr](#cloudmask_sr)  
-[cloudmask_ls8](#cloudmask_sl8)       
+[cloudmask_ls8](#cloudmask_ls8)       
 [pca](#pca)      
 [geom_filter](#geom_filter)  
 [tasseledcap_oli](#tasseledcap_oli)  
