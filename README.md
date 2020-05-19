@@ -85,7 +85,8 @@ All functions implemented (Version 0.5.8 - Beta):
 [lst_calc_ls8](#lst_calc_ls8)  
 [export_image](#export_image)      
 [cloudmask](#cloudmask)    
-[cloudmask_sr](#cloudmask_sr)      
+[cloudmask_sr](#cloudmask_sr)  
+[cloudmask_ls8](#cloudmask_sl8)       
 [pca](#pca)      
 [geom_filter](#geom_filter)  
 [tasseledcap_oli](#tasseledcap_oli)  
@@ -1517,6 +1518,26 @@ _Function create a cloud mask from a Surface Reflectance Landsat input image._
     var QA = img.select(['pixel_qa']);
     var masked_img = geet.cloudmask_sr(img, QA); 
 ```
+
+------------------------------------------------------------------------------
+
+
+#### cloudmask_ls8
+(original_image)   
+
+_Function to cloud mask an Surface Reflectance Landsat input image._     
+
+##### Params:
+  (ee.Image) original_image - the original input image with all the bands.  
+                           
+  
+##### Usage:
+```js  
+    var masked_img = geet.cloudmask_ls8(img); 
+```
+
+#### Information:  
+  PS: Special thanks to "HMSP": https://gis.stackexchange.com/users/93552/hmsp  
 
 ------------------------------------------------------------------------------
 
