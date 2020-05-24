@@ -2022,7 +2022,7 @@ var build_landsat_timeseries = function (roi) {
         var year_col_list = ee.List([]);
 
 
-        for (var year = 2013; year <= 2017; year++) {
+        for (var year = 2013; year <= 2018; year++) {
             var temp_col_list = ee.List([]);
             var collection = collection_ls8.filterDate(year.toString() + start, year.toString() + finish);
 

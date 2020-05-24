@@ -828,7 +828,7 @@ _Function to build a annual Landsat surface reflectance timeseries from 1985 to 
   
 ##### Usage:
 ```js   
-    var ls_timeserie = geet.build_landsat_timeseries(roi);     
+    var ls_timeseries = geet.build_landsat_timeseries(roi);     
 ```     
 
 ------------------------------------------------------------------------------
@@ -868,7 +868,7 @@ _Function that return a image collection with all landsat 5 images from a define
 
 ------------------------------------------------------------------------------
 
-#### ls8_collection_by_pathrow  
+#### ls7_collection_by_pathrow  
 (type, path, row)   
 
 _Function that return a image collection with all landsat 7 images from a defined path row._     
@@ -881,7 +881,7 @@ _Function that return a image collection with all landsat 7 images from a define
   
 ##### Usage:
 ```js
-	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+	var ls_collection = geet.ls7_collection_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------
