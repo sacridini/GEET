@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.2
+ * Version: 0.6.3
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -765,7 +765,7 @@ var landsat_indices = function (image, sensor, index) {
             case 'savi':
                 if (sensor == 'L5' || sensor == 'L7') {
                     var i_savi = image.expression(
-                        '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                        '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                         'NIR': image.select('B4'),
                         'RED': image.select('B3'),
                         'L': 0.2
@@ -774,7 +774,7 @@ var landsat_indices = function (image, sensor, index) {
                     return newImage;
                 } else if (sensor == 'L8') {
                     var i_savi = image.expression(
-                        '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                        '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                         'NIR': image.select('B5'),
                         'RED': image.select('B4'),
                         'L': 0.2
@@ -783,7 +783,7 @@ var landsat_indices = function (image, sensor, index) {
                     return newImage;
                 } else if (sensor == 'S2') {
                     var i_savi = image.expression(
-                        '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                        '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                         'NIR': image.select('B8'),
                         'RED': image.select('B4'),
                         'L': 0.2
@@ -851,7 +851,7 @@ var landsat_indices = function (image, sensor, index) {
                 'BLUE': image.select('B1')
             }).rename('EVI');
             var i_savi = image.expression(
-                '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                 'NIR': image.select('B4'),
                 'RED': image.select('B3'),
                 'L': 0.2
@@ -886,7 +886,7 @@ var landsat_indices = function (image, sensor, index) {
                 'BLUE': image.select('B2')
             }).rename('EVI');
             var i_savi = image.expression(
-                '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                 'NIR': image.select('B5'),
                 'RED': image.select('B4'),
                 'L': 0.2
@@ -910,7 +910,7 @@ var landsat_indices = function (image, sensor, index) {
                 'BLUE': image.select('B2')
             }).rename('EVI');
             var i_savi = image.expression(
-                '(1 + L) * (NIR - RED) / (NIR + RED + L)', {
+                '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                 'NIR': image.select('B8'),
                 'RED': image.select('B4'),
                 'L': 0.2
@@ -1040,7 +1040,7 @@ var sentinel2_indices = function (image, index) {
                 var newImage = image.addBands(i_lci);
                 return newImage;
             case 'savi': // Soil Adjusted Vegetation Index
-                var i_savi = image.expression('(1 + L) * (NIR - RED) / (NIR + RED + L)',
+                var i_savi = image.expression('(1 + L) * ((NIR - RED) / (NIR + RED + L))',
                     {
                         'NIR': image.select('B8'),
                         'RED': image.select('B4'),
@@ -1128,7 +1128,7 @@ var sentinel2_indices = function (image, index) {
         var i_ppr = image.normalizedDifference(['B9', 'B12']).rename('PPR');
         var i_ndre = image.normalizedDifference(['B9', 'B5']).rename('NDRE');
         var i_lci = image.normalizedDifference(['B8', 'B5']).rename('LCI');
-        var i_savi = image.expression('(1 + L) * (NIR - RED) / (NIR + RED + L)',
+        var i_savi = image.expression('(1 + L) * ((NIR - RED) / (NIR + RED + L))',
             {
                 'NIR': image.select('B8'),
                 'RED': image.select('B4'),
