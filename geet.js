@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.1
+ * Version: 0.6.2
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -733,7 +733,7 @@ var landsat_indices = function (image, sensor, index) {
             case 'evi':
                 if (sensor == 'L5' || sensor == 'L7') {
                     var i_evi = image.expression(
-                        '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                        '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
                         'NIR': image.select('B4'),
                         'RED': image.select('B3'),
                         'BLUE': image.select('B1')
@@ -742,7 +742,7 @@ var landsat_indices = function (image, sensor, index) {
                     return newImage;
                 } else if (sensor == 'L8') {
                     var i_evi = image.expression(
-                        '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                        '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
                         'NIR': image.select('B5'),
                         'RED': image.select('B4'),
                         'BLUE': image.select('B2')
@@ -751,7 +751,7 @@ var landsat_indices = function (image, sensor, index) {
                     return newImage;
                 } else if (sensor == 'S2') {
                     var i_evi = image.expression(
-                        '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                        '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
                         'NIR': image.select('B8'),
                         'RED': image.select('B4'),
                         'BLUE': image.select('B2')
@@ -845,7 +845,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B3')
             }).rename('NRVI');
             var i_evi = image.expression(
-                '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
                 'NIR': image.select('B4'),
                 'RED': image.select('B3'),
                 'BLUE': image.select('B1')
@@ -880,7 +880,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B4')
             }).rename('NRVI');
             var i_evi = image.expression(
-                '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
                 'NIR': image.select('B5'),
                 'RED': image.select('B4'),
                 'BLUE': image.select('B2')
@@ -904,7 +904,7 @@ var landsat_indices = function (image, sensor, index) {
             var i_ndwi = image.normalizedDifference(['B3', 'B11']).rename('NDWI');
             var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
             var i_evi = image.expression(
-                '2.5 * ((NIR - RED)) / (NIR + 6 * RED - 7.5 * BLUE + 1)', {
+                '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
                 'NIR': image.select('B8'),
                 'RED': image.select('B4'),
                 'BLUE': image.select('B2')
