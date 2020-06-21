@@ -845,7 +845,7 @@ _Function that return a image collection with all landsat images (5, 7 and 8) fr
   
 ##### Usage:
 ```js   
-  	var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);   
+  	var ls_collection = geet.landsat_collection_by_pathrow('SR', 217, 76);   
 ```			
 
 ------------------------------------------------------------------------------
