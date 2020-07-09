@@ -53,7 +53,7 @@ All functions implemented (Version 0.6.4 - Beta):
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
 [build_annual_landsat_timeseries](#build_annual_landsat_timeseries)  
-[landsat_collection_by_pathrow](#landsat_collection_by_pathrow)  
+[landsat_timeseries_by_pathrow](#landsat_timeseries_by_pathrow)  
 [ls5_collection_by_pathrow](#ls5_collection_by_pathrow)    
 [ls7_collection_by_pathrow](#ls7_collection_by_pathrow)    
 [ls8_collection_by_pathrow](#ls8_collection_by_pathrow)    
@@ -833,7 +833,7 @@ _Function to build a annual Landsat surface reflectance timeseries from 1985 to 
 
 ------------------------------------------------------------------------------
 
-#### landsat_collection_by_pathrow
+#### landsat_timeseries_by_pathrow
 (type, path, row)
 
 _Function that return a image collection with all landsat images (5, 7 and 8) from a defined path row. Remember to specify the type of the collection (raw, toa or sr)._  
@@ -845,12 +845,12 @@ _Function that return a image collection with all landsat images (5, 7 and 8) fr
   
 ##### Usage:
 ```js   
-  	var ls_collection = geet.landsat_collection_by_pathrow('SR', 217, 76);   
+  	var ls_collection = geet.landsat_timeseries_by_pathrow('SR', 217, 76);   
 ```			
 
 ------------------------------------------------------------------------------
 
-#### ls5_collection_by_pathrow  
+#### ls5_timeseries_by_pathrow  
 (type, path, row)   
 
 _Function that return a image collection with all landsat 5 images from a defined path row._     
@@ -863,12 +863,12 @@ _Function that return a image collection with all landsat 5 images from a define
   
 ##### Usage:
 ```js
-	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+	var ls_collection = geet.ls5_timeseries_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------
 
-#### ls7_collection_by_pathrow  
+#### ls7_timeseries_by_pathrow  
 (type, path, row)   
 
 _Function that return a image collection with all landsat 7 images from a defined path row._     
@@ -881,12 +881,12 @@ _Function that return a image collection with all landsat 7 images from a define
   
 ##### Usage:
 ```js
-	var ls_collection = geet.ls7_collection_by_pathrow('SR', 220, 77); 
+	var ls_collection = geet.ls7_timeseriesn_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------
 
-#### ls8_collection_by_pathrow  
+#### ls8_timeseries_by_pathrow  
 (type, path, row)   
 
 _Function that return a image collection with all landsat 8 images from a defined path row._     
@@ -899,7 +899,7 @@ _Function that return a image collection with all landsat 8 images from a define
   
 ##### Usage:
 ```js
-	var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77); 
+	var ls_collection = geet.ls5_timeseries_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------

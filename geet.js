@@ -2077,7 +2077,7 @@ var build_annual_landsat_timeseries = function (roi) {
 
 
 /*
-  landsat_collection_by_pathrow:
+  landsat_timeseries_by_pathrow:
   Function that return a image collection with all landsat images (5, 7 and 8) 
   from a defined path row. Remember to specify the type of the collection (raw, toa or sr).
 
@@ -2088,9 +2088,9 @@ var build_annual_landsat_timeseries = function (roi) {
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var ls_collection = geet.landsat_collection_by_pathrow('SR', 220, 77);
+  var ls_collection = geet.landsat_timeseries_by_pathrow('SR', 220, 77);
 */
-var landsat_collection_by_pathrow = function (type, path, row) {
+var landsat_timeseries_by_pathrow = function (type, path, row) {
 
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
     path = typeof path !== 'undefined' ? path : 217;
@@ -2155,7 +2155,7 @@ var landsat_collection_by_pathrow = function (type, path, row) {
 
 
 /*
-  ls5_collection_by_pathrow:
+  ls5_timeseries_by_pathrow:
   Function that return a image collection with all landsat 5 images from a defined path row.
 
   Params:
@@ -2165,9 +2165,9 @@ var landsat_collection_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var ls_collection = geet.ls5_collection_by_pathrow('SR', 220, 77);
+  var ls_collection = geet.ls5_timeseries_by_pathrow('SR', 220, 77);
 */
-var ls5_collection_by_pathrow = function (type, path, row) {
+var ls5_timeseries_by_pathrow = function (type, path, row) {
 
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
     path = typeof path !== 'undefined' ? path : 217;
@@ -2194,7 +2194,7 @@ var ls5_collection_by_pathrow = function (type, path, row) {
 
 
 /*
-  ls7_collection_by_pathrow:
+  ls7_ctimeseries_by_pathrow:
   Function that return a image collection with all landsat 7 images from a defined path row.
 
   Params:
@@ -2204,9 +2204,9 @@ var ls5_collection_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var ls_collection = geet.ls7_collection_by_pathrow('SR', 220, 77);
+  var ls_collection = geet.ls7_timeseries_by_pathrow('SR', 220, 77);
 */
-var ls7_collection_by_pathrow = function (type, path, row) {
+var ls7_timeseries_by_pathrow = function (type, path, row) {
 
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
     path = typeof path !== 'undefined' ? path : 217;
@@ -2233,7 +2233,7 @@ var ls7_collection_by_pathrow = function (type, path, row) {
 
 
 /*
-  ls8_collection_by_pathrow:
+  ls8_timeseries_by_pathrow:
   Function that return a image collection with all landsat 8 images from a defined path row..
 
   Params:
@@ -2243,9 +2243,9 @@ var ls7_collection_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var ls_collection = geet.ls8_collection_by_pathrow('SR', 220, 77);
+  var ls_collection = geet.ls8_timeseries_by_pathrow('SR', 220, 77);
 */
-var ls8_collection_by_pathrow = function (type, path, row) {
+var ls8_timeseries_by_pathrow = function (type, path, row) {
 
     type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
     path = typeof path !== 'undefined' ? path : 217;
@@ -3947,10 +3947,10 @@ exports.resample = resample
 exports.resample_band = resample_band
 exports.load_id_s2 = load_id_s2
 exports.build_annual_landsat_timeseries = build_annual_landsat_timeseries
-exports.landsat_collection_by_pathrow = landsat_collection_by_pathrow
-exports.ls5_collection_by_pathrow = ls5_collection_by_pathrow
-exports.ls7_collection_by_pathrow = ls7_collection_by_pathrow
-exports.ls8_collection_by_pathrow = ls8_collection_by_pathrow
+exports.landsat_timeseries_by_pathrow = landsat_timeseries_by_pathrow
+exports.ls5_timeseries_by_pathrow = ls5_timeseries_by_pathrow
+exports.ls7_timeseries_by_pathrow = ls7_timeseries_by_pathrow
+exports.ls8_timeseries_by_pathrow = ls8_timeseries_by_pathrow
 exports.mosaic_s2 = mosaic_s2
 exports.mosaic_l5 = mosaic_l5
 exports.mosaic_l7 = mosaic_l7
