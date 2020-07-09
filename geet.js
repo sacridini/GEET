@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.4
+ * Version: 0.6.5
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -2147,7 +2147,8 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
             var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
-                .map(add_ndvi_ls8);
+                .map(add_ndvi_ls8)
+                .map(function (image) { return cloudmask_sr(image, image.select("pixel_qa")); });
             var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
             return all_ls_collection;
     }
