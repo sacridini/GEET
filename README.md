@@ -54,9 +54,9 @@ All functions implemented (Version 0.6.4 - Beta):
 [load_id_s2](#load_id_s2)  
 [build_annual_landsat_timeseries](#build_annual_landsat_timeseries)  
 [landsat_timeseries_by_pathrow](#landsat_timeseries_by_pathrow)  
-[ls5_collection_by_pathrow](#ls5_collection_by_pathrow)    
-[ls7_collection_by_pathrow](#ls7_collection_by_pathrow)    
-[ls8_collection_by_pathrow](#ls8_collection_by_pathrow)    
+[ls5_timeseries_by_pathrow](#ls5_timeseries_by_pathrow)    
+[ls7_timeseries_by_pathrow](#ls7_timeseries_by_pathrow)    
+[ls8_timeseries_by_pathrow](#ls8_timeseries_by_pathrow)    
 [mosaic_s2](#mosaic_s2)  
 [mosaic_l5](#mosaic_l5)  
 [mosaic_l7](#mosaic_l7)  
@@ -881,7 +881,7 @@ _Function that return a image collection with all landsat 7 images from a define
   
 ##### Usage:
 ```js
-	var ls_collection = geet.ls7_timeseriesn_by_pathrow('SR', 220, 77); 
+	var ls_collection = geet.ls7_timeseries_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------
