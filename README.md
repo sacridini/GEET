@@ -19,7 +19,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.6.0 - Beta):  
+All functions implemented (Version 0.6.4 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -52,7 +52,7 @@ All functions implemented (Version 0.6.0 - Beta):
 [resample](#resample)  
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
-[build_landsat_timeseries](#build_landsat_timeseries)  
+[build_annual_landsat_timeseries](#build_annual_landsat_timeseries)  
 [landsat_collection_by_pathrow](#landsat_collection_by_pathrow)  
 [ls5_collection_by_pathrow](#ls5_collection_by_pathrow)    
 [ls7_collection_by_pathrow](#ls7_collection_by_pathrow)    
@@ -817,7 +817,7 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 ------------------------------------------------------------------------------
 
 
-#### build_landsat_timeseries
+#### build_annual_landsat_timeseries
 (roi)
 
 _Function to build a annual Landsat surface reflectance timeseries from 1985 to 2017. The function also mask clouds and shadow and create some indices bands like NDVI, NDWI and SAVI._  
@@ -828,7 +828,7 @@ _Function to build a annual Landsat surface reflectance timeseries from 1985 to 
   
 ##### Usage:
 ```js   
-    var ls_timeseries = geet.build_landsat_timeseries(roi);     
+    var ls_timeseries = geet.build_annual_landsat_timeseries(roi);     
 ```     
 
 ------------------------------------------------------------------------------

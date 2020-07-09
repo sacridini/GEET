@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.3
+ * Version: 0.6.4
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -1896,7 +1896,7 @@ var load_id_s2 = function (id) {
 
 
 /*
-  build_landsat_timeseries:
+  build_annual_landsat_timeseries:
   Function to build a annual Landsat surface reflectance timeseries from 1985 to 2017.
   The function also mask clouds and shadow and create some indices bands like NDVI, NDWI and SAVI.
 
@@ -1905,9 +1905,9 @@ var load_id_s2 = function (id) {
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var ls_timeserie = geet.build_landsat_timeseries(roi);
+  var ls_timeserie = geet.build_annual_landsat_timeseries(roi);
 */
-var build_landsat_timeseries = function (roi) {
+var build_annual_landsat_timeseries = function (roi) {
 
     roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point([-43.0879, -22.8632]);
 
@@ -3946,7 +3946,7 @@ exports.brightness_temp_l8c = brightness_temp_l8c
 exports.resample = resample
 exports.resample_band = resample_band
 exports.load_id_s2 = load_id_s2
-exports.build_landsat_timeseries = build_landsat_timeseries
+exports.build_annual_landsat_timeseries = build_annual_landsat_timeseries
 exports.landsat_collection_by_pathrow = landsat_collection_by_pathrow
 exports.ls5_collection_by_pathrow = ls5_collection_by_pathrow
 exports.ls7_collection_by_pathrow = ls7_collection_by_pathrow
