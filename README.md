@@ -19,7 +19,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.6.4 - Beta):  
+All functions implemented (Version 0.6.6 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -54,6 +54,7 @@ All functions implemented (Version 0.6.4 - Beta):
 [load_id_s2](#load_id_s2)  
 [build_annual_landsat_timeseries](#build_annual_landsat_timeseries)  
 [landsat_timeseries_by_pathrow](#landsat_timeseries_by_pathrow)  
+[landsat_timeseries_by_roi](#landsat_timeseries_by_roi)  
 [ls5_timeseries_by_pathrow](#ls5_timeseries_by_pathrow)    
 [ls7_timeseries_by_pathrow](#ls7_timeseries_by_pathrow)    
 [ls8_timeseries_by_pathrow](#ls8_timeseries_by_pathrow)    
@@ -847,6 +848,21 @@ _Function that return a image collection with all landsat images (5, 7 and 8) fr
 ```js   
   	var ls_collection = geet.landsat_timeseries_by_pathrow('SR', 217, 76);   
 ```			
+
+------------------------------------------------------------------------------
+
+#### landsat_timeseries_by_roi
+(type, path, row)
+
+_Function that return a image collection with all landsat images (5, 7 and 8) from a defined roi. Remember to specify the type of the collection (raw, toa or sr)._  
+
+##### Params:
+  (string) type - the type of the collection (RAW, TOA or SR)  
+  (ee.Geometry) roi - the Region of Interest to filter the dataset                                
+  
+##### Usage:
+```js   
+    var ls_collection = geet.landsat_timeseries_by_roi('SR', roi); 
 
 ------------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.5
+ * Version: 0.6.6
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -2156,6 +2156,73 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
 
 
 /*
+  landsat_timeseries_by_roi:
+  Function that return a image collection with all landsat images (5, 7 and 8) 
+  from a defined region of interest (roi). Remember to specify the type of the collection (raw, toa or sr).
+
+  Params:
+  (string) type - the type of the collection (RAW, TOA or SR)
+  (ee.Geometry) roi - the Region of Interest to filter the dataset.
+
+  Usage:
+  var geet = require('users/elacerda/geet:geet'); 
+  var ls_collection = geet.landsat_timeseries_by_roi('SR', roi);
+*/
+var landsat_timeseries_by_roi = function (type, roi) {
+
+    type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
+
+    var add_ndvi_ls = function(image) {
+      var with_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
+      return image.addBands(with_ndvi)
+    }
+
+    var add_ndvi_ls8 = function(image) {
+      var with_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+      return image.addBands(with_ndvi)
+    }
+
+
+    switch (type) {
+        case 'raw':
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+                .filterBounds(roi);
+            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
+                .filterBounds(roi);
+            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+                .filterBounds(roi);
+            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            return all_ls_collection;
+        case 'toa':
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
+                .filterBounds(roi)
+                .map(add_ndvi_ls);
+            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
+                .filterBounds(roi)
+                .map(add_ndvi_ls);
+            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+                .filterBounds(roi)
+                .map(add_ndvi_ls8);
+            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            return all_ls_collection;
+        case 'sr':
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+                .filterBounds(roi)
+                .map(add_ndvi_ls);
+            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+                .filterBounds(roi)
+                .map(add_ndvi_ls);
+            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+                .filterBounds(roi)
+                .map(add_ndvi_ls8)
+                .map(function (image) { return cloudmask_sr(image, image.select("pixel_qa")); });
+            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            return all_ls_collection;
+    }
+}
+
+
+/*
   ls5_timeseries_by_pathrow:
   Function that return a image collection with all landsat 5 images from a defined path row.
 
@@ -3949,6 +4016,7 @@ exports.resample_band = resample_band
 exports.load_id_s2 = load_id_s2
 exports.build_annual_landsat_timeseries = build_annual_landsat_timeseries
 exports.landsat_timeseries_by_pathrow = landsat_timeseries_by_pathrow
+exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi
 exports.ls5_timeseries_by_pathrow = ls5_timeseries_by_pathrow
 exports.ls7_timeseries_by_pathrow = ls7_timeseries_by_pathrow
 exports.ls8_timeseries_by_pathrow = ls8_timeseries_by_pathrow
