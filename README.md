@@ -837,7 +837,7 @@ _Function to build a annual Landsat surface reflectance timeseries from 1985 to 
 #### landsat_timeseries_by_pathrow
 (type, path, row)
 
-_Function that return a image collection with all landsat images (5, 7 and 8) from a defined path row. Remember to specify the type of the collection (raw, toa or sr)._  
+_Function that return a image collection with all landsat images (5 and 8) from a defined path row. Remember to specify the type of the collection (raw, toa or sr)._  
 
 ##### Params:
   (string) type - the type of the collection (RAW, TOA or SR)  
@@ -854,7 +854,7 @@ _Function that return a image collection with all landsat images (5, 7 and 8) fr
 #### landsat_timeseries_by_roi
 (type, path, row)
 
-_Function that return a image collection with all landsat images (5, 7 and 8) from a defined roi. Remember to specify the type of the collection (raw, toa or sr)._  
+_Function that return a image collection with all landsat images (5 and 8) from a defined roi. Remember to specify the type of the collection (raw, toa or sr)._  
 
 ##### Params:
   (string) type - the type of the collection (RAW, TOA or SR)  

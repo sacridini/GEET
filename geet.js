@@ -2078,7 +2078,7 @@ var build_annual_landsat_timeseries = function (roi) {
 
 /*
   landsat_timeseries_by_pathrow:
-  Function that return a image collection with all landsat images (5, 7 and 8) 
+  Function that return a image collection with all landsat images (5 and 8) 
   from a defined path row. Remember to specify the type of the collection (raw, toa or sr).
 
   Params:
@@ -2112,44 +2112,44 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
-            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
-            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
-            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
         case 'toa':
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls8);
-            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
         case 'sr':
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls8)
                 .map(function (image) { return cloudmask_sr(image, image.select("pixel_qa")); });
-            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
     }
 }
@@ -2157,7 +2157,7 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
 
 /*
   landsat_timeseries_by_roi:
-  Function that return a image collection with all landsat images (5, 7 and 8) 
+  Function that return a image collection with all landsat images (5 and 8) 
   from a defined region of interest (roi). Remember to specify the type of the collection (raw, toa or sr).
 
   Params:
@@ -2187,36 +2187,36 @@ var landsat_timeseries_by_roi = function (type, roi) {
         case 'raw':
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
                 .filterBounds(roi);
-            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1')
                 .filterBounds(roi);
-            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
                 .filterBounds(roi);
-            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
         case 'toa':
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls);
-            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls);
-            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls8);
-            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
         case 'sr':
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
                 .filterBounds(roi)
                 .map(add_ndvi_ls);
-            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
                 .filterBounds(roi)
-                .map(add_ndvi_ls);
+                .map(add_ndvi_ls);*/
             var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
                 .filterBounds(roi)
                 .map(add_ndvi_ls8)
                 .map(function (image) { return cloudmask_sr(image, image.select("pixel_qa")); });
-            var all_ls_collection = ls5_collection.merge(ls7_collection).merge(ls8_collection);
+            var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
     }
 }
