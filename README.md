@@ -863,6 +863,7 @@ _Function that return a image collection with all landsat images (5, 7 and 8) fr
 ##### Usage:
 ```js   
     var ls_collection = geet.landsat_timeseries_by_roi('SR', roi); 
+```
 
 ------------------------------------------------------------------------------
 
