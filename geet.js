@@ -1274,7 +1274,6 @@ var load_image = function (collection, year, roi, cloudFree) {
     var title = "load_image";
     var titleName = title + '_' + year.toString();
     Map.addLayer(result_image, visParams, titleName);
-    print(result_image);
     return result_image;
 };
 
