@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.6
+ * Version: 0.6.7
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -1197,8 +1197,6 @@ var sentinel2_indices = function (image, index) {
   var image = geet.load_image('SR', 2015); // Returns a SR image
 */
 var load_image = function (collection, year, roi, cloudFree) {
-    // Setup
-    var visParams = { bands: ['B4', 'B3', 'B2'], max: 0.3 };
 
     // Default params
     collection = typeof collection !== 'undefined' ? collection : 'TOA';
@@ -1270,11 +1268,7 @@ var load_image = function (collection, year, roi, cloudFree) {
             .sort('CLOUD_COVER')
             .first());
     }
-
-    var title = "load_image";
-    var titleName = title + '_' + year.toString();
-    Map.addLayer(result_image, visParams, titleName);
-    return result_image;
+    return(result_image);
 };
 
 
