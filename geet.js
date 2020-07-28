@@ -109,7 +109,7 @@ var cart = function (image, trainingData, fieldName, scale) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
-var rf = function (image, bands, trainingData, fieldName, numOfTrees, split_perc) {
+var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution, split_perc) {
     // Error Handling
     if (image === undefined) error('rf', 'You need to specify an input image.');
     if (bands === undefined) error('rf', 'You need to specify the image bands serve as the model input');
@@ -118,12 +118,13 @@ var rf = function (image, bands, trainingData, fieldName, numOfTrees, split_perc
 
     // Default params
     numOfTrees = typeof numOfTrees !== 'undefined' ? numOfTrees : 10;
+    resolution = typeof resolution !== 'undefined' ? resolution : 30;
     split_perc = typeof split_perc !== 'undefined' ? split_perc : 0.2;
 
     var input_features = image.sampleRegions({
         collection: trainingData,
         properties: [fieldName],
-        scale: 30
+        scale: resolution
     });
 
     // Split data in (train - test) datasets
