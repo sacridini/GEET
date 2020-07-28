@@ -109,15 +109,16 @@ var cart = function (image, trainingData, fieldName, scale) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
-var rf = function (image, trainingData, fieldName, numOfTrees, split) {
+var rf = function (image, bands, trainingData, fieldName, numOfTrees, split_perc) {
     // Error Handling
     if (image === undefined) error('rf', 'You need to specify an input image.');
+    if (bands === undefined) error('rf', 'You need to specify the image bands serve as the model input');
     if (trainingData === undefined) error('rf', 'You need to specify the training data.');
     if (fieldName === undefined) error('rf', 'You need to specify the field name.');
 
     // Default params
     numOfTrees = typeof numOfTrees !== 'undefined' ? numOfTrees : 10;
-    split = typeof split !== 'undefined' ? split : 0.2;
+    split_perc = typeof split_perc !== 'undefined' ? split_perc : 0.2;
 
     var input_features = image.sampleRegions({
         collection: trainingData,
@@ -127,13 +128,14 @@ var rf = function (image, trainingData, fieldName, numOfTrees, split) {
 
     // Split data in (train - test) datasets
     var withRandom = input_features.randomColumn();
-    var split = 0.7;  // 70% training, 30% testing.
+    var split = split_perc;
     var trainingPartition = withRandom.filter(ee.Filter.lt('random', split));
     var testingPartition = withRandom.filter(ee.Filter.gte('random', split));
 
-    var classifier = ee.Classifier.randomForest(numOfTrees).train({
+    var classifier = ee.Classifier.smileRandomForest(numOfTrees).train({
         features: trainingPartition,
-        classProperty: fieldName
+        classProperty: fieldName,
+        inputProperties: bands
     });
 
     // Model/Classify with training dataset 
@@ -147,9 +149,10 @@ var rf = function (image, trainingData, fieldName, numOfTrees, split) {
     print('kappa: ', testAccuracy.kappa())
 
 
-    var classifier_final = ee.Classifier.randomForest(numOfTrees).train({
+    var classifier_final = ee.Classifier.smileRandomForest(numOfTrees).train({
         features: input_features,
-        classProperty: fieldName
+        classProperty: fieldName,
+        inputProperties: bands
     });
 
     var classified_final = image.classify(classifier_final);
