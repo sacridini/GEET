@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.7
+ * Version: 0.6.8
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -109,7 +109,7 @@ var cart = function (image, trainingData, fieldName, scale) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
-var rf = function (image, trainingData, fieldName, numOfTrees) {
+var rf = function (image, trainingData, fieldName, numOfTrees, split) {
     // Error Handling
     if (image === undefined) error('rf', 'You need to specify an input image.');
     if (trainingData === undefined) error('rf', 'You need to specify the training data.');
@@ -117,20 +117,43 @@ var rf = function (image, trainingData, fieldName, numOfTrees) {
 
     // Default params
     numOfTrees = typeof numOfTrees !== 'undefined' ? numOfTrees : 10;
+    split = typeof split !== 'undefined' ? split : 0.2;
 
-    var training = image.sampleRegions({
+    var input_features = image.sampleRegions({
         collection: trainingData,
         properties: [fieldName],
         scale: 30
     });
 
+    // Split data in (train - test) datasets
+    var withRandom = input_features.randomColumn();
+    var split = 0.7;  // 70% training, 30% testing.
+    var trainingPartition = withRandom.filter(ee.Filter.lt('random', split));
+    var testingPartition = withRandom.filter(ee.Filter.gte('random', split));
+
     var classifier = ee.Classifier.randomForest(numOfTrees).train({
-        features: training,
+        features: trainingPartition,
         classProperty: fieldName
     });
 
+    // Model/Classify with training dataset 
     var classified = image.classify(classifier);
-    return classified;
+
+    // Validation
+    var validation = testingPartition.classify(classifier);
+    var testAccuracy = validation.errorMatrix('cobertura', 'classification');
+    print('Validation error matrix: ', testAccuracy);
+    print('Validation overall accuracy: ', testAccuracy.accuracy());
+    print('kappa: ', testAccuracy.kappa())
+
+
+    var classifier_final = ee.Classifier.randomForest(numOfTrees).train({
+        features: input_features,
+        classProperty: fieldName
+    });
+
+    var classified_final = image.classify(classifier_final);
+    return classified_final;
 };
 
 
