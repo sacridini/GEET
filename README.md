@@ -19,7 +19,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.6.6 - Beta):  
+All functions implemented (Version 0.6.8 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -130,7 +130,7 @@ _Function to apply SVM classification to a image._
 
 ##### Params:
   (ee.Image) image - The input image to classify.    
-  (ee.List) trainingData - Training data (samples).      
+  (FeatureCollection) trainingData - Training data (samples).      
   **optional** (string) fieldName - The name of the column that contains the class names.      
   **optional** (string) kernelType - the kernel type of the classifier.     
   
@@ -148,7 +148,7 @@ _Function to apply CART classification to a image._
 
 ##### Params:
   (ee.Image) image - The input image to classify.       
-  (ee.List) trainingData - Training data (samples).     
+  (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.       
   
 ##### Usage:
@@ -164,15 +164,23 @@ _Function to apply CART classification to a image._
 _Function to apply Random Forest classification to an image._ 
 
 ##### Params:
-  (ee.Image) image - The input image to classify.   
-  (ee.List) trainingData - Training data (samples).   
-  (string) fieldName - the name of the column that contains the class names.           
+  (ee.Image) image - The input image to classify.  
+  (array of strings) bands - The input band names that will be choosed to train the model.  
+  (FeatureCollection) trainingData - All the training data (samples).  
+  (string) fieldName - The name of the column that contains the class names.  
+  optional (number) numOfTrees - The number of trees that the model will create. Default is 10.  
+  optional (number) resolution - The resolution of your raster data.  
+  optional (number) cv_split - The cross validation split percentage.               
   
 ##### Usage:
 ```js
-    var imgClass = geet.rf(image, samplesfc, landcover, 10);   
+    var imgClass = geet.rf(image, bands, samplesfc, landcover, 10);   
 ```
-  
+or
+
+```js
+    var imgClass = geet.rf(image, bands, samplesfc, landcover, 10, 30, 0.7);  
+```
  ------------------------------------------------------------------------------
 
  #### naive_bayes
@@ -182,7 +190,7 @@ _Function to apply the Fast Naive Bayes classification to a image._
 
 ##### Params:
   (ee.Image) image - The input image to classify.       
-  (ee.List) trainingData - Training data (samples).     
+  (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.    
   **optional** (number) scale - The spatial resolution of the input image. Default is 30 (landsat).   
   
@@ -206,7 +214,7 @@ _Function to apply the GMO Maximum Entropy classification to a image._
 
 ##### Params:
   (ee.Image) image - The input image to classify.       
-  (ee.List) trainingData - Training data (samples).     
+  (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.    
   **optional** (number) scale - The spatial resolution of the input image. Default is 30 (landsat).     
   
@@ -230,7 +238,7 @@ _Function to apply RandomForest classification to an image._
 
 ##### Params:
   (ee.Image) image - The input image to classify.     
-  (list) roi - A polygon containing the study area.
+  (Feature/Geometry) roi - A polygon containing the study area.
   **optional** (number) _numClusters - the number of clusters that will be used. Default is 15.  
   **optional** (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.  
   **optional** (number) _numPixels - the number of pixels that the classifier will take samples from the roi.           

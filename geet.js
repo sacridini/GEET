@@ -101,15 +101,18 @@ var cart = function (image, trainingData, fieldName, scale) {
 
   Params:
   (ee.Image) image - The input image to classify.
-  (ee.List) trainingData - Training data (samples).
-  (string) fieldName - the name of the column that contains the class names.
-  optional (ee.Number) numOfTrees - the number of trees that the model will create. Default is 10.
+  (array of strings) bands - The input band names that will be choosed to train the model.
+  (FeatureCollection) trainingData - All the training data (samples).
+  (string) fieldName - The name of the column that contains the class names.
+  optional (number) numOfTrees - The number of trees that the model will create. Default is 10.
+  optional (number) resolution - The resolution of your raster data.
+  optional (number) cv_split - The cross validation split percentage .
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.rf(image, samplesfc, landcover, 10);
 */
-var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution, split_perc) {
+var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution, cv_split) {
     // Error Handling
     if (image === undefined) error('rf', 'You need to specify an input image.');
     if (bands === undefined) error('rf', 'You need to specify the image bands serve as the model input');
@@ -119,7 +122,7 @@ var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution
     // Default params
     numOfTrees = typeof numOfTrees !== 'undefined' ? numOfTrees : 10;
     resolution = typeof resolution !== 'undefined' ? resolution : 30;
-    split_perc = typeof split_perc !== 'undefined' ? split_perc : 0.2;
+    cv_split = typeof cv_split !== 'undefined' ? cv_split : 0.8;
 
     var input_features = image.sampleRegions({
         collection: trainingData,
@@ -129,7 +132,7 @@ var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution
 
     // Split data in (train - test) datasets
     var withRandom = input_features.randomColumn();
-    var split = split_perc;
+    var split = cv_split;
     var trainingPartition = withRandom.filter(ee.Filter.lt('random', split));
     var testingPartition = withRandom.filter(ee.Filter.gte('random', split));
 
