@@ -19,7 +19,7 @@ The library also can be used to teach new developers to use the plataform even w
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.6.8 - Beta):  
+All functions implemented (Version 0.6.9 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -132,7 +132,8 @@ _Function to apply SVM classification to a image._
   (ee.Image) image - The input image to classify.    
   (FeatureCollection) trainingData - Training data (samples).      
   **optional** (string) fieldName - The name of the column that contains the class names.      
-  **optional** (string) kernelType - the kernel type of the classifier.     
+  **optional** (string) kernelType - the kernel type of the classifier.  
+  **optional** (number) resolution - the spatial resolution of the input image. Default is 30 (landsat).     
   
 ##### Usage:
 ```js 
@@ -149,7 +150,8 @@ _Function to apply CART classification to a image._
 ##### Params:
   (ee.Image) image - The input image to classify.       
   (FeatureCollection) trainingData - Training data (samples).     
-  **optional** (string) fieldName - The name of the column that contains the class names.       
+  **optional** (string) fieldName - The name of the column that contains the class names.  
+  **optional** (number) resolution - the spatial resolution of the input image. Default is 30 (landsat).         
   
 ##### Usage:
 ```js 
@@ -168,9 +170,9 @@ _Function to apply Random Forest classification to an image._
   (array of strings) bands - The input band names that will be choosed to train the model.  
   (FeatureCollection) trainingData - All the training data (samples).  
   (string) fieldName - The name of the column that contains the class names.  
-  optional (number) numOfTrees - The number of trees that the model will create. Default is 10.  
-  optional (number) resolution - The resolution of your raster data.  
-  optional (number) cv_split - The cross validation split percentage.               
+  **optional** (number) numOfTrees - The number of trees that the model will create. Default is 10.  
+  **optional** (number) resolution - the spatial resolution of the input image. Default is 30 (landsat).    
+  **optional** (number) cv_split - The cross validation split percentage.               
   
 ##### Usage:
 ```js
@@ -192,7 +194,7 @@ _Function to apply the Fast Naive Bayes classification to a image._
   (ee.Image) image - The input image to classify.       
   (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.    
-  **optional** (number) scale - The spatial resolution of the input image. Default is 30 (landsat).   
+  **optional** (number) resolution - The spatial resolution of the input image. Default is 30 (landsat).   
   
 ##### Usage:
 ```js
@@ -216,7 +218,7 @@ _Function to apply the GMO Maximum Entropy classification to a image._
   (ee.Image) image - The input image to classify.       
   (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.    
-  **optional** (number) scale - The spatial resolution of the input image. Default is 30 (landsat).     
+  **optional** (number) resolution - The spatial resolution of the input image. Default is 30 (landsat).     
   
 ##### Usage:
 ```js
