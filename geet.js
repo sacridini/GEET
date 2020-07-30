@@ -37,7 +37,7 @@ var svm = function (image, trainingData, fieldName, kernelType, resolution) {
 
     // Default params
     kernelType = typeof kernelType !== 'undefined' ? kernelType : 'RBF';
-    scale = typeof scale !== 'undefined' ? scale : 30;
+    resolution = typeof resolution !== 'undefined' ? resolution : 30;
 
     var training = image.sampleRegions({
         collection: trainingData,
@@ -77,7 +77,7 @@ var cart = function (image, trainingData, fieldName, resolution) {
     if (fieldName === undefined) error('cart', 'You need to specify the field name.');
 
     // Default params
-    scale = typeof scale !== 'undefined' ? scale : 30;
+    resolution = typeof resolution !== 'undefined' ? resolution : 30;
 
     var training = image.sampleRegions({
         collection: trainingData,
@@ -186,7 +186,7 @@ var naive_bayes = function (image, trainingData, fieldName, resolution) {
     if (fieldName === undefined) error('naive_bayes', 'You need to specify the field name.');
 
     // Default params
-    scale = typeof scale !== 'undefined' ? scale : 30;
+    resolution = typeof resolution !== 'undefined' ? resolution : 30;
 
     var training = image.sampleRegions({
         collection: trainingData,
@@ -225,7 +225,7 @@ var gmo_max_ent = function (image, trainingData, fieldName, resolution) {
     if (fieldName === undefined) error('gmo_max_ent', 'You need to specify the field name.');
 
     // Default params
-    scale = typeof scale !== 'undefined' ? scale : 30;
+    resolution = typeof resolution !== 'undefined' ? resolution : 30;
 
     var training = image.sampleRegions({
         collection: trainingData,
