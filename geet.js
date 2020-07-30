@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.8
+ * Version: 0.6.9
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -23,13 +23,13 @@ function error(funcName, msg) {
   (ee.List) trainingData - Training data (samples). 
   (string) fieldName - The name of the column that contains the class names.
   optional (string) kernelType - the kernel type of the classifier. Default is 'RBF'.
-  optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
+  optional (number) resolution - the spatial resolution of the input image. Default is 30 (landsat).
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.svm(image, samplesfc, landcover);
 */
-var svm = function (image, trainingData, fieldName, kernelType, scale) {
+var svm = function (image, trainingData, fieldName, kernelType, resolution) {
     // Error Handling
     if (image === undefined) error('svm', 'You need to specify an input image.');
     if (trainingData === undefined) error('svm', 'You need to specify the training data.');
@@ -42,7 +42,7 @@ var svm = function (image, trainingData, fieldName, kernelType, scale) {
     var training = image.sampleRegions({
         collection: trainingData,
         properties: [fieldName],
-        scale: scale
+        scale: resolution
     });
 
     var classifier = ee.Classifier.svm({
@@ -64,13 +64,13 @@ var svm = function (image, trainingData, fieldName, kernelType, scale) {
   (ee.Image) image - The input image to classify.
   (ee.List) trainingData - Training data (samples).
   (string) fieldName - The name of the column that contains the class names.
-  optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
+  optional (number) resolution - the spatial resolution of the input image. Default is 30 (landsat).
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.cart(image, samplesfc, landcover);
 */
-var cart = function (image, trainingData, fieldName, scale) {
+var cart = function (image, trainingData, fieldName, resolution) {
     // Error Handling
     if (image === undefined) error('cart', 'You need to specify an input image.');
     if (trainingData === undefined) error('cart', 'You need to specify the training data.');
@@ -82,7 +82,7 @@ var cart = function (image, trainingData, fieldName, scale) {
     var training = image.sampleRegions({
         collection: trainingData,
         properties: [fieldName],
-        scale: scale
+        scale: resolution
     });
 
     var classifier = ee.Classifier.cart().train({
@@ -105,7 +105,7 @@ var cart = function (image, trainingData, fieldName, scale) {
   (FeatureCollection) trainingData - All the training data (samples).
   (string) fieldName - The name of the column that contains the class names.
   optional (number) numOfTrees - The number of trees that the model will create. Default is 10.
-  optional (number) resolution - The resolution of your raster data.
+  optional (number) resolution - the spatial resolution of the input image. Default is 30 (landsat).
   optional (number) cv_split - The cross validation split percentage .
 
   Usage:
@@ -172,13 +172,14 @@ var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution
   (ee.Image) image - The input image to classify.
   (ee.List) trainingData - Training data (samples).
   (string) fieldName - The name of the column that contains the class names.
-  optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
+  optional (number) resolution - the spatial resolution of the input image. Default is 30 (landsat)..
+
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.naive_bayes(image, samplesfc, landcover);
 */
-var naive_bayes = function (image, trainingData, fieldName, scale) {
+var naive_bayes = function (image, trainingData, fieldName, resolution) {
     // Error Handling
     if (image === undefined) error('naive_bayes', 'You need to specify an input image.');
     if (trainingData === undefined) error('naive_bayes', 'You need to specify the training data.');
@@ -190,7 +191,7 @@ var naive_bayes = function (image, trainingData, fieldName, scale) {
     var training = image.sampleRegions({
         collection: trainingData,
         properties: [fieldName],
-        scale: scale
+        scale: resolution
     });
 
     var classifier = ee.Classifier.naive_bayes().train({
@@ -211,13 +212,13 @@ var naive_bayes = function (image, trainingData, fieldName, scale) {
   (ee.Image) image - The input image to classify.
   (ee.List) trainingData - Training data (samples).
   (string) fieldName - The name of the column that contains the class names.
-  optional (number) scale - the spatial resolution of the input image. Default is 30 (landsat).
+  optional (number) resolution - the spatial resolution of the input image. Default is 30 (landsat).
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.gmo_max_ent(image, samplesfc, landcover);
 */
-var gmo_max_ent = function (image, trainingData, fieldName, scale) {
+var gmo_max_ent = function (image, trainingData, fieldName, resolution) {
     // Error Handling
     if (image === undefined) error('gmo_max_ent', 'You need to specify an input image.');
     if (trainingData === undefined) error('gmo_max_ent', 'You need to specify the training data.');
@@ -229,7 +230,7 @@ var gmo_max_ent = function (image, trainingData, fieldName, scale) {
     var training = image.sampleRegions({
         collection: trainingData,
         properties: [fieldName],
-        scale: scale
+        scale: resolution
     });
 
     var classifier = ee.Classifier.gmo_max_ent().train({
