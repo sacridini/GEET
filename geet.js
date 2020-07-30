@@ -251,7 +251,7 @@ var gmo_max_ent = function (image, trainingData, fieldName, resolution) {
   (ee.Image) image - The input image to classify.
   (list) roi - A polygon containing the study area.
   optional (number) numClusters - the number of clusters that will be used. Default is 15.
-  optional (number) scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
+  optional (number) resolution - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.
   optional (number) numPixels - the number of pixels that the classifier will take samples from the roi. Default is set to 5000.
 
   Usage:
@@ -263,7 +263,7 @@ var gmo_max_ent = function (image, trainingData, fieldName, resolution) {
   var geet = require('users/elacerda/geet:geet'); 
   var imgClass = geet.kmeans(image, roi, 20, 10, 6000);
 */
-var kmeans = function (image, roi, numClusters, scale, numPixels) {
+var kmeans = function (image, roi, numClusters, resolution, numPixels) {
     // Error Handling
     if (image === undefined) error('kmeans', 'You need to specify an input image.');
     if (roi === undefined) error('kmeans', 'You need to define and pass a roi as argument to collect the samples for the classfication process.');
@@ -277,7 +277,7 @@ var kmeans = function (image, roi, numClusters, scale, numPixels) {
     // Make the training dataset.
     var training = image.sample({
         region: roi,
-        scale: scale,
+        scale: resolution,
         numPixels: numPixels
     });
 
