@@ -714,7 +714,7 @@ var landsat_indices = function (image, sensor, index) {
                         '((SWIR1 - NIR) / (SWIR1 + NIR))', {
                         'SWIR1': image.select('B5'),
                         'NIR': image.select('B3')
-                    }).rename('NDVI');
+                    }).rename('NDBI');
                     var newImage = image.addBands(i_ndbi);
                     return newImage;
                 } else if (sensor == 'L8') {
@@ -722,7 +722,7 @@ var landsat_indices = function (image, sensor, index) {
                         '((SWIR1 - NIR) / (SWIR1 + NIR))', {
                         'SWIR1': image.select('B6'),
                         'NIR': image.select('B5')
-                    }).rename('NDVI');
+                    }).rename('NDBI');
                     var newImage = image.addBands(i_ndbi);
                     return newImage;
                 } else {
@@ -873,9 +873,21 @@ var landsat_indices = function (image, sensor, index) {
     } else { // END OF SWITCH 
         // Gen ALL indices
         if (sensor == 'L5' || sensor == 'L7') {
-            var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
-            var i_ndwi = image.normalizedDifference(['B2', 'B5']).rename('NDWI');
-            var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
+            var i_ndvi = image.expression(
+                '((NIR - RED) / (NIR + RED))', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3')
+            }).rename('NDVI');
+            var i_ndwi = image.expression(
+                '((NIR - SWIR1) / (NIR + SWIR1))', {
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B3')
+            }).rename('NDWI');
+            var i_ndbi = image.expression(
+                '((SWIR1 - NIR) / (SWIR1 + NIR))', {
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B3')
+            }).rename('NDBI');
             var i_gli = image.expression(
                 '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
                 'BLUE': image.select('B1'),
@@ -908,9 +920,21 @@ var landsat_indices = function (image, sensor, index) {
             var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
             return newImage;
         } else if (sensor == 'L8') {
-            var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
-            var i_ndwi = image.normalizedDifference(['B3', 'B6']).rename('NDWI');
-            var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
+            var i_ndvi = image.expression(
+                '((NIR - RED) / (NIR + RED))', {
+                'NIR': image.select('B5'),
+                'RED': image.select('B4')
+            }).rename('NDVI');
+            var i_ndwi = image.expression(
+                '((NIR - SWIR1) / (NIR + SWIR1))', {
+                'SWIR1': image.select('B6'),
+                'NIR': image.select('B4')
+            }).rename('NDWI');
+            var i_ndbi = image.expression(
+                '((SWIR1 - NIR) / (SWIR1 + NIR))', {
+                'SWIR1': image.select('B6'),
+                'NIR': image.select('B5')
+            }).rename('NDBI');
             var i_gli = image.expression(
                 '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
                 'BLUE': image.select('B2'),
@@ -941,30 +965,6 @@ var landsat_indices = function (image, sensor, index) {
                 'Y': 0.16
             }).rename('GOSAVI');
             var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
-            return newImage;
-        } else if (sensor == 'S2') {
-            var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
-            var i_ndwi = image.normalizedDifference(['B3', 'B11']).rename('NDWI');
-            var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
-            var i_evi = image.expression(
-                '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
-                'NIR': image.select('B8'),
-                'RED': image.select('B4'),
-                'BLUE': image.select('B2')
-            }).rename('EVI');
-            var i_savi = image.expression(
-                '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
-                'NIR': image.select('B8'),
-                'RED': image.select('B4'),
-                'L': 0.2
-            }).rename('SAVI');
-            var i_gosavi = image.expression(
-                '(NIR - GREEN) / (NIR + GREEN + Y)', {
-                'NIR': image.select('B8'),
-                'GREEN': image.select('B3'),
-                'Y': 0.16
-            }).rename('GOSAVI');
-            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_evi, i_savi, i_gosavi]);
             return newImage;
         } else {
             print("Error: Wrong sensor input!");
