@@ -2193,11 +2193,11 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
-            var new_brightness = collection.select('Brightness').median().float();
+            var new_brightness = collection.select('Brightness').median().toFloat();
             temp_col_list = temp_col_list.add(new_brightness);
-            var new_greenness = collection.select('Greenness').median().float();
+            var new_greenness = collection.select('Greenness').median().toFloat();
             temp_col_list = temp_col_list.add(new_greenness);
-            var new_wetness = collection.select('Wetness').median().float();
+            var new_wetness = collection.select('Wetness').median().toFloat();
             temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
@@ -2238,11 +2238,11 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
-            var new_brightness = collection.select('Brightness').median().float();
+            var new_brightness = collection.select('Brightness').median().toFloat();;
             temp_col_list = temp_col_list.add(new_brightness);
-            var new_greenness = collection.select('Greenness').median().float();
+            var new_greenness = collection.select('Greenness').median().toFloat();
             temp_col_list = temp_col_list.add(new_greenness);
-            var new_wetness = collection.select('Wetness').median().float();
+            var new_wetness = collection.select('Wetness').median().toFloat();
             temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
@@ -3931,49 +3931,6 @@ var tasseledcap_s2 = function (image) {
 }
 
 
-/*
-  to_double:
-  Function cast the type of an image to double.
-
-  Params:
-  (ee.Image) image - the input image.
-
-  Usage:
-  var geet = require('users/elacerda/geet:geet'); 
-  var image_double = geet.to_double(image);
-  
-  or 
-
-  var geet = require('users/elacerda/geet:geet'); 
-  var collection_double = collection.map(geet.to_double);
-*/
-var to_double = function(image) {
-  return image.double();
-};
-
-
-/*
-  to_float:
-  Function cast the type of an image to float.
-
-  Params:
-  (ee.Image) image - the input image.
-
-  Usage:
-  var geet = require('users/elacerda/geet:geet'); 
-  var image_double = geet.to_float(image);
-  
-  or 
-
-  var geet = require('users/elacerda/geet:geet'); 
-  var collection_double = collection.map(geet.to_float);
-*/
-var to_float = function(image) {
-  return image.float();
-};
-
-
-
 
 // var sensor_info = ee.String(image.get('SATELLITE'));
 // if (sensor_info.getInfo() === 'LANDSAT_8') {
@@ -4301,5 +4258,3 @@ exports.tasseledcap_oli = tasseledcap_oli
 exports.tasseledcap_s2 = tasseledcap_s2
 exports.tasseledcap_tm5 = tasseledcap_tm5
 exports.tasseledcap_tm7 = tasseledcap_tm7
-exports.to_double = to_double
-exports.to_float = to_float

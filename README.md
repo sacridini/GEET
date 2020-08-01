@@ -93,9 +93,7 @@ All functions implemented (Version 0.7.3 - Beta):
 [tasseledcap_oli](#tasseledcap_oli)  
 [tasseledcap_tm5](#tasseledcap_tm5)  
 [tasseledcap_tm7](#tasseledcap_tm7)  
-[tasseledcap_s2](#tasseledcap_s2)  
-[to_double](#to_double)  
-[to_float](#to_float)            
+[tasseledcap_s2](#tasseledcap_s2)             
 
 
 ------------------------------------------------------------------------------
@@ -1669,46 +1667,4 @@ _Function to create a Tasselled Cap on a Sentinel 2 image._
       var image_tcap = geet.tasseledcap_s2(img);  
 ```
 
-------------------------------------------------------------------------------
-
-#### to_double
-(image) 
-
-_Function to cast the type of an image to double. Normally used to export an stack of images without type errors._  
-
-##### Params:
-  (ee.Image) image - the input image.                                    
-  
-##### Usage:
-```js
-      var geet = require('users/elacerda/geet:geet');  
-      var image_double = image.to_double(image);  
-```
-or
-
-```js
-      var geet = require('users/elacerda/geet:geet');  
-      var collection_double = collection.map(geet.to_double); 
-```
-------------------------------------------------------------------------------
-
-#### to_float
-(image) 
-
-_Function to cast the type of an image to float. Normally used to export an stack of images without type errors._      
-
-##### Params:
-  (ee.Image) image - the input image.                                   
-  
-##### Usage:
-```js
-    var geet = require('users/elacerda/geet:geet');  
-    var image_float = image.to_float(image);   
-```
-or
-
-```js
-    var geet = require('users/elacerda/geet:geet');  
-    var collection_float = collection.map(geet.to_float); 
-```
 ------------------------------------------------------------------------------
