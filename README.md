@@ -1674,7 +1674,7 @@ _Function to create a Tasselled Cap on a Sentinel 2 image._
 #### to_double
 (image) 
 
-_Function cast the type of an image to double._  
+_Function to cast the type of an image to double. Normally used to export an stack of images without type errors._  
 
 ##### Params:
   (ee.Image) image - the input image.                                    
@@ -1695,7 +1695,7 @@ or
 #### to_float
 (image) 
 
-_Function cast the type of an image to float._      
+_Function to cast the type of an image to float. Normally used to export an stack of images without type errors._      
 
 ##### Params:
   (ee.Image) image - the input image.                                   
