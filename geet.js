@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.7.0
+ * Version: 0.7.1
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -872,100 +872,264 @@ var landsat_indices = function (image, sensor, index) {
         }
     } else { // END OF SWITCH 
         // Gen ALL indices
-        if (sensor == 'L5' || sensor == 'L7') {
+        if (sensor == 'L5') {
             var i_ndvi = image.expression(
                 '((NIR - RED) / (NIR + RED))', {
                 'NIR': image.select('B4'),
                 'RED': image.select('B3')
             }).rename('NDVI');
+
             var i_ndwi = image.expression(
                 '((NIR - SWIR1) / (NIR + SWIR1))', {
                 'SWIR1': image.select('B5'),
                 'NIR': image.select('B3')
             }).rename('NDWI');
+
             var i_ndbi = image.expression(
                 '((SWIR1 - NIR) / (SWIR1 + NIR))', {
                 'SWIR1': image.select('B5'),
                 'NIR': image.select('B3')
             }).rename('NDBI');
+
             var i_gli = image.expression(
                 '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
                 'BLUE': image.select('B1'),
                 'GREEN': image.select('B2'),
                 'RED': image.select('B3')
             }).rename('GLI');
+
             var i_nrvi = image.expression(
                 '(RED/NIR - 1) / (RED/NIR + 1)', {
                 'NIR': image.select('B4'),
                 'RED': image.select('B3')
             }).rename('NRVI');
+
             var i_evi = image.expression(
                 '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
                 'NIR': image.select('B4'),
                 'RED': image.select('B3'),
                 'BLUE': image.select('B1')
             }).rename('EVI');
+
             var i_savi = image.expression(
                 '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                 'NIR': image.select('B4'),
                 'RED': image.select('B3'),
                 'L': 0.2
             }).rename('SAVI');
+
             var i_gosavi = image.expression(
                 '(NIR - GREEN) / (NIR + GREEN + Y)', {
                 'NIR': image.select('B4'),
                 'GREEN': image.select('B2'),
                 'Y': 0.16
             }).rename('GOSAVI');
-            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
+
+            var Brightness = image.expression(
+                '(BLUE * 0.2043) + (GREEN * 0.4158) + (RED * 0.5524) + (NIR * 0.5741) + (SWIR1 * 0.3124) + (SWIR2 * 0.2303)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'GREEN': image.select('B2'),
+                'BLUE': image.select('B1')
+            }).rename('Brightness');
+
+            var Greenness = image.expression(
+                '(BLUE * -0.1603) + (GREEN * -0.2819) + (RED * -0.4934) + (NIR * 0.7940) + (SWIR1 * -0.0002) + (SWIR2 * -0.1446)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'GREEN': image.select('B2'),
+                'BLUE': image.select('B1')
+            }).rename('Greenness');
+
+            var Wetness = image.expression(
+                '(BLUE * 0.0315) + (GREEN * 0.2021) + (RED * 0.3102) + (NIR * 0.1594) + (SWIR1 * -0.6806) + (SWIR2 * -0.6109)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'GREEN': image.select('B2'),
+                'BLUE': image.select('B1')
+            }).rename('Wetness')
+
+            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi, Brightness, Greenness, Wetness]);
             return newImage;
+
+        } else if (sensor == 'L7') {
+            var i_ndvi = image.expression(
+                '((NIR - RED) / (NIR + RED))', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3')
+            }).rename('NDVI');
+
+            var i_ndwi = image.expression(
+                '((NIR - SWIR1) / (NIR + SWIR1))', {
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B3')
+            }).rename('NDWI');
+
+            var i_ndbi = image.expression(
+                '((SWIR1 - NIR) / (SWIR1 + NIR))', {
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B3')
+            }).rename('NDBI');
+
+            var i_gli = image.expression(
+                '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
+                'BLUE': image.select('B1'),
+                'GREEN': image.select('B2'),
+                'RED': image.select('B3')
+            }).rename('GLI');
+
+            var i_nrvi = image.expression(
+                '(RED/NIR - 1) / (RED/NIR + 1)', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3')
+            }).rename('NRVI');
+
+            var i_evi = image.expression(
+                '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'BLUE': image.select('B1')
+            }).rename('EVI');
+
+            var i_savi = image.expression(
+                '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'L': 0.2
+            }).rename('SAVI');
+
+            var i_gosavi = image.expression(
+                '(NIR - GREEN) / (NIR + GREEN + Y)', {
+                'NIR': image.select('B4'),
+                'GREEN': image.select('B2'),
+                'Y': 0.16
+            }).rename('GOSAVI');
+
+            var Brightness = image.expression(
+                '(BLUE * 0.3561) + (GREEN * 0.3972) + (RED * 0.3904) + (NIR * 0.6966) + (SWIR1 * 0.2286) + (SWIR2 * 0.1596)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'GREEN': image.select('B2'),
+                'BLUE': image.select('B1')
+            }).rename('Brightness');
+
+            var Greenness = image.expression(
+                '(BLUE * -0.3344) + (GREEN * -0.3544) + (RED * -0.4556) + (NIR * 0.6966) + (SWIR1 * -0.0242) + (SWIR2 * -0.2630)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'GREEN': image.select('B2'),
+                'BLUE': image.select('B1')
+            }).rename('Greenness');
+
+            var Wetness = image.expression(
+                '(BLUE * 0.2626) + (GREEN * 0.2141) + (RED * 0.0926) + (NIR * 0.0656) + (SWIR1 * -0.7629) + (SWIR2 * -0.5388)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B5'),
+                'NIR': image.select('B4'),
+                'RED': image.select('B3'),
+                'GREEN': image.select('B2'),
+                'BLUE': image.select('B1')
+            }).rename('Wetness');
+
+            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi, Brightness, Greenness, Wetness]);
+            return newImage;
+
         } else if (sensor == 'L8') {
             var i_ndvi = image.expression(
                 '((NIR - RED) / (NIR + RED))', {
                 'NIR': image.select('B5'),
                 'RED': image.select('B4')
             }).rename('NDVI');
+
             var i_ndwi = image.expression(
                 '((NIR - SWIR1) / (NIR + SWIR1))', {
                 'SWIR1': image.select('B6'),
                 'NIR': image.select('B4')
             }).rename('NDWI');
+
             var i_ndbi = image.expression(
                 '((SWIR1 - NIR) / (SWIR1 + NIR))', {
                 'SWIR1': image.select('B6'),
                 'NIR': image.select('B5')
             }).rename('NDBI');
+
             var i_gli = image.expression(
                 '(2 * GREEN - RED - BLUE) / (2 * GREEN + RED + BLUE)', {
                 'BLUE': image.select('B2'),
                 'GREEN': image.select('B3'),
                 'RED': image.select('B4')
             }).rename('GLI');
+
             var i_nrvi = image.expression(
                 '(RED/NIR - 1) / (RED/NIR + 1)', {
                 'NIR': image.select('B5'),
                 'RED': image.select('B4')
             }).rename('NRVI');
+
             var i_evi = image.expression(
                 '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
                 'NIR': image.select('B5'),
                 'RED': image.select('B4'),
                 'BLUE': image.select('B2')
             }).rename('EVI');
+
             var i_savi = image.expression(
                 '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                 'NIR': image.select('B5'),
                 'RED': image.select('B4'),
                 'L': 0.2
             }).rename('SAVI');
+
             var i_gosavi = image.expression(
                 '(NIR - GREEN) / (NIR + GREEN + Y)', {
                 'NIR': image.select('B5'),
                 'GREEN': image.select('B3'),
                 'Y': 0.16
             }).rename('GOSAVI');
-            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi]);
+
+            var Brightness = image.expression(
+                '(BLUE * 0.3029) + (GREEN * 0.2786) + (RED * 0.4733) + (NIR * 0.5599) + (SWIR1 * 0.508) + (SWIR2 * 0.1872)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B6'),
+                'NIR': image.select('B5'),
+                'RED': image.select('B4'),
+                'GREEN': image.select('B3'),
+                'BLUE': image.select('B2')
+            }).rename('Brightness');
+
+            var Greenness = image.expression(
+                '(BLUE * -0.2941) + (GREEN * -0.243) + (RED * -0.5424) + (NIR * 0.7276) + (SWIR1 * 0.0713) + (SWIR2 * -0.1608)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B6'),
+                'NIR': image.select('B5'),
+                'RED': image.select('B4'),
+                'GREEN': image.select('B3'),
+                'BLUE': image.select('B2')
+            }).rename('Greenness');
+
+            var Wetness = image.expression(
+                '(BLUE * 0.1511) + (GREEN * 0.1973) + (RED * 0.3283) + (NIR * 0.3407) + (SWIR1 * -0.7117) + (SWIR2 * -0.4559)', {
+                'SWIR2': image.select('B7'),
+                'SWIR1': image.select('B6'),
+                'NIR': image.select('B5'),
+                'RED': image.select('B4'),
+                'GREEN': image.select('B3'),
+                'BLUE': image.select('B2')
+            }).rename('Wetness');
+
+            var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi, Brightness, Greenness, Wetness]);
             return newImage;
+
         } else {
             print("Error: Wrong sensor input!");
             print("Choose 'L5' to process Landsat 5 images, 'L8' for Landsat 8 and S2 for Sentinel 2");
@@ -1965,14 +2129,14 @@ var build_annual_landsat_timeseries = function (roi) {
 
 
     function rename_bands_tm(image) {
-        var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI'];
-        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
+        var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
+        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
         return image.select(bands).rename(new_bands);
     }
 
     function rename_bands_oli(image) {
-        var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI'];
-        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
+        var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
+        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
         return image.select(bands).rename(new_bands);
     }
 
@@ -2041,6 +2205,12 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
+            var new_brightness = collection.select('Brightness').median();
+            temp_col_list = temp_col_list.add(new_brightness);
+            var new_greenness = collection.select('Greenness').median();
+            temp_col_list = temp_col_list.add(new_greenness);
+            var new_wetness = collection.select('Wetness').median();
+            temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
             var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
@@ -2080,6 +2250,12 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
+            var new_brightness = collection.select('Brightness').median();
+            temp_col_list = temp_col_list.add(new_brightness);
+            var new_greenness = collection.select('Greenness').median();
+            temp_col_list = temp_col_list.add(new_greenness);
+            var new_wetness = collection.select('Wetness').median();
+            temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
             var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
