@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.7.1
+ * Version: 0.7.2
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -1415,32 +1415,20 @@ var load_image = function (collection, year, roi, cloudFree) {
     if (year >= 2013) {
         if (collection === 'RAW') {
             collection = 'LANDSAT/LC08/C01/T1';
-            visParams = {
-                bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
-            };
         } else if (collection === 'TOA') {
             collection = 'LANDSAT/LC08/C01/T1_TOA';
         } else if (collection === 'SR') {
             collection = 'LANDSAT/LC08/C01/T1_SR';
-            visParams = {
-                bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
-            };
         } else {
             print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
         }
     } else if (year < 2013 && year >= 1985) {
         if (collection === 'RAW') {
             collection = 'LANDSAT/LT05/C01/T1';
-            visParams = {
-                bands: ['B4', 'B3', 'B2'], min: 6809, max: 12199
-            };
         } else if (collection === 'TOA') {
             collection = 'LANDSAT/LT05/C01/T1_TOA';
         } else if (collection === 'SR') {
             collection = 'LANDSAT/LT05/C01/T1_SR';
-            visParams = {
-                bands: ['B4', 'B3', 'B2'], min: 104, max: 1632
-            };
         } else {
             print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
         }
@@ -2205,11 +2193,11 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
-            var new_brightness = collection.select('Brightness').median();
+            var new_brightness = collection.select('Brightness').median().float();
             temp_col_list = temp_col_list.add(new_brightness);
-            var new_greenness = collection.select('Greenness').median();
+            var new_greenness = collection.select('Greenness').median().float();
             temp_col_list = temp_col_list.add(new_greenness);
-            var new_wetness = collection.select('Wetness').median();
+            var new_wetness = collection.select('Wetness').median().float();
             temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
@@ -2250,11 +2238,11 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
-            var new_brightness = collection.select('Brightness').median();
+            var new_brightness = collection.select('Brightness').median().float();
             temp_col_list = temp_col_list.add(new_brightness);
-            var new_greenness = collection.select('Greenness').median();
+            var new_greenness = collection.select('Greenness').median().float();
             temp_col_list = temp_col_list.add(new_greenness);
-            var new_wetness = collection.select('Wetness').median();
+            var new_wetness = collection.select('Wetness').median().float();
             temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
