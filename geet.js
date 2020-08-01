@@ -4301,3 +4301,5 @@ exports.tasseledcap_oli = tasseledcap_oli
 exports.tasseledcap_s2 = tasseledcap_s2
 exports.tasseledcap_tm5 = tasseledcap_tm5
 exports.tasseledcap_tm7 = tasseledcap_tm7
+exports.to_double = to_double
+exports.to_float = to_float
