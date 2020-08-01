@@ -126,7 +126,7 @@ Depois de adicionar a biblioteca é possível chamar suas funções utilizando a
 ### References:
 
 #### svm
-(image, trainingData, fieldName, kernelType) 
+(image, trainingData, fieldName, kernelType, resolution) 
 
 _Function to apply SVM classification to a image._  
 
@@ -145,7 +145,7 @@ _Function to apply SVM classification to a image._
 ------------------------------------------------------------------------------
 
 #### cart
-(image, trainingData, fieldName)  
+(image, trainingData, fieldName, resolution)  
 
 _Function to apply CART classification to a image._
 
@@ -163,7 +163,7 @@ _Function to apply CART classification to a image._
 ------------------------------------------------------------------------------
 
 #### rf
-(image, trainingData, fieldName, numOfTrees)  
+(image, trainingData, fieldName, numOfTrees, resolution, cv_split)  
 
 _Function to apply Random Forest classification to an image._ 
 
@@ -188,7 +188,7 @@ or
  ------------------------------------------------------------------------------
 
  #### naive_bayes
-(image, trainingData, fieldName, scale)  
+(image, trainingData, fieldName, resolution)  
 
 _Function to apply the Fast Naive Bayes classification to a image._ 
 
@@ -212,7 +212,7 @@ _Function to apply the Fast Naive Bayes classification to a image._
  ------------------------------------------------------------------------------
 
  #### gmo_max_ent
-(image, trainingData, fieldName, scale) 
+(image, trainingData, fieldName, resolution) 
 
 _Function to apply the GMO Maximum Entropy classification to a image._ 
 
@@ -236,7 +236,7 @@ _Function to apply the GMO Maximum Entropy classification to a image._
  ------------------------------------------------------------------------------
  
 #### kmeans 
-(image, roi, numClusters, scale, numPixels)  
+(image, roi, numClusters, resolution, numPixels)  
 
 _Function to apply RandomForest classification to an image._  
 
