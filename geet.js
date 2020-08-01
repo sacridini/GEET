@@ -3930,6 +3930,51 @@ var tasseledcap_s2 = function (image) {
     return image_idx;
 }
 
+
+/*
+  to_double:
+  Function cast the type of an image to double.
+
+  Params:
+  (ee.Image) image - the input image.
+
+  Usage:
+  var geet = require('users/elacerda/geet:geet'); 
+  var image_double = geet.to_double(image);
+  
+  or 
+
+  var geet = require('users/elacerda/geet:geet'); 
+  var collection_double = collection.map(geet.to_double);
+*/
+var to_double = function(image) {
+  return image.double();
+};
+
+
+/*
+  to_float:
+  Function cast the type of an image to float.
+
+  Params:
+  (ee.Image) image - the input image.
+
+  Usage:
+  var geet = require('users/elacerda/geet:geet'); 
+  var image_double = geet.to_float(image);
+  
+  or 
+
+  var geet = require('users/elacerda/geet:geet'); 
+  var collection_double = collection.map(geet.to_float);
+*/
+var to_float = function(image) {
+  return image.float();
+};
+
+
+
+
 // var sensor_info = ee.String(image.get('SATELLITE'));
 // if (sensor_info.getInfo() === 'LANDSAT_8') {
 
