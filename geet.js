@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.6.9
+ * Version: 0.7.0
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -668,15 +668,19 @@ var landsat_indices = function (image, sensor, index) {
         switch (index.toLowerCase()) {
             case 'ndvi':
                 if (sensor == 'L5' || sensor == 'L7') {
-                    var i_ndvi = image.normalizedDifference(['B4', 'B3']).rename('NDVI');
+                    var i_ndvi = image.expression(
+                        '((NIR - RED) / (NIR + RED))', {
+                        'NIR': image.select('B4'),
+                        'RED': image.select('B3')
+                    }).rename('NDVI');
                     var newImage = image.addBands(i_ndvi);
                     return newImage;
                 } else if (sensor == 'L8') {
-                    var i_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
-                    var newImage = image.addBands(i_ndvi);
-                    return newImage;
-                } else if (sensor == 'S2') {
-                    var i_ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
+                    var i_ndvi = image.expression(
+                        '((NIR - RED) / (NIR + RED))', {
+                        'NIR': image.select('B5'),
+                        'RED': image.select('B4')
+                    }).rename('NDVI');
                     var newImage = image.addBands(i_ndvi);
                     return newImage;
                 } else {
@@ -685,15 +689,19 @@ var landsat_indices = function (image, sensor, index) {
                 break;
             case 'ndwi':
                 if (sensor == 'L5' || sensor == 'L7') {
-                    var i_ndwi = image.normalizedDifference(['B3', 'B5']).rename('NDWI');
+                    var i_ndwi = image.expression(
+                        '((NIR - SWIR1) / (NIR + SWIR1))', {
+                        'SWIR1': image.select('B5'),
+                        'RED': image.select('B3')
+                    }).rename('NDWI');
                     var newImage = image.addBands(i_ndwi);
                     return newImage;
                 } else if (sensor == 'L8') {
-                    var i_ndwi = image.normalizedDifference(['B4', 'B6']).rename('NDWI');
-                    var newImage = image.addBands(i_ndwi);
-                    return newImage;
-                } else if (sensor == 'S2') {
-                    var i_ndwi = image.normalizedDifference(['B4', 'B11']).rename('NDWI');
+                    var i_ndwi = image.expression(
+                        '((NIR - SWIR1) / (NIR + SWIR1))', {
+                        'SWIR1': image.select('B6'),
+                        'RED': image.select('B4')
+                    }).rename('NDWI');
                     var newImage = image.addBands(i_ndwi);
                     return newImage;
                 } else {
@@ -702,15 +710,19 @@ var landsat_indices = function (image, sensor, index) {
                 break;
             case 'ndbi':
                 if (sensor == 'L5' || sensor == 'L7') {
-                    var i_ndbi = image.normalizedDifference(['B5', 'B4']).rename('NDBI');
+                    var i_ndbi = image.expression(
+                        '((SWIR1 - NIR) / (SWIR1 + NIR))', {
+                        'SWIR1': image.select('B5'),
+                        'NIR': image.select('B3')
+                    }).rename('NDVI');
                     var newImage = image.addBands(i_ndbi);
                     return newImage;
                 } else if (sensor == 'L8') {
-                    var i_ndbi = image.normalizedDifference(['B6', 'B5']).rename('NDBI');
-                    var newImage = image.addBands(i_ndbi);
-                    return newImage;
-                } else if (sensor == 'S2') {
-                    var i_ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
+                    var i_ndbi = image.expression(
+                        '((SWIR1 - NIR) / (SWIR1 + NIR))', {
+                        'SWIR1': image.select('B6'),
+                        'NIR': image.select('B5')
+                    }).rename('NDVI');
                     var newImage = image.addBands(i_ndbi);
                     return newImage;
                 } else {
