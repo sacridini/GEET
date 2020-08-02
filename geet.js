@@ -953,7 +953,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B3'),
                 'GREEN': image.select('B2'),
                 'BLUE': image.select('B1')
-            }).rename('Wetness')
+            }).rename('Wetness');
 
             var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi, Brightness, Greenness, Wetness]);
             return newImage;
@@ -2117,14 +2117,14 @@ var build_annual_landsat_timeseries = function (roi) {
 
 
     function rename_bands_tm(image) {
-        var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
-        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
+        var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI'];
+        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
         return image.select(bands).rename(new_bands);
     }
 
     function rename_bands_oli(image) {
-        var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
-        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
+        var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI'];
+        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
         return image.select(bands).rename(new_bands);
     }
 
@@ -2193,12 +2193,6 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
-            var new_brightness = collection.select('Brightness').median().toFloat();
-            temp_col_list = temp_col_list.add(new_brightness);
-            var new_greenness = collection.select('Greenness').median().toFloat();
-            temp_col_list = temp_col_list.add(new_greenness);
-            var new_wetness = collection.select('Wetness').median().toFloat();
-            temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
             var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
@@ -2238,12 +2232,6 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
-            var new_brightness = collection.select('Brightness').median().toFloat();;
-            temp_col_list = temp_col_list.add(new_brightness);
-            var new_greenness = collection.select('Greenness').median().toFloat();
-            temp_col_list = temp_col_list.add(new_greenness);
-            var new_wetness = collection.select('Wetness').median().toFloat();
-            temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
             var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
