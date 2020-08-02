@@ -933,7 +933,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B3'),
                 'GREEN': image.select('B2'),
                 'BLUE': image.select('B1')
-            }).rename('Brightness');
+            }).rename('Brightness').toFloat();
 
             var Greenness = image.expression(
                 '(BLUE * -0.1603) + (GREEN * -0.2819) + (RED * -0.4934) + (NIR * 0.7940) + (SWIR1 * -0.0002) + (SWIR2 * -0.1446)', {
@@ -943,7 +943,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B3'),
                 'GREEN': image.select('B2'),
                 'BLUE': image.select('B1')
-            }).rename('Greenness');
+            }).rename('Greenness').toFloat();
 
             var Wetness = image.expression(
                 '(BLUE * 0.0315) + (GREEN * 0.2021) + (RED * 0.3102) + (NIR * 0.1594) + (SWIR1 * -0.6806) + (SWIR2 * -0.6109)', {
@@ -953,7 +953,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B3'),
                 'GREEN': image.select('B2'),
                 'BLUE': image.select('B1')
-            }).rename('Wetness');
+            }).rename('Wetness').toFloat();
 
             var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi, Brightness, Greenness, Wetness]);
             return newImage;
@@ -1019,7 +1019,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B3'),
                 'GREEN': image.select('B2'),
                 'BLUE': image.select('B1')
-            }).rename('Brightness');
+            }).rename('Brightness').toFloat();
 
             var Greenness = image.expression(
                 '(BLUE * -0.3344) + (GREEN * -0.3544) + (RED * -0.4556) + (NIR * 0.6966) + (SWIR1 * -0.0242) + (SWIR2 * -0.2630)', {
@@ -1029,7 +1029,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B3'),
                 'GREEN': image.select('B2'),
                 'BLUE': image.select('B1')
-            }).rename('Greenness');
+            }).rename('Greenness').toFloat();
 
             var Wetness = image.expression(
                 '(BLUE * 0.2626) + (GREEN * 0.2141) + (RED * 0.0926) + (NIR * 0.0656) + (SWIR1 * -0.7629) + (SWIR2 * -0.5388)', {
@@ -1039,7 +1039,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B3'),
                 'GREEN': image.select('B2'),
                 'BLUE': image.select('B1')
-            }).rename('Wetness');
+            }).rename('Wetness').toFloat();
 
             var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi, Brightness, Greenness, Wetness]);
             return newImage;
@@ -1105,7 +1105,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B4'),
                 'GREEN': image.select('B3'),
                 'BLUE': image.select('B2')
-            }).rename('Brightness');
+            }).rename('Brightness').toFloat();
 
             var Greenness = image.expression(
                 '(BLUE * -0.2941) + (GREEN * -0.243) + (RED * -0.5424) + (NIR * 0.7276) + (SWIR1 * 0.0713) + (SWIR2 * -0.1608)', {
@@ -1115,7 +1115,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B4'),
                 'GREEN': image.select('B3'),
                 'BLUE': image.select('B2')
-            }).rename('Greenness');
+            }).rename('Greenness').toFloat();
 
             var Wetness = image.expression(
                 '(BLUE * 0.1511) + (GREEN * 0.1973) + (RED * 0.3283) + (NIR * 0.3407) + (SWIR1 * -0.7117) + (SWIR2 * -0.4559)', {
@@ -1125,7 +1125,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B4'),
                 'GREEN': image.select('B3'),
                 'BLUE': image.select('B2')
-            }).rename('Wetness');
+            }).rename('Wetness').toFloat();
 
             var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi, Brightness, Greenness, Wetness]);
             return newImage;
@@ -2123,8 +2123,8 @@ var build_annual_landsat_timeseries = function (roi) {
     }
 
     function rename_bands_oli(image) {
-        var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI'];
-        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
+        var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
+        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
         return image.select(bands).rename(new_bands);
     }
 
@@ -2193,6 +2193,12 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
+            var new_brightness = collection.select('Brightness').median();
+            temp_col_list = temp_col_list.add(new_brightness);
+            var new_greenness = collection.select('Greenness').median();
+            temp_col_list = temp_col_list.add(new_greenness);
+            var new_wetness = collection.select('Wetness').median();
+            temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
             var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
@@ -2232,6 +2238,12 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_ndwi);
             var new_savi = collection.select('SAVI').max();
             temp_col_list = temp_col_list.add(new_savi);
+            var new_brightness = collection.select('Brightness').median();
+            temp_col_list = temp_col_list.add(new_brightness);
+            var new_greenness = collection.select('Greenness').median();
+            temp_col_list = temp_col_list.add(new_greenness);
+            var new_wetness = collection.select('Wetness').median();
+            temp_col_list = temp_col_list.add(new_wetness);
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
             var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
