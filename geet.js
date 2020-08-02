@@ -1125,7 +1125,7 @@ var landsat_indices = function (image, sensor, index) {
                 'RED': image.select('B4'),
                 'GREEN': image.select('B3'),
                 'BLUE': image.select('B2')
-            }).rename('Wetness').toFloat();
+            }).rename('Wetness');
 
             var newImage = image.addBands([i_ndvi, i_ndwi, i_ndbi, i_nrvi, i_evi, i_savi, i_gosavi, Brightness, Greenness, Wetness]);
             return newImage;
@@ -2117,8 +2117,8 @@ var build_annual_landsat_timeseries = function (roi) {
 
 
     function rename_bands_tm(image) {
-        var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI'];
-        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI'];
+        var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
+        var new_bands = ['BLUE', 'GREEN', 'RED', 'NIR', 'SWIR1', 'SWIR2', 'NDVI', 'NDWI', 'SAVI', 'Brightness', 'Greenness', 'Wetness'];
         return image.select(bands).rename(new_bands);
     }
 
@@ -2271,7 +2271,6 @@ var build_annual_landsat_timeseries = function (roi) {
         temp_merged_list = temp_merged_list.add(img);
     }
     merged_collections_by_year = ee.ImageCollection(temp_merged_list);
-
     return (merged_collections_by_year);
 }
 
