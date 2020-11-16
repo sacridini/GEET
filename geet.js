@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.7.3
+ * Version: 0.7.4
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -2149,11 +2149,11 @@ var build_annual_landsat_timeseries = function (roi) {
 
     var ls7_ic = ee.ImageCollection(ls7_sr)
         .filterBounds(roi)
-        .filterDate('1999-01-01', '2017-12-31')
+        .filterDate('1999-01-01', '2018-12-31')
 
     var ls8_ic = ee.ImageCollection(ls8_sr)
         .filterBounds(roi)
-        .filterDate('2013-05-01', '2017-12-31')
+        .filterDate('2013-05-01', '2018-12-31')
 
 
     function rename_bands_tm(image) {
