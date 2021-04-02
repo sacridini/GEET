@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.7.4
+ * Version: 0.7.5
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -2227,13 +2227,13 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_swir1);
             var new_swir2 = collection.select('SWIR2').median();
             temp_col_list = temp_col_list.add(new_swir2);
-            var new_ndvi = collection.select('NDVI').max();
+            var new_ndvi = collection.select('NDVI').median();
             temp_col_list = temp_col_list.add(new_ndvi);
-            var new_ndwi = collection.select('NDWI').max();
+            var new_ndwi = collection.select('NDWI').median();
             temp_col_list = temp_col_list.add(new_ndwi);
-            var new_savi = collection.select('SAVI').max();
+            var new_savi = collection.select('SAVI').median();
             temp_col_list = temp_col_list.add(new_savi);
-            var new_ndmi = collection.select('NDMI').max();
+            var new_ndmi = collection.select('NDMI').median();
             temp_col_list = temp_col_list.add(new_ndmi);
             var new_brightness = collection.select('Brightness').median();
             temp_col_list = temp_col_list.add(new_brightness);
@@ -2274,13 +2274,13 @@ var build_annual_landsat_timeseries = function (roi) {
             temp_col_list = temp_col_list.add(new_swir1);
             var new_swir2 = collection.select('SWIR2').median();
             temp_col_list = temp_col_list.add(new_swir2);
-            var new_ndvi = collection.select('NDVI').max();
+            var new_ndvi = collection.select('NDVI').median();
             temp_col_list = temp_col_list.add(new_ndvi);
-            var new_ndwi = collection.select('NDWI').max();
+            var new_ndwi = collection.select('NDWI').median();
             temp_col_list = temp_col_list.add(new_ndwi);
-            var new_savi = collection.select('SAVI').max();
+            var new_savi = collection.select('SAVI').median();
             temp_col_list = temp_col_list.add(new_savi);
-            var new_ndmi = collection.select('NDMI').max();
+            var new_ndmi = collection.select('NDMI').median();
             temp_col_list = temp_col_list.add(new_ndmi);
             var new_brightness = collection.select('Brightness').median();
             temp_col_list = temp_col_list.add(new_brightness);
@@ -3579,18 +3579,18 @@ var cloudmask_sr = function (original_image, qa_band) {
 
 
 /*
-  cloudmask_ls8:
+  fmask:
   Function to cloud mask an Surface Reflectance Landsat input image.
 
   Params:
   (ee.Image) original_image - the original input image with all the bands.
 
   Usage:
-  var masked_img = geet.cloudmask_ls8(img);
+  var masked_img = geet.fmask(img);
 
   PS: Special thanks to "HMSP": https://gis.stackexchange.com/users/93552/hmsp
 */
-var cloudmask_ls8 = function(image) {
+var fmask = function(image) {
     // Bits 3 and 5 are cloud shadow and cloud, respectively.
   var cloudShadowBitMask = (1 << 3);
   var cloudsBitMask = (1 << 5);
@@ -3599,7 +3599,6 @@ var cloudmask_ls8 = function(image) {
   // Both flags should be set to zero, indicating clear conditions.
   var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
                  .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
-  return image.updateMask(mask);
 }
 
 
@@ -4294,7 +4293,7 @@ exports.lst_calc_ls8 = lst_calc_ls8
 exports.export_image = export_image
 exports.cloudmask = cloudmask
 exports.cloudmask_sr = cloudmask_sr
-exports.cloudmask_ls8 = cloudmask_ls8
+exports.fmask = fmask
 exports.pca = pca
 exports.geom_filter = geom_filter
 exports.tasseledcap_oli = tasseledcap_oli
