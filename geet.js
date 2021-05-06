@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.7.5
+ * Version: 0.7.6
  * Eduardo Ribeiro Lacerda <elacerda@id.uff.br>
  */
 
@@ -45,7 +45,7 @@ var svm = function (image, trainingData, fieldName, kernelType, resolution) {
         scale: resolution
     });
 
-    var classifier = ee.Classifier.svm({
+    var classifier = ee.Classifier.libsvm({
         kernelType: kernelType,
         cost: 10
     });
@@ -85,7 +85,7 @@ var cart = function (image, trainingData, fieldName, resolution) {
         scale: resolution
     });
 
-    var classifier = ee.Classifier.cart().train({
+    var classifier = ee.Classifier.smileCart().train({
         features: training,
         classProperty: fieldName
     });
@@ -194,7 +194,7 @@ var naive_bayes = function (image, trainingData, fieldName, resolution) {
         scale: resolution
     });
 
-    var classifier = ee.Classifier.naive_bayes().train({
+    var classifier = ee.Classifier.smileNaiveBayes().train({
         features: training,
         classProperty: fieldName
     });
