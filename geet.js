@@ -205,8 +205,8 @@ var naive_bayes = function (image, trainingData, fieldName, resolution) {
 
 
 /*
-  gmo_max_ent:
-  Function to apply the GMO Maximum Entropy classification to a image.
+  max_ent:
+  Function to apply the Maximum Entropy classification to a image.
 
   Params:
   (ee.Image) image - The input image to classify.
@@ -216,9 +216,9 @@ var naive_bayes = function (image, trainingData, fieldName, resolution) {
 
   Usage:
   var geet = require('users/elacerda/geet:geet'); 
-  var imgClass = geet.gmo_max_ent(image, samplesfc, landcover);
+  var imgClass = geet.max_ent(image, samplesfc, landcover);
 */
-var gmo_max_ent = function (image, trainingData, fieldName, resolution) {
+var max_ent = function (image, trainingData, fieldName, resolution) {
     // Error Handling
     if (image === undefined) error('gmo_max_ent', 'You need to specify an input image.');
     if (trainingData === undefined) error('gmo_max_ent', 'You need to specify the training data.');
@@ -233,7 +233,7 @@ var gmo_max_ent = function (image, trainingData, fieldName, resolution) {
         scale: resolution
     });
 
-    var classifier = ee.Classifier.gmo_max_ent().train({
+    var classifier = ee.Classifier.amnhMaxent().train({
         features: training,
         classProperty: fieldName
     });

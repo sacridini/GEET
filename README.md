@@ -24,7 +24,7 @@ All functions implemented (Version 0.7.6 - Beta):
 [cart](#cart)   
 [rf](#rf)  
 [naive_bayes](#naive_bayes)  
-[gmo_max_ent](#gmo_max_ent)    
+[max_ent](#gmo_max_ent)    
 [kmeans](#kmeans)   
 [ndvi_change_detection](#ndvi_change_detection)  
 [ndwi_change_detection](#ndwi_change_detection)  
