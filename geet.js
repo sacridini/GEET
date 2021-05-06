@@ -220,9 +220,9 @@ var naive_bayes = function (image, trainingData, fieldName, resolution) {
 */
 var max_ent = function (image, trainingData, fieldName, resolution) {
     // Error Handling
-    if (image === undefined) error('gmo_max_ent', 'You need to specify an input image.');
-    if (trainingData === undefined) error('gmo_max_ent', 'You need to specify the training data.');
-    if (fieldName === undefined) error('gmo_max_ent', 'You need to specify the field name.');
+    if (image === undefined) error('max_ent', 'You need to specify an input image.');
+    if (trainingData === undefined) error('max_ent', 'You need to specify the training data.');
+    if (fieldName === undefined) error('max_ent', 'You need to specify the field name.');
 
     // Default params
     resolution = typeof resolution !== 'undefined' ? resolution : 30;
@@ -4230,7 +4230,7 @@ exports.svm = svm
 exports.cart = cart
 exports.rf = rf
 exports.naive_bayes = naive_bayes
-exports.gmo_max_ent = gmo_max_ent
+exports.max_ent = max_ent
 exports.kmeans = kmeans
 exports.ndvi_change_detection = ndvi_change_detection
 exports.ndwi_change_detection = ndwi_change_detection
