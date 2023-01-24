@@ -102,22 +102,22 @@ All functions implemented (Version 0.7.6 - Beta):
 
 ### Quickstart Guide:
 ### (English)
-To use the library you need to click on this [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
+To use the library you need to click on this [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
 
 After adding the library you can call its functions using the function **_require_** and storing the content in a variable. In this case, we will create a variable called **_geet_** which contains all the contents of the library. Then we can use it to call library functions: 
 
 ```js 
-    var geet = require('users/elacerda/geet:geet'); 
+    var geet = require('users/eduardolacerdageo/geet:geet'); 
     var image = geet.load_image('TOA', 2015); // Returns and loads an image on the map.
 ```
 
 ### (Português)
-Para utilizar a biblioteca é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/elacerda/geet). Ele adicionará automaticamente todo o código da biblioteca na sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
+Para utilizar a biblioteca é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionará automaticamente todo o código da biblioteca na sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
 Depois de adicionar a biblioteca é possível chamar suas funções utilizando a função **_require_** e armazenando o conteúdo em uma variável. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizar ela para chamar as funções da biblioteca:
 
 ```js 
-    var geet = require('users/elacerda/geet:geet'); 
+    var geet = require('users/eduardolacerdageo/geet:geet'); 
     var image = geet.load_image('TOA', 2015); // Retorna e carrega no mapa uma imagem.
 ```
 
@@ -548,7 +548,7 @@ _Function to merge all imagens of one image collection into a single band._
   
 ##### Usage:
 ```js 
-    var geet = require('users/elacerda/geet:geet'); 
+    var geet = require('users/eduardolacerdageo/geet:geet'); 
     var merged_image = image_collection.iterate(geet.collection2image, ee.Image([]));   
 ```
 
@@ -1458,7 +1458,7 @@ _Function calculate the land surface temperature from a Landsat 5 image doing al
   
 ##### Usage:
 ```js
-      var geet = require('users/elacerda/geet:geet');
+      var geet = require('users/eduardolacerdageo/geet:geet');
       var lst = geet.lst_calc_ls5(img);
 ```
 
@@ -1474,7 +1474,7 @@ _Function calculate the land surface temperature from a Landsat 7 image doing al
   
 ##### Usage:
 ```js
-      var geet = require('users/elacerda/geet:geet');
+      var geet = require('users/eduardolacerdageo/geet:geet');
       var lst = geet.lst_calc_ls7(img);
 ```
 ------------------------------------------------------------------------------
@@ -1489,7 +1489,7 @@ _Function calculate the land surface temperature from a Landsat 8 image doing al
   
 ##### Usage:
 ```js
-      var geet = require('users/elacerda/geet:geet');
+      var geet = require('users/eduardolacerdageo/geet:geet');
       var lst = geet.lst_calc_ls8(img);
 ```
 ------------------------------------------------------------------------------
