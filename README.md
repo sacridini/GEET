@@ -8,8 +8,9 @@ Documentation: https://developers.google.com/earth-engine/
 Python API: https://developers.google.com/earth-engine/python_install  
 
 #### Development Info
-**Author**: Eduardo Ribeiro Lacerda - Associate Researcher @ IIS - International Institute for Sustainability / PhD Candidate @ UFF - Universidade Federal Fluminense (Brazil - Rio de Janeiro)  
-**Contact**: eduardolacerdageo@gmail.com
+**Author**: Eduardo Ribeiro Lacerda - eduardolacerdageo@gmail.com
+* Coordinator of Spatial Modeling Team @ IIS - International Institute for Sustainability  
+* Associate Researcher @ Embrapa Solos  
 
 ## Introduction:
 The Google Earth Engine Toolbox (GEET) is a JavaScript single-file library for help developers to write small code base application with the Google Earth Engine (GEE) plataform.
