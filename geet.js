@@ -833,7 +833,7 @@ var landsat_indices = function (image, sensor, index) {
                         '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                         'NIR': image.select('B4'),
                         'RED': image.select('B3'),
-                        'L': 0.2
+                        'L': 0.5
                     }).rename('SAVI');
                     var newImage = image.addBands(i_savi);
                     return newImage;
@@ -842,7 +842,7 @@ var landsat_indices = function (image, sensor, index) {
                         '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                         'NIR': image.select('B5'),
                         'RED': image.select('B4'),
-                        'L': 0.2
+                        'L': 0.5
                     }).rename('SAVI');
                     var newImage = image.addBands(i_savi);
                     return newImage;
@@ -851,7 +851,7 @@ var landsat_indices = function (image, sensor, index) {
                         '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                         'NIR': image.select('B8'),
                         'RED': image.select('B4'),
-                        'L': 0.2
+                        'L': 0.5
                     }).rename('SAVI');
                     var newImage = image.addBands(i_savi);
                     return newImage;
@@ -943,7 +943,7 @@ var landsat_indices = function (image, sensor, index) {
                 '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                 'NIR': image.select('B4'),
                 'RED': image.select('B3'),
-                'L': 0.2
+                'L': 0.5
             }).rename('SAVI');
 
             var i_gosavi = image.expression(
@@ -1035,7 +1035,7 @@ var landsat_indices = function (image, sensor, index) {
                 '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                 'NIR': image.select('B4'),
                 'RED': image.select('B3'),
-                'L': 0.2
+                'L': 0.5
             }).rename('SAVI');
 
             var i_gosavi = image.expression(
@@ -1127,7 +1127,7 @@ var landsat_indices = function (image, sensor, index) {
                 '(1 + L) * ((NIR - RED) / (NIR + RED + L))', {
                 'NIR': image.select('B5'),
                 'RED': image.select('B4'),
-                'L': 0.2
+                'L': 0.5
             }).rename('SAVI');
 
             var i_gosavi = image.expression(
