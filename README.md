@@ -21,7 +21,7 @@ GEET using Landsat collection 2 will be available soon!
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 0.7.7 - Beta):  
+All functions implemented (Version 0.8.2 - Beta):  
 [svm](#svm)  
 [cart](#cart)   
 [rf](#rf)  
@@ -45,12 +45,15 @@ All functions implemented (Version 0.7.7 - Beta):
 [toa_radiance](#toa_radiance)  
 [toa_reflectance](#toa_reflectance)  
 [toa_reflectance_l8](#toa_reflectance_l8)  
+[toa_reflectance_l9](#toa_reflectance_l9)  
 [brightness_temp_l5k](#brightness_temp_l5k)  
 [brightness_temp_l5c](#brightness_temp_l5c)  
 [brightness_temp_l7k](#brightness_temp_l7k)  
 [brightness_temp_l7c](#brightness_temp_l7c)  
 [brightness_temp_l8k](#brightness_temp_l8k)  
 [brightness_temp_l8c](#brightness_temp_l8c)  
+[brightness_temp_l9k](#brightness_temp_l9k)  
+[brightness_temp_l9c](#brightness_temp_l9c)  
 [resample](#resample)  
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
@@ -60,10 +63,12 @@ All functions implemented (Version 0.7.7 - Beta):
 [ls5_timeseries_by_pathrow](#ls5_timeseries_by_pathrow)    
 [ls7_timeseries_by_pathrow](#ls7_timeseries_by_pathrow)    
 [ls8_timeseries_by_pathrow](#ls8_timeseries_by_pathrow)    
+[ls9_timeseries_by_pathrow](#ls9_timeseries_by_pathrow)    
 [mosaic_s2](#mosaic_s2)  
 [mosaic_l5](#mosaic_l5)  
 [mosaic_l7](#mosaic_l7)  
 [mosaic_l8](#mosaic_l8)  
+[mosaic_l9](#mosaic_l9)  
 [modis_ndvi_mosaic](#modis_ndvi_mosaic)  
 [max](#max)  
 [min](#min)  
@@ -78,6 +83,7 @@ All functions implemented (Version 0.7.7 - Beta):
 [ndvi_l5](#ndvi_l5)  
 [ndvi_l7](#ndvi_l7)  
 [ndvi_l8](#ndvi_l8)  
+[ndvi_l9](#ndvi_l9)  
 [ndviS2](#ndvis2)  
 [prop_veg](#prop_veg)  
 [surface_emissivity](#surface_emissivity)     
@@ -635,6 +641,40 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
+#### toa_reflectance_l9
+(image, band, _solarAngle_)
+
+_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance Landsat 9 version with Solar Angle correction._       
+
+##### Params:
+  (ee.Image) image - The image to process.  
+  (number) band - The number of the band that you want to process.  
+  (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.                       
+  
+##### Usage:
+```js
+    var new_toa_reflectance_sz = geet.toa_reflectance_l9(img, 10, 'SZ'); // ee.Image   
+```
+
+
+  or
+
+```js
+    var new_toa_reflectance_se = geet.toa_reflectance_l9(img, 10, 'SE'); // ee.Image    
+``` 
+
+#### Information:
+  Formula:      **_ρλ' = MρQcal + Aρ_**  
+  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.  
+  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)  
+  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)  
+  Qcal          = Quantized and calibrated standard product pixel values (DN)  
+
+  SE = Local sun elevation angle. The scene center sun elevation angle in degrees is provided in the metadata (SUN_ELEVATION).  
+  SZ = Local solar zenith angle: SZ = 90° - SE  
+
+------------------------------------------------------------------------------
+
 #### brightness_temp_l5k
 (image)  
 
@@ -768,6 +808,62 @@ or
 
  ```js
     var brightness_temp_img = geet.brightness_temp_l8c(toa_image, false); // ee.Image   
+``` 
+
+#### Information:
+  T           = Top of atmosphere brightness temperature (K)    
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))    
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)    
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)  
+
+------------------------------------------------------------------------------
+
+#### brightness_temp_l9k
+(image, single)  
+
+_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 9 data._     
+
+##### Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.   
+  (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
+  
+##### Usage:
+```js 
+    var brightness_temp_img = geet.brightness_temp_l9k(toa_image); // ee.Image      
+``` 
+
+or
+
+ ```js
+    var brightness_temp_img = geet.brightness_temp_l9k(toa_image, false); // ee.Image    
+``` 
+
+#### Information:
+  T           = Top of atmosphere brightness temperature (K)  
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
+
+------------------------------------------------------------------------------
+
+#### brightness_temp_l9c
+(image, single)  
+
+_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 9 data._     
+
+##### Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.   
+  (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
+  
+##### Usage:
+```js  
+    var brightness_temp_img = geet.brightness_temp_l9c(toa_image); // ee.Image  
+``` 
+
+or
+
+ ```js
+    var brightness_temp_img = geet.brightness_temp_l9c(toa_image, false); // ee.Image   
 ``` 
 
 #### Information:
@@ -933,6 +1029,24 @@ _Function that return a image collection with all landsat 8 images from a define
 
 ------------------------------------------------------------------------------
 
+#### ls9_timeseries_by_pathrow  
+(type, path, row)   
+
+_Function that return a image collection with all landsat 9 images from a defined path row._     
+
+##### Params:
+  (string) type - the type of the collection (RAW, TOA or SR)
+  (number) path - the path number of the image
+  (number) row - the row number of the image
+                            
+  
+##### Usage:
+```js
+	var ls_collection = geet.ls9_timeseries_by_pathrow('SR', 220, 77); 
+```
+
+------------------------------------------------------------------------------
+
 #### mosaic_s2
 (startDate, endDate, roi, showMosaic)  
 
@@ -1049,6 +1163,36 @@ or
 
 ```js
     var l8_mosaic = geet.mosaic_l8('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+```
+
+------------------------------------------------------------------------------
+
+#### mosaic_l9
+(startDate, endDate, roi, showMosaic)  
+
+_Function to build a cloud free mosaic using the Landsat 9 dataset._     
+
+##### Params:
+  (ee.Date) startDate - the start date of the dataset.  
+  (ee.Date) endDate - the end date of the dataset.  
+  **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
+  **optional** (bool) _showMosaic - set to false if you dont want to display the mosaic. Default is true.                               
+    
+##### Usage:
+```js
+    var l9_mosaic = geet.mosaic_l9('2015-01-01', '2015-12-31'); // Display the final world mosaic. 
+```
+
+or
+
+```js
+    var l9_mosaic = geet.mosaic_l9(start, finish, roi); // Display the final mosaic of the roi
+```
+
+or 
+
+```js
+    var l9_mosaic = geet.mosaic_l9('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 ```
 
 ------------------------------------------------------------------------------
@@ -1367,6 +1511,21 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 ##### Usage:
 ```js
     var l8_ndvi = geet.ndvi_l8(img);  
+```
+
+------------------------------------------------------------------------------
+
+#### ndvi_l9
+(image)  
+
+_Function calculate the normalized difference vegetation index (NDVI) from Landsat 9 data._     
+
+##### Params:
+  (ee.Image) image - the input image.                             
+  
+##### Usage:
+```js
+    var l9_ndvi = geet.ndvi_l9(img);  
 ```
 
 ------------------------------------------------------------------------------
