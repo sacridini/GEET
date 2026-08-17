@@ -4325,14 +4325,6 @@ function radcalbatch(current, prev) {
     return ee.Dictionary({ 'reference': reference, 'rect': rect, 'niter': niter, 'log': log, 'normalizedimages': normalizedimages });
 }
 
-
-
-
-// ---------------------------------------------------------------------------
-// DEPRECATED FUNCTIONS (Kept to warn legacy users)
-// ---------------------------------------------------------------------------
-
-
 /* ------------------------  EXPORTS  ------------------------ */
 
 // Machine Learning & Classification
