@@ -40,6 +40,8 @@ All functions implemented (Version 0.8.2 - Beta):
 [plot_class](#plot_class)  
 [landsat_indices](#landsat_indices)  
 [sentinel2_indices](#sentinel2_indices)  
+[create_mosaic](#create_mosaic)  
+[brightness_temp](#brightness_temp)  
 [load_image](#load_image)      
 [collection2image](#collection2image)  
 [toa_radiance](#toa_radiance)  
@@ -467,6 +469,12 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
     var result = geet.landsat_indices(image, 'L5', 'savi'); // This will create only SAVI.    
 ```
 
+  or specifying an array of indices to generate:
+
+```js 
+    var result = geet.landsat_indices(image, 'L5', ['ndvi', 'evi', 'ndwi']); // Creates only NDVI, EVI, and NDWI.    
+```
+
 ------------------------------------------------------------------------------
 
 #### sentinel2_indices
@@ -514,6 +522,12 @@ _Function to take an input image and generate indexes using the Sentinel 2 datas
 
 ```js 
     var result = geet.sentinel2_indices(image, 'savi'); // This will create only SAVI.    
+```
+
+  or specifying an array of indices to generate:
+
+```js 
+    var result = geet.sentinel2_indices(image, ['ndvi', 'savi', 'ndbi']); // Creates only NDVI, SAVI, and NDBI.    
 ```
 
 ------------------------------------------------------------------------------
@@ -1829,3 +1843,40 @@ _Function to create a Tasselled Cap on a Sentinel 2 image._
 ```
 
 ------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+
+#### create_mosaic
+(startDate, endDate, roi, showMosaic, sensor)
+
+_Generic function to build a cloud free mosaic for Landsat 5, 7, 8, 9 or Sentinel 2._
+
+##### Params:
+  (ee.Date) startDate - the start date of the dataset.
+  (ee.Date) endDate - the end date of the dataset.
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
+  optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  (string) sensor - 'L5', 'L7', 'L8', 'L9' or 'S2'.
+
+##### Usage:
+```js  
+    var mosaic = geet.create_mosaic('2023-01-01', '2023-12-31', roi, true, 'L8'); 
+```
+
+------------------------------------------------------------------------------
+
+#### brightness_temp
+(image, sensor, unit, two_channel)
+
+_Generic function to convert the Top of Atmosphere (TOA Radiance) image to Brightness Temperature._
+
+##### Params:
+  (ee.Image) image - the TOA Radiance image to convert.
+  (string) sensor - 'L5', 'L7', 'L8' or 'L9'
+  (string) unit - 'K' (Kelvin) or 'C' (Celsius)
+  optional (bool) two_channel - for L8/L9 only, if true, processes both B10 and B11. Default is true.
+
+##### Usage:
+```js  
+    var bt_img = geet.brightness_temp(toa_rad_image, 'L8', 'C'); 
+```
