@@ -21,7 +21,7 @@ GEET using Landsat Collection 2 will be available soon!
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.5.0 - Beta):
+All functions implemented (Version 1.7.1):
 
 ### Machine Learning & Classification
 - [svm](#svm)
