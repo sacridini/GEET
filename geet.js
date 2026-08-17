@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.1.1
+ * Version: 1.3.0
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -27,7 +27,7 @@ function error(funcName, msg) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var imgClass = geet.svm(image, samplesfc, landcover);
+  var imgClass = svm(image, samplesfc, landcover);
 */
 var svm = function (image, trainingData, fieldName, kernelType, resolution) {
     // Error Handling
@@ -68,7 +68,7 @@ var svm = function (image, trainingData, fieldName, kernelType, resolution) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var imgClass = geet.cart(image, samplesfc, landcover);
+  var imgClass = cart(image, samplesfc, landcover);
 */
 var cart = function (image, trainingData, fieldName, resolution) {
     // Error Handling
@@ -110,7 +110,7 @@ var cart = function (image, trainingData, fieldName, resolution) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var imgClass = geet.rf(image, samplesfc, landcover, 10);
+  var imgClass = rf(image, samplesfc, landcover, 10);
 */
 var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution, cv_split) {
     // Error Handling
@@ -147,7 +147,7 @@ var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution
 
     // Validation
     var validation = testingPartition.classify(classifier);
-    var testAccuracy = validation.errorMatrix('cobertura', 'classification');
+    var testAccuracy = validation.errorMatrix(fieldName, 'classification');
     print('Validation error matrix: ', testAccuracy);
     print('Validation overall accuracy: ', testAccuracy.accuracy());
     print('kappa: ', testAccuracy.kappa())
@@ -177,7 +177,7 @@ var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var imgClass = geet.naive_bayes(image, samplesfc, landcover);
+  var imgClass = naive_bayes(image, samplesfc, landcover);
 */
 var naive_bayes = function (image, trainingData, fieldName, resolution) {
     // Error Handling
@@ -216,7 +216,7 @@ var naive_bayes = function (image, trainingData, fieldName, resolution) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var imgClass = geet.max_ent(image, samplesfc, landcover);
+  var imgClass = max_ent(image, samplesfc, landcover);
 */
 var max_ent = function (image, trainingData, fieldName, resolution) {
     // Error Handling
@@ -256,12 +256,12 @@ var max_ent = function (image, trainingData, fieldName, resolution) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var imgClass = geet.kmeans(image, roi);
+  var imgClass = kmeans(image, roi);
 
   or 
 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var imgClass = geet.kmeans(image, roi, 20, 10, 6000);
+  var imgClass = kmeans(image, roi, 20, 10, 6000);
 */
 var kmeans = function (image, roi, numClusters, resolution, numPixels) {
     // Error Handling
@@ -297,7 +297,7 @@ var kmeans = function (image, roi, numClusters, resolution, numPixels) {
   and a threshold paramter. 
   The function adds the two masked indices and return the sum of the two.
   Its a good choice to call the plotClass function to visualize the result.
-  Ex: geet.plotClass(ndviChange, 3, 'change_detection');
+  Ex: plotClass(ndviChange, 3, 'change_detection');
   
   Params: 
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.
@@ -309,7 +309,7 @@ var kmeans = function (image, roi, numClusters, resolution, numPixels) {
   
   Usage: 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ndviChange = geet.ndvi_change_detection(image_2014, image_2015, 'L8', 0.5);
+  var ndviChange = ndvi_change_detection(image_2014, image_2015, 'L8', 0.5);
 */
 var ndvi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
@@ -344,7 +344,7 @@ var ndvi_change_detection = function (img1, img2, sensor, threshold) {
   and a threshold paramter. 
   The function adds the two masked indices and return the sum of the two.
   Its a good choice to call the plotClass function to visualize the result.
-  Ex: geet.plotClass(ndwiChange, 3, 'change_detection');
+  Ex: plotClass(ndwiChange, 3, 'change_detection');
 
   Params: 
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.
@@ -356,7 +356,7 @@ var ndvi_change_detection = function (img1, img2, sensor, threshold) {
   
   Usage: 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ndwiChange = geet.ndwi_change_detection( image_2014, image_2015, 'L8', 0.5);
+  var ndwiChange = ndwi_change_detection( image_2014, image_2015, 'L8', 0.5);
 */
 var ndwi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
@@ -391,7 +391,7 @@ var ndwi_change_detection = function (img1, img2, sensor, threshold) {
   and a threshold paramter. 
   The function adds the two masked indices and return the sum of the two.
   Its a good choice to call the plotClass function to visualize the result.
-  Ex: geet.plotClass(ndbiChange, 3, 'change_detection');
+  Ex: plotClass(ndbiChange, 3, 'change_detection');
 
   Params: 
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.
@@ -403,7 +403,7 @@ var ndwi_change_detection = function (img1, img2, sensor, threshold) {
   
   Usage: 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ndbiChange = geet.ndbi_change_detection(image_2014, image_2015, 'L8', 0.5);
+  var ndbiChange = ndbi_change_detection(image_2014, image_2015, 'L8', 0.5);
 */
 var ndbi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
@@ -443,7 +443,7 @@ var ndbi_change_detection = function (img1, img2, sensor, threshold) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var texture = geet.texture(image_from_rio, 1);
+  var texture = texture(image_from_rio, 1);
 */
 var texture = function (image, radius) {
     // Error Handling
@@ -468,7 +468,7 @@ var texture = function (image, radius) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var majority = geet.majority(image_from_rio, 1);
+  var majority = majority(image_from_rio, 1);
 */
 var majority = function (image, radius) {
     // Error Handling
@@ -502,7 +502,7 @@ var COLOR = {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  geet.color('water');
+  color('water');
 */
 var color = function (_color) {
     // Error Handling
@@ -527,114 +527,8 @@ var color = function (_color) {
     }
 };
 
-/*
-  plot_rgb:
-  Function to plot a RGB image.
-
-  Params:
-  (ee.Image) image - the image to display.
-  optional (string) title - the layer title.
-
-  Usage:
-  var geet = require('users/eduardolacerdageo/geet:geet'); 
-  geet.plot_rgb(image, 'rgb_image');
-*/
-var plot_rgb = function (image, title) {
-    // Error Handling
-    if (image === undefined) error('plot_rgb', 'You need to specify an input image.');
-
-    // Default params
-    title = typeof title !== 'undefined' ? title : 'image_RGB';
-
-
-    var vizParams = {
-        'bands': 'B4,B3,B2',
-        'min': 5000,
-        'max': 30000,
-        'gamma': 1.6
-    };
-
     Map.addLayer(image, vizParams, title);
 };
-
-/*
-  plot_ndvi:
-  Function to plot a NDVI image index.
-
-  Params:
-  (ee.Image) image - the image to display.
-  (string) title - the layer title.
-
-  Usage:
-  var geet = require('users/eduardolacerdageo/geet:geet'); 
-  geet.plot_ndvi(ndvi, 'ndvi_image');
-*/
-var plot_ndvi = function (image, title) {
-    // Error Handling
-    if (image === undefined) error('plot_ndvi', 'You need to specify an input image.');
-
-    Map.addLayer(image, { min: -1, max: 1, palette: ['FF0000', '00FF00'] }, title);
-};
-
-/*
-  plot_ndwi:
-  Function to plot a NDWI image index.
-
-  Params:
-  (ee.Image) image - the image to display.
-  (string) title - the layer title.
-
-  Usage:
-  var geet = require('users/eduardolacerdageo/geet:geet'); 
-  geet.plot_ndwi(ndwi, 'ndwi_image');
-*/
-var plot_ndwi = function (image, title) {
-    // Error Handling
-    if (image === undefined) error('plot_ndwi', 'You need to specify an input image.');
-
-    Map.addLayer(image, { min: -1, max: 1, palette: ['00FFFF', '0000FF'] }, title);
-};
-
-/*
-  plot_class:
-  Function to plot the final classification map.
-  
-  Params:
-  (ee.Image) image - the image to process
-  (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.
-  optional (string) title - the layer title. 
-  
-  Usage:
-  var geet = require('users/eduardolacerdageo/geet:geet'); 
-  geet.plot_class(classified, 4, 'class_final');
-*/
-var plot_class = function (image, numClasses, title) {
-    // Error Handling
-    if (image === undefined) error('plot_class', 'You need to specify an input image.');
-    if (numClasses === undefined) error('plot_class', 'You need to specify the number of classes to plot.');
-
-    // Default params
-    title = typeof title !== 'undefined' ? title : 'class_final';
-
-    switch (numClasses) {
-        case 2:
-            Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.SHADOW, COLOR.NULO] }, title);
-            break;
-        case 3:
-            Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.WATER] }, title);
-            break;
-        case 4:
-            Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER] }, title);
-            break;
-        case 5:
-            Map.addLayer(image, { min: 0, max: numClasses - 1, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER, COLOR.SHADOW] }, title);
-            break;
-        default:
-            print("Error: Wrong number of classes. plotClass supports a number of classes from 2 to 5 only.");
-            break;
-    }
-};
-
 
 /*
   landsat_indices:
@@ -653,11 +547,11 @@ var plot_class = function (image, numClasses, title) {
   if you dont specify any index the function will create all possible indices.
   Usage:
   var geet = require('users/eduardolacerdageo/default:Function/indexGen');
-  var result = geet.landsat_indices(image, 'L5'); // Will create all possible indices.
+  var result = landsat_indices(image, 'L5'); // Will create all possible indices.
 
   or specifying the index to generate:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var result = geet.landsat_indices(image, 'L5', 'savi'); // This will create only SAVI.
+  var result = landsat_indices(image, 'L5', 'savi'); // This will create only SAVI.
 */
 var landsat_indices = function (image, sensor, index) {
     if (image === undefined) error('landsat_indices', 'You need to specify an input image.');
@@ -869,7 +763,7 @@ var load_image = function (collection, year, roi, cloudFree) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var merged_image = image_collection.iterate(geet.collection2image, ee.Image([]));
+  var merged_image = image_collection.iterate(collection2image, ee.Image([]));
 */
 var collection2image = function (image, previous) {
     return ee.Image(previous).addBands(image);
@@ -886,7 +780,7 @@ var collection2image = function (image, previous) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var new_toa_radiance = geet.toa_radiance_ls5(img, 10); // ee.Image
+  var new_toa_radiance = toa_radiance_ls5(img, 10); // ee.Image
 
   Information:
   Formula:     Lλ = MLQcal + AL
@@ -936,7 +830,7 @@ var toa_radiance = function (image, band) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var new_toa_reflectance = geet.toa_reflectance(img, 10); // ee.Image
+  var new_toa_reflectance = toa_reflectance(img, 10); // ee.Image
 
   Information:
   Formula:      ρλ' = MρQcal + Aρ
@@ -991,12 +885,12 @@ function solarAngleZenith(original_img, raw_reflectance) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var new_toa_reflectance_sz = geet.toa_reflectance_l8(img, 10, 'SZ'); // ee.Image
+  var new_toa_reflectance_sz = toa_reflectance_l8(img, 10, 'SZ'); // ee.Image
 
   or
 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var new_toa_reflectance_se = geet.toa_reflectance_l8(img, 10, 'SE'); // ee.Image
+  var new_toa_reflectance_se = toa_reflectance_l8(img, 10, 'SE'); // ee.Image
 
   Information:
   Formula:      ρλ' = MρQcal + Aρ
@@ -1067,12 +961,12 @@ var toa_reflectance_l8 = function (image, band, _solarAngle) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var new_toa_reflectance_sz = geet.toa_reflectance_l9(img, 10, 'SZ'); // ee.Image
+  var new_toa_reflectance_sz = toa_reflectance_l9(img, 10, 'SZ'); // ee.Image
 
   or
 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var new_toa_reflectance_se = geet.toa_reflectance_l9(img, 10, 'SE'); // ee.Image
+  var new_toa_reflectance_se = toa_reflectance_l9(img, 10, 'SE'); // ee.Image
 
   Information:
   Formula:      ρλ' = MρQcal + Aρ
@@ -1142,7 +1036,7 @@ var toa_reflectance_l9 = function (image, band, _solarAngle) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var brightness_temp_img = geet.brightness_temp_l5k(toa_image); // ee.Image
+  var brightness_temp_img = brightness_temp_l5k(toa_image); // ee.Image
 
   Information:
   T           = Top of atmosphere brightness temperature (K)
@@ -1162,7 +1056,7 @@ var toa_reflectance_l9 = function (image, band, _solarAngle) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var bt_img = geet.brightness_temp(toa_rad_image, 'L8', 'C');
+  var bt_img = brightness_temp(toa_rad_image, 'L8', 'C');
 */
 var brightness_temp = function (image, sensor, unit, two_channel) {
     if (image === undefined) error('brightness_temp', 'You need to specify an input image.');
@@ -1195,7 +1089,7 @@ var brightness_temp = function (image, sensor, unit, two_channel) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var landsat_10m = geet.resample(L8_img, 10, 'bilinear'); 
+  var landsat_10m = resample(L8_img, 10, 'bilinear'); 
 */
 var resample = function (image, scale, mode) {
     // Error Handling
@@ -1226,7 +1120,7 @@ var resample = function (image, scale, mode) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var landsatB10_60m = geet.resample_band(b10, 60);
+  var landsatB10_60m = resample_band(b10, 60);
 */
 var resample_band = function (band, scale, mode) {
     // Error Handling
@@ -1251,7 +1145,7 @@ var resample_band = function (band, scale, mode) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var s2_image = geet.load_id_s2('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');
+  var s2_image = load_id_s2('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');
 */
 var load_id_s2 = function (id) {
     // Error Handling
@@ -1274,7 +1168,7 @@ var load_id_s2 = function (id) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ls_timeserie = geet.build_annual_landsat_timeseries(roi);
+  var ls_timeserie = build_annual_landsat_timeseries(roi);
 */
 var build_annual_landsat_timeseries = function (roi) {
 
@@ -1472,7 +1366,7 @@ var build_annual_landsat_timeseries = function (roi) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ls_collection = geet.landsat_timeseries_by_pathrow('SR', 220, 77);
+  var ls_collection = landsat_timeseries_by_pathrow('SR', 220, 77);
 */
 var landsat_timeseries_by_pathrow = function (type, path, row) {
 
@@ -1550,7 +1444,7 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ls_collection = geet.landsat_timeseries_by_roi('SR', roi);
+  var ls_collection = landsat_timeseries_by_roi('SR', roi);
 */
 var landsat_timeseries_by_roi = function (type, roi) {
 
@@ -1634,7 +1528,7 @@ var landsat_timeseries_by_roi = function (type, roi) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ls_collection = geet.ls5_timeseries_by_pathrow('SR', 220, 77);
+  var ls_collection = ls5_timeseries_by_pathrow('SR', 220, 77);
 */
 var ls5_timeseries_by_pathrow = function (type, path, row) {
 
@@ -1673,7 +1567,7 @@ var ls5_timeseries_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ls_collection = geet.ls7_timeseries_by_pathrow('SR', 220, 77);
+  var ls_collection = ls7_timeseries_by_pathrow('SR', 220, 77);
 */
 var ls7_timeseries_by_pathrow = function (type, path, row) {
 
@@ -1712,7 +1606,7 @@ var ls7_timeseries_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ls_collection = geet.ls8_timeseries_by_pathrow('SR', 220, 77);
+  var ls_collection = ls8_timeseries_by_pathrow('SR', 220, 77);
 */
 var ls8_timeseries_by_pathrow = function (type, path, row) {
 
@@ -1750,7 +1644,7 @@ var ls8_timeseries_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var ls_collection = geet.ls9_timeseries_by_pathrow('SR', 220, 77);
+  var ls_collection = ls9_timeseries_by_pathrow('SR', 220, 77);
 */
 var ls9_timeseries_by_pathrow = function (type, path, row) {
 
@@ -1790,17 +1684,17 @@ var ls9_timeseries_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var s2_mosaic = geet.s2Mosaic('2016-01-01', '2016-12-31'); // Display the final world mosaic.
+  var s2_mosaic = s2Mosaic('2016-01-01', '2016-12-31'); // Display the final world mosaic.
 
   or
 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var s2_mosaic = geet.mosaic_s2('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi
+  var s2_mosaic = mosaic_s2('2016-01-01', '2016-12-31', roi); // Display the final mosaic of the roi
 
   or 
 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var s2_mosaic = geet.mosaic_s2('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic
+  var s2_mosaic = mosaic_s2('2016-01-01', '2016-12-31', roi, false); // Doesnt display the mosaic
 */
 /*
   create_mosaic:
@@ -1815,7 +1709,7 @@ var ls9_timeseries_by_pathrow = function (type, path, row) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var mosaic = geet.create_mosaic('2023-01-01', '2023-12-31', roi, true, 'L8');
+  var mosaic = create_mosaic('2023-01-01', '2023-12-31', roi, true, 'L8');
 */
 var create_mosaic = function(startDate, endDate, roi, showMosaic, sensor) {
     if (startDate === undefined) error('create_mosaic', 'You need to specify the start date.');
@@ -1875,17 +1769,17 @@ var create_mosaic = function(startDate, endDate, roi, showMosaic, sensor) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var modis_ndvi_mosaic = geet.modis_ndvi_mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic.
+  var modis_ndvi_mosaic = modis_ndvi_mosaic('2015-01-01', '2015-12-31'); // Display the final world mosaic.
 
   or
 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var modis_ndvi_mosaic = geet.modis_ndvi_mosaic(start, finish, roi); // Display the final mosaic of the roi
+  var modis_ndvi_mosaic = modis_ndvi_mosaic(start, finish, roi); // Display the final mosaic of the roi
 
   or 
 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var modis_ndvi_mosaic = geet.modis_ndvi_mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+  var modis_ndvi_mosaic = modis_ndvi_mosaic('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
 */
 var modis_ndvi_mosaic = function (startDate, endDate, roi, showMosaic) {
     // Error Handling
@@ -1929,7 +1823,7 @@ var modis_ndvi_mosaic = function (startDate, endDate, roi, showMosaic) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var img_max = geet.max(img);
+  var img_max = max(img);
 */
 var max = function (image, roi, scale, maxPixels) {
     if (image === undefined) error('max', 'You need to specify an input image.');
@@ -1961,7 +1855,7 @@ var max = function (image, roi, scale, maxPixels) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var img_min = geet.min(img);
+  var img_min = min(img);
 */
 var min = function (image, roi, scale, maxPixels) {
     // Error handling
@@ -1994,7 +1888,7 @@ var min = function (image, roi, scale, maxPixels) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var mean_roi = geet.mean(img);
+  var mean_roi = mean(img);
 */
 var mean = function (image, roi, scale, maxPixels) {
     // Error handling
@@ -2027,7 +1921,7 @@ var mean = function (image, roi, scale, maxPixels) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var median = geet.median(img);
+  var median = median(img);
 */
 var median = function (image, roi, scale, maxPixels) {
     // Error handling
@@ -2060,7 +1954,7 @@ var median = function (image, roi, scale, maxPixels) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var mode = geet.mode(img);
+  var mode = mode(img);
 */
 var mode = function (image, roi, scale, maxPixels) {
     // Error handling
@@ -2093,7 +1987,7 @@ var mode = function (image, roi, scale, maxPixels) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var sd = geet.sd(img);
+  var sd = sd(img);
 */
 var sd = function (image, roi, scale, maxPixels) {
     // Error handling
@@ -2126,7 +2020,7 @@ var sd = function (image, roi, scale, maxPixels) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var variance = geet.variance(img);
+  var variance = variance(img);
 */
 var variance = function (image, roi, scale, maxPixels) {
     // Error handling
@@ -2159,7 +2053,7 @@ var variance = function (image, roi, scale, maxPixels) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var amplitude = geet.amplitude(img);
+  var amplitude = amplitude(img);
 */
 var amplitude = function (image, roi, scale, maxPixels) {
     // Error handling
@@ -2193,7 +2087,7 @@ var amplitude = function (image, roi, scale, maxPixels) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var spearmansCorrelation = geet.spearmans_correlation(img1, img2, roi);
+  var spearmansCorrelation = spearmans_correlation(img1, img2, roi);
 */
 var spearmans_correlation = function (image1, image2, roi, scale, maxPixels) {
     // Error handling
@@ -2228,7 +2122,7 @@ var spearmans_correlation = function (image1, image2, roi, scale, maxPixels) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var linearFit = geet.linear_fit(img1, img2, roi);
+  var linearFit = linear_fit(img1, img2, roi);
 */
 var linear_fit = function (image1, image2, roi, scale, maxPixels) {
     // Error handling
@@ -2271,7 +2165,7 @@ var wci = function (ndwi_collection) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var l5_ndvi = geet.ndvi_l5(img);
+  var l5_ndvi = ndvi_l5(img);
 */
 var ndvi_l5 = function (image) {
     // Error handling
@@ -2292,7 +2186,7 @@ var ndvi_l5 = function (image) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var l7_ndvi = geet.ndvi_l7(img);
+  var l7_ndvi = ndvi_l7(img);
 */
 var ndvi_l7 = function (image) {
     // Error handling
@@ -2313,7 +2207,7 @@ var ndvi_l7 = function (image) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var l8_ndvi = geet.ndvi_l8(img);
+  var l8_ndvi = ndvi_l8(img);
 */
 var ndvi_l8 = function (image) {
     // Error handling
@@ -2333,7 +2227,7 @@ var ndvi_l8 = function (image) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var l9_ndvi = geet.ndvi_l9(img);
+  var l9_ndvi = ndvi_l9(img);
 */
 var ndvi_l9 = function (image) {
     // Error handling
@@ -2354,7 +2248,7 @@ var ndvi_l9 = function (image) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var s2_ndvi = geet.ndvi_s2(img);
+  var s2_ndvi = ndvi_s2(img);
 */
 var ndvi_s2 = function (image) {
     // Error handling
@@ -2375,7 +2269,7 @@ var ndvi_s2 = function (image) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var img_pv = geet.prop_veg(img);
+  var img_pv = prop_veg(img);
 */
 var prop_veg = function (image) {
     // Error handling
@@ -2405,7 +2299,7 @@ var prop_veg = function (image) {
   
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var lse = geet.surface_emissivity(pv);
+  var lse = surface_emissivity(pv);
 */
 var surface_emissivity = function (image) {
     // Error handling
@@ -2430,7 +2324,7 @@ var surface_emissivity = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var surfTemp_img = geet.surface_temperature_tm(img);
+  var surfTemp_img = surface_temperature_tm(img);
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
@@ -2465,7 +2359,7 @@ var surface_temperature_tm = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var surfTemp_img = geet.surface_temperature_oli(img);
+  var surfTemp_img = surface_temperature_oli(img);
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
@@ -2499,7 +2393,7 @@ var surface_temperature_oli = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet');
-  var lst = geet.lst_calc_ls5(img);
+  var lst = lst_calc_ls5(img);
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
@@ -2524,7 +2418,7 @@ var lst_calc_ls5 = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet');
-  var lst = geet.lst_calc_ls7(img);
+  var lst = lst_calc_ls7(img);
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
@@ -2549,7 +2443,7 @@ var lst_calc_ls7 = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet');
-  var lst = geet.lst_calc_ls8(img);
+  var lst = lst_calc_ls8(img);
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
@@ -2575,7 +2469,7 @@ var lst_calc_ls8 = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  geet.export_image(img, 'output_img');
+  export_image(img, 'output_img');
 */
 var export_image = function (image, scale) {
     // Error handling
@@ -2604,7 +2498,7 @@ var export_image = function (image, scale) {
   (ee.Image) image - the input image.
 
   Usage:
-  var cloudmask_img = geet.cloudmask(img);
+  var cloudmask_img = cloudmask(img);
 */
 var cloudmask = function (image) {
     // Error handling
@@ -2626,7 +2520,7 @@ var cloudmask = function (image) {
   Usage:
   var img = images.first();
   var QA = img.select(['pixel_qa']);
-  var masked_img = geet.cloudmask_sr(img, QA);
+  var masked_img = cloudmask_sr(img, QA);
 */
 var cloudmask_sr = function (original_image, qa_band) {
     // Error handling
@@ -2660,7 +2554,7 @@ var cloudmask_sr = function (original_image, qa_band) {
   (ee.Image) original_image - the original input image with all the bands.
 
   Usage:
-  var masked_img = geet.fmask(img);
+  var masked_img = fmask(img);
 
   PS: Special thanks to "HMSP": https://gis.stackexchange.com/users/93552/hmsp
 */
@@ -2688,7 +2582,7 @@ var fmask = function(image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var pca = geet.pca(img);
+  var pca = pca(img);
   var pca_image = ee.Image(pca[0]);
   Map.addLayer(pca_image);
 
@@ -2748,7 +2642,7 @@ var pca = function (image, nbands, scale, maxPixels) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var geom_filtered = geet.geom_filter(geom, 'AreaSqKm', '>', 25000);
+  var geom_filtered = geom_filter(geom, 'AreaSqKm', '>', 25000);
 */
 var geom_filter = function (geom, column, symbol, value) {
     // Error handling
@@ -2792,11 +2686,11 @@ var geom_filter = function (geom, column, symbol, value) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  geet.download(img_landsat);
+  download(img_landsat);
   
   or      
   
-  geet.download(img, region, 250);
+  download(img, region, 250);
 */
 var download = function (image, roi, scale) {
     if (image === undefined) error('download', 'You need to specify an input image.');
@@ -2823,7 +2717,7 @@ var download = function (image, roi, scale) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  geet.brovey_transform(img_landsat);
+  brovey_transform(img_landsat);
 */
 var brovey_transform = function (image) {
     var fusion_b4 = image.expression(
@@ -2868,7 +2762,7 @@ var brovey_transform = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var image_tcap = geet.tasseledcap_oli(img);
+  var image_tcap = tasseledcap_oli(img);
 */
 var tasseledcap_oli = function (image) {
     var Brightness = image.expression(
@@ -2915,7 +2809,7 @@ var tasseledcap_oli = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var image_tcap = geet.tasseledcap_tm5(img);
+  var image_tcap = tasseledcap_tm5(img);
 */
 var tasseledcap_tm5 = function (image) {
     var Brightness = image.expression(
@@ -2962,7 +2856,7 @@ var tasseledcap_tm5 = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var image_tcap = geet.tasseledcap_tm7(img);
+  var image_tcap = tasseledcap_tm7(img);
 */
 var tasseledcap_tm7 = function (image) {
     var Brightness = image.expression(
@@ -3009,7 +2903,7 @@ var tasseledcap_tm7 = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var image_tcap = geet.tasseledcap_s2(img);
+  var image_tcap = tasseledcap_s2(img);
 */
 var tasseledcap_s2 = function (image) {
     var Brightness = image.expression(
@@ -3058,7 +2952,7 @@ var tasseledcap_s2 = function (image) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var smoothed_ndvi = geet.smooth_timeseries(ndvi_collection, 45); 
+  var smoothed_ndvi = smooth_timeseries(ndvi_collection, 45); 
 */
 var smooth_timeseries = function(collection, windowSize, timeUnit) {
     if (collection === undefined) error('smooth_timeseries', 'You need to specify an input ImageCollection.');
@@ -3106,7 +3000,7 @@ var smooth_timeseries = function(collection, windowSize, timeUnit) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var water_img = geet.water_indices(s2_image, 'S2'); 
+  var water_img = water_indices(s2_image, 'S2'); 
 */
 var water_indices = function(image, sensor) {
     if (image === undefined) error('water_indices', 'You need to specify an input image.');
@@ -3140,7 +3034,7 @@ var water_indices = function(image, sensor) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var radar_img = geet.s1_preprocess('2023-01-01', '2023-12-31', roi, 'VV', 'DESCENDING'); 
+  var radar_img = s1_preprocess('2023-01-01', '2023-12-31', roi, 'VV', 'DESCENDING'); 
 */
 var s1_preprocess = function(startDate, endDate, roi, polarization, orbit) {
     if (startDate === undefined) error('s1_preprocess', 'You need to specify the start date.');
@@ -3177,7 +3071,7 @@ var s1_preprocess = function(startDate, endDate, roi, polarization, orbit) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var smooth_radar = geet.speckle_filter(radar_img, 50); 
+  var smooth_radar = speckle_filter(radar_img, 50); 
 */
 var speckle_filter = function(image, radius) {
     if (image === undefined) error('speckle_filter', 'You need to specify an input image.');
@@ -3196,7 +3090,7 @@ var speckle_filter = function(image, radius) {
 
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
-  var terrain = geet.terrain_analysis(roi); 
+  var terrain = terrain_analysis(roi); 
 */
 var terrain_analysis = function(roi) {
     var dem = ee.Image('USGS/SRTMGL1_003');
@@ -3465,11 +3359,486 @@ function radcalbatch(current, prev) {
 /* ------------------------  EXPORTS  ------------------------ */
 
 // 1. Machine Learning & Classification
+
+// 2. Spectral Indices & Transformations
+
+// 3. Change Detection
+
+// 4. Time Series & Mosaics
+
+// 5. Radar & Topography
+
+// 6. Pre-Processing & Calibration
+
+// 7. Statistics & Math
+
+// 8. Visualization, Utilities & Export
+exports.plot = plot;
+
+/*
+  tasseled_cap:
+  Function to create a Tasselled Cap image.
+*/
+var tasseled_cap = function (image, sensor) {
+    if (image === undefined) error('tasseled_cap', 'You need to specify an input image.');
+    if (sensor === undefined) error('tasseled_cap', 'You need to specify the sensor.');
+
+    var b, coeffs;
+    if (sensor === 'L5' || sensor === 'L7') {
+        b = image.select(['B1', 'B2', 'B3', 'B4', 'B5', 'B7']);
+        if (sensor === 'L5') {
+            coeffs = ee.Array([
+                [0.3037, 0.2793, 0.4743, 0.5585, 0.5082, 0.1863],
+                [-0.2848, -0.2435, -0.5436, 0.7243, 0.0840, -0.1800],
+                [0.1509, 0.1973, 0.3279, 0.3406, -0.7112, -0.4572]
+            ]);
+        } else {
+            coeffs = ee.Array([
+                [0.3561, 0.3972, 0.3904, 0.6966, 0.2286, 0.1596],
+                [-0.3344, -0.3544, -0.4556, 0.6966, -0.0242, -0.2630],
+                [0.2626, 0.2141, 0.0926, 0.0656, -0.7629, -0.5388]
+            ]);
+        }
+    } else if (sensor === 'L8' || sensor === 'L9') {
+        b = image.select(['B2', 'B3', 'B4', 'B5', 'B6', 'B7']);
+        coeffs = ee.Array([
+            [0.3029, 0.2786, 0.4733, 0.5599, 0.5080, 0.1872],
+            [-0.2941, -0.2430, -0.5424, 0.7276, 0.0713, -0.1608],
+            [0.1511, 0.1973, 0.3283, 0.3407, -0.7117, -0.4559]
+        ]);
+    } else if (sensor === 'S2') {
+        b = image.select(['B2', 'B3', 'B4', 'B8', 'B11', 'B12']);
+        coeffs = ee.Array([
+            [0.0822, 0.1360, 0.2611, 0.2964, 0.3338, 0.3206],
+            [-0.1128, -0.1680, -0.3480, 0.3303, -0.0852, -0.3155],
+            [0.1363, 0.2802, 0.3072, -0.7117, -0.0873, -0.1804]
+        ]);
+    } else {
+        print('Error: Unknown sensor for Tasseled Cap');
+        return image;
+    }
+
+    var arrayImage1D = b.toArray();
+    var arrayImage2D = arrayImage1D.toArray(1);
+    var componentsImage = ee.Image(coeffs).matrixMultiply(arrayImage2D)
+        .arrayProject([0])
+        .arrayFlatten([['Brightness', 'Greenness', 'Wetness']]);
+    return image.addBands(componentsImage);
+};
+
+/*
+  reduce_image:
+  Generic function to calculate statistical reducers for a region.
+*/
+var reduce_image = function (image, reducerType, roi, scale, maxPixels) {
+    if (image === undefined) error('reduce_image', 'You need to specify an input image.');
+    if (reducerType === undefined) error('reduce_image', 'You need to specify the reducer type.');
+    if (roi === undefined) error('reduce_image', 'You need to specify a Region of Interest (roi).');
+
+    scale = typeof scale !== 'undefined' ? scale : 30;
+    maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
+
+    var red;
+    switch(reducerType.toLowerCase()) {
+        case 'max': red = ee.Reducer.max(); break;
+        case 'min': red = ee.Reducer.min(); break;
+        case 'mean': red = ee.Reducer.mean(); break;
+        case 'median': red = ee.Reducer.median(); break;
+        case 'mode': red = ee.Reducer.mode(); break;
+        case 'sd': red = ee.Reducer.stdDev(); break;
+        case 'variance': red = ee.Reducer.variance(); break;
+        case 'amplitude': red = ee.Reducer.minMax(); break;
+        default: red = ee.Reducer.mean();
+    }
+
+    var dict = image.reduceRegion({
+        reducer: red,
+        geometry: roi,
+        scale: scale,
+        maxPixels: maxPixels
+    });
+    
+    return dict;
+};
+
+/*
+  landsat_timeseries:
+  Generic function to build an annual Landsat timeseries for a specific sensor.
+*/
+var landsat_timeseries = function (sensor, type, path, row) {
+    if (sensor === undefined) error('landsat_timeseries', 'You need to specify the sensor.');
+    if (type === undefined) error('landsat_timeseries', 'You need to specify the product type (TOA or SR).');
+    if (path === undefined) error('landsat_timeseries', 'You need to specify the WRS-2 path.');
+    if (row === undefined) error('landsat_timeseries', 'You need to specify the WRS-2 row.');
+
+    var col_str = '';
+    if (sensor === 'L5') col_str = 'LANDSAT/LT05/C02/T1';
+    else if (sensor === 'L7') col_str = 'LANDSAT/LE07/C02/T1';
+    else if (sensor === 'L8') col_str = 'LANDSAT/LC08/C02/T1';
+    else if (sensor === 'L9') col_str = 'LANDSAT/LC09/C02/T1';
+    
+    if (type.toUpperCase() === 'TOA') col_str += '_TOA';
+    else if (type.toUpperCase() === 'SR' || type.toUpperCase() === 'L2') col_str += '_L2';
+    else if (sensor === 'L8' || sensor === 'L9') col_str += '_RT';
+
+    var col = ee.ImageCollection(col_str)
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+
+    var add_ndvi = function(image) {
+        var ndvi = landsat_indices(image, sensor, 'ndvi').select('NDVI');
+        return image.addBands(ndvi);
+    };
+
+    return col.map(add_ndvi);
+};
+
+/*
+  ndvi_s2:
+  Legacy wrapper for Sentinel-2 NDVI.
+*/
+var ndvi_s2 = function(image) {
+    return sentinel2_indices(image, 'ndvi');
+};
+
+
+var segmentation_snic = function(image, size, compactness) {
+  size = typeof size !== 'undefined' ? size : 10;
+  compactness = typeof compactness !== 'undefined' ? compactness : 1;
+  var seeds = ee.Algorithms.Image.Segmentation.seedGrid(size);
+  var snic = ee.Algorithms.Image.Segmentation.SNIC({
+    image: image, size: size, compactness: compactness,
+    connectivity: 8, neighborhoodSize: 2 * size, seeds: seeds
+  });
+  return snic;
+};
+
+var harmonic_trend = function(timeseries, dependent_band) {
+  var time_band = 't'; var constant_band = 'constant';
+  var add_variables = function(image) {
+    var date = image.date();
+    var years = date.difference(ee.Date('1970-01-01'), 'year');
+    var timeRadians = ee.Image(years.multiply(2 * Math.PI)).rename(time_band).float();
+    var constant = ee.Image(1).rename(constant_band);
+    return image.addBands(constant).addBands(timeRadians).addBands(timeRadians.cos().rename('cos')).addBands(timeRadians.sin().rename('sin')).float();
+  };
+  var ts_with_vars = timeseries.map(add_variables);
+  var independents = ee.List([constant_band, time_band, 'cos', 'sin']);
+  var trend = ts_with_vars.select(independents.add(dependent_band)).reduce(ee.Reducer.linearRegression(independents.length(), 1));
+  var coefficients = trend.select('coefficients').arrayProject([0]).arrayFlatten([independents]);
+  var phase = coefficients.select('cos').atan2(coefficients.select('sin'));
+  var amplitude = coefficients.select('cos').hypot(coefficients.select('sin'));
+  return coefficients.addBands(phase.rename('phase')).addBands(amplitude.rename('amplitude'));
+};
+
+var zonal_statistics = function(image, featureCollection, reducerType, scale) {
+  scale = typeof scale !== 'undefined' ? scale : 30;
+  var red;
+  switch(reducerType.toLowerCase()) {
+      case 'max': red = ee.Reducer.max(); break;
+      case 'min': red = ee.Reducer.min(); break;
+      case 'mean': red = ee.Reducer.mean(); break;
+      case 'median': red = ee.Reducer.median(); break;
+      case 'mode': red = ee.Reducer.mode(); break;
+      case 'sd': red = ee.Reducer.stdDev(); break;
+      case 'variance': red = ee.Reducer.variance(); break;
+      case 'sum': red = ee.Reducer.sum(); break;
+      default: red = ee.Reducer.mean();
+  }
+  var stats = image.reduceRegions({collection: featureCollection, reducer: red, scale: scale});
+  return stats;
+};
+
+var harmonize_sensors = function(image, source, target) {
+  if (source === target) return image;
+  var slopes, intercepts, band_names;
+  if (source === 'S2' && target === 'L8') {
+    slopes = ee.Image.constant([0.977, 1.005, 0.977, 0.995, 0.998, 0.975]);
+    intercepts = ee.Image.constant([-0.004, -0.0009, 0.0009, -0.0001, -0.0011, 0.0022]);
+    band_names = ['B2', 'B3', 'B4', 'B8', 'B11', 'B12'];
+  } else if (source === 'L8' && target === 'S2') {
+    slopes = ee.Image.constant([1.0235, 0.995, 1.0235, 1.005, 1.002, 1.0256]);
+    intercepts = ee.Image.constant([0.0041, 0.0009, -0.0009, 0.0001, 0.0011, -0.0023]);
+    band_names = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
+  } else { return image; }
+  var selected = image.select(band_names);
+  var harmonized = selected.multiply(slopes).add(intercepts);
+  return image.addBands(harmonized, null, true);
+};
+
+var burn_severity = function(pre_fire, post_fire, sensor) {
+  sensor = typeof sensor !== 'undefined' ? sensor : 'L8';
+  var b_nir, b_swir2;
+  if (sensor === 'L8' || sensor === 'L9') { b_nir = 'B5'; b_swir2 = 'B7'; } 
+  else if (sensor === 'S2') { b_nir = 'B8'; b_swir2 = 'B12'; } 
+  else { b_nir = 'B4'; b_swir2 = 'B7'; }
+  var pre_nbr = pre_fire.normalizedDifference([b_nir, b_swir2]).rename('NBR_pre');
+  var post_nbr = post_fire.normalizedDifference([b_nir, b_swir2]).rename('NBR_post');
+  var dnbr = pre_nbr.subtract(post_nbr).rename('dNBR');
+  var severity_class = ee.Image(0).where(dnbr.lt(0.1), 1)
+                                  .where(dnbr.gte(0.1).and(dnbr.lt(0.27)), 2)
+                                  .where(dnbr.gte(0.27).and(dnbr.lt(0.66)), 3)
+                                  .where(dnbr.gte(0.66), 4).rename('Severity_Class');
+  return ee.Image([pre_nbr, post_nbr, dnbr, severity_class]);
+};
+
+
+
+/*
+  obia_classification:
+  Function to perform a complete Object-Based Image Analysis (GEOBIA) classification.
+  It generates superpixels (SNIC), extracts spectral, spatial (geometry) and 
+  textural (GLCM) features per object, and classifies them.
+
+  Params:
+  (ee.Image) image - The raw input image to segment and classify.
+  (ee.FeatureCollection) trainingData - The training samples.
+  (string) fieldName - The class column name.
+  optional (Object) options - Dictionary of OBIA parameters:
+      {
+         snicSize: 15,
+         snicCompactness: 1,
+         classifier: 'rf', // 'rf', 'cart', 'svm'
+         includeTexture: false,
+         includeGeometry: true,
+         scale: 30
+      }
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet');
+  var obia_results = geet.obia_classification(img, samples, 'class', {
+      snicSize: 20,
+      includeGeometry: true,
+      includeTexture: true,
+      classifier: 'rf'
+  });
+  var classified = obia_results.select('classification');
+*/
+var obia_classification = function(image, trainingData, fieldName, options) {
+    if (image === undefined) error('obia_classification', 'You need to specify an input image.');
+    if (trainingData === undefined) error('obia_classification', 'You need to specify the training data.');
+    if (fieldName === undefined) error('obia_classification', 'You need to specify the class field name.');
+
+    options = options || {};
+    var size = options.snicSize || 10;
+    var compactness = options.snicCompactness || 1;
+    var classifierType = options.classifier || 'rf';
+    var includeTexture = options.includeTexture !== undefined ? options.includeTexture : false;
+    var includeGeometry = options.includeGeometry !== undefined ? options.includeGeometry : false;
+    var scale = options.scale || 30;
+
+    // 1. SNIC Segmentation
+    var seeds = ee.Algorithms.Image.Segmentation.seedGrid(size);
+    var snic = ee.Algorithms.Image.Segmentation.SNIC({
+        image: image,
+        size: size,
+        compactness: compactness,
+        connectivity: 8,
+        neighborhoodSize: 2 * size,
+        seeds: seeds
+    });
+
+    var clusters = snic.select('clusters');
+    var objectFeatures = snic.select('.*_mean'); // Keep the spectral means
+
+    // 2. Geometry Features (Area, Perimeter, Shape Index)
+    if (includeGeometry) {
+        var pixelArea = ee.Image.pixelArea();
+        var objectArea = pixelArea.addBands(clusters).reduceConnectedComponents({
+            reducer: ee.Reducer.sum(),
+            labelBand: 'clusters'
+        }).rename('object_area');
+
+        // Perimeter approximation using edge detection on clusters
+        var minCluster = clusters.reduceNeighborhood({
+            reducer: ee.Reducer.min(), 
+            kernel: ee.Kernel.square(1)
+        });
+        var maxCluster = clusters.reduceNeighborhood({
+            reducer: ee.Reducer.max(), 
+            kernel: ee.Kernel.square(1)
+        });
+        var edges = minCluster.neq(maxCluster);
+        
+        var perimeter = edges.multiply(pixelArea).addBands(clusters).reduceConnectedComponents({
+            reducer: ee.Reducer.sum(),
+            labelBand: 'clusters'
+        }).rename('object_perimeter');
+
+        var shapeIndex = perimeter.divide(objectArea.sqrt().multiply(4)).rename('shape_index');
+        
+        objectFeatures = objectFeatures.addBands([objectArea, perimeter, shapeIndex]);
+    }
+
+    // 3. Texture Features
+    if (includeTexture) {
+        // Compute GLCM on the first band to avoid memory limits
+        var firstBand = image.select(0).multiply(100).toInt();
+        var glcm = firstBand.glcmTexture({size: 3});
+        
+        var objTexture = glcm.addBands(clusters).reduceConnectedComponents({
+            reducer: ee.Reducer.mean(),
+            labelBand: 'clusters'
+        });
+        
+        objectFeatures = objectFeatures.addBands(objTexture);
+    }
+
+    // 4. Sample and Train
+    var bands = objectFeatures.bandNames();
+    var training = objectFeatures.sampleRegions({
+        collection: trainingData,
+        properties: [fieldName],
+        scale: scale,
+        tileScale: 4
+    });
+
+    var classifier;
+    if (classifierType.toLowerCase() === 'rf') {
+        classifier = ee.Classifier.smileRandomForest(10).train(training, fieldName, bands);
+    } else if (classifierType.toLowerCase() === 'cart') {
+        classifier = ee.Classifier.smileCart().train(training, fieldName, bands);
+    } else if (classifierType.toLowerCase() === 'svm') {
+        classifier = ee.Classifier.libsvm().train(training, fieldName, bands);
+    } else {
+        classifier = ee.Classifier.smileRandomForest(10).train(training, fieldName, bands);
+    }
+
+    // 5. Classify the Objects
+    var classified = objectFeatures.classify(classifier).rename('classification');
+
+    return ee.Image([clusters, objectFeatures, classified]);
+};
+
+
+
+/*
+  filter_small_objects:
+  Eliminates small patches in a classified image (Minimum Mapping Unit filter) 
+  by replacing them with the most common neighboring class.
+
+  Params:
+  (ee.Image) image - The classified image (single band).
+  (number) minArea - The minimum area in square meters (e.g., 10000 for 1 hectare).
+  (number) maxSize - The focal mode radius to fill gaps (default 50).
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet');
+  var cleaned_map = geet.filter_small_objects(classified, 10000);
+*/
+var filter_small_objects = function(image, minArea, maxSize) {
+    if (image === undefined) error('filter_small_objects', 'You need to specify an input classified image.');
+    if (minArea === undefined) error('filter_small_objects', 'You need to specify the minimum area in square meters.');
+
+    maxSize = typeof maxSize !== 'undefined' ? maxSize : 50;
+
+    var bandName = image.bandNames().get(0);
+    var pixelArea = ee.Image.pixelArea();
+    
+    // Calculate the area of each connected class patch
+    var patchArea = pixelArea.addBands(image).reduceConnectedComponents({
+      reducer: ee.Reducer.sum(),
+      labelBand: bandName
+    });
+
+    // Identify patches smaller than the minimum area
+    var smallPatches = patchArea.lt(minArea);
+    
+    // Mask out the small patches from the original image
+    var filtered = image.updateMask(smallPatches.not());
+
+    // Fill the holes with the majority class of the surrounding pixels
+    var filled = filtered.focal_mode({radius: maxSize, units: 'pixels', iterations: 3});
+
+    // Blend the filled patches with the original masked image
+    return filled.blend(filtered).unmask(image);
+};
+
+
+/*
+  plot:
+  A smart wrapper for Map.addLayer that automatically applies standard 
+  color palettes and normalization ranges for common remote sensing products.
+
+  Params:
+  (ee.Image) image - The input image to be visualized.
+  (string) type - 'rgb', 'false_color', 'ndvi', 'ndwi', 'ndbi', 'class', 'gray'.
+  (string) name - The name of the layer (default 'GEET Layer').
+  (Object) options - Optional overrides: {min: 0, max: 1, palette: [], bands: [], sensor: 'L8'}.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet');
+  geet.plot(ndvi_image, 'ndvi', 'Vegetation Index');
+  geet.plot(l8_img, 'rgb', 'True Color', {sensor: 'L8'});
+*/
+var plot = function (image, type, name, options) {
+    if (image === undefined) error('plot', 'You need to specify an input image.');
+    
+    type = type ? type.toLowerCase() : 'gray';
+    name = name || 'GEET Layer';
+    options = options || {};
+
+    var visParams = {};
+    var sensor = options.sensor ? options.sensor.toUpperCase() : 'L8';
+
+    switch (type) {
+        case 'rgb':
+            if (sensor === 'S2') visParams = {bands: ['B4', 'B3', 'B2'], min: 0, max: 3000};
+            else if (sensor === 'L8' || sensor === 'L9') visParams = {bands: ['B4', 'B3', 'B2'], min: 0, max: 0.3};
+            else visParams = {bands: ['B3', 'B2', 'B1'], min: 0, max: 0.3}; // L5, L7
+            break;
+            
+        case 'false_color':
+            if (sensor === 'S2') visParams = {bands: ['B8', 'B4', 'B3'], min: 0, max: 3000};
+            else if (sensor === 'L8' || sensor === 'L9') visParams = {bands: ['B5', 'B4', 'B3'], min: 0, max: 0.3};
+            else visParams = {bands: ['B4', 'B3', 'B2'], min: 0, max: 0.3};
+            break;
+
+        case 'ndvi':
+            visParams = {min: -1, max: 1, palette: ['red', 'orange', 'yellow', 'lightgreen', 'darkgreen']};
+            break;
+
+        case 'ndwi':
+            visParams = {min: -1, max: 1, palette: ['brown', 'white', 'blue', 'darkblue']};
+            break;
+
+        case 'ndbi':
+            visParams = {min: -1, max: 1, palette: ['darkgreen', 'lightgreen', 'white', 'gray', 'red']};
+            break;
+            
+        case 'class':
+        case 'classification':
+            visParams = {min: 1, max: 10, palette: ['#006400', '#ffbb22', '#ffff4c', '#f096ff', '#fa0000', '#b4b4b4', '#f0f0f0', '#0064c8', '#0096a0', '#00cf75', '#fae6a0']};
+            break;
+
+        case 'gray':
+            visParams = {min: 0, max: 0.3};
+            break;
+
+        default:
+            visParams = {};
+    }
+
+    // Apply user overrides if provided
+    if (options.min !== undefined) visParams.min = options.min;
+    if (options.max !== undefined) visParams.max = options.max;
+    if (options.palette !== undefined) visParams.palette = options.palette;
+    if (options.bands !== undefined) visParams.bands = options.bands;
+
+    Map.addLayer(image, visParams, name);
+};
+
+
+//========================================================================================
+// EXPORTS ORGANIZED BY CATEGORY
+//========================================================================================
+
+// 1. Machine Learning & Classification
 exports.svm = svm;
 exports.cart = cart;
 exports.rf = rf;
 exports.naive_bayes = naive_bayes;
-exports.gmo_max_ent = gmo_max_ent;
+exports.max_ent = max_ent;
 exports.kmeans = kmeans;
 
 // 2. Spectral Indices & Transformations
@@ -3478,14 +3847,16 @@ exports.sentinel2_indices = sentinel2_indices;
 exports.water_indices = water_indices;
 exports.tasseled_cap = tasseled_cap;
 exports.pca = pca;
-exports.ndviS2 = ndviS2;
+exports.ndviS2 = ndvi_s2;
 
 // 3. Change Detection
+exports.burn_severity = burn_severity;
 exports.ndvi_change_detection = ndvi_change_detection;
 exports.ndwi_change_detection = ndwi_change_detection;
 exports.ndbi_change_detection = ndbi_change_detection;
 
 // 4. Time Series & Mosaics
+exports.harmonic_trend = harmonic_trend;
 exports.create_mosaic = create_mosaic;
 exports.smooth_timeseries = smooth_timeseries;
 exports.build_annual_landsat_timeseries = build_annual_landsat_timeseries;
@@ -3499,6 +3870,7 @@ exports.speckle_filter = speckle_filter;
 exports.terrain_analysis = terrain_analysis;
 
 // 6. Pre-Processing & Calibration
+exports.harmonize_sensors = harmonize_sensors;
 exports.toa_radiance = toa_radiance;
 exports.toa_reflectance = toa_reflectance;
 exports.brightness_temp = brightness_temp;
@@ -3516,6 +3888,7 @@ exports.resample_band = resample_band;
 exports.geom_filter = geom_filter;
 
 // 7. Statistics & Math
+exports.zonal_statistics = zonal_statistics;
 exports.reduce_image = reduce_image;
 exports.spearmans_correlation = spearmans_correlation;
 exports.linear_fit = linear_fit;
@@ -3524,13 +3897,15 @@ exports.majority = majority;
 exports.prop_veg = prop_veg;
 
 // 8. Visualization, Utilities & Export
-exports.plot_rgb = plot_rgb;
-exports.plot_ndvi = plot_ndvi;
-exports.plot_ndwi = plot_ndwi;
-exports.plot_class = plot_class;
+exports.plot = plot;
 exports.color = color;
 exports.export_image = export_image;
 exports.load_image = load_image;
 exports.load_id_s2 = load_id_s2;
 exports.collection2image = collection2image;
 
+
+// 9. Object-Based Image Analysis (GEOBIA)
+exports.segmentation_snic = segmentation_snic;
+exports.obia_classification = obia_classification;
+exports.filter_small_objects = filter_small_objects;

@@ -1,4 +1,4 @@
-var urbano = /* color: #ff4c1d */ee.FeatureCollection(
+var urban = /* color: #ff4c1d */ee.FeatureCollection(
         [ee.Feature(
             ee.Geometry.Point([-43.330078125, -22.85493070488758]),
             {
@@ -293,7 +293,7 @@ var urbano = /* color: #ff4c1d */ee.FeatureCollection(
               "landcover": 0,
               "system:index": "48"
             })]),
-    verde = /* color: #30af3d */ee.FeatureCollection(
+    forest = /* color: #30af3d */ee.FeatureCollection(
         [ee.Feature(
             ee.Geometry.Point([-43.479251861572266, -22.81612796290781]),
             {
@@ -510,7 +510,7 @@ var urbano = /* color: #ff4c1d */ee.FeatureCollection(
               "landcover": 1,
               "system:index": "35"
             })]),
-    pasto = /* color: #cbff71 */ee.FeatureCollection(
+    pasture = /* color: #cbff71 */ee.FeatureCollection(
         [ee.Feature(
             ee.Geometry.Point([-43.48611831665039, -22.77798930109079]),
             {
@@ -757,7 +757,7 @@ var urbano = /* color: #ff4c1d */ee.FeatureCollection(
               "landcover": 2,
               "system:index": "40"
             })]),
-    agua = /* color: #4e88ff */ee.FeatureCollection(
+    water = /* color: #4e88ff */ee.FeatureCollection(
         [ee.Feature(
             ee.Geometry.Point([-43.207340240478516, -22.99891825732684]),
             {

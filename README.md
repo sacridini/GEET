@@ -21,7 +21,7 @@ GEET using Landsat collection 2 will be available soon!
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.1.1 - Beta):
+All functions implemented (Version 1.3.0 - Beta):
 
 ### Machine Learning & Classification
 - [svm](#svm)
@@ -43,6 +43,7 @@ All functions implemented (Version 1.1.1 - Beta):
 - [ndvi_change_detection](#ndvi_change_detection)
 - [ndwi_change_detection](#ndwi_change_detection)
 - [ndbi_change_detection](#ndbi_change_detection)
+- [burn_severity](#burn_severity)
 
 ### Time Series & Mosaics
 - [create_mosaic](#create_mosaic)
@@ -51,6 +52,7 @@ All functions implemented (Version 1.1.1 - Beta):
 - [landsat_timeseries](#landsat_timeseries)
 - [landsat_timeseries_by_pathrow](#landsat_timeseries_by_pathrow)
 - [landsat_timeseries_by_roi](#landsat_timeseries_by_roi)
+- [harmonic_trend](#harmonic_trend)
 
 ### Radar & Topography
 - [s1_preprocess](#s1_preprocess)
@@ -58,6 +60,7 @@ All functions implemented (Version 1.1.1 - Beta):
 - [terrain_analysis](#terrain_analysis)
 
 ### Pre-Processing & Calibration
+- [harmonize_sensors](#harmonize_sensors)
 - [toa_radiance](#toa_radiance)
 - [toa_reflectance](#toa_reflectance)
 - [brightness_temp](#brightness_temp)
@@ -75,6 +78,7 @@ All functions implemented (Version 1.1.1 - Beta):
 - [geom_filter](#geom_filter)
 
 ### Statistics & Math
+- [zonal_statistics](#zonal_statistics)
 - [reduce_image](#reduce_image)
 - [spearmans_correlation](#spearmans_correlation)
 - [linear_fit](#linear_fit)
@@ -83,15 +87,25 @@ All functions implemented (Version 1.1.1 - Beta):
 - [prop_veg](#prop_veg)
 
 ### Visualization, Utilities & Export
-- [plot_rgb](#plot_rgb)
-- [plot_ndvi](#plot_ndvi)
-- [plot_ndwi](#plot_ndwi)
-- [plot_class](#plot_class)
+- [plot](#plot)
 - [color](#color)
 - [export_image](#export_image)
 - [load_image](#load_image)
 - [load_id_s2](#load_id_s2)
 - [collection2image](#collection2image)
+
+- [segmentation_snic](#segmentation_snic)
+- [obia_classification](#obia_classification)
+- [filter_small_objects](#filter_small_objects)
+- [harmonic_trend](#harmonic_trend)
+- [zonal_statistics](#zonal_statistics)
+- [harmonize_sensors](#harmonize_sensors)
+- [burn_severity](#burn_severity)
+
+### Object-Based Image Analysis (GEOBIA)
+- [segmentation_snic](#segmentation_snic)
+- [obia_classification](#obia_classification)
+- [filter_small_objects](#filter_small_objects)
 
 ------------------------------------------------------------------------------
 
@@ -975,68 +989,24 @@ _Function calculate the proportional vegetation._
 ## Visualization, Utilities & Export
 ------------------------------------------------------------------------------
 
-#### plot_rgb
-(image, title)  
+#### plot
+(image, type, name, options)
 
-_Function to plot a RGB image._ 
-
-##### Params:
-  (ee.Image) image - the image to display.  
-  **optional** (string) title - the layer title.                   
-  
-##### Usage:
-```js
-        
-    geet.plot_rgb(image, 'rgb_image');  
-```
-
-------------------------------------------------------------------------------
-
-#### plot_ndvi
-(image, title)  
-
-_Function to plot a NDVI image index._ 
+_A smart wrapper for Map.addLayer that automatically applies standard color palettes and normalization ranges for common remote sensing products._
 
 ##### Params:
-  (ee.Image) image - the image to display.  
-  (string) title - the layer title.                   
-  
+  (ee.Image) image - The input image to be visualized.
+  (string) type - 'rgb', 'false_color', 'ndvi', 'ndwi', 'ndbi', 'class', 'gray'.
+  (string) name - The name of the layer (default 'GEET Layer').
+  **optional** (Object) options - Optional overrides: {min: 0, max: 1, palette: [], bands: [], sensor: 'L8'}.
+
 ##### Usage:
 ```js
-    geet.plot_ndvi(ndvi, 'ndvi_image'); 
-```
-
-------------------------------------------------------------------------------
-
-#### plot_ndwi
-(image, title)  
-
-_Function to plot a NDWI image index._ 
-
-##### Params:
-  (ee.Image) image - the image to display.  
-  (string) title - the layer title.                     
+  // Automatically plots an NDVI image from red to dark green (-1 to 1)
+  geet.plot(ndvi_image, 'ndvi', 'Vegetation Index');
   
-##### Usage:
-```js
-    geet.plot_ndwi(ndwi, 'ndwi_image'); 
-```
-
-------------------------------------------------------------------------------
-
-#### plot_class
-(image, numClasses, title)  
-
-_Function to plot the final classification map._ 
-
-##### Params:
-  (ee.Image) image - the image to process.  
-  (number) numClasses - the number of classes that your classification map has. It variates from 2 to 5 max classes only.  
-  **optional** (string) title - the layer title.                       
-  
-##### Usage:
-```js
-    geet.plot_class(classified, 4, 'class_final'); 
+  // Automatically plots an RGB for Landsat 8
+  geet.plot(l8_img, 'rgb', 'True Color', {sensor: 'L8'});
 ```
 
 ------------------------------------------------------------------------------
@@ -1134,3 +1104,142 @@ _Function to merge all imagens of one image collection into a single band._
     var merged_image = image_collection.iterate(geet.collection2image, ee.Image([]));   
 ```
 
+
+
+#### segmentation_snic
+(image, size, compactness)
+
+_Function to segment an image using the SNIC (Simple Non-Iterative Clustering) algorithm._
+
+##### Params:
+  (ee.Image) image - the input image.
+  **optional** (number) size - The superpixel seed location spacing (default 10).
+  **optional** (number) compactness - The compactness factor (default 1).
+
+##### Usage:
+```js
+  var snic = geet.segmentation_snic(img, 15, 1);
+```
+
+------------------------------------------------------------------------------
+
+#### obia_classification
+(image, trainingData, fieldName, options)
+
+_Function to perform a complete Object-Based Image Analysis (GEOBIA) classification._
+_It automatically generates superpixels (SNIC), extracts spectral, spatial (geometry) and textural (GLCM) features per object, and classifies them using Machine Learning._
+
+##### Params:
+  (ee.Image) image - The raw input image to segment and classify.
+  (ee.FeatureCollection) trainingData - The training samples.
+  (string) fieldName - The class column name.
+  **optional** (Object) options - Dictionary of OBIA parameters:
+      {
+         snicSize: 15,
+         snicCompactness: 1,
+         classifier: 'rf', // 'rf', 'cart', 'svm'
+         includeTexture: false,
+         includeGeometry: true,
+         scale: 30
+      }
+
+##### Usage:
+```js
+  var obia_results = geet.obia_classification(img, samples, 'class', {
+      snicSize: 20,
+      includeGeometry: true,
+      includeTexture: true,
+      classifier: 'rf'
+  });
+  
+  // Extract the final classified map
+  var classified = obia_results.select('classification');
+```
+
+------------------------------------------------------------------------------
+
+#### filter_small_objects
+(image, minArea, maxSize)
+
+_Eliminates small patches in a classified image (Minimum Mapping Unit filter) by replacing them with the most common neighboring class._
+
+##### Params:
+  (ee.Image) image - The classified image (single band).
+  (number) minArea - The minimum area in square meters (e.g., 10000 for 1 hectare).
+  **optional** (number) maxSize - The focal mode radius to fill gaps (default 50).
+
+##### Usage:
+```js
+  // Filter out any object smaller than 1 hectare (10,000 sq meters)
+  var cleaned_map = geet.filter_small_objects(classified, 10000);
+```
+
+------------------------------------------------------------------------------
+
+#### harmonic_trend
+(timeseries, dependent_band)
+
+_Generates a Fourier Harmonic Trend model for a time-series to extract Seasonality (Phase and Amplitude) and Linear Trend._
+
+##### Params:
+  (ee.ImageCollection) timeseries - the input timeseries image collection.
+  (string) dependent_band - the band to model (e.g., 'NDVI').
+
+##### Usage:
+```js
+  var trend = geet.harmonic_trend(landsat_ts, 'NDVI');
+```
+
+------------------------------------------------------------------------------
+
+#### zonal_statistics
+(image, featureCollection, reducerType, scale)
+
+_Extracts zonal statistics from an image using polygons._
+
+##### Params:
+  (ee.Image) image - the input image.
+  (ee.FeatureCollection) featureCollection - the polygon regions.
+  (string) reducerType - 'max', 'min', 'mean', 'median', 'mode', 'sd', 'variance', 'sum'.
+  **optional** (number) scale - the scale in meters (default 30).
+
+##### Usage:
+```js
+  var stats = geet.zonal_statistics(ndvi_img, polygons, 'mean', 30);
+```
+
+------------------------------------------------------------------------------
+
+#### harmonize_sensors
+(image, source, target)
+
+_Harmonizes spectral values between Sentinel-2 and Landsat-8 using OLS regression coefficients._
+
+##### Params:
+  (ee.Image) image - the input image.
+  (string) source - 'S2' or 'L8'.
+  (string) target - 'S2' or 'L8'.
+
+##### Usage:
+```js
+  var harmonized = geet.harmonize_sensors(s2_img, 'S2', 'L8');
+```
+
+------------------------------------------------------------------------------
+
+#### burn_severity
+(pre_fire, post_fire, sensor)
+
+_Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR) and Burn Severity Classes._
+
+##### Params:
+  (ee.Image) pre_fire - the pre-fire image.
+  (ee.Image) post_fire - the post-fire image.
+  **optional** (string) sensor - 'L8', 'L9', 'S2', etc. (default 'L8').
+
+##### Usage:
+```js
+  var severity = geet.burn_severity(img_before, img_after, 'L8');
+```
+
+------------------------------------------------------------------------------

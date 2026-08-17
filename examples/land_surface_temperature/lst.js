@@ -1,5 +1,5 @@
 // Create a Land Surface Temperature Layer using Landsat 5 image
-var geet = require('users/elacerda/geet:geet');
+var geet = require('users/eduardolacerdageo/geet:geet');
 var image_col = ee.ImageCollection(l5)
         .filterBounds(roi)
         .filterDate('2010-01-01', '2010-12-31')
