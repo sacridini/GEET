@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.7.6
+ * Version: 0.8.2
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -1458,7 +1458,7 @@ var load_image = function (collection, year, roi, cloudFree) {
         } else if (collection === 'TOA') {
             collection = 'LANDSAT/LC08/C02/T1_TOA';
         } else if (collection === 'SR') {
-            collection = 'LANDSAT/LC08/C02/T1_SR';
+            collection = 'LANDSAT/LC08/C02/T1_L2';
         } else {
             print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
         }
@@ -1468,7 +1468,7 @@ var load_image = function (collection, year, roi, cloudFree) {
         } else if (collection === 'TOA') {
             collection = 'LANDSAT/LT05/C02/T1_TOA';
         } else if (collection === 'SR') {
-            collection = 'LANDSAT/LT05/C02/T1_SR';
+            collection = 'LANDSAT/LT05/C02/T1_L2';
         } else {
             print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
         }
@@ -1661,6 +1661,82 @@ var toa_reflectance_l8 = function (image, band, _solarAngle) {
     if (image === undefined) error('toa_reflectance_l8', 'You need to specify an input image.');
     if (band === undefined) error('toa_reflectance_l8', 'You need to specify the number of the band that you want to process.');
     if (_solarAngle === undefined) error('toa_reflectance_l8', 'You need to specify the solar angle mode.');
+
+    if (_solarAngle !== undefined) {
+        var solarAngle = _solarAngle;
+        if (solarAngle !== 'SZ' && solarAngle !== 'SE') {
+            print("Error: You need to choose one of two modes:");
+            print("Error: 'SE' for the local sun elevation angle or 'SZ' for the Local solar zenith angle.");
+            print("Warning: 'SZ' will be set as default mode.")
+            solarAngle = 'SZ';
+        }
+    } else {
+        solarAngle = 'SZ';
+    }
+
+    if (solarAngle === 'SE') {
+        var band_to_toa = image.select('B' + band.toString());
+        var reflectance_multi_band = ee.Number(image.get('REFLECTANCE_MULT_BAND_' + band.toString())); // Mp
+        var reflectance_add_band = ee.Number(image.get('REFLECTANCE_ADD_BAND_' + band.toString())); // Ap
+        var toa = band_to_toa.expression(
+            '(Mp * image) + Ap', {
+            'Mp': reflectance_multi_band,
+            'Ap': reflectance_add_band,
+            'image': band_to_toa
+        }).rename('B' + band.toString() + '_TOA_Reflectance_SE');
+        var img_se = solarAngleElevation(image, toa);
+        return img_se;
+    }
+
+    if (solarAngle === 'SZ') {
+        var band_to_toa = image.select('B' + band.toString());
+        var reflectance_multi_band = ee.Number(image.get('REFLECTANCE_MULT_BAND_' + band.toString())); // Mp
+        var reflectance_add_band = ee.Number(image.get('REFLECTANCE_ADD_BAND_' + band.toString())); // Ap
+        var toa = band_to_toa.expression(
+            '(Mp * image) + Ap', {
+            'Mp': reflectance_multi_band,
+            'Ap': reflectance_add_band,
+            'image': band_to_toa
+        }).rename('B' + band.toString() + '_TOA_Reflectance_SZ');
+        var img_sz = solarAngleZenith(image, toa);
+        return img_sz;
+    }
+}
+
+/*
+  toa_reflectance_l9:
+  Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance
+  Landsat 8 version with Solar Angle correction.
+
+  Params:
+  (ee.Image) image - The image to process.
+  (number) band - The number of the band that you want to process.
+  (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var new_toa_reflectance_sz = geet.toa_reflectance_l9(img, 10, 'SZ'); // ee.Image
+
+  or
+
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var new_toa_reflectance_se = geet.toa_reflectance_l9(img, 10, 'SE'); // ee.Image
+
+  Information:
+  Formula:      ρλ' = MρQcal + Aρ
+  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.
+  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)
+  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)
+  Qcal          = Quantized and calibrated standard product pixel values (DN)
+
+  SE = Local sun elevation angle. The scene center sun elevation angle in degrees is provided in the metadata (SUN_ELEVATION).
+  SZ = Local solar zenith angle: SZ = 90° - SE
+*/
+var toa_reflectance_l9 = function (image, band, _solarAngle) {
+    // Error Handling
+    if (image === undefined) error('toa_reflectance_l9', 'You need to specify an input image.');
+    if (band === undefined) error('toa_reflectance_l9', 'You need to specify the number of the band that you want to process.');
+    if (_solarAngle === undefined) error('toa_reflectance_l9', 'You need to specify the solar angle mode.');
 
     if (_solarAngle !== undefined) {
         var solarAngle = _solarAngle;
@@ -1962,6 +2038,83 @@ var brightness_temp_l8k = function (image, two_channel) {
     }
 }
 
+/*
+  brightness_temp_l9k:
+  Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
+  This one works only for Landsat 8 data.
+
+  Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
+  (boolean) two_channel - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var brightness_temp_img = geet.brightness_temp_l9k(toa_image); // ee.Image
+
+  or 
+
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var brightness_temp_img = geet.brightness_temp_l9k(toa_image, false); // ee.Image
+
+  Information:
+  T           = Top of atmosphere brightness temperature (K)
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
+*/
+var brightness_temp_l9k = function (image, two_channel) {
+    // Error Handling
+    if (image === undefined) error('brightness_temp_l9k', 'You need to specify an input image.');
+    if (two_channel === undefined) error('brightness_temp_l9k', 'You need to specify an boolean value to process only B10 or B10 and B11.');
+
+    var two_channel = (arguments[1] !== void 1 ? false : true);
+    // default is true - double band (B10 and B11) processing
+    if (two_channel === true) {
+        var K1_10 = ee.Number(image.get('K1_CONSTANT_BAND_10'));
+        var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
+        var K1_11 = ee.Number(image.get('K1_CONSTANT_BAND_11'));
+        var K2_11 = ee.Number(image.get('K2_CONSTANT_BAND_11'));
+
+        var brightness_temp_semlog = image.expression(
+            'K1 / B10 + 1', {
+            'K1': K1_10,
+            'B10': image.select('TOA_Radiance')
+        });
+
+        var brightness_temp_log = brightness_temp_semlog.log();
+
+        var brightness_temp = image.expression(
+            'K2 / brightness_temp_log', {
+            'K2': K2_10,
+            'brightness_temp_log': brightness_temp_log
+        }).rename('Brightness_Temperature');
+
+        var img_brightness_temp = image.addBands(brightness_temp);
+        return img_brightness_temp;
+    } else {
+        // false - single band (B10) processing
+        var K1_10 = ee.Number(image.get('K1_CONSTANT_BAND_10'));
+        var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
+
+        var brightness_temp_semlog = image.expression(
+            'K1 / B10 + 1', {
+            'K1': K1_10,
+            'B10': image.select('TOA_Radiance')
+        });
+
+        var brightness_temp_log = brightness_temp_semlog.log();
+
+        var brightness_temp = image.expression(
+            'K2 / brightness_temp_log', {
+            'K2': K2_10,
+            'brightness_temp_log': brightness_temp_log
+        }).rename('Brightness_Temperature');
+
+        var img_brightness_temp = image.addBands(brightness_temp);
+        return img_brightness_temp;
+    }
+}
+
 
 /*
   brightness_temp_l8c:
@@ -1991,6 +2144,85 @@ var brightness_temp_l8c = function (image, two_channel) {
     // Error Handling
     if (image === undefined) error('brightness_temp_l8c', 'You need to specify an input image.');
     if (two_channel === undefined) error('brightness_temp_l8c', 'You need to specify an boolean value to process only B10 or B10 and B11.');
+
+    var two_channel = (arguments[1] !== void 1 ? false : true);
+    // false - double band (B10 and B11) processing
+    if (two_channel === false) {
+        var K1_10 = ee.Number(image.get('K1_CONSTANT_BAND_10'));
+        var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
+        var K1_11 = ee.Number(image.get('K1_CONSTANT_BAND_11'));
+        var K2_11 = ee.Number(image.get('K2_CONSTANT_BAND_11'));
+
+        var brightness_temp_semlog = image.expression(
+            'K1 / B10 + 1', {
+            'K1': K1_10,
+            'B10': image.select('TOA_Radiance')
+        });
+
+        var brightness_temp_log = brightness_temp_semlog.log();
+
+        var brightness_temp = image.expression(
+            'K2 / brightness_temp_log', {
+            'K2': K2_10,
+            'brightness_temp_log': brightness_temp_log
+        }).rename('Brightness_Temperature');
+
+        var brightness_temp_celsius = brightness_temp.subtract(273.5);
+        var img_brightness_temp = image.addBands(brightness_temp_celsius);
+        return img_brightness_temp;
+    } else {
+        // default is true - single band (B10) processing
+        var K1_10 = ee.Number(image.get('K1_CONSTANT_BAND_10'));
+        var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
+
+        var brightness_temp_semlog = image.expression(
+            'K1 / B10 + 1', {
+            'K1': K1_10,
+            'B10': image.select('TOA_Radiance')
+        });
+
+        var brightness_temp_log = brightness_temp_semlog.log();
+
+        var brightness_temp = image.expression(
+            'K2 / brightness_temp_log', {
+            'K2': K2_10,
+            'brightness_temp_log': brightness_temp_log
+        }).rename('Brightness_Temperature');
+
+        var brightness_temp_celsius = brightness_temp.subtract(273.5);
+        var img_brightness_temp = image.addBands(brightness_temp_celsius);
+        return img_brightness_temp;
+    }
+}
+
+/*
+  brightness_temp_l9c:
+  Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature.
+  This one works only for Landsat 8 data.
+
+  Params:
+  (ee.Image) image - the Top of Atmosphere (TOA) image to convert.
+  (boolean) two_channel - if false, will process only the B10 band, if true, will consider B11 too. Default its true!
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var brightness_temp_img = geet.brightness_temp_l9c(toa_image); // ee.Image
+
+  or 
+
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var brightness_temp_img = geet.brightness_temp_l9c(toa_image, false); // ee.Image
+
+  Information:
+  T           = Top of atmosphere brightness temperature (K)
+  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))
+  K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)
+  K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
+*/
+var brightness_temp_l9c = function (image, two_channel) {
+    // Error Handling
+    if (image === undefined) error('brightness_temp_l9c', 'You need to specify an input image.');
+    if (two_channel === undefined) error('brightness_temp_l9c', 'You need to specify an boolean value to process only B10 or B10 and B11.');
 
     var two_channel = (arguments[1] !== void 1 ? false : true);
     // false - double band (B10 and B11) processing
@@ -2139,9 +2371,9 @@ var build_annual_landsat_timeseries = function (roi) {
 
     roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point([-43.0879, -22.8632]);
 
-    var ls5_sr = ee.ImageCollection("LANDSAT/LT05/C02/T1_SR"),
-        ls7_sr = ee.ImageCollection("LLANDSAT/LE07/C02/T1_SR"),
-        ls8_sr = ee.ImageCollection("LANDSAT/LC08/C02/T1_SR");
+    var ls5_sr = ee.ImageCollection("LANDSAT/LT05/C02/T1_L2"),
+        ls7_sr = ee.ImageCollection("LANDSAT/LE07/C02/T1_L2"),
+        ls8_sr = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2");
 
     var ls5_ic = ee.ImageCollection(ls5_sr)
         .filterBounds(roi)
@@ -2355,7 +2587,7 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
-/*            var ls7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
 */            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_RT')
@@ -2368,7 +2600,7 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-/*            var ls7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1_TOA')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
@@ -2379,15 +2611,15 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
             var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
         case 'sr':
-            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_SR')
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-/*            var ls7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1_SR')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_SR')
+*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls8)
@@ -2430,36 +2662,53 @@ var landsat_timeseries_by_roi = function (type, roi) {
         case 'raw':
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1')
                 .filterBounds(roi);
-/*            var ls7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1')
                 .filterBounds(roi);
 */            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_RT')
                 .filterBounds(roi);
-            var all_ls_collection = ls5_collection.merge(ls8_collection);
+            var ls9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1')
+                .filterBounds(roi);
+            var all_ls_collection = ls5_collection.merge(ls8_collection).merge(ls9_collection);
             return all_ls_collection;
         case 'toa':
             var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls);
-/*            var ls7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1_TOA')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls);
 */            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls8);
-            var all_ls_collection = ls5_collection.merge(ls8_collection);
+            var ls9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA')
+                .filterBounds(roi)
+                .map(add_ndvi_ls8);
+            var all_ls_collection = ls5_collection.merge(ls8_collection).merge(ls9_collection);
             return all_ls_collection;
         case 'sr':
-            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_SR')
+            var add_ndvi_ls_sr = function(image) {
+                var with_ndvi = image.normalizedDifference(['SR_B4', 'SR_B3']).rename('NDVI');
+                return image.addBands(with_ndvi)
+            }
+            var add_ndvi_ls8_sr = function(image) {
+                var with_ndvi = image.normalizedDifference(['SR_B5', 'SR_B4']).rename('NDVI');
+                return image.addBands(with_ndvi)
+            }
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
                 .filterBounds(roi)
-                .map(add_ndvi_ls);
-/*            var ls7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1_SR')
+                .map(add_ndvi_ls_sr);
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
                 .filterBounds(roi)
-                .map(add_ndvi_ls);*/
-            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_SR')
+                .map(add_ndvi_ls_sr);*/
+            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
                 .filterBounds(roi)
-                .map(add_ndvi_ls8)
-                .map(function (image) { return cloudmask_sr(image, image.select("pixel_qa")); });
-            var all_ls_collection = ls5_collection.merge(ls8_collection);
+                .map(add_ndvi_ls8_sr)
+                .map(function (image) { return cloudmask_sr(image, image.select("QA_PIXEL")); });
+            var ls9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_L2')
+                .filterBounds(roi)
+                .map(add_ndvi_ls8_sr)
+                .map(function (image) { return cloudmask_sr(image, image.select("QA_PIXEL")); });
+            var all_ls_collection = ls5_collection.merge(ls8_collection).merge(ls9_collection);
             return all_ls_collection;
     }
 }
@@ -2496,7 +2745,7 @@ var ls5_timeseries_by_pathrow = function (type, path, row) {
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l5_collection;
         case 'sr':
-            var l5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_SR')
+            var l5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l5_collection;
@@ -2525,17 +2774,17 @@ var ls7_timeseries_by_pathrow = function (type, path, row) {
 
     switch (type) {
         case 'raw':
-            var l7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1')
+            var l7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l7_collection;
         case 'toa':
-            var l7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1_TOA')
+            var l7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l7_collection;
         case 'sr':
-            var l7_collection = ee.ImageCollection('LLANDSAT/LE07/C02/T1_SR')
+            var l7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l7_collection;
@@ -2574,10 +2823,48 @@ var ls8_timeseries_by_pathrow = function (type, path, row) {
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l8_collection;
         case 'sr':
-            var l8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_SR')
+            var l8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l8_collection;
+    }
+}
+
+/*
+  ls9_timeseries_by_pathrow:
+  Function that return a image collection with all landsat 8 images from a defined path row..
+
+  Params:
+  (string) type - the type of the collection (RAW, TOA or SR)
+  (number) path - the path number of the image
+  (number) row - the row number of the image
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var ls_collection = geet.ls9_timeseries_by_pathrow('SR', 220, 77);
+*/
+var ls9_timeseries_by_pathrow = function (type, path, row) {
+
+    type = typeof type !== 'undefined' ? type.toString().toLowerCase() : 'sr';
+    path = typeof path !== 'undefined' ? path : 217;
+    row = typeof row !== 'undefined' ? row : 76;
+
+    switch (type) {
+        case 'raw':
+            var l9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_RT')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l9_collection;
+        case 'toa':
+            var l9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l9_collection;
+        case 'sr':
+            var l9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_L2')
+                .filter(ee.Filter.eq('WRS_PATH', path))
+                .filter(ee.Filter.eq('WRS_ROW', row));
+            return l9_collection;
     }
 }
 
@@ -2726,7 +3013,7 @@ var mosaic_l7 = function (startDate, endDate, roi, showMosaic) {
     if (startDate === undefined) error('mosaic_l7', 'You need to specify the start date of the image series.');
     if (endDate === undefined) error('mosaic_l7', 'You need to specify the end  date of the image series.');
 
-    var l7 = ee.ImageCollection('LLANDSAT/LE07/C02/T1_TOA');
+    var l7 = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA');
 
     // Default params
     showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
@@ -2794,6 +3081,61 @@ var mosaic_l8 = function (startDate, endDate, roi, showMosaic) {
             .mosaic();
     } else {
         composite = l8
+            .filterBounds(roi)
+            .filterDate(ee.Date(startDate), ee.Date(endDate))
+            .sort('CLOUD_COVER', false)
+            .mosaic();
+    }
+
+    if (showMosaic === true) {
+        Map.addLayer(composite, { bands: ['B2', 'B3', 'B4'], min: 0, max: 0.5, gamma: [0.95, 1.1, 1] }, 'L5_Mosaic');
+    } else {
+        return composite;
+    }
+    return composite;
+}
+
+/*
+  mosaic_l9:
+  Function to build a cloud free mosaic using the Landsat 7 dataset.
+
+  Params:
+  (ee.Date) startDate - the start date of the dataset.
+  (ee.Date) endDate - the end date of the dataset.
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
+  optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var l9_mosaic = geet.mosaic_l9('2015-01-01', '2015-12-31'); // Display the final world mosaic.
+
+  or
+
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var l9_mosaic = geet.mosaic_l9(start, finish, roi); // Display the final mosaic of the roi
+
+  or 
+
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var l9_mosaic = geet.mosaic_l9('2015-01-01', '2015-12-31', roi, false); // Doesnt display the mosaic
+*/
+var mosaic_l9 = function (startDate, endDate, roi, showMosaic) {
+    // Error Handling
+    if (startDate === undefined) error('mosaic_l9', 'You need to specify the start date of the image series.');
+    if (endDate === undefined) error('mosaic_l9', 'You need to specify the end  date of the image series.');
+
+    var l9 = ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA');
+
+    // Default params
+    showMosaic = typeof showMosaic !== 'undefined' ? showMosaic : true;
+
+    if (roi === undefined) {
+        var composite = l9
+            .filterDate(ee.Date(startDate), ee.Date(endDate))
+            .sort('CLOUD_COVER', false)
+            .mosaic();
+    } else {
+        composite = l9
             .filterBounds(roi)
             .filterDate(ee.Date(startDate), ee.Date(endDate))
             .sort('CLOUD_COVER', false)
@@ -3267,6 +3609,26 @@ var ndvi_l8 = function (image) {
 
     var l8_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
     var image_with_ndvi = image.addBands(l8_ndvi);
+    return image_with_ndvi;
+}
+
+/*
+  ndvi_l9:
+  Function calculate the normalized difference vegetation index (NDVI) from Landsat 8 data.
+
+  Params:
+  (ee.Image) image - the input image.
+  
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var l9_ndvi = geet.ndvi_l9(img);
+*/
+var ndvi_l9 = function (image) {
+    // Error handling
+    if (image === undefined) error('ndvi_l9', 'You need to specify an input image.');
+
+    var l9_ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+    var image_with_ndvi = image.addBands(l9_ndvi);
     return image_with_ndvi;
 }
 
@@ -4249,12 +4611,15 @@ exports.collection2image = collection2image
 exports.toa_radiance = toa_radiance
 exports.toa_reflectance = toa_reflectance
 exports.toa_reflectance_l8 = toa_reflectance_l8
+exports.toa_reflectance_l9 = toa_reflectance_l9
 exports.brightness_temp_l5k = brightness_temp_l5k
 exports.brightness_temp_l5c = brightness_temp_l5c
 exports.brightness_temp_l7k = brightness_temp_l7k
 exports.brightness_temp_l7c = brightness_temp_l7c
 exports.brightness_temp_l8k = brightness_temp_l8k
+exports.brightness_temp_l9k = brightness_temp_l9k
 exports.brightness_temp_l8c = brightness_temp_l8c
+exports.brightness_temp_l9c = brightness_temp_l9c
 exports.resample = resample
 exports.resample_band = resample_band
 exports.load_id_s2 = load_id_s2
@@ -4264,10 +4629,12 @@ exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi
 exports.ls5_timeseries_by_pathrow = ls5_timeseries_by_pathrow
 exports.ls7_timeseries_by_pathrow = ls7_timeseries_by_pathrow
 exports.ls8_timeseries_by_pathrow = ls8_timeseries_by_pathrow
+exports.ls9_timeseries_by_pathrow = ls9_timeseries_by_pathrow
 exports.mosaic_s2 = mosaic_s2
 exports.mosaic_l5 = mosaic_l5
 exports.mosaic_l7 = mosaic_l7
 exports.mosaic_l8 = mosaic_l8
+exports.mosaic_l9 = mosaic_l9
 exports.modis_ndvi_mosaic = modis_ndvi_mosaic
 exports.max = max
 exports.min = min
@@ -4282,6 +4649,7 @@ exports.linear_fit = linear_fit
 exports.ndvi_l5 = ndvi_l5
 exports.ndvi_l7 = ndvi_l7
 exports.ndvi_l8 = ndvi_l8
+exports.ndvi_l9 = ndvi_l9
 exports.ndvi_s2 = ndvi_s2
 exports.prop_veg = prop_veg
 exports.surface_emissivity = surface_emissivity
