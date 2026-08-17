@@ -222,13 +222,13 @@ _Function to apply the GMO Maximum Entropy classification to a image._
   
 ##### Usage:
 ```js
-    var imgClass = geet.gmo_max_ent(image, samplesfc, landcover);   
+    var imgClass = geet.max_ent(image, samplesfc, landcover);   
 ```
   
   or
 
 ```js
-   var imgClass = geet.naive_bayes(image, samplesfc, landcover, 30);   
+   var imgClass = geet.max_ent(image, samplesfc, landcover, 30);   
 ```
 
 ------------------------------------------------------------------------------
