@@ -5,7 +5,11 @@ Map.centerObject(roi, 12);
 
 // Filter Small Objects from a classification image
 // (Simulating a classification image)
-var img = ee.Image('COPERNICUS/S2_SR/20200801T133231_20200801T133227_T22KGV');
+var img = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
+  .filterBounds(roi)
+  .filterDate('2020-01-01', '2021-01-01')
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 5))
+  .first();
 var ndvi = geet.sentinel2_indices(img, 'ndvi');
 var classification = ndvi.gt(0.4); // Simple threshold classification
 

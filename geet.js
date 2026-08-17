@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.3.0
+ * Version: 1.3.1
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -270,7 +270,7 @@ var kmeans = function (image, roi, numClusters, resolution, numPixels) {
 
     // Default params
     numClusters = typeof numClusters !== 'undefined' ? numClusters : 15;
-    scale = typeof scale !== 'undefined' ? scale : 30;
+    resolution = typeof resolution !== 'undefined' ? resolution : 30;
     numPixels = typeof numPixels !== 'undefined' ? numPixels : 5000;
 
 
@@ -527,8 +527,6 @@ var color = function (_color) {
     }
 };
 
-    Map.addLayer(image, vizParams, title);
-};
 
 /*
   landsat_indices:

@@ -18,7 +18,7 @@ var img_l8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
   .first();
 
 // 3. Calculating Indices using GEET
-var indices = geet.landsat_indices(img_l8, 'L8', 'all');
+var indices = geet.landsat_indices(img_l8, 'L8');
 var ndvi = indices.select('NDVI');
 var ndwi = indices.select('NDWI');
 
