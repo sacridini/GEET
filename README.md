@@ -100,14 +100,6 @@ All functions implemented (Version 1.5.0 - Beta):
 - [load_id_s2](#load_id_s2)
 - [collection2image](#collection2image)
 
-- [segmentation_snic](#segmentation_snic)
-- [obia_classification](#obia_classification)
-- [filter_small_objects](#filter_small_objects)
-- [harmonic_trend](#harmonic_trend)
-- [zonal_statistics](#zonal_statistics)
-- [harmonize_sensors](#harmonize_sensors)
-- [burn_severity](#burn_severity)
-
 ### Object-Based Image Analysis (GEOBIA)
 - [segmentation_snic](#segmentation_snic)
 - [obia_classification](#obia_classification)
@@ -127,9 +119,9 @@ After adding the library, you can call its functions using the function **_requi
 ```
 
 ### (Português)
-Para utilizar a biblioteca, é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionará automaticamente todo o código da biblioteca à sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca ├® necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
+Para utilizar a biblioteca, é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionará automaticamente todo o código da biblioteca à sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
-Depois de adicionar a biblioteca ├® possível chamar suas funçµes utilizando a função **_require_** e armazenando o conteúdo em uma variável. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizá-la para chamar as funções da biblioteca:
+Depois de adicionar a biblioteca é possível chamar suas funções utilizando a função **_require_** e armazenando o conteúdo em uma variável. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizá-la para chamar as funções da biblioteca:
 
 ```js 
     var geet = require('users/eduardolacerdageo/geet:geet'); 
