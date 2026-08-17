@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -3464,58 +3464,73 @@ function radcalbatch(current, prev) {
 
 /* ------------------------  EXPORTS  ------------------------ */
 
-exports.svm = svm
-exports.cart = cart
-exports.rf = rf
-exports.naive_bayes = naive_bayes
-exports.max_ent = max_ent
-exports.kmeans = kmeans
-exports.ndvi_change_detection = ndvi_change_detection
-exports.ndwi_change_detection = ndwi_change_detection
-exports.ndbi_change_detection = ndbi_change_detection
-exports.texture = texture
-exports.majority = majority
-exports.color = color
-exports.plot_rgb = plot_rgb
-exports.plot_ndvi = plot_ndvi
-exports.plot_ndwi = plot_ndwi
-exports.plot_class = plot_class
-exports.landsat_indices = landsat_indices
-exports.sentinel2_indices = sentinel2_indices
-exports.load_image = load_image
-exports.collection2image = collection2image
-exports.toa_radiance = toa_radiance
-exports.toa_reflectance = toa_reflectance
-exports.resample = resample
-exports.resample_band = resample_band
-exports.load_id_s2 = load_id_s2
-exports.build_annual_landsat_timeseries = build_annual_landsat_timeseries
-exports.landsat_timeseries_by_pathrow = landsat_timeseries_by_pathrow
-exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi
-exports.modis_ndvi_mosaic = modis_ndvi_mosaic
-exports.spearmans_correlation = spearmans_correlation
-exports.linear_fit = linear_fit
-exports.ndvi_s2 = ndvi_s2
-exports.prop_veg = prop_veg
-exports.surface_emissivity = surface_emissivity
-exports.surface_temperature_tm = surface_temperature_tm
-exports.surface_temperature_oli = surface_temperature_oli
-exports.lst_calc_ls5 = lst_calc_ls5
-exports.lst_calc_ls7 = lst_calc_ls7
-exports.lst_calc_ls8 = lst_calc_ls8
-exports.export_image = export_image
-exports.cloudmask = cloudmask
-exports.cloudmask_sr = cloudmask_sr
-exports.fmask = fmask
-exports.pca = pca
-exports.geom_filter = geom_filter
-exports.brightness_temp = brightness_temp
-exports.create_mosaic = create_mosaic
+// 1. Machine Learning & Classification
+exports.svm = svm;
+exports.cart = cart;
+exports.rf = rf;
+exports.naive_bayes = naive_bayes;
+exports.gmo_max_ent = gmo_max_ent;
+exports.kmeans = kmeans;
+
+// 2. Spectral Indices & Transformations
+exports.landsat_indices = landsat_indices;
+exports.sentinel2_indices = sentinel2_indices;
+exports.water_indices = water_indices;
+exports.tasseled_cap = tasseled_cap;
+exports.pca = pca;
+exports.ndviS2 = ndviS2;
+
+// 3. Change Detection
+exports.ndvi_change_detection = ndvi_change_detection;
+exports.ndwi_change_detection = ndwi_change_detection;
+exports.ndbi_change_detection = ndbi_change_detection;
+
+// 4. Time Series & Mosaics
+exports.create_mosaic = create_mosaic;
+exports.smooth_timeseries = smooth_timeseries;
+exports.build_annual_landsat_timeseries = build_annual_landsat_timeseries;
+exports.landsat_timeseries = landsat_timeseries;
+exports.landsat_timeseries_by_pathrow = landsat_timeseries_by_pathrow;
+exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi;
+
+// 5. Radar & Topography
 exports.s1_preprocess = s1_preprocess;
 exports.speckle_filter = speckle_filter;
 exports.terrain_analysis = terrain_analysis;
-exports.smooth_timeseries = smooth_timeseries;
-exports.water_indices = water_indices;
+
+// 6. Pre-Processing & Calibration
+exports.toa_radiance = toa_radiance;
+exports.toa_reflectance = toa_reflectance;
+exports.brightness_temp = brightness_temp;
+exports.surface_emissivity = surface_emissivity;
+exports.surface_temperature_tm = surface_temperature_tm;
+exports.surface_temperature_oli = surface_temperature_oli;
+exports.lst_calc_ls5 = lst_calc_ls5;
+exports.lst_calc_ls7 = lst_calc_ls7;
+exports.lst_calc_ls8 = lst_calc_ls8;
+exports.cloudmask = cloudmask;
+exports.cloudmask_sr = cloudmask_sr;
+exports.fmask = fmask;
+exports.resample = resample;
+exports.resample_band = resample_band;
+exports.geom_filter = geom_filter;
+
+// 7. Statistics & Math
 exports.reduce_image = reduce_image;
-exports.landsat_timeseries = landsat_timeseries;
-exports.tasseled_cap = tasseled_cap;
+exports.spearmans_correlation = spearmans_correlation;
+exports.linear_fit = linear_fit;
+exports.texture = texture;
+exports.majority = majority;
+exports.prop_veg = prop_veg;
+
+// 8. Visualization, Utilities & Export
+exports.plot_rgb = plot_rgb;
+exports.plot_ndvi = plot_ndvi;
+exports.plot_ndwi = plot_ndwi;
+exports.plot_class = plot_class;
+exports.color = color;
+exports.export_image = export_image;
+exports.load_image = load_image;
+exports.load_id_s2 = load_id_s2;
+exports.collection2image = collection2image;
+
