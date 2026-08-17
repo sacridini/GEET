@@ -1,4 +1,4 @@
-# GEET (Google Earth Engine Toolbox)
+﻿# GEET (Google Earth Engine Toolbox)
 
 [![DOI](https://zenodo.org/badge/105400884.svg)](https://zenodo.org/badge/latestdoi/105400884)
 
@@ -9,7 +9,7 @@ Python API: https://developers.google.com/earth-engine/python_install
 
 #### Development Info
 **Author**: Eduardo Ribeiro Lacerda - eduardolacerdageo@gmail.com
-* Researcher @ Humboldt Universität zu Berlin
+* Researcher @ Humboldt Universit├ñt zu Berlin
 
 ## Introduction:
 The Google Earth Engine Toolbox (GEET) is a JavaScript single-file library for help developers to write small code base application with the Google Earth Engine (GEE) plataform.
@@ -76,6 +76,8 @@ All functions implemented (Version 0.8.2 - Beta):
 [fmask](#fmask)       
 [pca](#pca)      
 [geom_filter](#geom_filter)  
+
+
 ------------------------------------------------------------------------------
 
 ### Quickstart Guide:
@@ -89,10 +91,10 @@ After adding the library you can call its functions using the function **_requir
     var image = geet.load_image('TOA', 2015); // Returns and loads an image on the map.
 ```
 
-### (Português)
-Para utilizar a biblioteca é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionará automaticamente todo o código da biblioteca na sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
+### (Portugu├¬s)
+Para utilizar a biblioteca ├® preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionar├í automaticamente todo o c├│digo da biblioteca na sua conta pessoal do Google Earth Engine. S├│ ├® necess├írio realizar este procedimento uma ├║nica vez. Lembre-se que para adicionar a biblioteca ├® necess├írio j├í possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
-Depois de adicionar a biblioteca é possível chamar suas funções utilizando a função **_require_** e armazenando o conteúdo em uma variável. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizar ela para chamar as funções da biblioteca:
+Depois de adicionar a biblioteca ├® poss├¡vel chamar suas fun├º├Áes utilizando a fun├º├úo **_require_** e armazenando o conte├║do em uma vari├ível. Neste caso, criaremos uma vari├ível chamada **_geet_** que cont├®m todo o conte├║do da biblioteca. Depois, podemos utilizar ela para chamar as fun├º├Áes da biblioteca:
 
 ```js 
     var geet = require('users/eduardolacerdageo/geet:geet'); 
@@ -561,8 +563,8 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
   
 
 #### Information:
-  Formula:     **_Lλ = MLQcal + AL_**  
-  Lλ           = TOA spectral radiance (Watts/( m2 * srad * μm))    
+  Formula:     **_L╬╗ = MLQcal + AL_**  
+  L╬╗           = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))    
   ML           = Band-specific multiplicative rescaling factor from the metadata (RADIANCE_MULT_BAND_x, where x is the band number)  
   AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)  
   Qcal         = Quantized and calibrated standard product pixel values (DN)  
@@ -586,81 +588,6 @@ _Generic function to calculate TOA Reflectance from raw DN._
 ```
 
 ------------------------------------------------------------------------------
-#### Params:
-  (ee.Image) image - The image to process.  
-  (number) band - The number of the band that you want to process.                         
-  
-##### Usage:
-```js   
-    var new_toa_reflectance = geet.toa_reflectance(img, 10); // ee.Image    
-```
-
-#### Information:
-  Formula:      **_ρλ' = MρQcal + Aρ_**  
-  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.  
-  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)  
-  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)  
-  Qcal          = Quantized and calibrated standard product pixel values (DN)  
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - The image to process.  
-  (number) band - The number of the band that you want to process.  
-  (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.                       
-  
-##### Usage:
-```js
-    var new_toa_reflectance_sz = geet.toa_reflectance_l8(img, 10, 'SZ'); // ee.Image   
-```
-
-
-  or
-
-```js
-    var new_toa_reflectance_se = geet.toa_reflectance_l8(img, 10, 'SE'); // ee.Image    
-``` 
-
-#### Information:
-  Formula:      **_ρλ' = MρQcal + Aρ_**  
-  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.  
-  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)  
-  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)  
-  Qcal          = Quantized and calibrated standard product pixel values (DN)  
-
-  SE = Local sun elevation angle. The scene center sun elevation angle in degrees is provided in the metadata (SUN_ELEVATION).  
-  SZ = Local solar zenith angle: SZ = 90° - SE  
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - The image to process.  
-  (number) band - The number of the band that you want to process.  
-  (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.                       
-  
-##### Usage:
-```js
-    var new_toa_reflectance_sz = geet.toa_reflectance_l9(img, 10, 'SZ'); // ee.Image   
-```
-
-
-  or
-
-```js
-    var new_toa_reflectance_se = geet.toa_reflectance_l9(img, 10, 'SE'); // ee.Image    
-``` 
-
-#### Information:
-  Formula:      **_ρλ' = MρQcal + Aρ_**  
-  ρλ'           = TOA planetary reflectance, without correction for solar angle.  Note that ρλ' does not contain a correction for the sun angle.  
-  Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)  
-  Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)  
-  Qcal          = Quantized and calibrated standard product pixel values (DN)  
-
-  SE = Local sun elevation angle. The scene center sun elevation angle in degrees is provided in the metadata (SUN_ELEVATION).  
-  SZ = Local solar zenith angle: SZ = 90° - SE  
-
-------------------------------------------------------------------------------
 
 #### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                        
@@ -673,7 +600,7 @@ _Generic function to calculate TOA Reflectance from raw DN._
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)  
-  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  L╬╗          = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))  
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)  
 
@@ -689,7 +616,7 @@ _Generic function to calculate TOA Reflectance from raw DN._
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)  
-  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  L╬╗          = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))  
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)   
 
@@ -705,7 +632,7 @@ _Generic function to calculate TOA Reflectance from raw DN._
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)  
-  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  L╬╗          = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))  
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)    
 
@@ -723,7 +650,7 @@ _Generic function to calculate TOA Reflectance from raw DN._
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)  
-  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  L╬╗          = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))  
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)  
 
@@ -746,7 +673,7 @@ or
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)  
-  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  L╬╗          = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))  
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 
@@ -769,7 +696,7 @@ or
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)    
-  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))    
+  L╬╗          = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))    
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)    
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)  
 
@@ -792,7 +719,7 @@ or
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)  
-  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))  
+  L╬╗          = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))  
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)  
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)
 
@@ -815,7 +742,7 @@ or
 
 #### Information:
   T           = Top of atmosphere brightness temperature (K)    
-  Lλ          = TOA spectral radiance (Watts/( m2 * srad * μm))    
+  L╬╗          = TOA spectral radiance (Watts/( m2 * srad * ╬╝m))    
   K1          = Band-specific thermal conversion constant from the metadata (K1_CONSTANT_BAND_x, where x is the thermal band number)    
   K2          = Band-specific thermal conversion constant from the metadata (K2_CONSTANT_BAND_x, where x is the thermal band number)  
 
@@ -918,58 +845,6 @@ _Function that return a image collection with all landsat images (5 and 8) from 
 ##### Usage:
 ```js   
     var ls_collection = geet.landsat_timeseries_by_roi('SR', roi); 
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (string) type - the type of the collection (RAW, TOA or SR)
-  (number) path - the path number of the image
-  (number) row - the row number of the image
-                            
-  
-##### Usage:
-```js
-	var ls_collection = geet.ls5_timeseries_by_pathrow('SR', 220, 77); 
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (string) type - the type of the collection (RAW, TOA or SR)
-  (number) path - the path number of the image
-  (number) row - the row number of the image
-                            
-  
-##### Usage:
-```js
-	var ls_collection = geet.ls7_timeseries_by_pathrow('SR', 220, 77); 
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (string) type - the type of the collection (RAW, TOA or SR)
-  (number) path - the path number of the image
-  (number) row - the row number of the image
-                            
-  
-##### Usage:
-```js
-	var ls_collection = geet.ls5_timeseries_by_pathrow('SR', 220, 77); 
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (string) type - the type of the collection (RAW, TOA or SR)
-  (number) path - the path number of the image
-  (number) row - the row number of the image
-                            
-  
-##### Usage:
-```js
-	var ls_collection = geet.ls9_timeseries_by_pathrow('SR', 220, 77); 
 ```
 
 ------------------------------------------------------------------------------
@@ -1124,158 +999,6 @@ or
 
 ------------------------------------------------------------------------------
 
-#### Params:
-  (ee.Image) image - the input image.   
-  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.  
-  **optional** (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.  
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.                              
-  
-##### Usage:
-```js
-    var img_max = geet.max(img);     
-```
-
-or
-
-```js
-   var img_max = geet.max(img, roi, 30, 1e12); 
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.  
-  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.      
-  **optional** (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.    
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.                               
-  
-##### Usage:
-```js
-    var img_min = geet.min(img);    
-```
-
-or
-
-```js
-   var img_min = geet.min(img, roi, 30, 1e12); 
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.      
-  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.            
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.   
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.       
-
-##### Usage: 
-```js 
-    var mean = geet.mean(img);  
-```
-
-or
-
-```js 
-    var mean = geet.mean(img, roi, 30, 1e12);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.        
-  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
-
-##### Usage: 
-```js 
-    var median = geet.median(img);  
-```
-
-or
-
-```js 
-    var median = geet.median(img, roi, 30, 1e12);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.        
-  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
-
-##### Usage: 
-```js 
-    var mode = geet.mode(img);  
-```
-
-or
-
-```js 
-    var mode = geet.mode(img, roi, 30, 1e12);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.        
-  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
-
-##### Usage: 
-```js 
-    var standardDeviation = geet.sd(img);  
-```
-
-or
-
-```js 
-    var standardDeviation = geet.sd(img, roi, 30, 1e12);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.        
-  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
-
-##### Usage: 
-```js 
-    var variance = geet.variance(img);  
-```
-
-or
-
-```js 
-    var variance = geet.variance(img, roi, 30, 1e12);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.        
-  **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.         
-
-##### Usage: 
-```js 
-    var amplitude = geet.amplitude(img);  
-```
-
-or
-
-```js 
-    var amplitude = geet.amplitude(img, roi, 30, 1e12);  
-```
-
-------------------------------------------------------------------------------
-
 #### spearmans_correlation
 (image, roi, scale, maxPixels)  
 
@@ -1322,46 +1045,6 @@ or
 
 ```js 
     var linearFit = geet.linear_fit(img1, img2, roi, 30, 1e12);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.                             
-  
-##### Usage:
-```js
-    var l5_ndvi = geet.ndvi_l5(img);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.                             
-  
-##### Usage:
-```js
-    var l7_ndvi = geet.ndvi_l7(img);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.                             
-  
-##### Usage:
-```js
-    var l8_ndvi = geet.ndvi_l8(img);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.                             
-  
-##### Usage:
-```js
-    var l9_ndvi = geet.ndvi_l9(img);  
 ```
 
 ------------------------------------------------------------------------------
@@ -1603,48 +1286,6 @@ _Function filter a geometry/feature by value._
 ```js
       var geom_filtered = geet.geom_filter(geom, 'AreaSqKm', '>', 25000);
 ```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.                                   
-  
-##### Usage:
-```js
-      var image_tcap = geet.tasseledcap_oli(img);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.                                   
-  
-##### Usage:
-```js
-      var image_tcap = geet.tasseledcap_tm5(img);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.                                   
-  
-##### Usage:
-```js
-      var image_tcap = geet.tasseledcap_tm7(img);  
-```
-
-------------------------------------------------------------------------------
-
-#### Params:
-  (ee.Image) image - the input image.                                   
-  
-##### Usage:
-```js
-      var image_tcap = geet.tasseledcap_s2(img);  
-```
-
-------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------
 
