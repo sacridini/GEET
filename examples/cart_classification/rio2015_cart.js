@@ -6,4 +6,4 @@ var cart_class = geet.cart(idx, newfc, 'landcover');
 var COLOR = { WATER: '0066ff', FOREST: '009933', PASTURE: '99cc00', URBAN: 'ff0000' };
 Map.addLayer(cart_class, { min: 0, max: 3, palette: [COLOR.URBAN, COLOR.FOREST, COLOR.PASTURE, COLOR.WATER] }, 'class');
 Map.setCenter(-43.25, -22.90, 10);
-geet.export_image(cart_class, 'rio2015_cart', 30, 1e13, roi);
+geet.export_image(cart_class, 'rio2015_cart', 30, 1e13);

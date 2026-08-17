@@ -5,7 +5,7 @@ var roi = ee.Geometry.Point([-47.92, -15.86]).buffer(5000);
 Map.centerObject(roi, 12);
 
 // 2. Get Landsat Time Series (e.g., NDVI over a year)
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
   .filterBounds(roi)
   .filterDate('2020-01-01', '2020-12-31')
   .map(function(img) {

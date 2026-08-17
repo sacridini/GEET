@@ -21,7 +21,7 @@ GEET using Landsat collection 2 will be available soon!
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.3.0 - Beta):
+All functions implemented (Version 1.4.0 - Beta):
 
 ### Machine Learning & Classification
 - [svm](#svm)
@@ -489,7 +489,7 @@ _Function to apply a moving average filter to smooth a time series of images (e.
 #### build_annual_landsat_timeseries
 (roi)
 
-_Function to build a annual Landsat surface reflectance timeseries from 1985 to 2017. The function also mask clouds and shadow and create some indices bands like NDVI, NDWI and SAVI._  
+_Function to build an annual Landsat (5, 7, 8, and 9) TOA timeseries from 1985 to 2030. The function also masks clouds and shadows, normalizes bands to standard English names, and generates all indices (NDVI, NDWI, SAVI, Tasseled Cap)._  
 
 ##### Params:  
   (ee.Point) roi - the region of interest that will define the study area and the landsat path row  

@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.3.1
+ * Version: 1.4.0
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -608,7 +608,7 @@ var landsat_indices = function (image, sensor, index) {
     };
 
     for (var i = 0; i < list_to_process.length; i++) {
-        var idx_name = list_to_process[i];
+        var idx_name = list_to_process[i].toLowerCase();
         if (dict[idx_name] !== undefined) {
             var expr = dict[idx_name];
             var computed = image.expression(expr, img_bands).rename(idx_name.toUpperCase());
@@ -673,7 +673,7 @@ var sentinel2_indices = function (image, index) {
     };
 
     for (var i = 0; i < list_to_process.length; i++) {
-        var idx_name = list_to_process[i];
+        var idx_name = list_to_process[i].toLowerCase();
         if (dict[idx_name] !== undefined) {
             var computed = image.normalizedDifference(dict[idx_name]).rename(idx_name.toUpperCase());
             new_bands.push(computed);
@@ -702,7 +702,7 @@ var load_image = function (collection, year, roi, cloudFree) {
         } else if (collection === 'TOA') {
             collection = 'LANDSAT/LC08/C02/T1_TOA';
         } else if (collection === 'SR') {
-            collection = 'LANDSAT/LC08/C02/T1_L2';
+            collection = 'LANDSAT/LC08/C02/T1_TOA';
         } else {
             print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
         }
@@ -712,7 +712,7 @@ var load_image = function (collection, year, roi, cloudFree) {
         } else if (collection === 'TOA') {
             collection = 'LANDSAT/LT05/C02/T1_TOA';
         } else if (collection === 'SR') {
-            collection = 'LANDSAT/LT05/C02/T1_L2';
+            collection = 'LANDSAT/LT05/C02/T1_TOA';
         } else {
             print("Error: Wrong collection type. Possible inputs: 'RAW', 'TOA' or 'SR'.");
         }
@@ -1172,9 +1172,10 @@ var build_annual_landsat_timeseries = function (roi) {
 
     roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point([-43.0879, -22.8632]);
 
-    var ls5_sr = ee.ImageCollection("LANDSAT/LT05/C02/T1_L2"),
-        ls7_sr = ee.ImageCollection("LANDSAT/LE07/C02/T1_L2"),
-        ls8_sr = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2");
+    var ls5_sr = ee.ImageCollection("LANDSAT/LT05/C02/T1_TOA"),
+        ls7_sr = ee.ImageCollection("LANDSAT/LE07/C02/T1_TOA"),
+        ls8_sr = ee.ImageCollection("LANDSAT/LC08/C02/T1_TOA"),
+        ls9_sr = ee.ImageCollection("LANDSAT/LC09/C02/T1_TOA");
 
     var ls5_ic = ee.ImageCollection(ls5_sr)
         .filterBounds(roi)
@@ -1182,11 +1183,16 @@ var build_annual_landsat_timeseries = function (roi) {
 
     var ls7_ic = ee.ImageCollection(ls7_sr)
         .filterBounds(roi)
-        .filterDate('1999-01-01', '2018-12-31')
+        .filterDate('1999-01-01', '2030-12-31')
+
+    var ls9_ic = ee.ImageCollection(ls9_sr)
+        .filterBounds(roi)
+        .filterDate('2021-11-01', '2030-12-31');
 
     var ls8_ic = ee.ImageCollection(ls8_sr)
         .filterBounds(roi)
-        .filterDate('2013-05-01', '2018-12-31')
+        .filterDate('2013-05-01', '2030-12-31')
+        .merge(ls9_ic);
 
 
     function rename_bands_tm(image) {
@@ -1217,15 +1223,15 @@ var build_annual_landsat_timeseries = function (roi) {
 
 
     var ls5_ic_idx = ls5_ic.map(function (image) { return calc_indices(image, "L5"); })
-        .map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+        .map(function (image) { return mask_clouds(image, image.select("QA_PIXEL")); })
         .map(rename_bands_tm);
 
     var ls7_ic_idx = ls7_ic.map(function (image) { return calc_indices(image, "L7"); })
-        .map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+        .map(function (image) { return mask_clouds(image, image.select("QA_PIXEL")); })
         .map(rename_bands_tm);
 
     var ls8_ic_idx = ls8_ic.map(function (image) { return calc_indices(image, "L8"); })
-        .map(function (image) { return mask_clouds(image, image.select("pixel_qa")); })
+        .map(function (image) { return mask_clouds(image, image.select("QA_PIXEL")); })
         .map(rename_bands_oli);
 
 
@@ -1277,7 +1283,7 @@ var build_annual_landsat_timeseries = function (roi) {
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
             var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
-            year_col_list = year_col_list.add(merged);
+            year_col_list = year_col_list.add(ee.Image(merged).set('year', year));
         }
 
         var by_year = ee.ImageCollection(year_col_list)
@@ -1291,7 +1297,7 @@ var build_annual_landsat_timeseries = function (roi) {
         var year_col_list = ee.List([]);
 
 
-        for (var year = 2013; year <= 2018; year++) {
+        for (var year = 2013; year <= 2030; year++) {
             var temp_col_list = ee.List([]);
             var collection = collection_ls8.filterDate(year.toString() + start, year.toString() + finish);
 
@@ -1324,7 +1330,7 @@ var build_annual_landsat_timeseries = function (roi) {
 
             var by_year_temp = ee.ImageCollection(temp_col_list);
             var merged = by_year_temp.iterate(merge_bands, ee.Image([]));
-            year_col_list = year_col_list.add(merged);
+            year_col_list = year_col_list.add(ee.Image(merged).set('year', year));
         }
 
         var by_year = ee.ImageCollection(year_col_list)
@@ -1412,19 +1418,19 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
             var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
         case 'sr':
-            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls);
-*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+*/            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row))
                 .map(add_ndvi_ls8)
-                .map(function (image) { return cloudmask_sr(image, image.select("pixel_qa")); });
+                .map(function (image) { return cloudmask_sr(image, image.select("QA_PIXEL")); });
             var all_ls_collection = ls5_collection.merge(ls8_collection);
             return all_ls_collection;
     }
@@ -1495,17 +1501,17 @@ var landsat_timeseries_by_roi = function (type, roi) {
                 var with_ndvi = image.normalizedDifference(['SR_B5', 'SR_B4']).rename('NDVI');
                 return image.addBands(with_ndvi)
             }
-            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
+            var ls5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls_sr);
-/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
+/*            var ls7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls_sr);*/
-            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+            var ls8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls8_sr)
                 .map(function (image) { return cloudmask_sr(image, image.select("QA_PIXEL")); });
-            var ls9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_L2')
+            var ls9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA')
                 .filterBounds(roi)
                 .map(add_ndvi_ls8_sr)
                 .map(function (image) { return cloudmask_sr(image, image.select("QA_PIXEL")); });
@@ -1546,7 +1552,7 @@ var ls5_timeseries_by_pathrow = function (type, path, row) {
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l5_collection;
         case 'sr':
-            var l5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
+            var l5_collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l5_collection;
@@ -1585,7 +1591,7 @@ var ls7_timeseries_by_pathrow = function (type, path, row) {
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l7_collection;
         case 'sr':
-            var l7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
+            var l7_collection = ee.ImageCollection('LANDSAT/LE07/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l7_collection;
@@ -1624,7 +1630,7 @@ var ls8_timeseries_by_pathrow = function (type, path, row) {
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l8_collection;
         case 'sr':
-            var l8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+            var l8_collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l8_collection;
@@ -1662,7 +1668,7 @@ var ls9_timeseries_by_pathrow = function (type, path, row) {
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l9_collection;
         case 'sr':
-            var l9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_L2')
+            var l9_collection = ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA')
                 .filter(ee.Filter.eq('WRS_PATH', path))
                 .filter(ee.Filter.eq('WRS_ROW', row));
             return l9_collection;
@@ -2517,7 +2523,7 @@ var cloudmask = function (image) {
 
   Usage:
   var img = images.first();
-  var QA = img.select(['pixel_qa']);
+  var QA = img.select(['QA_PIXEL']);
   var masked_img = cloudmask_sr(img, QA);
 */
 var cloudmask_sr = function (original_image, qa_band) {
@@ -2561,7 +2567,7 @@ var fmask = function(image) {
   var cloudShadowBitMask = (1 << 3);
   var cloudsBitMask = (1 << 5);
   // Get the pixel QA band.
-  var qa = image.select('pixel_qa');
+  var qa = image.select('QA_PIXEL');
   // Both flags should be set to zero, indicating clear conditions.
   var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
                  .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
@@ -3104,275 +3110,6 @@ var terrain_analysis = function(roi) {
     return ee.Image([elevation, slope, aspect, hillshade]);
 };
 
-
-/* ------------------------ TEST ZONE ------------------------ */
-
-// JavaScript implementation of this great work: https://github.com/mortcanty/earthengine
-
-function imad(current, prev) {
-    var done = ee.Number(ee.Dictionary(prev).get('done'))
-    return ee.Algorithms.If(done, prev, imad1(current, prev))
-}
-
-function chi2cdf(chi2, df) {
-    /* Chi square cumulative distribution function */
-    return ee.Image(chi2.divide(2)).gammainc(ee.Number(df).divide(2))
-}
-
-function addcoeffs(current, prev) {
-    var coeff = ee.List(current)
-    var log = ee.List(prev)
-    return log.add(coeff)
-}
-
-function geneiv(C, B) {
-    /* Generalized eigenproblem C*X = lambda*B*X */
-    var C = ee.Array(C)
-    var B = ee.Array(B)
-    // Li = choldc(B)^-1
-    var Li = ee.Array(B.matrixCholeskyDecomposition().get('L')).matrixInverse()
-    //  solve symmetric eigenproblem Li*C*Li^T*x = lambda*x
-    var Xa = Li.matrixMultiply(C)
-        .matrixMultiply(Li.matrixTranspose())
-        .eigen()
-    // eigenvalues as a row vector
-    var lambdas = Xa.slice(1, 0, 1).matrixTranspose()
-    // eigenvectors as columns
-    var X = Xa.slice(1, 1).matrixTranspose()
-    // generalized eigenvectors as columns, Li^T*X
-    var eigenvecs = Li.matrixTranspose().matrixMultiply(X)
-    return (lambdas, eigenvecs)
-}
-
-function covarw(image, weights, maxPixels) {
-    maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
-
-    /* Return the weighted centered image and its weighted covariance matrix */
-    var geometry = image.geometry();
-    var bandNames = image.bandNames();
-    var N = bandNames.length();
-    var scale = image.select(0).projection().nominalScale();
-    var weightsImage = image.multiply(ee.Image.constant(0)).add(weights);
-    var means = image.addBands(weightsImage).reduceRegion({
-        reducer: ee.Reducer.mean().repeat(N).splitWeights(),
-        scale: scale,
-        maxPixels: maxPixels
-    }).toArray().project([1]);
-    var centered = image.toArray().subtract(means);
-    var B1 = centered.bandNames().get(0);
-    var b1 = weights.bandNames().get(0);
-    var nPixels = ee.Number(centered.reduceRegion({
-        reducer: ee.Reducer.count(),
-        scale: scale,
-        maxPixels: maxPixels
-    }).get(B1));
-    var sumWeights = ee.Number(weights.reduceRegion({
-        reducer: ee.Reducer.sum(),
-        geometry: geometry,
-        scale: scale,
-        maxPixels: maxPixels
-    }).get(b1));
-    var covw = centered.multiply(weights.sqrt()).toArray().reduceRegion({
-        reducer: ee.Reducer.centeredCovariance(),
-        geometry: geometry,
-        scale: scale,
-        maxPixels: maxPixels
-    }).get('array');
-    var covw = ee.Array(covw).multiply(nPixels).divide(sumWeights);
-    return [centered.arrayFlatten([bandNames]), covw]
-}
-
-function imad1(current, prev) {
-    /* Iteratively re-weighted MAD */
-    var image = ee.Image(ee.Dictionary(prev).get('image'));
-    var chi2 = ee.Image(ee.Dictionary(prev).get('chi2'));
-    var allrhos = ee.List(ee.Dictionary(prev).get('allrhos'));
-    var region = image.geometry();
-    var nBands = image.bandNames().length().divide(2);
-    var weights = chi2cdf(chi2, nBands).subtract(1).multiply(-1);
-    // ---------- check later -----------
-    // centeredImage,covarArray = covarw(image,weights) - python
-    var centeredImage = covarw(image, weights)[0];
-    var covarArray = covarw(image, weights)[1];
-    // ---------- check later -----------
-    var bNames = centeredImage.bandNames();
-    var bNames1 = bNames.slice(0, nBands);
-    var bNames2 = bNames.slice(nBands);
-    var centeredImage1 = centeredImage.select(bNames1);
-    var centeredImage2 = centeredImage.select(bNames2);
-    var s11 = covarArray.slice(0, 0, nBands).slice(1, 0, nBands);
-    var s22 = covarArray.slice(0, nBands).slice(1, nBands);
-    var s12 = covarArray.slice(0, 0, nBands).slice(1, nBands);
-    var s21 = covarArray.slice(0, nBands).slice(1, 0, nBands);
-    var c1 = s12.matrixMultiply(s22.matrixInverse()).matrixMultiply(s21);
-    var b1 = s11;
-    var c2 = s21.matrixMultiply(s11.matrixInverse()).matrixMultiply(s12);
-    var b2 = s22;
-    /* solution of generalized eigenproblems */
-    var lambdas = geneiv(c1, b1)[0];
-    var A = geneiv(c1, b1)[1];
-    var B = geneiv(c2, b2)[1];
-    var rhos = lambdas.sqrt().project(ee.List([1]));
-    /* sort in increasing order */
-    var keys = ee.List.sequence(nBands, 1, -1);
-    A = A.sort([keys]);
-    B = B.sort([keys]);
-    rhos = rhos.sort(keys);
-    /* test for convergence */
-    var lastrhos = ee.Array(allrhos.get(-1));
-    var done = rhos.subtract(lastrhos).abs().reduce(ee.Reducer.max(), ee.List([0]))
-        .lt(ee.Number(0.001))
-        .toList()
-        .get(0);
-    var allrhos = allrhos.cat([rhos.toList()]);
-    /* MAD variances */
-    var sigma2s = rhos.subtract(1).multiply(-2).toList();
-    var sigma2s = ee.Image.constant(sigma2s);
-    /* ensure sum of positive correlations between X and U is positive */
-    var tmp = s11.matrixDiagonal().sqrt();
-    var ones = tmp.multiply(0).add(1);
-    var tmp = ones.divide(tmp).matrixToDiag();
-    var s = tmp.matrixMultiply(s11).matrixMultiply(A).reduce(ee.Reducer.sum(), [0]).transpose();
-    var A = A.matrixMultiply(s.divide(s.abs()).matrixToDiag());
-    /* ensure positive correlation */
-    var tmp = A.transpose().matrixMultiply(s12).matrixMultiply(B).matrixDiagonal();
-    var tmp = tmp.divide(tmp.abs()).matrixToDiag();
-    var B = B.matrixMultiply(tmp);
-    /* canonical and MAD variates  */
-    var centeredImage1Array = centeredImage1.toArray().toArray(1);
-    var centeredImage2Array = centeredImage2.toArray().toArray(1);
-    var U = ee.Image(A.transpose()).matrixMultiply(centeredImage1Array)
-        .arrayProject([0])
-        .arrayFlatten([bNames1]);
-    var V = ee.Image(B.transpose()).matrixMultiply(centeredImage2Array)
-        .arrayProject([0])
-        .arrayFlatten([bNames2]);
-    var MAD = U.subtract(V);
-    /* chi square image */
-    var chi2 = MAD.pow(2).divide(sigma2s).reduce(ee.Reducer.sum()).clip(region);
-    return ee.Dictionary({ 'done': done, 'image': image, 'allrhos': allrhos, 'chi2': chi2, 'MAD': MAD });
-}
-
-function radcal(current, prev) {
-    /* iterator function for orthogonal regression and interactive radiometric normalization */
-    var k = ee.Number(current);
-    var prev = ee.Dictionary(prev);
-    /* image is concatenation of reference and target */
-    var image = ee.Image(prev.get('image'));
-    var ncmask = ee.Image(prev.get('ncmask'));
-    var nbands = ee.Number(prev.get('nbands'));
-    var rect = ee.Geometry(prev.get('rect'));
-    var coeffs = ee.List(prev.get('coeffs'));
-    var normalized = ee.Image(prev.get('normalized'));
-    var scale = image.select(0).projection().nominalScale();
-    /* orthoregress reference onto target */
-    var image1 = image.clip(rect).select(k.add(nbands), k).updateMask(ncmask).rename(['x', 'y']);
-    var means = image1.reduceRegion({
-        reducer: ee.Reducer.mean(),
-        scale: scale,
-        maxPixels: 1e9
-    }).toArray().project([0]);
-    var Xm = means.get([0]);
-    var Ym = means.get([1]);
-    var S = ee.Array(image1.toArray().reduceRegion({
-        reducer: ee.Reducer.covariance(),
-        geometry: rect,
-        scale: scale,
-        maxPixels: 1e9
-    }).get('array'));
-    /* Pearson correlation */
-    var R = S.get([0, 1]).divide(S.get([0, 0]).multiply(S.get([1, 1])).sqrt());
-    var eivs = S.eigen();
-    var e1 = eivs.get([0, 1]);
-    var e2 = eivs.get([0, 2]);
-    /* slope and intercept */
-    var b = e2.divide(e1);
-    var a = Ym.subtract(b.multiply(Xm));
-    var coeffs = coeffs.add(ee.List([b, a, R]));
-    /* normalize kth band in target */
-    var normalized = normalized.addBands(image.select(k.add(nbands)).multiply(b).add(a));
-    return ee.Dictionary({ 'image': image, 'ncmask': ncmask, 'nbands': nbands, 'rect': rect, 'coeffs': coeffs, 'normalized': normalized });
-}
-
-
-function radcalbatch(current, prev) {
-    /* Batch radiometric normalization */
-    var prev = ee.Dictionary(prev);
-    var target = ee.Image(current);
-    var reference = ee.Image(prev.get('reference'));
-    var normalizedimages = ee.List(prev.get('normalizedimages'));
-    var niter = ee.Number(prev.get('niter'));
-    var rect = ee.Geometry(prev.get('rect'));
-    var log = ee.List(prev.get('log'));
-    var nbands = reference.bandNames().length();
-    /* clip the images to subset and run iMAD */
-    var inputlist = ee.List.sequence(1, niter);
-    var image = reference.addBands(target);
-    var first = ee.Dictionary({
-        'done': ee.Number(0),
-        'image': image.clip(rect),
-        'allrhos': [ee.List.sequence(1, nbands)],
-        'chi2': ee.Image.constant(0),
-        'MAD': ee.Image.constant(0)
-    });
-    var result = ee.Dictionary(inputlist.iterate(imad, first));
-    var chi2 = ee.Image(result.get('chi2')).rename(['chi2']);
-    var allrhos = ee.List(result.get('allrhos'));
-    /* run radcal */
-    var ncmask = chi2cdf(chi2, nbands).lt(ee.Image.constant(0.05));
-    var inputlist1 = ee.List.sequence(0, nbands.subtract(1));
-    var first = ee.Dictionary({
-        'image': image,
-        'ncmask': ncmask,
-        'nbands': nbands,
-        'rect': rect,
-        'coeffs': ee.List([]),
-        'normalized': ee.Image()
-    });
-    var result = ee.Dictionary(inputlist1.iterate(radcal, first));
-    var coeffs = ee.List(result.get('coeffs'));
-    /* update log */
-    var ninvar = ee.String(ncmask.reduceRegion({
-        reducer: ee.Reducer.sum().unweighted(),
-        maxPixels: 1e9
-    }).toArray().project([0]));
-    var log = log.add(target.get('system:id'));
-    var iters = allrhos.length().subtract(1);
-    var log = log.add(ee.Algorithms.If(iters.eq(niter), ['No convergence, iterations:', iters],
-        ['Iterations:', iters]));
-    var log = log.add(['Invariant pixels:', ninvar]);
-    var log = ee.List(coeffs.iterate(addcoeffs, log));
-    /* first band in normalized result is empty */
-    var sel = ee.List.sequence(1, nbands);
-    var normalized = ee.Image(result.get('normalized')).select(sel);
-    var normalizedimages = normalizedimages.add(normalized);
-    return ee.Dictionary({ 'reference': reference, 'rect': rect, 'niter': niter, 'log': log, 'normalizedimages': normalizedimages });
-}
-
-/* ------------------------ TEST ZONE ------------------------ */
-
-
-
-
-/* ------------------------  EXPORTS  ------------------------ */
-
-// 1. Machine Learning & Classification
-
-// 2. Spectral Indices & Transformations
-
-// 3. Change Detection
-
-// 4. Time Series & Mosaics
-
-// 5. Radar & Topography
-
-// 6. Pre-Processing & Calibration
-
-// 7. Statistics & Math
-
-// 8. Visualization, Utilities & Export
-exports.plot = plot;
-
 /*
   tasseled_cap:
   Function to create a Tasselled Cap image.
@@ -3827,9 +3564,257 @@ var plot = function (image, type, name, options) {
 };
 
 
-//========================================================================================
-// EXPORTS ORGANIZED BY CATEGORY
-//========================================================================================
+
+/* ------------------------ TEST ZONE ------------------------ */
+
+// JavaScript implementation of this great work: https://github.com/mortcanty/earthengine
+
+function imad(current, prev) {
+    var done = ee.Number(ee.Dictionary(prev).get('done'))
+    return ee.Algorithms.If(done, prev, imad1(current, prev))
+}
+
+function chi2cdf(chi2, df) {
+    /* Chi square cumulative distribution function */
+    return ee.Image(chi2.divide(2)).gammainc(ee.Number(df).divide(2))
+}
+
+function addcoeffs(current, prev) {
+    var coeff = ee.List(current)
+    var log = ee.List(prev)
+    return log.add(coeff)
+}
+
+function geneiv(C, B) {
+    /* Generalized eigenproblem C*X = lambda*B*X */
+    var C = ee.Array(C)
+    var B = ee.Array(B)
+    // Li = choldc(B)^-1
+    var Li = ee.Array(B.matrixCholeskyDecomposition().get('L')).matrixInverse()
+    //  solve symmetric eigenproblem Li*C*Li^T*x = lambda*x
+    var Xa = Li.matrixMultiply(C)
+        .matrixMultiply(Li.matrixTranspose())
+        .eigen()
+    // eigenvalues as a row vector
+    var lambdas = Xa.slice(1, 0, 1).matrixTranspose()
+    // eigenvectors as columns
+    var X = Xa.slice(1, 1).matrixTranspose()
+    // generalized eigenvectors as columns, Li^T*X
+    var eigenvecs = Li.matrixTranspose().matrixMultiply(X)
+    return (lambdas, eigenvecs)
+}
+
+function covarw(image, weights, maxPixels) {
+    maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
+
+    /* Return the weighted centered image and its weighted covariance matrix */
+    var geometry = image.geometry();
+    var bandNames = image.bandNames();
+    var N = bandNames.length();
+    var scale = image.select(0).projection().nominalScale();
+    var weightsImage = image.multiply(ee.Image.constant(0)).add(weights);
+    var means = image.addBands(weightsImage).reduceRegion({
+        reducer: ee.Reducer.mean().repeat(N).splitWeights(),
+        scale: scale,
+        maxPixels: maxPixels
+    }).toArray().project([1]);
+    var centered = image.toArray().subtract(means);
+    var B1 = centered.bandNames().get(0);
+    var b1 = weights.bandNames().get(0);
+    var nPixels = ee.Number(centered.reduceRegion({
+        reducer: ee.Reducer.count(),
+        scale: scale,
+        maxPixels: maxPixels
+    }).get(B1));
+    var sumWeights = ee.Number(weights.reduceRegion({
+        reducer: ee.Reducer.sum(),
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels
+    }).get(b1));
+    var covw = centered.multiply(weights.sqrt()).toArray().reduceRegion({
+        reducer: ee.Reducer.centeredCovariance(),
+        geometry: geometry,
+        scale: scale,
+        maxPixels: maxPixels
+    }).get('array');
+    var covw = ee.Array(covw).multiply(nPixels).divide(sumWeights);
+    return [centered.arrayFlatten([bandNames]), covw]
+}
+
+function imad1(current, prev) {
+    /* Iteratively re-weighted MAD */
+    var image = ee.Image(ee.Dictionary(prev).get('image'));
+    var chi2 = ee.Image(ee.Dictionary(prev).get('chi2'));
+    var allrhos = ee.List(ee.Dictionary(prev).get('allrhos'));
+    var region = image.geometry();
+    var nBands = image.bandNames().length().divide(2);
+    var weights = chi2cdf(chi2, nBands).subtract(1).multiply(-1);
+    // ---------- check later -----------
+    // centeredImage,covarArray = covarw(image,weights) - python
+    var centeredImage = covarw(image, weights)[0];
+    var covarArray = covarw(image, weights)[1];
+    // ---------- check later -----------
+    var bNames = centeredImage.bandNames();
+    var bNames1 = bNames.slice(0, nBands);
+    var bNames2 = bNames.slice(nBands);
+    var centeredImage1 = centeredImage.select(bNames1);
+    var centeredImage2 = centeredImage.select(bNames2);
+    var s11 = covarArray.slice(0, 0, nBands).slice(1, 0, nBands);
+    var s22 = covarArray.slice(0, nBands).slice(1, nBands);
+    var s12 = covarArray.slice(0, 0, nBands).slice(1, nBands);
+    var s21 = covarArray.slice(0, nBands).slice(1, 0, nBands);
+    var c1 = s12.matrixMultiply(s22.matrixInverse()).matrixMultiply(s21);
+    var b1 = s11;
+    var c2 = s21.matrixMultiply(s11.matrixInverse()).matrixMultiply(s12);
+    var b2 = s22;
+    /* solution of generalized eigenproblems */
+    var lambdas = geneiv(c1, b1)[0];
+    var A = geneiv(c1, b1)[1];
+    var B = geneiv(c2, b2)[1];
+    var rhos = lambdas.sqrt().project(ee.List([1]));
+    /* sort in increasing order */
+    var keys = ee.List.sequence(nBands, 1, -1);
+    A = A.sort([keys]);
+    B = B.sort([keys]);
+    rhos = rhos.sort(keys);
+    /* test for convergence */
+    var lastrhos = ee.Array(allrhos.get(-1));
+    var done = rhos.subtract(lastrhos).abs().reduce(ee.Reducer.max(), ee.List([0]))
+        .lt(ee.Number(0.001))
+        .toList()
+        .get(0);
+    var allrhos = allrhos.cat([rhos.toList()]);
+    /* MAD variances */
+    var sigma2s = rhos.subtract(1).multiply(-2).toList();
+    var sigma2s = ee.Image.constant(sigma2s);
+    /* ensure sum of positive correlations between X and U is positive */
+    var tmp = s11.matrixDiagonal().sqrt();
+    var ones = tmp.multiply(0).add(1);
+    var tmp = ones.divide(tmp).matrixToDiag();
+    var s = tmp.matrixMultiply(s11).matrixMultiply(A).reduce(ee.Reducer.sum(), [0]).transpose();
+    var A = A.matrixMultiply(s.divide(s.abs()).matrixToDiag());
+    /* ensure positive correlation */
+    var tmp = A.transpose().matrixMultiply(s12).matrixMultiply(B).matrixDiagonal();
+    var tmp = tmp.divide(tmp.abs()).matrixToDiag();
+    var B = B.matrixMultiply(tmp);
+    /* canonical and MAD variates  */
+    var centeredImage1Array = centeredImage1.toArray().toArray(1);
+    var centeredImage2Array = centeredImage2.toArray().toArray(1);
+    var U = ee.Image(A.transpose()).matrixMultiply(centeredImage1Array)
+        .arrayProject([0])
+        .arrayFlatten([bNames1]);
+    var V = ee.Image(B.transpose()).matrixMultiply(centeredImage2Array)
+        .arrayProject([0])
+        .arrayFlatten([bNames2]);
+    var MAD = U.subtract(V);
+    /* chi square image */
+    var chi2 = MAD.pow(2).divide(sigma2s).reduce(ee.Reducer.sum()).clip(region);
+    return ee.Dictionary({ 'done': done, 'image': image, 'allrhos': allrhos, 'chi2': chi2, 'MAD': MAD });
+}
+
+function radcal(current, prev) {
+    /* iterator function for orthogonal regression and interactive radiometric normalization */
+    var k = ee.Number(current);
+    var prev = ee.Dictionary(prev);
+    /* image is concatenation of reference and target */
+    var image = ee.Image(prev.get('image'));
+    var ncmask = ee.Image(prev.get('ncmask'));
+    var nbands = ee.Number(prev.get('nbands'));
+    var rect = ee.Geometry(prev.get('rect'));
+    var coeffs = ee.List(prev.get('coeffs'));
+    var normalized = ee.Image(prev.get('normalized'));
+    var scale = image.select(0).projection().nominalScale();
+    /* orthoregress reference onto target */
+    var image1 = image.clip(rect).select(k.add(nbands), k).updateMask(ncmask).rename(['x', 'y']);
+    var means = image1.reduceRegion({
+        reducer: ee.Reducer.mean(),
+        scale: scale,
+        maxPixels: 1e9
+    }).toArray().project([0]);
+    var Xm = means.get([0]);
+    var Ym = means.get([1]);
+    var S = ee.Array(image1.toArray().reduceRegion({
+        reducer: ee.Reducer.covariance(),
+        geometry: rect,
+        scale: scale,
+        maxPixels: 1e9
+    }).get('array'));
+    /* Pearson correlation */
+    var R = S.get([0, 1]).divide(S.get([0, 0]).multiply(S.get([1, 1])).sqrt());
+    var eivs = S.eigen();
+    var e1 = eivs.get([0, 1]);
+    var e2 = eivs.get([0, 2]);
+    /* slope and intercept */
+    var b = e2.divide(e1);
+    var a = Ym.subtract(b.multiply(Xm));
+    var coeffs = coeffs.add(ee.List([b, a, R]));
+    /* normalize kth band in target */
+    var normalized = normalized.addBands(image.select(k.add(nbands)).multiply(b).add(a));
+    return ee.Dictionary({ 'image': image, 'ncmask': ncmask, 'nbands': nbands, 'rect': rect, 'coeffs': coeffs, 'normalized': normalized });
+}
+
+
+function radcalbatch(current, prev) {
+    /* Batch radiometric normalization */
+    var prev = ee.Dictionary(prev);
+    var target = ee.Image(current);
+    var reference = ee.Image(prev.get('reference'));
+    var normalizedimages = ee.List(prev.get('normalizedimages'));
+    var niter = ee.Number(prev.get('niter'));
+    var rect = ee.Geometry(prev.get('rect'));
+    var log = ee.List(prev.get('log'));
+    var nbands = reference.bandNames().length();
+    /* clip the images to subset and run iMAD */
+    var inputlist = ee.List.sequence(1, niter);
+    var image = reference.addBands(target);
+    var first = ee.Dictionary({
+        'done': ee.Number(0),
+        'image': image.clip(rect),
+        'allrhos': [ee.List.sequence(1, nbands)],
+        'chi2': ee.Image.constant(0),
+        'MAD': ee.Image.constant(0)
+    });
+    var result = ee.Dictionary(inputlist.iterate(imad, first));
+    var chi2 = ee.Image(result.get('chi2')).rename(['chi2']);
+    var allrhos = ee.List(result.get('allrhos'));
+    /* run radcal */
+    var ncmask = chi2cdf(chi2, nbands).lt(ee.Image.constant(0.05));
+    var inputlist1 = ee.List.sequence(0, nbands.subtract(1));
+    var first = ee.Dictionary({
+        'image': image,
+        'ncmask': ncmask,
+        'nbands': nbands,
+        'rect': rect,
+        'coeffs': ee.List([]),
+        'normalized': ee.Image()
+    });
+    var result = ee.Dictionary(inputlist1.iterate(radcal, first));
+    var coeffs = ee.List(result.get('coeffs'));
+    /* update log */
+    var ninvar = ee.String(ncmask.reduceRegion({
+        reducer: ee.Reducer.sum().unweighted(),
+        maxPixels: 1e9
+    }).toArray().project([0]));
+    var log = log.add(target.get('system:id'));
+    var iters = allrhos.length().subtract(1);
+    var log = log.add(ee.Algorithms.If(iters.eq(niter), ['No convergence, iterations:', iters],
+        ['Iterations:', iters]));
+    var log = log.add(['Invariant pixels:', ninvar]);
+    var log = ee.List(coeffs.iterate(addcoeffs, log));
+    /* first band in normalized result is empty */
+    var sel = ee.List.sequence(1, nbands);
+    var normalized = ee.Image(result.get('normalized')).select(sel);
+    var normalizedimages = normalizedimages.add(normalized);
+    return ee.Dictionary({ 'reference': reference, 'rect': rect, 'niter': niter, 'log': log, 'normalizedimages': normalizedimages });
+}
+
+/* ------------------------ TEST ZONE ------------------------ */
+
+
+
+
+/* ------------------------  EXPORTS  ------------------------ */
 
 // 1. Machine Learning & Classification
 exports.svm = svm;
