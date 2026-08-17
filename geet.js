@@ -4081,19 +4081,41 @@ function imad(current, prev) {
     return ee.Algorithms.If(done, prev, imad1(current, prev))
 }
 
+/*
+  chi2cdf:
+  Chi square cumulative distribution function.
+  
+  Params:
+  (ee.Image) chi2 - The Chi-square image.
+  (ee.Number) df - Degrees of freedom.
+*/
 function chi2cdf(chi2, df) {
-    /* Chi square cumulative distribution function */
     return ee.Image(chi2.divide(2)).gammainc(ee.Number(df).divide(2))
 }
 
+/*
+  addcoeffs:
+  Appends orthogonal regression coefficients to the log list.
+  
+  Params:
+  (ee.List) current - The current coefficients.
+  (ee.List) prev - The previous log list.
+*/
 function addcoeffs(current, prev) {
     var coeff = ee.List(current)
     var log = ee.List(prev)
     return log.add(coeff)
 }
 
+/*
+  geneiv:
+  Solves the generalized eigenproblem C*X = lambda*B*X.
+  
+  Params:
+  (ee.Array) C - The first covariance matrix.
+  (ee.Array) B - The second covariance matrix.
+*/
 function geneiv(C, B) {
-    /* Generalized eigenproblem C*X = lambda*B*X */
     var C = ee.Array(C)
     var B = ee.Array(B)
     // Li = choldc(B)^-1
@@ -4111,10 +4133,17 @@ function geneiv(C, B) {
     return [lambdas, eigenvecs];
 }
 
+/*
+  covarw:
+  Returns the weighted centered image and its weighted covariance matrix.
+  
+  Params:
+  (ee.Image) image - The input image.
+  (ee.Image) weights - The weights image.
+  (number) maxPixels - Maximum number of pixels to sample.
+*/
 function covarw(image, weights, maxPixels) {
     maxPixels = typeof maxPixels !== 'undefined' ? maxPixels : 1e9;
-
-    /* Return the weighted centered image and its weighted covariance matrix */
     var geometry = image.geometry();
     var bandNames = image.bandNames();
     var N = bandNames.length();
@@ -4149,8 +4178,15 @@ function covarw(image, weights, maxPixels) {
     return [centered.arrayFlatten([bandNames]), covw]
 }
 
+/*
+  imad1:
+  Iteratively re-weighted MAD core algorithm.
+  
+  Params:
+  (ee.Number) current - The iteration index.
+  (ee.Dictionary) prev - The state dictionary containing the image and iteration variables.
+*/
 function imad1(current, prev) {
-    /* Iteratively re-weighted MAD */
     var image = ee.Image(ee.Dictionary(prev).get('image'));
     var chi2 = ee.Image(ee.Dictionary(prev).get('chi2'));
     var allrhos = ee.List(ee.Dictionary(prev).get('allrhos'));

@@ -41,6 +41,9 @@ All functions implemented (Version 1.5.0 - Beta):
 
 ### Change Detection
 - [ndvi_change_detection](#ndvi_change_detection)
+- [imad](#imad)
+- [radcal](#radcal)
+- [radcalbatch](#radcalbatch)
 - [ndwi_change_detection](#ndwi_change_detection)
 - [ndbi_change_detection](#ndbi_change_detection)
 - [burn_severity](#burn_severity)
@@ -483,8 +486,6 @@ _Function to apply a moving average filter to smooth a time series of images (e.
 ```
 
 ------------------------------------------------------------------------------
-
-
 
 ------------------------------------------------------------------------------
 
@@ -1188,8 +1189,6 @@ _Function to merge all images of one image collection into a single band._
     var merged_image = image_collection.iterate(geet.collection2image, ee.Image([]));   
 ```
 
-
-
 ------------------------------------------------------------------------------
 
 #### imad
@@ -1200,6 +1199,19 @@ _Iteratively Reweighted Multivariate Alteration Detection (iMAD) algorithm. Deve
 ##### Params:
   (ee.Image) current - The target image.
   (ee.Dictionary) prev - The iteration dictionary containing state.
+
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+
+#### radcal
+(current, prev)
+
+_Iterator function for orthogonal regression and interactive radiometric normalization. Called internally by radcalbatch._
+
+##### Params:
+  (ee.Image) current - The current band index.
+  (ee.Dictionary) prev - The dictionary containing image and coeffs.
 
 ------------------------------------------------------------------------------
 
