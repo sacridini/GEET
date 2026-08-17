@@ -9,14 +9,14 @@ Python API: https://developers.google.com/earth-engine/python_install
 
 #### Development Info
 **Author**: Eduardo Ribeiro Lacerda - eduardolacerdageo@gmail.com
-* Researcher @ Humboldt Universit├ñt zu Berlin
+* Researcher @ Humboldt Universität zu Berlin
 
 ## Introduction:
-The Google Earth Engine Toolbox (GEET) is a JavaScript single-file library for help developers to write small code base application with the Google Earth Engine (GEE) plataform.
+The Google Earth Engine Toolbox (GEET) is a JavaScript single-file library to help developers write small codebase applications with the Google Earth Engine (GEE) platform.
 
-The library also can be used to teach new developers to use the plataform even without any previous programming skills.
+The library can also be used to teach new developers to use the platform even without any previous programming skills.
 
-GEET using Landsat collection 2 will be available soon!
+GEET using Landsat Collection 2 will be available soon!
 
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
@@ -111,9 +111,9 @@ All functions implemented (Version 1.5.0 - Beta):
 
 ### Quickstart Guide:
 ### (English)
-To use the library you need to click on this [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
+To use the library, you need to click on this [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). It will automatically add all the code of the library in your Google Earth Engine personal account. You only need to perform this procedure once. Remember that to add the library, you must already have an account on the Earth Engine platform. To know more, visit the official site of the platform: https://earthengine.google.com/ 
 
-After adding the library you can call its functions using the function **_require_** and storing the content in a variable. In this case, we will create a variable called **_geet_** which contains all the contents of the library. Then we can use it to call library functions: 
+After adding the library, you can call its functions using the function **_require_** and store the content in a variable. In this case, we will create a variable called **_geet_** which contains all the contents of the library. Then we can use it to call library functions: 
 
 ```js 
     var geet = require('users/eduardolacerdageo/geet:geet'); 
@@ -121,9 +121,9 @@ After adding the library you can call its functions using the function **_requir
 ```
 
 ### (Portugu├¬s)
-Para utilizar a biblioteca ├® preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionar├í automaticamente todo o c├│digo da biblioteca na sua conta pessoal do Google Earth Engine. S├│ ├® necess├írio realizar este procedimento uma ├║nica vez. Lembre-se que para adicionar a biblioteca ├® necess├írio j├í possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
+Para utilizar a biblioteca, é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionará automaticamente todo o código da biblioteca à sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca ├® necess├írio j├í possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
-Depois de adicionar a biblioteca ├® poss├¡vel chamar suas fun├º├Áes utilizando a fun├º├úo **_require_** e armazenando o conte├║do em uma vari├ível. Neste caso, criaremos uma vari├ível chamada **_geet_** que cont├®m todo o conte├║do da biblioteca. Depois, podemos utilizar ela para chamar as fun├º├Áes da biblioteca:
+Depois de adicionar a biblioteca ├® poss├¡vel chamar suas fun├º├Áes utilizando a fun├º├úo **_require_** e armazenando o conte├║do em uma vari├ível. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizá-la para chamar as funções da biblioteca:
 
 ```js 
     var geet = require('users/eduardolacerdageo/geet:geet'); 
@@ -139,7 +139,7 @@ Depois de adicionar a biblioteca ├® poss├¡vel chamar suas fun├º├Áes 
 #### svm
 (image, trainingData, fieldName, kernelType, resolution) 
 
-_Function to apply SVM classification to a image._  
+_Function to apply SVM classification to an image._  
 
 ##### Params:
   (ee.Image) image - The input image to classify.    
@@ -158,7 +158,7 @@ _Function to apply SVM classification to a image._
 #### cart
 (image, trainingData, fieldName, resolution)  
 
-_Function to apply CART classification to a image._
+_Function to apply CART classification to an image._
 
 ##### Params:
   (ee.Image) image - The input image to classify.       
@@ -180,11 +180,11 @@ _Function to apply Random Forest classification to an image._
 
 ##### Params:
   (ee.Image) image - The input image to classify.  
-  (array of strings) bands - The input band names that will be choosed to train the model.  
+  (array of strings) bands - The input band names that will be chosen to train the model.  
   (FeatureCollection) trainingData - All the training data (samples).  
   (string) fieldName - The name of the column that contains the class names.  
   **optional** (number) numOfTrees - The number of trees that the model will create. Default is 10.  
-  **optional** (number) resolution - the spatial resolution of the input image. Default is 30 (landsat).    
+  **optional** (number) resolution - The spatial resolution of the input image. Default is 30 (Landsat).    
   **optional** (number) cv_split - The cross validation split percentage.               
   
 ##### Usage:
@@ -202,13 +202,13 @@ or
 #### naive_bayes
 (image, trainingData, fieldName, resolution)  
 
-_Function to apply the Fast Naive Bayes classification to a image._ 
+_Function to apply the Fast Naive Bayes classification to an image._ 
 
 ##### Params:
   (ee.Image) image - The input image to classify.       
   (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.    
-  **optional** (number) resolution - The spatial resolution of the input image. Default is 30 (landsat).   
+  **optional** (number) resolution - The spatial resolution of the input image. Default is 30 (Landsat).   
   
 ##### Usage:
 ```js
@@ -226,13 +226,13 @@ _Function to apply the Fast Naive Bayes classification to a image._
 #### max_ent
 (image, trainingData, fieldName, resolution) 
 
-_Function to apply the GMO Maximum Entropy classification to a image._ 
+_Function to apply the GMO Maximum Entropy classification to an image._ 
 
 ##### Params:
   (ee.Image) image - The input image to classify.       
   (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.    
-  **optional** (number) resolution - The spatial resolution of the input image. Default is 30 (landsat).     
+  **optional** (number) resolution - The spatial resolution of the input image. Default is 30 (Landsat).     
   
 ##### Usage:
 ```js
@@ -256,7 +256,7 @@ _Function to apply RandomForest classification to an image._
   (ee.Image) image - The input image to classify.     
   (Feature/Geometry) roi - A polygon containing the study area.
   **optional** (number) _numClusters - the number of clusters that will be used. Default is 15.  
-  **optional** (number) _scale - the scale number. The scale is related to the spatial resolution of the image. Landsat is 30, sou the default is 30 also.  
+  **optional** (number) _scale - the scale number. The scale relates to the image's spatial resolution. Landsat is 30, so the default is 30 also.  
   **optional** (number) _numPixels - the number of pixels that the classifier will take samples from the roi.           
   
 ##### Usage:
@@ -279,15 +279,15 @@ _Function to apply RandomForest classification to an image._
 #### landsat_indices  
 (image, sensor, index)  
 
-_Function to take an input image and generate indexes like: NDVI, NDWI, NDBI..._   
+_Function to take an input image and generate indices like: NDVI, NDWI, NDBI..._   
 More indices and features will be added in the future!  
 Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI  
 
 ##### Params:
   (ee.Image) image - the image to process.  
-  (string) sensor - the sensor that you are working on Landsat 5 ('L5') 7 ('L7') and 8 ('L8').  
+  (string) sensor - the sensor that you are working on: Landsat 5 ('L5'), 7 ('L7'), and 8 ('L8').  
   **optional** (string or string array) index  - you can specify the index that you want
-                    if you dont specify any index the function will create all possible indices.                        
+                    . If you don't specify any index, the function will create all possible indices.                        
   
 ##### Usage:
 ```js  
@@ -312,7 +312,7 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 #### sentinel2_indices
 (image, index)  
 
-_Function to take an input image and generate indexes using the Sentinel 2 dataset._
+_Function to take an input image and generate indices using the Sentinel 2 dataset._
 
 ------------------------------------------------------------------------------
 
@@ -335,7 +335,7 @@ _Function to generate advanced water quality indices: NDTI (Normalized Differenc
 #### tasseled_cap
 (image, sensor)
 
-_Generic function to create a Tasselled Cap image._
+_Generic function to create a Tasseled Cap image._
 
 ##### Params:
   (ee.Image) image - the input image.
@@ -351,13 +351,13 @@ _Generic function to create a Tasselled Cap image._
 #### pca
 (image, nbands, scale, maxPixels)  
 
-_Function produce the principal components analysis of an image._     
+_Function produces the principal components analysis of an image._     
 
 ##### Params:
   (ee.Image) image - the input image.  
-  **optional** (number) nBands - the number of the bands of the image. Default is 12.  
-  **optional** (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.  
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.                            
+  **optional** (number) nBands - the number of bands of the image. Default is 12.  
+  **optional** (number) scale - the scale number. The scale relates to the image's spatial resolution. Landsat is 30, so the default is 30 also.  
+  **optional** (number) maxPixels - the maximum number of pixels that can be exported. Default is 1e10.                            
   
 ##### Usage:
 ```js
@@ -371,7 +371,7 @@ _Function produce the principal components analysis of an image._
 #### ndviS2
 (image)  
 
-_Function calculate the normalized difference vegetation index (NDVI) from Sentinel 2 data._     
+_Function that calculates the normalized difference vegetation index (NDVI) from Sentinel 2 data._     
 
 ##### Params:
   (ee.Image) image - the input image.                               
@@ -390,14 +390,14 @@ _Function calculate the normalized difference vegetation index (NDVI) from Senti
 #### ndvi_change_detection
 (img1, img2, sensor, threshold)  
 
-_Function to detect changes between two input images using the NDVI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndviChange, 3, 'change_detection');_ 
+_Function to detect changes between two input images using the NDVI index and a threshold parameter. The function adds the two masked indices and returns the sum of the two. It's a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndviChange, 3, 'change_detection');_ 
 
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
   (ee.Image) img2 = The second input image.  
-  (ee.Number) threshold = The number of the threshold. All the values at the 
-                          image that is gte (grater of equal) to this number 
+  (ee.Number) threshold = The number of the threshold. All the values in the 
+                          image that are greater than or equal to this number 
                           will be selected.           
   
 ##### Usage:
@@ -410,14 +410,14 @@ _Function to detect changes between two input images using the NDVI index and a 
 #### ndwi_change_detection
 (img1, img2, sensor, threshold) 
 
-_Function to detect changes between two input images using the NDWI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndwiChange, 3, 'change_detection');_ 
+_Function to detect changes between two input images using the NDWI index and a threshold parameter. The function adds the two masked indices and returns the sum of the two. It's a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndwiChange, 3, 'change_detection');_ 
 
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
   (ee.Image) img2 = The second input image.  
   (ee.Number) threshold = The number of the threshold. All the values at the 
-                          image that is gte (grater of equal) to this number 
+                          image that are greater than or equal to this number 
                           will be selected.            
   
 ##### Usage:
@@ -430,14 +430,14 @@ _Function to detect changes between two input images using the NDWI index and a 
 #### ndbi_change_detection
 (img1, img2, sensor, threshold)  
 
-_Function to detect changes between two input images using the NDBI index and a threshold paramter. The function adds the two masked indices and return the sum of the two. Its a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndbiChange, 3, 'change_detection');_ 
+_Function to detect changes between two input images using the NDBI index and a threshold parameter. The function adds the two masked indices and returns the sum. It's a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndbiChange, 3, 'change_detection');_ 
 
 ##### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
   (ee.Image) img2 = The second input image.  
   (ee.Number) threshold = The number of the threshold. All the values at the 
-                          image that is gte (grater of equal) to this number 
+                          image that are greater than or equal to this number 
                           will be selected.                  
   
 ##### Usage:
@@ -454,13 +454,13 @@ _Function to detect changes between two input images using the NDBI index and a 
 #### create_mosaic
 (startDate, endDate, roi, showMosaic, sensor)
 
-_Generic function to build a cloud free mosaic for Landsat 5, 7, 8, 9 or Sentinel 2._
+_Generic function to build a cloud-free mosaic for Landsat 5, 7, 8, 9, or Sentinel-2._
 
 ##### Params:
   (ee.Date) startDate - the start date of the dataset.
   (ee.Date) endDate - the end date of the dataset.
   **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.
-  **optional** (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  **optional** (bool) showMosaic - set to false if you don't want to display the mosaic. Default is true.
   (string) sensor - 'L5', 'L7', 'L8', 'L9' or 'S2'.
 
 ##### Usage:
@@ -505,10 +505,10 @@ _Function to build an annual Landsat MSS (Landsat 1, 2, 3, 4, 5) timeseries from
 #### build_annual_landsat_timeseries
 (roi)
 
-_Function to build an annual Landsat (5, 7, 8, and 9) TOA timeseries from 1985 to 2030. The function also masks clouds and shadows, normalizes bands to standard English names, and generates all indices (NDVI, NDWI, SAVI, Tasseled Cap)._  
+_Function to build an annual Landsat (5, 7, 8, and 9) TOA time series from 1985 to 2030. The function also masks clouds and shadows, normalizes bands to standard English names, and generates all indices (NDVI, NDWI, SAVI, Tasseled Cap)._  
 
 ##### Params:  
-  (ee.Point) roi - the region of interest that will define the study area and the landsat path row  
+  (ee.Point) roi - the region of interest that will define the study area and the Landsat path row  
                         
   
 ##### Usage:
@@ -556,10 +556,10 @@ _Function that return a image collection with all landsat images (5 and 8) from 
 #### landsat_timeseries_by_roi
 (type, path, row)
 
-_Function that return a image collection with all landsat images (5 and 8) from a defined roi. Remember to specify the type of the collection (raw, toa or sr)._  
+_Function that returns an image collection with all Landsat images (5 and 8) from a defined roi. Remember to specify the type of the collection (raw, toa or sr)._  
 
 ##### Params:
-  (string) type - the type of the collection (RAW, TOA or SR)  
+  (string) type - the type of the collection (RAW, TOA, or SR)  
   (ee.Geometry) roi - the Region of Interest to filter the dataset                                
   
 ##### Usage:
@@ -611,7 +611,7 @@ _Function to apply a focal median filter to reduce SAR speckle noise._
 #### terrain_analysis
 (roi)
 
-_Function to generate Elevation, Slope, Aspect and Hillshade bands from the SRTM 30m DEM._
+_Function to generate Elevation, Slope, Aspect, and Hillshade bands from the SRTM 30m DEM._
 
 ##### Params:
   **optional** (ee.Geometry) roi - the Region of Interest to clip the DEM.
@@ -698,11 +698,11 @@ _Function calculate the surface emissifity._
 #### surface_temperature_tm
 (image)  
 
-_Function calculate the land surface temperature (Landsat 5)._     
+_Function that calculates the land surface temperature (Landsat 5)._     
 
 ##### Params:
   (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
-                     NDVI, prop_veg and LSE bands.                            
+                     NDVI, prop_veg, and LSE bands.                            
   
 ##### Usage:
 ```js
@@ -718,7 +718,7 @@ _Function calculate the land surface temperature (Landsat 8)._
 
 ##### Params:
   (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
-                     NDVI, prop_veg and LSE bands.                            
+                     NDVI, prop_veg, and LSE bands.                            
   
 ##### Usage:
 ```js
@@ -793,7 +793,7 @@ _Function create a cloud mask from a Landsat input image._
 #### cloudmask_sr
 (original_image, qa_image)   
 
-_Function create a cloud mask from a Surface Reflectance Landsat input image._     
+_Function that creates a cloud mask from a Surface Reflectance Landsat input image._     
 
 ##### Params:
   (ee.Image) original_image - the original input image with all the bands.  
@@ -812,7 +812,7 @@ _Function create a cloud mask from a Surface Reflectance Landsat input image._
 #### fmask  
 (original_image)   
 
-_Function to cloud mask an Surface Reflectance Landsat input image._     
+_Function to cloud mask a Surface Reflectance Landsat input image._     
 
 ##### Params:
   (ee.Image) original_image - the original input image with all the bands.  
@@ -832,7 +832,7 @@ _Function to resample an input image._
 
 ##### Params:
   (ee.Image) image - the image to resample.  
-  (number) scale - the number of the spatial resolution that you
+  (number) scale - the spatial resolution you
                         want to use to  resample the input image.  
   (string) mode - The interpolation mode to use. One of 'bilinear' or 'bicubic'.  
   
@@ -864,7 +864,7 @@ _Function to resample just a single band._
 #### geom_filter
 (geom, column, symbol, value) 
 
-_Function filter a geometry/feature by value._     
+_Function to filter a geometry/feature by value._     
 
 ##### Params:
   (ee.Geometry) geom - the input geometry.  
@@ -911,8 +911,8 @@ _Function the get the spearmans correlation value from an image and returns a di
   (ee.Image) image1 - the first input image.    
   (ee.Image) image2 - the second input image.    
   (ee.Geometry) roi - the region of interest.     
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.    
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.             
+  **optional** (ee.Number) scale - the scale number. The scale relates to the image's spatial resolution. The default is 30.    
+  **optional** (number) maxPixels - the maximum number of pixels that can be exported. Default is 1e10.             
 
 ##### Usage: 
 ```js 
@@ -936,8 +936,8 @@ _Function that computes the slope and offset for a (weighted) linear regression 
   (ee.Image) image1 - the first input image.    
   (ee.Image) image2 - the second input image.    
   (ee.Geometry) roi - the region of interest.     
-  **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.    
-  **optional** (number) maxPixels - the number of maximun pixels that can be exported. Default is 1e10.             
+  **optional** (ee.Number) scale - the scale number. The scale relates to the image's spatial resolution. The default is 30.    
+  **optional** (number) maxPixels - the maximum number of pixels that can be exported. Default is 1e10.             
 
 ##### Usage: 
 ```js 
@@ -960,7 +960,7 @@ _Function generate a texture filter on the image._
 ##### Params:
   (ee.Image) image = The input image.  
   (ee.Number) radius = the radius number that defines the effect level of the filter. 
-                      Bigger numbers generalize more the result.                    
+                      Bigger numbers generalize the result more.                    
   
 ##### Usage:
 ```js   
@@ -972,12 +972,12 @@ _Function generate a texture filter on the image._
 #### majority
 (image, radius)  
 
-_Function to filter the final classification image and clear the salt n' pepper effect._ 
+_Function to filter the final classification image and clear the salt-and-pepper effect._ 
 
 ##### Params:
   (ee.Image) image = The input image.
   (ee.Number) radius = the radius number that defines the effect level of the filter. 
-                      Bigger numbers generalize more the result.                     
+                      Bigger numbers generalize the result more.                     
   
 ##### Usage:
 ```js 
@@ -989,7 +989,7 @@ _Function to filter the final classification image and clear the salt n' pepper 
 #### prop_veg
 (image)  
 
-_Function calculate the proportional vegetation._     
+_Function that calculates the proportional vegetation._     
 
 ##### Params:
   (ee.Image) image - input image with the NDVI band.                              
@@ -1050,7 +1050,7 @@ _Function to export an image to your Google Drive account._
 
 ##### Params:
   (ee.Image) image - the input image.  
-  **optional** (number) _scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.                             
+  **optional** (number) _scale - the scale number.The scale relates to the image's spatial resolution. Landsat is 30, so the default is 30 also.                             
   
 ##### Usage:
 ```js
@@ -1071,7 +1071,7 @@ or
 _Function to get an example image to debug or test some code._     
 
 ##### Params:
-  **optional** (string) collection - the type of the collection that will be filtered: RAW, TOA or SR.  
+  **optional** (string) collection - the type of the collection that will be filtered: RAW, TOA, or SR.  
   **optional** (number) year - the year of the image that you want to get.  
   **optional** (list) roi - the latitude and longitude of a roi.  
   **optional** (bool) cloudFree - true for cloud mask processing and mean calculation.                           
@@ -1096,7 +1096,7 @@ _Function to get an example image to debug or test some code._
 _Function to filter the Sentinel-2 collection by Product ID obtained from the Copernicus Open Access Hub._     
 
 ##### Params:
-  (string) id - the id of the Sentinel 2 image.                            
+  (string) id - the ID of the Sentinel-2 image.                            
   
 ##### Usage:
 ```js
@@ -1108,7 +1108,7 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 #### collection2image
 (image, previous)    
 
-_Function to merge all imagens of one image collection into a single band._       
+_Function to merge all images of one image collection into a single band._       
 
 ##### Params:
   (ee.Image) image - The image of the image collection to add as a band.  
@@ -1143,7 +1143,7 @@ _Function to segment an image using the SNIC (Simple Non-Iterative Clustering) a
 (image, trainingData, fieldName, options)
 
 _Function to perform a complete Object-Based Image Analysis (GEOBIA) classification._
-_It automatically generates superpixels (SNIC), extracts spectral, spatial (geometry) and textural (GLCM) features per object, and classifies them using Machine Learning._
+_It automatically generates superpixels (SNIC), extracts spectral, spatial (geometry), and textural (GLCM) features per object, and classifies them using Machine Learning._
 
 ##### Params:
   (ee.Image) image - The raw input image to segment and classify.
@@ -1198,7 +1198,7 @@ _Eliminates small patches in a classified image (Minimum Mapping Unit filter) by
 _Generates a Fourier Harmonic Trend model for a time-series to extract Seasonality (Phase and Amplitude) and Linear Trend._
 
 ##### Params:
-  (ee.ImageCollection) timeseries - the input timeseries image collection.
+  (ee.ImageCollection) timeseries - the input time-series image collection.
   (string) dependent_band - the band to model (e.g., 'NDVI').
 
 ##### Usage:
@@ -1246,7 +1246,7 @@ _Harmonizes spectral values between Sentinel-2 and Landsat-8 using OLS regressio
 #### burn_severity
 (pre_fire, post_fire, sensor)
 
-_Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR) and Burn Severity Classes._
+_Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR), and Burn Severity Classes._
 
 ##### Params:
   (ee.Image) pre_fire - the pre-fire image.
