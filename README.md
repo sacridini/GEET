@@ -21,7 +21,7 @@ GEET using Landsat Collection 2 will be available soon!
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.8.1):
+All functions implemented (Version 1.9.1):
 
 ### Machine Learning & Classification
 - [svm](#svm)
@@ -41,6 +41,7 @@ All functions implemented (Version 1.8.1):
 
 ### Change Detection
 - [ndvi_change_detection](#ndvi_change_detection)
+- [anomaly](#anomaly)
 - [imad](#imad)
 - [radcal](#radcal)
 - [radcalbatch](#radcalbatch)
@@ -889,6 +890,23 @@ _Function to merge all images of one image collection into a single band._
 ```js 
     var geet = require('users/eduardolacerdageo/geet:geet'); 
     var merged_image = image_collection.iterate(geet.collection2image, ee.Image([]));   
+```
+
+------------------------------------------------------------------------------
+
+#### anomaly
+(image, reference_collection, band)
+
+_Calculates the Z-Score Anomaly of an image compared to a historical reference collection. Great for finding extreme events like droughts, heatwaves, or deforestation spikes._
+
+##### Params:
+  (ee.Image) image - The target image.
+  (ee.ImageCollection) reference_collection - The historical baseline.
+  (string) band - The name of the band to calculate the anomaly for (e.g. 'NDVI' or 'LST').
+
+##### Usage:
+```js
+  var anomaly_img = geet.anomaly(target_image, baseline_col, 'LST');
 ```
 
 ------------------------------------------------------------------------------
