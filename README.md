@@ -48,14 +48,6 @@ All functions implemented (Version 0.8.2 - Beta):
 [toa_reflectance](#toa_reflectance)  
 [toa_reflectance_l8](#toa_reflectance_l8)  
 [toa_reflectance_l9](#toa_reflectance_l9)  
-[brightness_temp_l5k](#brightness_temp_l5k)  
-[brightness_temp_l5c](#brightness_temp_l5c)  
-[brightness_temp_l7k](#brightness_temp_l7k)  
-[brightness_temp_l7c](#brightness_temp_l7c)  
-[brightness_temp_l8k](#brightness_temp_l8k)  
-[brightness_temp_l8c](#brightness_temp_l8c)  
-[brightness_temp_l9k](#brightness_temp_l9k)  
-[brightness_temp_l9c](#brightness_temp_l9c)  
 [resample](#resample)  
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
@@ -66,12 +58,6 @@ All functions implemented (Version 0.8.2 - Beta):
 [ls7_timeseries_by_pathrow](#ls7_timeseries_by_pathrow)    
 [ls8_timeseries_by_pathrow](#ls8_timeseries_by_pathrow)    
 [ls9_timeseries_by_pathrow](#ls9_timeseries_by_pathrow)    
-[mosaic_s2](#mosaic_s2)  
-[mosaic_l5](#mosaic_l5)  
-[mosaic_l7](#mosaic_l7)  
-[mosaic_l8](#mosaic_l8)  
-[mosaic_l9](#mosaic_l9)  
-[modis_ndvi_mosaic](#modis_ndvi_mosaic)  
 [max](#max)  
 [min](#min)  
 [mean](#mean)  
@@ -689,12 +675,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
-#### brightness_temp_l5k
-(image)  
-
-_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                        
   
 ##### Usage:  
@@ -711,12 +692,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
-#### brightness_temp_l5c
-(image)  
-
-_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 5 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                          
   
 ##### Usage:
@@ -732,12 +708,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 ------------------------------------------------------------------------------
 
-#### brightness_temp_l7k
-(image)  
-
-_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.                            
   
 ##### Usage:
@@ -753,12 +724,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 ------------------------------------------------------------------------------
 
-#### brightness_temp_l7c
-(image)  
-
-_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 7 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.  
                                
   
@@ -776,12 +742,7 @@ _Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness
 
 ------------------------------------------------------------------------------
 
-#### brightness_temp_l8k
-(image, single)  
-
-_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.   
   (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
   
@@ -804,12 +765,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### brightness_temp_l8c
-(image, single)  
-
-_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 8 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.   
   (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
   
@@ -832,12 +788,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### brightness_temp_l9k
-(image, single)  
-
-_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 9 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.   
   (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
   
@@ -860,12 +811,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### brightness_temp_l9c
-(image, single)  
-
-_Function to convert the Top of Atmosphere image to Top of Atmosphere Brightness Temperature. This one works only for Landsat 9 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the Top of Atmosphere (TOA) image to convert.   
   (boolean) single - if false, will process only the B10 band, if true, will consider B11 too. Default its true!                             
   
@@ -1061,12 +1007,7 @@ _Function that return a image collection with all landsat 9 images from a define
 
 ------------------------------------------------------------------------------
 
-#### mosaic_s2
-(startDate, endDate, roi, showMosaic)  
-
-_Function to build a cloud free TOA mosaic using the Sentinel 2 dataset._     
-
-##### Params:
+#### Params:
   (string) startDate - the start date of the dataset.  
   (string) endDate - the end date of the dataset.  
   **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
@@ -1091,12 +1032,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### mosaic_l5
-(startDate, endDate, roi, showMosaic)  
-
-_Function to build a cloud free mosaic using the Landsat 5 dataset._     
-
-##### Params:
+#### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
   **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
@@ -1121,12 +1057,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### mosaic_l7
-(startDate, endDate, roi, showMosaic)  
-
-_Function to build a cloud free mosaic using the Landsat 7 dataset._     
-
-##### Params:
+#### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
   **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
@@ -1151,12 +1082,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### mosaic_l8
-(startDate, endDate, roi, showMosaic)  
-
-_Function to build a cloud free mosaic using the Landsat 8 dataset._     
-
-##### Params:
+#### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
   **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
@@ -1181,12 +1107,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### mosaic_l9
-(startDate, endDate, roi, showMosaic)  
-
-_Function to build a cloud free mosaic using the Landsat 9 dataset._     
-
-##### Params:
+#### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
   **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  
@@ -1211,12 +1132,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### modis_ndvi_mosaic
-(startDate, endDate, roi, showMosaic)  
-
-_Function to build a cloud free NDVI mosaic using the MODIS/MOD13Q1 dataset._     
-
-##### Params:
+#### Params:
   (ee.Date) startDate - the start date of the dataset.  
   (ee.Date) endDate - the end date of the dataset.  
   **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.  

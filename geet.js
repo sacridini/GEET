@@ -1172,16 +1172,6 @@ var brightness_temp = function (image, sensor, unit, two_channel) {
     return image.addBands(bt);
 };
 
-// Wrappers
-var brightness_temp_l5k = function (image) { return brightness_temp(image, 'L5', 'K'); };
-var brightness_temp_l5c = function (image) { return brightness_temp(image, 'L5', 'C'); };
-var brightness_temp_l7k = function (image) { return brightness_temp(image, 'L7', 'K'); };
-var brightness_temp_l7c = function (image) { return brightness_temp(image, 'L7', 'C'); };
-var brightness_temp_l8k = function (image, tc) { return brightness_temp(image, 'L8', 'K', tc); };
-var brightness_temp_l8c = function (image, tc) { return brightness_temp(image, 'L8', 'C', tc); };
-var brightness_temp_l9k = function (image, tc) { return brightness_temp(image, 'L9', 'K', tc); };
-var brightness_temp_l9c = function (image, tc) { return brightness_temp(image, 'L9', 'C', tc); };
-
 
 /*
   resample:
@@ -1849,11 +1839,6 @@ var create_mosaic = function(startDate, endDate, roi, showMosaic, sensor) {
 };
 
 // Wrappers
-var mosaic_s2 = function (startDate, endDate, roi, showMosaic) { return create_mosaic(startDate, endDate, roi, showMosaic, 'S2'); };
-var mosaic_l5 = function (startDate, endDate, roi, showMosaic) { return create_mosaic(startDate, endDate, roi, showMosaic, 'L5'); };
-var mosaic_l7 = function (startDate, endDate, roi, showMosaic) { return create_mosaic(startDate, endDate, roi, showMosaic, 'L7'); };
-var mosaic_l8 = function (startDate, endDate, roi, showMosaic) { return create_mosaic(startDate, endDate, roi, showMosaic, 'L8'); };
-var mosaic_l9 = function (startDate, endDate, roi, showMosaic) { return create_mosaic(startDate, endDate, roi, showMosaic, 'L9'); };
 
 
 
@@ -3318,14 +3303,6 @@ exports.toa_radiance = toa_radiance
 exports.toa_reflectance = toa_reflectance
 exports.toa_reflectance_l8 = toa_reflectance_l8
 exports.toa_reflectance_l9 = toa_reflectance_l9
-exports.brightness_temp_l5k = brightness_temp_l5k
-exports.brightness_temp_l5c = brightness_temp_l5c
-exports.brightness_temp_l7k = brightness_temp_l7k
-exports.brightness_temp_l7c = brightness_temp_l7c
-exports.brightness_temp_l8k = brightness_temp_l8k
-exports.brightness_temp_l9k = brightness_temp_l9k
-exports.brightness_temp_l8c = brightness_temp_l8c
-exports.brightness_temp_l9c = brightness_temp_l9c
 exports.resample = resample
 exports.resample_band = resample_band
 exports.load_id_s2 = load_id_s2
@@ -3336,11 +3313,6 @@ exports.ls5_timeseries_by_pathrow = ls5_timeseries_by_pathrow
 exports.ls7_timeseries_by_pathrow = ls7_timeseries_by_pathrow
 exports.ls8_timeseries_by_pathrow = ls8_timeseries_by_pathrow
 exports.ls9_timeseries_by_pathrow = ls9_timeseries_by_pathrow
-exports.mosaic_s2 = mosaic_s2
-exports.mosaic_l5 = mosaic_l5
-exports.mosaic_l7 = mosaic_l7
-exports.mosaic_l8 = mosaic_l8
-exports.mosaic_l9 = mosaic_l9
 exports.modis_ndvi_mosaic = modis_ndvi_mosaic
 exports.max = max
 exports.min = min
@@ -3374,3 +3346,6 @@ exports.tasseledcap_oli = tasseledcap_oli
 exports.tasseledcap_s2 = tasseledcap_s2
 exports.tasseledcap_tm5 = tasseledcap_tm5
 exports.tasseledcap_tm7 = tasseledcap_tm7
+
+exports.brightness_temp = brightness_temp
+exports.create_mosaic = create_mosaic
