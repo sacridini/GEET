@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.6.2
+ * Version: 1.7.1
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -4063,9 +4063,18 @@ var extract_drainage = function(roi, threshold) {
 
 
 
-/* ------------------------ TEST ZONE ------------------------ */
 
-// JavaScript implementation of this great work: https://github.com/mortcanty/earthengine
+
+/*
+  imad:
+  Iteratively Reweighted Multivariate Alteration Detection (iMAD) algorithm.
+  Used for advanced change detection and invariant pixel identification.
+  Based on Mort Canty's Earth Engine implementation.
+
+  Params:
+  (ee.Image) current - the target image (or current iteration image).
+  (ee.Dictionary) prev - the dictionary from the previous iteration.
+*/
 
 function imad(current, prev) {
     var done = ee.Number(ee.Dictionary(prev).get('done'))
@@ -4099,7 +4108,7 @@ function geneiv(C, B) {
     var X = Xa.slice(1, 1).matrixTranspose()
     // generalized eigenvectors as columns, Li^T*X
     var eigenvecs = Li.matrixTranspose().matrixMultiply(X)
-    return (lambdas, eigenvecs)
+    return [lambdas, eigenvecs];
 }
 
 function covarw(image, weights, maxPixels) {
@@ -4253,6 +4262,15 @@ function radcal(current, prev) {
 }
 
 
+/*
+  radcalbatch:
+  Batch Relative Radiometric Normalization using orthogonal regression 
+  based on pseudo-invariant features derived from iMAD.
+
+  Params:
+  (ee.Image) current - the target image to normalize.
+  (ee.Dictionary) prev - the dictionary containing the reference image and iteration state.
+*/
 function radcalbatch(current, prev) {
     /* Batch radiometric normalization */
     var prev = ee.Dictionary(prev);
@@ -4307,7 +4325,7 @@ function radcalbatch(current, prev) {
     return ee.Dictionary({ 'reference': reference, 'rect': rect, 'niter': niter, 'log': log, 'normalizedimages': normalizedimages });
 }
 
-/* ------------------------ TEST ZONE ------------------------ */
+
 
 
 // ---------------------------------------------------------------------------
@@ -4334,6 +4352,9 @@ exports.pca = pca;
 exports.ndviS2 = ndvi_s2;
 
 // Change Detection
+exports.imad = imad;
+exports.radcal = radcal;
+exports.radcalbatch = radcalbatch;
 exports.burn_severity = burn_severity;
 exports.ndvi_change_detection = ndvi_change_detection;
 exports.ndwi_change_detection = ndwi_change_detection;

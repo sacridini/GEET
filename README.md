@@ -1190,6 +1190,30 @@ _Function to merge all images of one image collection into a single band._
 
 
 
+------------------------------------------------------------------------------
+
+#### imad
+(current, prev)
+
+_Iteratively Reweighted Multivariate Alteration Detection (iMAD) algorithm. Developed by Dr. Allan Nielsen and implemented in GEE by Dr. Mort Canty. This is a highly advanced statistical algorithm for detecting changes between two images and finding Pseudo-Invariant Features (PIFs) that didn't change._
+
+##### Params:
+  (ee.Image) current - The target image.
+  (ee.Dictionary) prev - The iteration dictionary containing state.
+
+------------------------------------------------------------------------------
+
+#### radcalbatch
+(current, prev)
+
+_Performs Relative Radiometric Normalization using orthogonal regression on the invariant pixels discovered by the iMAD algorithm. Crucial for harmonizing a time series of images to a single reference image._
+
+##### Params:
+  (ee.Image) current - The image to normalize.
+  (ee.Dictionary) prev - The dictionary containing the reference image.
+
+------------------------------------------------------------------------------
+
 #### segmentation_snic
 (image, size, compactness)
 
