@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.7.1
+ * Version: 1.8.1
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -2554,93 +2554,99 @@ var surface_temperature_oli = function (image) {
 
 
 /*
-  lst_calc_ls5:
-  Function calculate the land surface temperature from a Landsat 5 image doing all the process in a single function.
+  calculate_lst:
+  Unified function to calculate the Land Surface Temperature (LST) using the Single-Channel algorithm.
+  It automatically detects the sensor (Landsat 5, 7, 8, or 9) from the image metadata and dynamically
+  applies the correct calibration coefficients and thermal wavelengths.
+  It can process a single image or map over an entire ImageCollection (time series).
 
   Params:
-  (ee.Image) image - the input Landsat 5 image.
-
-  Usage:
-  var geet = require('users/eduardolacerdageo/geet:geet');
-  var lst = lst_calc_ls5(img);
-
-  Reference:
-  http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
-/*
-  lst_calc_ls5:
-  (image)
-  
-  Function calculate the land surface temperature from a Landsat 5 image doing all the process in a single function.
+  (ee.Image | ee.ImageCollection) input - The input image or collection.
 */
-var lst_calc_ls5 = function (image) {
-    var toa = toa_radiance(image, 6);
-    var ndvi = ndvi_l5(toa);
-    var bt = brightness_temp_l5c(ndvi, true);
-    var propVeg = prop_veg(bt);
-    var lse = surface_emissivity(propVeg);
-    var lst = surface_temperature_tm(lse);
-    return lst;
+var calculate_lst = function(input) {
+    if (typeof input.map === 'function') {
+        return input.map(function(img) { return calculate_lst(img); });
+    }
+    
+    var image = ee.Image(input);
+    var spacecraft = ee.String(image.get('SPACECRAFT_ID'));
+    
+    // Detect sensor to set constants
+    var isL5 = spacecraft.match('5').length().gt(0);
+    var isL7 = spacecraft.match('7').length().gt(0);
+    var isL89 = spacecraft.match('8|9').length().gt(0);
+    
+    // Safely get K1/K2 (fallback to 1 if null to avoid crash, we will mask it out anyway if missing)
+    var k1_val = ee.Algorithms.If(image.get('K1_CONSTANT_BAND_10'), image.get('K1_CONSTANT_BAND_10'), 1);
+    var k2_val = ee.Algorithms.If(image.get('K2_CONSTANT_BAND_10'), image.get('K2_CONSTANT_BAND_10'), 1);
+    
+    var K1 = ee.Number(ee.Algorithms.If(isL5, 607.76,
+             ee.Algorithms.If(isL7, 666.09, k1_val)));
+             
+    var K2 = ee.Number(ee.Algorithms.If(isL5, 1260.56,
+             ee.Algorithms.If(isL7, 1282.71, k2_val)));
+             
+    var wavelength = ee.Number(ee.Algorithms.If(isL5, 11.45,
+                     ee.Algorithms.If(isL7, 11.5,
+                     10.895))); // 10.895 for L8/L9 TIRS Band 10
+                     
+    var thermal_band = ee.String(ee.Algorithms.If(isL89, 'B10', 'B6'));
+    var nir_band = ee.String(ee.Algorithms.If(isL89, 'B5', 'B4'));
+    var red_band = ee.String(ee.Algorithms.If(isL89, 'B4', 'B3'));
+    
+    var rad_mult_prop = ee.String('RADIANCE_MULT_BAND_').cat(thermal_band.slice(1));
+    var rad_add_prop = ee.String('RADIANCE_ADD_BAND_').cat(thermal_band.slice(1));
+    
+    var rad_mult = ee.Number(ee.Algorithms.If(image.get(rad_mult_prop), image.get(rad_mult_prop), 0));
+    var rad_add = ee.Number(ee.Algorithms.If(image.get(rad_add_prop), image.get(rad_add_prop), 0));
+    
+    // 1. TOA Radiance & Brightness Temperature
+    var thermal = image.select(thermal_band);
+    
+    // Calculate what the BT would be if the input was RAW DN
+    var toa_rad = thermal.multiply(rad_mult).add(rad_add);
+    var bt_computed = image.expression('K2 / log(K1 / L + 1)', {
+        'K1': K1, 'K2': K2, 'L': toa_rad
+    });
+    
+    // Robust check: Earth Engine's T1_TOA collections provide thermal bands ALREADY in Kelvin (~300).
+    // RAW DN collections provide values > 10,000. 
+    // We use .where() to dynamically choose the right value per pixel.
+    var bt_kelvin = thermal.where(thermal.gt(500), bt_computed);
+    var bt = bt_kelvin.subtract(273.15); // Convert to Celsius
+    
+    // 3. NDVI
+    var ndvi = image.normalizedDifference([nir_band, red_band]);
+    
+    // 4. Proportion of Vegetation (PV)
+    // Formula: ((NDVI - NDVI_min) / (NDVI_max - NDVI_min))^2
+    var pv = image.expression('((NDVI - 0.2) / 0.3) ** 2', {'NDVI': ndvi});
+    // Clamp PV between 0 and 1 to prevent physically impossible emissivity values
+    pv = pv.where(ndvi.lt(0.2), 0).where(ndvi.gt(0.5), 1);
+    
+    // 5. Land Surface Emissivity (LSE)
+    var lse = image.expression('0.004 * PV + 0.986', {'PV': pv});
+    
+    // 6. Land Surface Temperature (LST)
+    var p = 14380;
+    var lst = image.expression(
+        'BT / (1 + (w * BT / p) * log(LSE))', {
+        'BT': bt.add(273.15), // Needs Kelvin for this formula
+        'w': wavelength,
+        'p': p,
+        'LSE': lse
+    }).subtract(273.15).rename('LST'); // Convert back to Celsius
+    
+    return image.addBands([
+        toa_rad.rename('TOA_Radiance'), 
+        bt.rename('Brightness_Temperature'), 
+        ndvi.rename('NDVI'), 
+        pv.rename('PropVeg'), 
+        lse.rename('LSE'), 
+        lst
+    ]);
 }
 
-
-/*
-  lst_calc_ls7:
-  Function calculate the land surface temperature from a Landsat 7 image doing all the process in a single function.
-
-  Params:
-  (ee.Image) image - the input Landsat 7 image.
-
-  Usage:
-  var geet = require('users/eduardolacerdageo/geet:geet');
-  var lst = lst_calc_ls7(img);
-
-  Reference:
-  http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
-/*
-  lst_calc_ls7:
-  (image)
-  
-  Function calculate the land surface temperature from a Landsat 7 image doing all the process in a single function.
-*/
-var lst_calc_ls7 = function (image) {
-    var toa = toa_radiance(image, 6);
-    var ndvi = ndvi_l7(toa);
-    var bt = brightness_temp_l7c(ndvi, true);
-    var propVeg = prop_veg(bt);
-    var lse = surface_emissivity(propVeg);
-    var lst = surface_temperature_tm(lse);
-    return lst;
-}
-
-
-/*
-  lst_calc_ls8:
-  Function calculate the land surface temperature from a Landsat 8 image doing all the process in a single function.
-
-  Params:
-  (ee.Image) image - the input Landsat 8 image.
-
-  Usage:
-  var geet = require('users/eduardolacerdageo/geet:geet');
-  var lst = lst_calc_ls8(img);
-
-  Reference:
-  http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
-/*
-  lst_calc_ls8:
-  (image)
-  
-  Function calculate the land surface temperature from a Landsat 8 image doing all the process in a single function.
-*/
-var lst_calc_ls8 = function (image) {
-    var toa = toa_radiance(image, 10);
-    var ndvi = ndvi_l8(toa);
-    var bt = brightness_temp_l8c(ndvi, true);
-    var propVeg = prop_veg(bt);
-    var lse = surface_emissivity(propVeg);
-    var lst = surface_temperature_tm(lse);
-    return lst;
-}
 
 
 /*
@@ -4417,9 +4423,7 @@ exports.brightness_temp = brightness_temp;
 exports.surface_emissivity = surface_emissivity;
 exports.surface_temperature_tm = surface_temperature_tm;
 exports.surface_temperature_oli = surface_temperature_oli;
-exports.lst_calc_ls5 = lst_calc_ls5;
-exports.lst_calc_ls7 = lst_calc_ls7;
-exports.lst_calc_ls8 = lst_calc_ls8;
+exports.calculate_lst = calculate_lst;
 exports.cloudmask = cloudmask;
 exports.cloudmask_sr = cloudmask_sr;
 exports.fmask = fmask;
