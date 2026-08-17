@@ -23,7 +23,7 @@ GEET using Landsat collection 2 will be available soon!
 ## Documentation: 
 All functions implemented (Version 1.1.1 - Beta):
 
-### 1. Machine Learning & Classification
+### Machine Learning & Classification
 - [svm](#svm)
 - [cart](#cart)
 - [rf](#rf)
@@ -31,7 +31,7 @@ All functions implemented (Version 1.1.1 - Beta):
 - [max_ent](#max_ent)
 - [kmeans](#kmeans)
 
-### 2. Spectral Indices & Transformations
+### Spectral Indices & Transformations
 - [landsat_indices](#landsat_indices)
 - [sentinel2_indices](#sentinel2_indices)
 - [water_indices](#water_indices)
@@ -39,12 +39,12 @@ All functions implemented (Version 1.1.1 - Beta):
 - [pca](#pca)
 - [ndviS2](#ndviS2)
 
-### 3. Change Detection
+### Change Detection
 - [ndvi_change_detection](#ndvi_change_detection)
 - [ndwi_change_detection](#ndwi_change_detection)
 - [ndbi_change_detection](#ndbi_change_detection)
 
-### 4. Time Series & Mosaics
+### Time Series & Mosaics
 - [create_mosaic](#create_mosaic)
 - [smooth_timeseries](#smooth_timeseries)
 - [build_annual_landsat_timeseries](#build_annual_landsat_timeseries)
@@ -52,12 +52,12 @@ All functions implemented (Version 1.1.1 - Beta):
 - [landsat_timeseries_by_pathrow](#landsat_timeseries_by_pathrow)
 - [landsat_timeseries_by_roi](#landsat_timeseries_by_roi)
 
-### 5. Radar & Topography
+### Radar & Topography
 - [s1_preprocess](#s1_preprocess)
 - [speckle_filter](#speckle_filter)
 - [terrain_analysis](#terrain_analysis)
 
-### 6. Pre-Processing & Calibration
+### Pre-Processing & Calibration
 - [toa_radiance](#toa_radiance)
 - [toa_reflectance](#toa_reflectance)
 - [brightness_temp](#brightness_temp)
@@ -74,7 +74,7 @@ All functions implemented (Version 1.1.1 - Beta):
 - [resample_band](#resample_band)
 - [geom_filter](#geom_filter)
 
-### 7. Statistics & Math
+### Statistics & Math
 - [reduce_image](#reduce_image)
 - [spearmans_correlation](#spearmans_correlation)
 - [linear_fit](#linear_fit)
@@ -82,7 +82,7 @@ All functions implemented (Version 1.1.1 - Beta):
 - [majority](#majority)
 - [prop_veg](#prop_veg)
 
-### 8. Visualization, Utilities & Export
+### Visualization, Utilities & Export
 - [plot_rgb](#plot_rgb)
 - [plot_ndvi](#plot_ndvi)
 - [plot_ndwi](#plot_ndwi)
