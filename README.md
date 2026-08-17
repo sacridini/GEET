@@ -47,36 +47,21 @@ All functions implemented (Version 0.8.2 - Beta):
 [water_indices](#water_indices)  
 [create_mosaic](#create_mosaic)  
 [brightness_temp](#brightness_temp)  
+[tasseled_cap](#tasseled_cap)  
+[reduce_image](#reduce_image)  
+[landsat_timeseries](#landsat_timeseries)  
 [load_image](#load_image)      
 [collection2image](#collection2image)  
 [toa_radiance](#toa_radiance)  
 [toa_reflectance](#toa_reflectance)  
-[toa_reflectance_l8](#toa_reflectance_l8)  
-[toa_reflectance_l9](#toa_reflectance_l9)  
 [resample](#resample)  
 [resample_band](#resample_band)  
 [load_id_s2](#load_id_s2)  
 [build_annual_landsat_timeseries](#build_annual_landsat_timeseries)  
 [landsat_timeseries_by_pathrow](#landsat_timeseries_by_pathrow)  
 [landsat_timeseries_by_roi](#landsat_timeseries_by_roi)  
-[ls5_timeseries_by_pathrow](#ls5_timeseries_by_pathrow)    
-[ls7_timeseries_by_pathrow](#ls7_timeseries_by_pathrow)    
-[ls8_timeseries_by_pathrow](#ls8_timeseries_by_pathrow)    
-[ls9_timeseries_by_pathrow](#ls9_timeseries_by_pathrow)    
-[max](#max)  
-[min](#min)  
-[mean](#mean)  
-[median](#median)  
-[mode](#mode)  
-[sd](#sd)  
-[variance](#variance)  
-[amplitude](#amplitude)  
 [spearmans_correlation](#spearmans_correlation)  
 [linear_fit](#linear_fit)  
-[ndvi_l5](#ndvi_l5)  
-[ndvi_l7](#ndvi_l7)  
-[ndvi_l8](#ndvi_l8)  
-[ndvi_l9](#ndvi_l9)  
 [ndviS2](#ndvis2)  
 [prop_veg](#prop_veg)  
 [surface_emissivity](#surface_emissivity)     
@@ -91,12 +76,6 @@ All functions implemented (Version 0.8.2 - Beta):
 [fmask](#fmask)       
 [pca](#pca)      
 [geom_filter](#geom_filter)  
-[tasseledcap_oli](#tasseledcap_oli)  
-[tasseledcap_tm5](#tasseledcap_tm5)  
-[tasseledcap_tm7](#tasseledcap_tm7)  
-[tasseledcap_s2](#tasseledcap_s2)             
-
-
 ------------------------------------------------------------------------------
 
 ### Quickstart Guide:
@@ -591,10 +570,23 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 ------------------------------------------------------------------------------
 
 #### toa_reflectance
-(image, band)  
-_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance._     
+(image, band, sensor, solarAngle)
+
+_Generic function to calculate TOA Reflectance from raw DN._
 
 ##### Params:
+  (ee.Image) image - the input raw image.
+  (string) band - the band name to process.
+  (string) sensor - 'L5', 'L7', 'L8', or 'L9'.
+  **optional** (number) solarAngle - solar angle if absent from metadata.
+
+##### Usage:
+```js
+  var ref_img = geet.toa_reflectance(raw_img, 'B4', 'L8');
+```
+
+------------------------------------------------------------------------------
+#### Params:
   (ee.Image) image - The image to process.  
   (number) band - The number of the band that you want to process.                         
   
@@ -612,12 +604,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
-#### toa_reflectance_l8
-(image, band, _solarAngle_)
-
-_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance Landsat 8 version with Solar Angle correction._       
-
-##### Params:
+#### Params:
   (ee.Image) image - The image to process.  
   (number) band - The number of the band that you want to process.  
   (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.                       
@@ -646,12 +633,7 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 ------------------------------------------------------------------------------
 
-#### toa_reflectance_l9
-(image, band, _solarAngle_)
-
-_Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Reflectance Landsat 9 version with Solar Angle correction._       
-
-##### Params:
+#### Params:
   (ee.Image) image - The image to process.  
   (number) band - The number of the band that you want to process.  
   (string) solarAngle - The solar angle mode. 'SE' for local sun elevation angle and 'SZ' for local solar zenith angle.                       
@@ -940,12 +922,7 @@ _Function that return a image collection with all landsat images (5 and 8) from 
 
 ------------------------------------------------------------------------------
 
-#### ls5_timeseries_by_pathrow  
-(type, path, row)   
-
-_Function that return a image collection with all landsat 5 images from a defined path row._     
-
-##### Params:
+#### Params:
   (string) type - the type of the collection (RAW, TOA or SR)
   (number) path - the path number of the image
   (number) row - the row number of the image
@@ -958,12 +935,7 @@ _Function that return a image collection with all landsat 5 images from a define
 
 ------------------------------------------------------------------------------
 
-#### ls7_timeseries_by_pathrow  
-(type, path, row)   
-
-_Function that return a image collection with all landsat 7 images from a defined path row._     
-
-##### Params:
+#### Params:
   (string) type - the type of the collection (RAW, TOA or SR)
   (number) path - the path number of the image
   (number) row - the row number of the image
@@ -976,12 +948,7 @@ _Function that return a image collection with all landsat 7 images from a define
 
 ------------------------------------------------------------------------------
 
-#### ls8_timeseries_by_pathrow  
-(type, path, row)   
-
-_Function that return a image collection with all landsat 8 images from a defined path row._     
-
-##### Params:
+#### Params:
   (string) type - the type of the collection (RAW, TOA or SR)
   (number) path - the path number of the image
   (number) row - the row number of the image
@@ -994,12 +961,7 @@ _Function that return a image collection with all landsat 8 images from a define
 
 ------------------------------------------------------------------------------
 
-#### ls9_timeseries_by_pathrow  
-(type, path, row)   
-
-_Function that return a image collection with all landsat 9 images from a defined path row._     
-
-##### Params:
+#### Params:
   (string) type - the type of the collection (RAW, TOA or SR)
   (number) path - the path number of the image
   (number) row - the row number of the image
@@ -1162,12 +1124,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### max
-(image, roi, scale, maxPixels)  
-
-_Function the get the maximum value from an image and returns an dictionary with all band values._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.   
   **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.  
   **optional** (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.  
@@ -1186,12 +1143,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### min
-(image, roi, scale, maxPixels)  
-
-_Function the get the minimum value from an image and returns an dictionary with all band values._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.  
   **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.      
   **optional** (number) scale - the scale number.The scale is related to the spatial resolution of the image. Landsat is 30, so the default is 30 also.    
@@ -1210,12 +1162,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### mean
-(image, roi, scale, maxPixels)  
-
-_Function the get the mean value from an image and returns a dictionary with all band values._
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.      
   **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.            
   **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.   
@@ -1234,12 +1181,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### median
-(image, roi, scale, maxPixels)   
-
-_Function the get the median value from an image and returns a dictionary with all band values._
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.        
   **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
   **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
@@ -1258,12 +1200,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### mode
-(image, roi, scale, maxPixels)  
-
-_Function the get the mode value from an image and returns a dictionary with all band values._
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.        
   **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
   **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
@@ -1282,12 +1219,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### sd
-(image, roi, scale, maxPixels)  
-
-_Function the get the standard deviation value from an image and returns a dictionary with all band values._
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.        
   **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
   **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
@@ -1306,13 +1238,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### variance
-(image, roi, scale, maxPixels)  
-
-
-_Function the get the variance value from an image and returns a dictionary with all band values._
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.        
   **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
   **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
@@ -1331,12 +1257,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### amplitude
-(image, roi, scale, maxPixels)  
-
-_Function the get the amplitude value from an image and returns a dictionary with all band values._
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.        
   **optional** (ee.Geometry) roi - the region of interest. Default is set to the image geometry.           
   **optional** (ee.Number) scale - the scale number.The scale is related to the spatial resolution of the image. The default is 30.         
@@ -1405,12 +1326,7 @@ or
 
 ------------------------------------------------------------------------------
 
-#### ndvi_l5 
-(image)  
-
-_Function calculate the normalized difference vegetation index (NDVI) from Landsat 5 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.                             
   
 ##### Usage:
@@ -1420,12 +1336,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 ------------------------------------------------------------------------------
 
-#### ndvi_l7
-(image)  
-
-_Function calculate the normalized difference vegetation index (NDVI) from Landsat 7 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.                             
   
 ##### Usage:
@@ -1435,12 +1346,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 ------------------------------------------------------------------------------
 
-#### ndvi_l8
-(image)  
-
-_Function calculate the normalized difference vegetation index (NDVI) from Landsat 8 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.                             
   
 ##### Usage:
@@ -1450,12 +1356,7 @@ _Function calculate the normalized difference vegetation index (NDVI) from Lands
 
 ------------------------------------------------------------------------------
 
-#### ndvi_l9
-(image)  
-
-_Function calculate the normalized difference vegetation index (NDVI) from Landsat 9 data._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.                             
   
 ##### Usage:
@@ -1705,12 +1606,7 @@ _Function filter a geometry/feature by value._
 
 ------------------------------------------------------------------------------
 
-#### tasseledcap_oli
-(image) 
-
-_Function to create a Tasselled Cap using an Landsat 8 image._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.                                   
   
 ##### Usage:
@@ -1720,12 +1616,7 @@ _Function to create a Tasselled Cap using an Landsat 8 image._
 
 ------------------------------------------------------------------------------
 
-#### tasseledcap_tm5
-(image) 
-
-_Function to create a Tasselled Cap using an Landsat 5 image._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.                                   
   
 ##### Usage:
@@ -1735,12 +1626,7 @@ _Function to create a Tasselled Cap using an Landsat 5 image._
 
 ------------------------------------------------------------------------------
 
-#### tasseledcap_tm7
-(image) 
-
-_Function to create a Tasselled Cap using an Landsat 7 image._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.                                   
   
 ##### Usage:
@@ -1750,12 +1636,7 @@ _Function to create a Tasselled Cap using an Landsat 7 image._
 
 ------------------------------------------------------------------------------
 
-#### tasseledcap_s2
-(image) 
-
-_Function to create a Tasselled Cap on a Sentinel 2 image._     
-
-##### Params:
+#### Params:
   (ee.Image) image - the input image.                                   
   
 ##### Usage:
@@ -1883,4 +1764,54 @@ _Function to generate advanced water quality indices: NDTI (Normalized Differenc
 ##### Usage:
 ```js  
     var water_img = geet.water_indices(s2_image, 'S2'); 
+```
+#### tasseled_cap
+(image, sensor)
+
+_Generic function to create a Tasselled Cap image._
+
+##### Params:
+  (ee.Image) image - the input image.
+  (string) sensor - 'L5', 'L7', 'L8', 'L9', or 'S2'.
+
+##### Usage:
+```js
+  var image_tcap = geet.tasseled_cap(img, 'L8');  
+```
+
+------------------------------------------------------------------------------
+
+#### reduce_image
+(image, reducerType, roi, scale, maxPixels)
+
+_Generic function to calculate statistical reducers for a region._
+
+##### Params:
+  (ee.Image) image - the input image.
+  (string) reducerType - 'max', 'min', 'mean', 'median', 'mode', 'sd', 'variance', 'amplitude'.
+  (ee.Geometry) roi - the Region of Interest.
+  **optional** (number) scale - the scale in meters. Default is 30.
+  **optional** (number) maxPixels - the max pixels. Default is 1e9.
+
+##### Usage:
+```js
+  var stats = geet.reduce_image(img, 'mean', roi, 30);  
+```
+
+------------------------------------------------------------------------------
+
+#### landsat_timeseries
+(sensor, type, path, row)
+
+_Generic function to build an annual Landsat timeseries for a specific sensor._
+
+##### Params:
+  (string) sensor - 'L5', 'L7', 'L8', 'L9'.
+  (string) type - 'TOA' or 'SR'.
+  (number) path - the WRS-2 path.
+  (number) row - the WRS-2 row.
+
+##### Usage:
+```js
+  var l8_ts = geet.landsat_timeseries('L8', 'TOA', 221, 71);
 ```

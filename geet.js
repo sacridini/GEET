@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -3486,33 +3486,15 @@ exports.load_image = load_image
 exports.collection2image = collection2image
 exports.toa_radiance = toa_radiance
 exports.toa_reflectance = toa_reflectance
-exports.toa_reflectance_l8 = toa_reflectance_l8
-exports.toa_reflectance_l9 = toa_reflectance_l9
 exports.resample = resample
 exports.resample_band = resample_band
 exports.load_id_s2 = load_id_s2
 exports.build_annual_landsat_timeseries = build_annual_landsat_timeseries
 exports.landsat_timeseries_by_pathrow = landsat_timeseries_by_pathrow
 exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi
-exports.ls5_timeseries_by_pathrow = ls5_timeseries_by_pathrow
-exports.ls7_timeseries_by_pathrow = ls7_timeseries_by_pathrow
-exports.ls8_timeseries_by_pathrow = ls8_timeseries_by_pathrow
-exports.ls9_timeseries_by_pathrow = ls9_timeseries_by_pathrow
 exports.modis_ndvi_mosaic = modis_ndvi_mosaic
-exports.max = max
-exports.min = min
-exports.mean = mean
-exports.median = median
-exports.mode = mode
-exports.sd = sd
-exports.variance = variance
-exports.amplitude = amplitude
 exports.spearmans_correlation = spearmans_correlation
 exports.linear_fit = linear_fit
-exports.ndvi_l5 = ndvi_l5
-exports.ndvi_l7 = ndvi_l7
-exports.ndvi_l8 = ndvi_l8
-exports.ndvi_l9 = ndvi_l9
 exports.ndvi_s2 = ndvi_s2
 exports.prop_veg = prop_veg
 exports.surface_emissivity = surface_emissivity
@@ -3527,10 +3509,6 @@ exports.cloudmask_sr = cloudmask_sr
 exports.fmask = fmask
 exports.pca = pca
 exports.geom_filter = geom_filter
-exports.tasseledcap_oli = tasseledcap_oli
-exports.tasseledcap_s2 = tasseledcap_s2
-exports.tasseledcap_tm5 = tasseledcap_tm5
-exports.tasseledcap_tm7 = tasseledcap_tm7
 exports.brightness_temp = brightness_temp
 exports.create_mosaic = create_mosaic
 exports.s1_preprocess = s1_preprocess;
@@ -3538,3 +3516,6 @@ exports.speckle_filter = speckle_filter;
 exports.terrain_analysis = terrain_analysis;
 exports.smooth_timeseries = smooth_timeseries;
 exports.water_indices = water_indices;
+exports.reduce_image = reduce_image;
+exports.landsat_timeseries = landsat_timeseries;
+exports.tasseled_cap = tasseled_cap;
