@@ -999,17 +999,18 @@ _Eliminates small patches in a classified image (Minimum Mapping Unit filter) by
 ------------------------------------------------------------------------------
 
 #### harmonic_trend
-(timeseries, dependent_band)
+(timeseries, dependent_band, num_harmonics)
 
-_Generates a Fourier Harmonic Trend model for a time-series to extract Seasonality (Phase and Amplitude) and Linear Trend._
+_Generates a Fourier Harmonic Trend model for a time-series to extract Seasonality (Phase and Amplitude) and Linear Trend. It now supports multiple harmonics for modeling complex phenological cycles (e.g., double-cropping systems)._
 
 ##### Params:
-  (ee.ImageCollection) timeseries - the input time-series image collection.
-  (string) dependent_band - the band to model (e.g., 'NDVI').
+  (ee.ImageCollection) timeseries - The input time-series collection.
+  (string) dependent_band - The name of the band to model (e.g., 'NDVI').
+  **optional** (number) num_harmonics - The number of cycles per year to model (default: 1).
 
 ##### Usage:
 ```js
-  var trend = geet.harmonic_trend(landsat_ts, 'NDVI');
+  var trend = geet.harmonic_trend(landsat_ts, 'NDVI', 2);
 ```
 
 ------------------------------------------------------------------------------

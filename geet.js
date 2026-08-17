@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.8.1
+ * Version: 1.9.1
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -2709,7 +2709,13 @@ var cloudmask = function (image) {
     // Error handling
     if (image === undefined) error('cloudmask', 'You need to specify an input image.');
 
-    var mask = image.select(['fmask']).neq(4);
+    var qa = image.select('QA_PIXEL');
+    // Landsat Collection 2 QA_PIXEL: Bit 3 is Cloud, Bit 4 is Cloud Shadow
+    var cloudBitMask = 1 << 3;
+    var cloudShadowBitMask = 1 << 4;
+    var mask = qa.bitwiseAnd(cloudBitMask).eq(0)
+      .and(qa.bitwiseAnd(cloudShadowBitMask).eq(0));
+      
     return image.updateMask(mask);
 };
 
@@ -2737,22 +2743,13 @@ var cloudmask_sr = function (original_image, qa_band) {
     if (original_image === undefined) error('cloudmask_sr', 'You need to specify an input image.');
     if (qa_band === undefined) error('cloudmask_sr', 'You need to specify an input QA band.');
 
-    var getQABits = function (qa_band, start, end, newName) {
-        var pattern = 0;
-        for (var i = start; i <= end; i++) {
-            pattern += Math.pow(2, i);
-        }
-
-        return qa_band.select([0], [newName])
-            .bitwiseAnd(pattern)
-            .rightShift(start);
-    };
-
-    var cs = getQABits(qa_band, 3, 3, 'Cloud_shadows').eq(0);
-    var c = getQABits(qa_band, 5, 5, 'Cloud').eq(0);
-
-    original_image = original_image.updateMask(cs);
-    return original_image.updateMask(c);
+    // Landsat Collection 2 QA_PIXEL: Bit 3 is Cloud, Bit 4 is Cloud Shadow
+    var cloudBitMask = 1 << 3;
+    var cloudShadowBitMask = 1 << 4;
+    var mask = qa_band.bitwiseAnd(cloudBitMask).eq(0)
+      .and(qa_band.bitwiseAnd(cloudShadowBitMask).eq(0));
+      
+    return original_image.updateMask(mask);
 };
 
 
@@ -3509,27 +3506,85 @@ var segmentation_snic = function(image, size, compactness) {
 };
 /*
   harmonic_trend:
-  (timeseries, dependentband)
+  (timeseries, dependent_band, num_harmonics)
   
   Generates a Fourier Harmonic Trend model for a time-series to extract Seasonality (Phase and Amplitude) and Linear Trend.
+  Supports multiple harmonics for complex phenological cycles.
+  
+  Params:
+  (ee.ImageCollection) timeseries - The input time-series collection.
+  (string) dependent_band - The name of the band to model (e.g. 'NDVI').
+  (number) num_harmonics - The number of harmonics/cycles per year (default: 1).
 */
-var harmonic_trend = function(timeseries, dependent_band) {
+var harmonic_trend = function(timeseries, dependent_band, num_harmonics) {
+  num_harmonics = typeof num_harmonics !== 'undefined' ? num_harmonics : 1;
   var time_band = 't'; var constant_band = 'constant';
+  
   var add_variables = function(image) {
     var date = image.date();
     var years = date.difference(ee.Date('1970-01-01'), 'year');
     var timeRadians = ee.Image(years.multiply(2 * Math.PI)).rename(time_band).float();
     var constant = ee.Image(1).rename(constant_band);
-    return image.addBands(constant).addBands(timeRadians).addBands(timeRadians.cos().rename('cos')).addBands(timeRadians.sin().rename('sin')).float();
+    
+    var img = image.addBands(constant).addBands(timeRadians).float();
+    for (var i = 1; i <= num_harmonics; i++) {
+        var n = ee.Number(i);
+        var cos = timeRadians.multiply(n).cos().rename('cos_' + i);
+        var sin = timeRadians.multiply(n).sin().rename('sin_' + i);
+        img = img.addBands(cos).addBands(sin);
+    }
+    return img;
   };
+  
   var ts_with_vars = timeseries.map(add_variables);
-  var independents = ee.List([constant_band, time_band, 'cos', 'sin']);
+  var independents = ee.List([constant_band, time_band]);
+  // Use client-side loop since num_harmonics is small and static
+  var indep_array = [constant_band, time_band];
+  for (var i = 1; i <= num_harmonics; i++) {
+      indep_array.push('cos_' + i);
+      indep_array.push('sin_' + i);
+  }
+  independents = ee.List(indep_array);
+  
   var trend = ts_with_vars.select(independents.add(dependent_band)).reduce(ee.Reducer.linearRegression(independents.length(), 1));
   var coefficients = trend.select('coefficients').arrayProject([0]).arrayFlatten([independents]);
-  var phase = coefficients.select('cos').atan2(coefficients.select('sin'));
-  var amplitude = coefficients.select('cos').hypot(coefficients.select('sin'));
-  return coefficients.addBands(phase.rename('phase')).addBands(amplitude.rename('amplitude'));
+  
+  var result = coefficients;
+  for (var i = 1; i <= num_harmonics; i++) {
+      var phase_name = num_harmonics === 1 ? 'phase' : 'phase_' + i;
+      var amp_name = num_harmonics === 1 ? 'amplitude' : 'amplitude_' + i;
+      var phase = coefficients.select('cos_' + i).atan2(coefficients.select('sin_' + i)).rename(phase_name);
+      var amplitude = coefficients.select('cos_' + i).hypot(coefficients.select('sin_' + i)).rename(amp_name);
+      result = result.addBands(phase).addBands(amplitude);
+  }
+  
+  return result;
 };
+
+/*
+  anomaly:
+  (image, reference_collection, band)
+  
+  Calculates the Z-Score Anomaly of an image compared to a historical reference collection.
+  Z-Score = (Value - Historical Mean) / Historical Standard Deviation
+  
+  Params:
+  (ee.Image) image - The target image to calculate the anomaly for.
+  (ee.ImageCollection) reference_collection - The historical time-series baseline.
+  (string) band - The name of the band to calculate the anomaly for (e.g. 'LST' or 'NDVI').
+*/
+var anomaly = function(image, reference_collection, band) {
+    if (image === undefined) error('anomaly', 'You need to specify a target image.');
+    if (reference_collection === undefined) error('anomaly', 'You need to specify a reference collection.');
+    if (band === undefined) error('anomaly', 'You need to specify the band name.');
+    
+    var mean = reference_collection.select(band).mean();
+    var stdDev = reference_collection.select(band).reduce(ee.Reducer.stdDev());
+    
+    var z_score = image.select(band).subtract(mean).divide(stdDev).rename(band + '_z_score');
+    return image.addBands(z_score);
+};
+
 /*
   zonal_statistics:
   (image, featureCollection, reducerType, scale)
@@ -3553,6 +3608,7 @@ var zonal_statistics = function(image, featureCollection, reducerType, scale) {
   var stats = image.reduceRegions({collection: featureCollection, reducer: red, scale: scale});
   return stats;
 };
+
 /*
   harmonize_sensors:
   (image, source, target)
@@ -3575,6 +3631,7 @@ var harmonize_sensors = function(image, source, target) {
   var harmonized = selected.multiply(slopes).add(intercepts);
   return image.addBands(harmonized, null, true);
 };
+
 /*
   burn_severity:
   (prefire, postfire, sensor)
@@ -4395,6 +4452,7 @@ exports.imad = imad;
 exports.radcal = radcal;
 exports.radcalbatch = radcalbatch;
 exports.burn_severity = burn_severity;
+exports.anomaly = anomaly;
 exports.ndvi_change_detection = ndvi_change_detection;
 exports.ndwi_change_detection = ndwi_change_detection;
 exports.ndbi_change_detection = ndbi_change_detection;
