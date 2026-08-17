@@ -1335,3 +1335,15 @@ _Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR), and Burn Severity
 ```
 
 ------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+
+### Deprecated Functions (Legacy Support)
+
+_The following functions have been deprecated to streamline the GEET library. They are still exported as "stubs" that will throw an informative error if called, guiding legacy code users to the new, integrated functions._
+
+- `build_annual_ls5_timeseries`, `build_annual_ls7_timeseries`, `build_annual_ls8_timeseries` -> **Replaced by:** `build_annual_landsat_timeseries(roi)`
+- `landsat5_timeseries`, `landsat7_timeseries`, `landsat8_timeseries` -> **Replaced by:** `landsat_timeseries(sensor, type)`
+
+_If your legacy scripts use any of these old functions, please update them to use the new integrated functions, which offer better performance, Collection 2 compliance, and support for newer sensors like Landsat 9._
