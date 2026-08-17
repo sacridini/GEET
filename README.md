@@ -54,9 +54,11 @@ All functions implemented (Version 1.5.0 - Beta):
 - [landsat_timeseries_by_roi](#landsat_timeseries_by_roi)
 - [harmonic_trend](#harmonic_trend)
 
-### Radar & Topography
+### Radar
 - [s1_preprocess](#s1_preprocess)
 - [speckle_filter](#speckle_filter)
+
+### Topography
 - [terrain_analysis](#terrain_analysis)
 
 ### Pre-Processing & Calibration
