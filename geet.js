@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.6.1
+ * Version: 1.6.2
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -12,6 +12,21 @@ function error(funcName, msg) {
     print(msg.toString());
     print("----------------------------------------------");
 }
+
+function deprecated_warning(old_name, new_name) {
+    var msg = 'GEET WARNING: The function `' + old_name + '` has been deprecated and integrated into a more robust function. Please use `' + new_name + '` instead. Check the documentation for the new parameters.';
+    print(msg);
+    throw new Error(msg);
+}
+
+exports.build_annual_ls5_timeseries = function() { deprecated_warning('build_annual_ls5_timeseries', 'build_annual_landsat_timeseries'); };
+exports.build_annual_ls7_timeseries = function() { deprecated_warning('build_annual_ls7_timeseries', 'build_annual_landsat_timeseries'); };
+exports.build_annual_ls8_timeseries = function() { deprecated_warning('build_annual_ls8_timeseries', 'build_annual_landsat_timeseries'); };
+
+// If there are any other specific MSS or Landsat functions that were removed:
+exports.landsat5_timeseries = function() { deprecated_warning('landsat5_timeseries', 'landsat_timeseries'); };
+exports.landsat7_timeseries = function() { deprecated_warning('landsat7_timeseries', 'landsat_timeseries'); };
+exports.landsat8_timeseries = function() { deprecated_warning('landsat8_timeseries', 'landsat_timeseries'); };
 
 
 /*
@@ -4295,6 +4310,9 @@ function radcalbatch(current, prev) {
 /* ------------------------ TEST ZONE ------------------------ */
 
 
+// ---------------------------------------------------------------------------
+// DEPRECATED FUNCTIONS (Kept to warn legacy users)
+// ---------------------------------------------------------------------------
 
 
 /* ------------------------  EXPORTS  ------------------------ */
@@ -4381,3 +4399,5 @@ exports.collection2image = collection2image;
 exports.segmentation_snic = segmentation_snic;
 exports.obia_classification = obia_classification;
 exports.filter_small_objects = filter_small_objects;
+
+
