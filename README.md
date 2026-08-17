@@ -21,7 +21,7 @@ GEET using Landsat collection 2 will be available soon!
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.4.0 - Beta):
+All functions implemented (Version 1.5.0 - Beta):
 
 ### Machine Learning & Classification
 - [svm](#svm)
@@ -482,6 +482,22 @@ _Function to apply a moving average filter to smooth a time series of images (e.
 ##### Usage:
 ```js  
     var smoothed_ndvi = geet.smooth_timeseries(ndvi_collection, 45); 
+```
+
+------------------------------------------------------------------------------
+
+#### build_annual_mss_timeseries
+(roi)
+
+_Function to build an annual Landsat MSS (Landsat 1, 2, 3, 4, 5) timeseries from 1972 to 1999. The function normalizes the distinct bands of older satellites into 'GREEN', 'RED', 'NIR1', 'NIR2', masks clouds using QA_PIXEL, calculates NDVI, and generates median annual mosaics._  
+
+##### Params:  
+  (ee.Point) roi - the region of interest that will define the study area  
+                        
+  
+##### Usage:
+```js   
+    var mss_timeseries = geet.build_annual_mss_timeseries(roi);     
 ```
 
 ------------------------------------------------------------------------------

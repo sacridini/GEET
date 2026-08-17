@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.4.0
+ * Version: 1.5.0
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -3563,6 +3563,68 @@ var plot = function (image, type, name, options) {
     Map.addLayer(image, visParams, name);
 };
 
+var build_annual_mss_timeseries = function(roi) {
+    roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point([-43.0879, -22.8632]);
+
+    var lm1 = ee.ImageCollection("LANDSAT/LM01/C02/T1").merge(ee.ImageCollection("LANDSAT/LM01/C02/T2"));
+    var lm2 = ee.ImageCollection("LANDSAT/LM02/C02/T1").merge(ee.ImageCollection("LANDSAT/LM02/C02/T2"));
+    var lm3 = ee.ImageCollection("LANDSAT/LM03/C02/T1").merge(ee.ImageCollection("LANDSAT/LM03/C02/T2"));
+    var lm4 = ee.ImageCollection("LANDSAT/LM04/C02/T1").merge(ee.ImageCollection("LANDSAT/LM04/C02/T2"));
+    var lm5 = ee.ImageCollection("LANDSAT/LM05/C02/T1").merge(ee.ImageCollection("LANDSAT/LM05/C02/T2"));
+
+    function rename_lm13(image) {
+        var bands = ['B4', 'B5', 'B6', 'B7'];
+        var new_bands = ['GREEN', 'RED', 'NIR1', 'NIR2'];
+        return image.select(bands).rename(new_bands);
+    }
+    
+    function rename_lm45(image) {
+        var bands = ['B1', 'B2', 'B3', 'B4'];
+        var new_bands = ['GREEN', 'RED', 'NIR1', 'NIR2'];
+        return image.select(bands).rename(new_bands);
+    }
+    
+    function calc_ndvi(image) {
+        var ndvi = image.normalizedDifference(['NIR2', 'RED']).rename('NDVI');
+        return image.addBands(ndvi);
+    }
+
+    function mask_mss(image) {
+        var qa = image.select('QA_PIXEL');
+        var cloudShadowBitMask = (1 << 4);
+        var cloudsBitMask = (1 << 3);
+        var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+                   .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+        return image.updateMask(mask);
+    }
+
+    var col13 = ee.ImageCollection(lm1.merge(lm2).merge(lm3))
+        .filterBounds(roi)
+        .map(rename_lm13);
+
+    var col45 = ee.ImageCollection(lm4.merge(lm5))
+        .filterBounds(roi)
+        .map(rename_lm45);
+
+    var mss_col = col13.merge(col45)
+        .map(calc_ndvi);
+
+    var start = '-01-01';
+    var finish = '-12-31';
+    var year_col_list = ee.List([]);
+
+    for (var year = 1972; year <= 1999; year++) {
+        var collection = mss_col.filterDate(year.toString() + start, year.toString() + finish);
+        
+        var dummy = ee.Image.constant([0,0,0,0,0]).rename(['GREEN', 'RED', 'NIR1', 'NIR2', 'NDVI']).updateMask(0);
+        var merged = collection.median().addBands(dummy).select(['GREEN', 'RED', 'NIR1', 'NIR2', 'NDVI']);
+        
+        year_col_list = year_col_list.add(ee.Image(merged).set('year', year));
+    }
+    
+    return ee.ImageCollection(year_col_list);
+}
+
 
 
 /* ------------------------ TEST ZONE ------------------------ */
@@ -3843,6 +3905,7 @@ exports.harmonic_trend = harmonic_trend;
 exports.create_mosaic = create_mosaic;
 exports.smooth_timeseries = smooth_timeseries;
 exports.build_annual_landsat_timeseries = build_annual_landsat_timeseries;
+exports.build_annual_mss_timeseries = build_annual_mss_timeseries;
 exports.landsat_timeseries = landsat_timeseries;
 exports.landsat_timeseries_by_pathrow = landsat_timeseries_by_pathrow;
 exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi;
