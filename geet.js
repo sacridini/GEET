@@ -28,6 +28,11 @@ exports.landsat5_timeseries = function() { deprecated_warning('landsat5_timeseri
 exports.landsat7_timeseries = function() { deprecated_warning('landsat7_timeseries', 'landsat_timeseries'); };
 exports.landsat8_timeseries = function() { deprecated_warning('landsat8_timeseries', 'landsat_timeseries'); };
 
+// Deprecated LST functions
+exports.lst_calc_ls5 = function() { deprecated_warning('lst_calc_ls5', 'calculate_lst'); };
+exports.lst_calc_ls7 = function() { deprecated_warning('lst_calc_ls7', 'calculate_lst'); };
+exports.lst_calc_ls8 = function() { deprecated_warning('lst_calc_ls8', 'calculate_lst'); };
+
 
 /*
   svm:
