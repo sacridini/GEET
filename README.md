@@ -60,6 +60,10 @@ All functions implemented (Version 1.5.0 - Beta):
 
 ### Topography
 - [terrain_analysis](#terrain_analysis)
+- [topographic_correction](#topographic_correction)
+- [calculate_twi](#calculate_twi)
+- [calculate_tpi_tri](#calculate_tpi_tri)
+- [extract_drainage](#extract_drainage)
 
 ### Pre-Processing & Calibration
 - [harmonize_sensors](#harmonize_sensors)
@@ -484,6 +488,76 @@ _Function to apply a moving average filter to smooth a time series of images (e.
 ##### Usage:
 ```js  
     var smoothed_ndvi = geet.smooth_timeseries(ndvi_collection, 45); 
+```
+
+------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------
+
+#### topographic_correction
+(image, dem)
+
+_Applies Topographic Illumination Correction to optical images using the Cosine correction method. This is extremely useful for removing terrain shadows in mountainous areas, relying on the solar elevation and azimuth stored in the image's metadata._
+
+##### Params:
+  (ee.Image) image - the optical image to correct (e.g., Landsat or Sentinel).
+  (ee.Image) dem - (optional) the Digital Elevation Model to use. Defaults to SRTM.
+
+##### Usage:
+```js
+  var corrected_img = geet.topographic_correction(landsat_img);
+```
+
+------------------------------------------------------------------------------
+
+#### calculate_twi
+(roi)
+
+_Calculates the Topographic Wetness Index (TWI). This index combines local slope and flow accumulation to quantify topographic control on hydrological processes, making it excellent for identifying wetlands, springs, and water accumulation zones._
+
+##### Params:
+  (ee.Geometry) roi - (optional) the region of interest to clip the outputs.
+
+##### Usage:
+```js
+  var twi = geet.calculate_twi(roi);
+  Map.addLayer(twi, {min: 5, max: 20, palette: ['red', 'yellow', 'green', 'blue']}, 'TWI');
+```
+
+------------------------------------------------------------------------------
+
+#### calculate_tpi_tri
+(roi)
+
+_Calculates the Topographic Position Index (TPI) and Terrain Ruggedness Index (TRI) based on focal mean and focal standard deviation. TPI is used to classify valleys and ridges, while TRI is used to map terrain unevenness._
+
+##### Params:
+  (ee.Geometry) roi - (optional) the region of interest to clip the outputs.
+
+##### Usage:
+```js
+  var terrain_indices = geet.calculate_tpi_tri(roi);
+  var tpi = terrain_indices.select('TPI');
+  var tri = terrain_indices.select('TRI');
+```
+
+------------------------------------------------------------------------------
+
+#### extract_drainage
+(roi, threshold)
+
+_Automatically extracts the drainage/stream network based on a flow accumulation threshold using the HydroSHEDS dataset._
+
+##### Params:
+  (ee.Geometry) roi - (optional) the region of interest.
+  (number) threshold - (optional) the flow accumulation threshold (in pixels) to define a stream. Defaults to 500.
+
+##### Usage:
+```js
+  var rivers = geet.extract_drainage(roi, 1000);
+  Map.addLayer(rivers, {palette: ['blue']}, 'Drainage Network');
 ```
 
 ------------------------------------------------------------------------------

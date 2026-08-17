@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.5.0
+ * Version: 1.6.1
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -28,6 +28,11 @@ function error(funcName, msg) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var imgClass = svm(image, samplesfc, landcover);
+/*
+  svm:
+  (image, trainingData, fieldName, kernelType, resolution)
+  
+  Function to apply SVM classification to an image.
 */
 var svm = function (image, trainingData, fieldName, kernelType, resolution) {
     // Error Handling
@@ -69,6 +74,11 @@ var svm = function (image, trainingData, fieldName, kernelType, resolution) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var imgClass = cart(image, samplesfc, landcover);
+/*
+  cart:
+  (image, trainingData, fieldName, resolution)
+  
+  Function to apply CART classification to an image.
 */
 var cart = function (image, trainingData, fieldName, resolution) {
     // Error Handling
@@ -111,6 +121,11 @@ var cart = function (image, trainingData, fieldName, resolution) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var imgClass = rf(image, samplesfc, landcover, 10);
+/*
+  rf:
+  (image, trainingData, fieldName, numOfTrees, resolution, cvsplit)
+  
+  Function to apply Random Forest classification to an image.
 */
 var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution, cv_split) {
     // Error Handling
@@ -178,6 +193,11 @@ var rf = function (image, bands, trainingData, fieldName, numOfTrees, resolution
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var imgClass = naive_bayes(image, samplesfc, landcover);
+/*
+  naive_bayes:
+  (image, trainingData, fieldName, resolution)
+  
+  Function to apply the Fast Naive Bayes classification to an image.
 */
 var naive_bayes = function (image, trainingData, fieldName, resolution) {
     // Error Handling
@@ -217,6 +237,11 @@ var naive_bayes = function (image, trainingData, fieldName, resolution) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var imgClass = max_ent(image, samplesfc, landcover);
+/*
+  max_ent:
+  (image, trainingData, fieldName, resolution)
+  
+  Function to apply the GMO Maximum Entropy classification to an image.
 */
 var max_ent = function (image, trainingData, fieldName, resolution) {
     // Error Handling
@@ -310,6 +335,11 @@ var kmeans = function (image, roi, numClusters, resolution, numPixels) {
   Usage: 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var ndviChange = ndvi_change_detection(image_2014, image_2015, 'L8', 0.5);
+/*
+  ndvi_change_detection:
+  (img1, img2, sensor, threshold)
+  
+  Function to detect changes between two input images using the NDVI index and a threshold parameter. The function adds the two masked indices and returns the sum of the two. It's a good choice to call the plotclass function to visualize the result. Ex: geet.plotclass(ndviChange, 3, 'changedetection');
 */
 var ndvi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
@@ -357,6 +387,11 @@ var ndvi_change_detection = function (img1, img2, sensor, threshold) {
   Usage: 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var ndwiChange = ndwi_change_detection( image_2014, image_2015, 'L8', 0.5);
+/*
+  ndwi_change_detection:
+  (img1, img2, sensor, threshold)
+  
+  Function to detect changes between two input images using the NDWI index and a threshold parameter. The function adds the two masked indices and returns the sum of the two. It's a good choice to call the plotclass function to visualize the result. Ex: geet.plotclass(ndwiChange, 3, 'changedetection');
 */
 var ndwi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
@@ -404,6 +439,11 @@ var ndwi_change_detection = function (img1, img2, sensor, threshold) {
   Usage: 
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var ndbiChange = ndbi_change_detection(image_2014, image_2015, 'L8', 0.5);
+/*
+  ndbi_change_detection:
+  (img1, img2, sensor, threshold)
+  
+  Function to detect changes between two input images using the NDBI index and a threshold parameter. The function adds the two masked indices and returns the sum. It's a good choice to call the plotclass function to visualize the result. Ex: geet.plotclass(ndbiChange, 3, 'changedetection');
 */
 var ndbi_change_detection = function (img1, img2, sensor, threshold) {
     // Error Handling
@@ -444,6 +484,11 @@ var ndbi_change_detection = function (img1, img2, sensor, threshold) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var texture = texture(image_from_rio, 1);
+/*
+  texture:
+  (image, radius)
+  
+  Function generate a texture filter on the image.
 */
 var texture = function (image, radius) {
     // Error Handling
@@ -469,6 +514,11 @@ var texture = function (image, radius) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var majority = majority(image_from_rio, 1);
+/*
+  majority:
+  (image, radius)
+  
+  Function to filter the final classification image and clear the salt-and-pepper effect.
 */
 var majority = function (image, radius) {
     // Error Handling
@@ -503,6 +553,11 @@ var COLOR = {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   color('water');
+/*
+  color:
+  (color)
+  
+  Function to return a valid color value from the object COLOR.
 */
 var color = function (_color) {
     // Error Handling
@@ -622,7 +677,12 @@ var landsat_indices = function (image, sensor, index) {
 
     return image.addBands(new_bands);
 };
-
+/*
+  sentinel2_indices:
+  (image, index)
+  
+  Function to take an input image and generate indices using the Sentinel 2 dataset.
+*/
 var sentinel2_indices = function (image, index) {
     if (image === undefined) error('sentinel2_indices', 'You need to specify an input image.');
 
@@ -686,7 +746,12 @@ var sentinel2_indices = function (image, index) {
 
     return image.addBands(new_bands);
 };
-
+/*
+  load_image:
+  (collection, year, roi, cloudfree)
+  
+  Function to get an example image to debug or test some code.
+*/
 var load_image = function (collection, year, roi, cloudFree) {
 
     // Default params
@@ -762,6 +827,11 @@ var load_image = function (collection, year, roi, cloudFree) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var merged_image = image_collection.iterate(collection2image, ee.Image([]));
+/*
+  collection2image:
+  (image, previous)
+  
+  Function to merge all images of one image collection into a single band.
 */
 var collection2image = function (image, previous) {
     return ee.Image(previous).addBands(image);
@@ -786,6 +856,11 @@ var collection2image = function (image, previous) {
   ML           = Band-specific multiplicative rescaling factor from the metadata (RADIANCE_MULT_BAND_x, where x is the band number)
   AL           = Band-specific additive rescaling factor from the metadata (RADIANCE_ADD_BAND_x, where x is the band number)
   Qcal         = Quantized and calibrated standard product pixel values (DN)
+/*
+  toa_radiance:
+  (image, band)
+  
+  Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance.
 */
 var toa_radiance = function (image, band) {
     // Error Handling
@@ -836,6 +911,11 @@ var toa_radiance = function (image, band) {
   Mρ            = Band-specific multiplicative rescaling factor from the metadata (REFLECTANCE_MULT_BAND_x, where x is the band number)
   Aρ            = Band-specific additive rescaling factor from the metadata (REFLECTANCE_ADD_BAND_x, where x is the band number)
   Qcal          = Quantized and calibrated standard product pixel values (DN)
+/*
+  toa_reflectance:
+  (image, band, sensor, solarAngle)
+  
+  Generic function to calculate TOA Reflectance from raw DN.
 */
 var toa_reflectance = function (image, band) {
     // Error Handling
@@ -1055,6 +1135,11 @@ var toa_reflectance_l9 = function (image, band, _solarAngle) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var bt_img = brightness_temp(toa_rad_image, 'L8', 'C');
+/*
+  brightness_temp:
+  (image, sensor, unit, twochannel)
+  
+  Generic function to convert the Top of Atmosphere (TOA Radiance) image to Brightness Temperature.
 */
 var brightness_temp = function (image, sensor, unit, two_channel) {
     if (image === undefined) error('brightness_temp', 'You need to specify an input image.');
@@ -1088,6 +1173,11 @@ var brightness_temp = function (image, sensor, unit, two_channel) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var landsat_10m = resample(L8_img, 10, 'bilinear'); 
+/*
+  resample:
+  (image, scale, mode)
+  
+  Function to resample an input image.
 */
 var resample = function (image, scale, mode) {
     // Error Handling
@@ -1119,6 +1209,11 @@ var resample = function (image, scale, mode) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var landsatB10_60m = resample_band(b10, 60);
+/*
+  resample_band:
+  (band, scale, mode)
+  
+  Function to resample just a single band.
 */
 var resample_band = function (band, scale, mode) {
     // Error Handling
@@ -1144,6 +1239,11 @@ var resample_band = function (band, scale, mode) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var s2_image = load_id_s2('S2A_MSIL1C_20170512T093041_N0205_R136_T34TDN_20170512T093649');
+/*
+  load_id_s2:
+  (id)
+  
+  Function to filter the Sentinel-2 collection by Product ID obtained from the Copernicus Open Access Hub.
 */
 var load_id_s2 = function (id) {
     // Error Handling
@@ -1167,6 +1267,11 @@ var load_id_s2 = function (id) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var ls_timeserie = build_annual_landsat_timeseries(roi);
+/*
+  build_annual_landsat_timeseries:
+  (roi)
+  
+  Function to build an annual Landsat (5, 7, 8, and 9) TOA time series from 1985 to 2030. The function also masks clouds and shadows, normalizes bands to standard English names, and generates all indices (NDVI, NDWI, SAVI, Tasseled Cap).
 */
 var build_annual_landsat_timeseries = function (roi) {
 
@@ -1371,6 +1476,11 @@ var build_annual_landsat_timeseries = function (roi) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var ls_collection = landsat_timeseries_by_pathrow('SR', 220, 77);
+/*
+  landsat_timeseries_by_pathrow:
+  (type, path, row)
+  
+  Function that return a image collection with all landsat images (5 and 8) from a defined path row. Remember to specify the type of the collection (raw, toa or sr).
 */
 var landsat_timeseries_by_pathrow = function (type, path, row) {
 
@@ -1449,6 +1559,11 @@ var landsat_timeseries_by_pathrow = function (type, path, row) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var ls_collection = landsat_timeseries_by_roi('SR', roi);
+/*
+  landsat_timeseries_by_roi:
+  (type, path, row)
+  
+  Function that returns an image collection with all Landsat images (5 and 8) from a defined roi. Remember to specify the type of the collection (raw, toa or sr).
 */
 var landsat_timeseries_by_roi = function (type, roi) {
 
@@ -1714,6 +1829,11 @@ var ls9_timeseries_by_pathrow = function (type, path, row) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var mosaic = create_mosaic('2023-01-01', '2023-12-31', roi, true, 'L8');
+/*
+  create_mosaic:
+  (startDate, endDate, roi, showMosaic, sensor)
+  
+  Generic function to build a cloud-free mosaic for Landsat 5, 7, 8, 9, or Sentinel-2.
 */
 var create_mosaic = function(startDate, endDate, roi, showMosaic, sensor) {
     if (startDate === undefined) error('create_mosaic', 'You need to specify the start date.');
@@ -2092,6 +2212,11 @@ var amplitude = function (image, roi, scale, maxPixels) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var spearmansCorrelation = spearmans_correlation(img1, img2, roi);
+/*
+  spearmans_correlation:
+  (image, roi, scale, maxPixels)
+  
+  Function the get the spearmans correlation value from an image and returns a dictionary with all band values.
 */
 var spearmans_correlation = function (image1, image2, roi, scale, maxPixels) {
     // Error handling
@@ -2127,6 +2252,11 @@ var spearmans_correlation = function (image1, image2, roi, scale, maxPixels) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var linearFit = linear_fit(img1, img2, roi);
+/*
+  linear_fit:
+  (image, roi, scale, maxPixels)
+  
+  Function that computes the slope and offset for a (weighted) linear regression of 2 inputs. It returns a dictionary.
 */
 var linear_fit = function (image1, image2, roi, scale, maxPixels) {
     // Error handling
@@ -2274,6 +2404,11 @@ var ndvi_s2 = function (image) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var img_pv = prop_veg(img);
+/*
+  prop_veg:
+  (image)
+  
+  Function that calculates the proportional vegetation.
 */
 var prop_veg = function (image) {
     // Error handling
@@ -2304,6 +2439,11 @@ var prop_veg = function (image) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var lse = surface_emissivity(pv);
+/*
+  surface_emissivity:
+  (image)
+  
+  Function calculate the surface emissifity.
 */
 var surface_emissivity = function (image) {
     // Error handling
@@ -2332,6 +2472,11 @@ var surface_emissivity = function (image) {
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
+/*
+  surface_temperature_tm:
+  (image)
+  
+  Function that calculates the land surface temperature (Landsat 5).
 */
 var surface_temperature_tm = function (image) {
     // Error handling
@@ -2367,6 +2512,11 @@ var surface_temperature_tm = function (image) {
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
+/*
+  surface_temperature_oli:
+  (image)
+  
+  Function calculate the land surface temperature (Landsat 8).
 */
 var surface_temperature_oli = function (image) {
     // Error handling
@@ -2401,6 +2551,11 @@ var surface_temperature_oli = function (image) {
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
+/*
+  lst_calc_ls5:
+  (image)
+  
+  Function calculate the land surface temperature from a Landsat 5 image doing all the process in a single function.
 */
 var lst_calc_ls5 = function (image) {
     var toa = toa_radiance(image, 6);
@@ -2426,6 +2581,11 @@ var lst_calc_ls5 = function (image) {
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
+/*
+  lst_calc_ls7:
+  (image)
+  
+  Function calculate the land surface temperature from a Landsat 7 image doing all the process in a single function.
 */
 var lst_calc_ls7 = function (image) {
     var toa = toa_radiance(image, 6);
@@ -2451,6 +2611,11 @@ var lst_calc_ls7 = function (image) {
 
   Reference:
   http://www.jestr.org/downloads/Volume8Issue3/fulltext83122015.pdf
+/*
+  lst_calc_ls8:
+  (image)
+  
+  Function calculate the land surface temperature from a Landsat 8 image doing all the process in a single function.
 */
 var lst_calc_ls8 = function (image) {
     var toa = toa_radiance(image, 10);
@@ -2474,6 +2639,11 @@ var lst_calc_ls8 = function (image) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   export_image(img, 'output_img');
+/*
+  export_image:
+  (image, scale)
+  
+  Function to export an image to your Google Drive account.
 */
 var export_image = function (image, scale) {
     // Error handling
@@ -2503,6 +2673,11 @@ var export_image = function (image, scale) {
 
   Usage:
   var cloudmask_img = cloudmask(img);
+/*
+  cloudmask:
+  (image)
+  
+  Function create a cloud mask from a Landsat input image.
 */
 var cloudmask = function (image) {
     // Error handling
@@ -2525,6 +2700,11 @@ var cloudmask = function (image) {
   var img = images.first();
   var QA = img.select(['QA_PIXEL']);
   var masked_img = cloudmask_sr(img, QA);
+/*
+  cloudmask_sr:
+  (originalimage, qaimage)
+  
+  Function that creates a cloud mask from a Surface Reflectance Landsat input image.
 */
 var cloudmask_sr = function (original_image, qa_band) {
     // Error handling
@@ -2592,6 +2772,11 @@ var fmask = function(image) {
 
   Information: 
   Modified from https://github.com/mortcanty/earthengine/blob/master/src/eePca.py
+/*
+  pca:
+  (image, nbands, scale, maxPixels)
+  
+  Function produces the principal components analysis of an image.
 */
 var pca = function (image, nbands, scale, maxPixels) {
     // Error handling
@@ -2647,6 +2832,11 @@ var pca = function (image, nbands, scale, maxPixels) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var geom_filtered = geom_filter(geom, 'AreaSqKm', '>', 25000);
+/*
+  geom_filter:
+  (geom, column, symbol, value)
+  
+  Function to filter a geometry/feature by value.
 */
 var geom_filter = function (geom, column, symbol, value) {
     // Error handling
@@ -2957,6 +3147,11 @@ var tasseledcap_s2 = function (image) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var smoothed_ndvi = smooth_timeseries(ndvi_collection, 45); 
+/*
+  smooth_timeseries:
+  (collection, windowSize)
+  
+  Function to apply a moving average filter to smooth a time series of images (e.g., NDVI series).
 */
 var smooth_timeseries = function(collection, windowSize, timeUnit) {
     if (collection === undefined) error('smooth_timeseries', 'You need to specify an input ImageCollection.');
@@ -3005,6 +3200,11 @@ var smooth_timeseries = function(collection, windowSize, timeUnit) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var water_img = water_indices(s2_image, 'S2'); 
+/*
+  water_indices:
+  (image, sensor)
+  
+  Function to generate advanced water quality indices: NDTI (Normalized Difference Turbidity Index) and NDCI (Normalized Difference Chlorophyll Index).
 */
 var water_indices = function(image, sensor) {
     if (image === undefined) error('water_indices', 'You need to specify an input image.');
@@ -3039,6 +3239,11 @@ var water_indices = function(image, sensor) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var radar_img = s1_preprocess('2023-01-01', '2023-12-31', roi, 'VV', 'DESCENDING'); 
+/*
+  s1_preprocess:
+  (startDate, endDate, roi, polarization, orbit)
+  
+  Function to load and preprocess Sentinel-1 SAR (Radar) GRD Data.
 */
 var s1_preprocess = function(startDate, endDate, roi, polarization, orbit) {
     if (startDate === undefined) error('s1_preprocess', 'You need to specify the start date.');
@@ -3076,6 +3281,11 @@ var s1_preprocess = function(startDate, endDate, roi, polarization, orbit) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var smooth_radar = speckle_filter(radar_img, 50); 
+/*
+  speckle_filter:
+  (image, radius)
+  
+  Function to apply a focal median filter to reduce SAR speckle noise.
 */
 var speckle_filter = function(image, radius) {
     if (image === undefined) error('speckle_filter', 'You need to specify an input image.');
@@ -3095,6 +3305,11 @@ var speckle_filter = function(image, radius) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet'); 
   var terrain = terrain_analysis(roi); 
+/*
+  terrain_analysis:
+  (roi)
+  
+  Function to generate Elevation, Slope, Aspect, and Hillshade bands from the SRTM 30m DEM.
 */
 var terrain_analysis = function(roi) {
     var dem = ee.Image('USGS/SRTMGL1_003');
@@ -3113,6 +3328,11 @@ var terrain_analysis = function(roi) {
 /*
   tasseled_cap:
   Function to create a Tasselled Cap image.
+/*
+  tasseled_cap:
+  (image, sensor)
+  
+  Generic function to create a Tasseled Cap image.
 */
 var tasseled_cap = function (image, sensor) {
     if (image === undefined) error('tasseled_cap', 'You need to specify an input image.');
@@ -3164,6 +3384,11 @@ var tasseled_cap = function (image, sensor) {
 /*
   reduce_image:
   Generic function to calculate statistical reducers for a region.
+/*
+  reduce_image:
+  (image, reducerType, roi, scale, maxPixels)
+  
+  Generic function to calculate statistical reducers for a region.
 */
 var reduce_image = function (image, reducerType, roi, scale, maxPixels) {
     if (image === undefined) error('reduce_image', 'You need to specify an input image.');
@@ -3198,6 +3423,11 @@ var reduce_image = function (image, reducerType, roi, scale, maxPixels) {
 
 /*
   landsat_timeseries:
+  Generic function to build an annual Landsat timeseries for a specific sensor.
+/*
+  landsat_timeseries:
+  (sensor, type, path, row)
+  
   Generic function to build an annual Landsat timeseries for a specific sensor.
 */
 var landsat_timeseries = function (sensor, type, path, row) {
@@ -3235,8 +3465,12 @@ var landsat_timeseries = function (sensor, type, path, row) {
 var ndvi_s2 = function(image) {
     return sentinel2_indices(image, 'ndvi');
 };
-
-
+/*
+  segmentation_snic:
+  (image, size, compactness)
+  
+  Function to segment an image using the SNIC (Simple Non-Iterative Clustering) algorithm.
+*/
 var segmentation_snic = function(image, size, compactness) {
   size = typeof size !== 'undefined' ? size : 10;
   compactness = typeof compactness !== 'undefined' ? compactness : 1;
@@ -3247,7 +3481,12 @@ var segmentation_snic = function(image, size, compactness) {
   });
   return snic;
 };
-
+/*
+  harmonic_trend:
+  (timeseries, dependentband)
+  
+  Generates a Fourier Harmonic Trend model for a time-series to extract Seasonality (Phase and Amplitude) and Linear Trend.
+*/
 var harmonic_trend = function(timeseries, dependent_band) {
   var time_band = 't'; var constant_band = 'constant';
   var add_variables = function(image) {
@@ -3265,7 +3504,12 @@ var harmonic_trend = function(timeseries, dependent_band) {
   var amplitude = coefficients.select('cos').hypot(coefficients.select('sin'));
   return coefficients.addBands(phase.rename('phase')).addBands(amplitude.rename('amplitude'));
 };
-
+/*
+  zonal_statistics:
+  (image, featureCollection, reducerType, scale)
+  
+  Extracts zonal statistics from an image using polygons.
+*/
 var zonal_statistics = function(image, featureCollection, reducerType, scale) {
   scale = typeof scale !== 'undefined' ? scale : 30;
   var red;
@@ -3283,7 +3527,12 @@ var zonal_statistics = function(image, featureCollection, reducerType, scale) {
   var stats = image.reduceRegions({collection: featureCollection, reducer: red, scale: scale});
   return stats;
 };
-
+/*
+  harmonize_sensors:
+  (image, source, target)
+  
+  Harmonizes spectral values between Sentinel-2 and Landsat-8 using OLS regression coefficients.
+*/
 var harmonize_sensors = function(image, source, target) {
   if (source === target) return image;
   var slopes, intercepts, band_names;
@@ -3300,7 +3549,12 @@ var harmonize_sensors = function(image, source, target) {
   var harmonized = selected.multiply(slopes).add(intercepts);
   return image.addBands(harmonized, null, true);
 };
-
+/*
+  burn_severity:
+  (prefire, postfire, sensor)
+  
+  Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR), and Burn Severity Classes.
+*/
 var burn_severity = function(pre_fire, post_fire, sensor) {
   sensor = typeof sensor !== 'undefined' ? sensor : 'L8';
   var b_nir, b_swir2;
@@ -3348,6 +3602,12 @@ var burn_severity = function(pre_fire, post_fire, sensor) {
       classifier: 'rf'
   });
   var classified = obia_results.select('classification');
+/*
+  obia_classification:
+  (image, trainingData, fieldName, options)
+  
+  Function to perform a complete Object-Based Image Analysis (GEOBIA) classification.
+  It automatically generates superpixels (SNIC), extracts spectral, spatial (geometry), and textural (GLCM) features per object, and classifies them using Machine Learning.
 */
 var obia_classification = function(image, trainingData, fieldName, options) {
     if (image === undefined) error('obia_classification', 'You need to specify an input image.');
@@ -3362,7 +3622,7 @@ var obia_classification = function(image, trainingData, fieldName, options) {
     var includeGeometry = options.includeGeometry !== undefined ? options.includeGeometry : false;
     var scale = options.scale || 30;
 
-    // 1. SNIC Segmentation
+    // SNIC Segmentation
     var seeds = ee.Algorithms.Image.Segmentation.seedGrid(size);
     var snic = ee.Algorithms.Image.Segmentation.SNIC({
         image: image,
@@ -3376,7 +3636,7 @@ var obia_classification = function(image, trainingData, fieldName, options) {
     var clusters = snic.select('clusters');
     var objectFeatures = snic.select('.*_mean'); // Keep the spectral means
 
-    // 2. Geometry Features (Area, Perimeter, Shape Index)
+    // Geometry Features (Area, Perimeter, Shape Index)
     if (includeGeometry) {
         var pixelArea = ee.Image.pixelArea();
         var objectArea = pixelArea.addBands(clusters).reduceConnectedComponents({
@@ -3405,7 +3665,7 @@ var obia_classification = function(image, trainingData, fieldName, options) {
         objectFeatures = objectFeatures.addBands([objectArea, perimeter, shapeIndex]);
     }
 
-    // 3. Texture Features
+    // Texture Features
     if (includeTexture) {
         // Compute GLCM on the first band to avoid memory limits
         var firstBand = image.select(0).multiply(100).toInt();
@@ -3419,7 +3679,7 @@ var obia_classification = function(image, trainingData, fieldName, options) {
         objectFeatures = objectFeatures.addBands(objTexture);
     }
 
-    // 4. Sample and Train
+    // Sample and Train
     var bands = objectFeatures.bandNames();
     var training = objectFeatures.sampleRegions({
         collection: trainingData,
@@ -3439,7 +3699,7 @@ var obia_classification = function(image, trainingData, fieldName, options) {
         classifier = ee.Classifier.smileRandomForest(10).train(training, fieldName, bands);
     }
 
-    // 5. Classify the Objects
+    // Classify the Objects
     var classified = objectFeatures.classify(classifier).rename('classification');
 
     return ee.Image([clusters, objectFeatures, classified]);
@@ -3460,6 +3720,11 @@ var obia_classification = function(image, trainingData, fieldName, options) {
   Usage:
   var geet = require('users/eduardolacerdageo/geet:geet');
   var cleaned_map = geet.filter_small_objects(classified, 10000);
+/*
+  filter_small_objects:
+  (image, minArea, maxSize)
+  
+  Eliminates small patches in a classified image (Minimum Mapping Unit filter) by replacing them with the most common neighboring class.
 */
 var filter_small_objects = function(image, minArea, maxSize) {
     if (image === undefined) error('filter_small_objects', 'You need to specify an input classified image.');
@@ -3505,6 +3770,11 @@ var filter_small_objects = function(image, minArea, maxSize) {
   var geet = require('users/eduardolacerdageo/geet:geet');
   geet.plot(ndvi_image, 'ndvi', 'Vegetation Index');
   geet.plot(l8_img, 'rgb', 'True Color', {sensor: 'L8'});
+/*
+  plot:
+  (image, type, name, options)
+  
+  A smart wrapper for Map.addLayer that automatically applies standard color palettes and normalization ranges for common remote sensing products.
 */
 var plot = function (image, type, name, options) {
     if (image === undefined) error('plot', 'You need to specify an input image.');
@@ -3562,7 +3832,12 @@ var plot = function (image, type, name, options) {
 
     Map.addLayer(image, visParams, name);
 };
-
+/*
+  build_annual_mss_timeseries:
+  (roi)
+  
+  Function to build an annual Landsat MSS (Landsat 1, 2, 3, 4, 5) timeseries from 1972 to 1999. The function normalizes the distinct bands of older satellites into 'GREEN', 'RED', 'NIR1', 'NIR2', masks clouds using QAPIXEL, calculates NDVI, and generates median annual mosaics.
+*/
 var build_annual_mss_timeseries = function(roi) {
     roi = typeof roi !== 'undefined' ? roi : ee.Geometry.Point([-43.0879, -22.8632]);
 
@@ -3624,6 +3899,152 @@ var build_annual_mss_timeseries = function(roi) {
     
     return ee.ImageCollection(year_col_list);
 }
+
+/*
+  topographic_correction:
+  Function to apply Topographic Illumination Correction to optical images.
+  Useful for removing mountain shadows.
+
+  Params:
+  (ee.Image) img - the optical image to correct (e.g., Landsat or Sentinel).
+  (ee.Image) dem - (optional) the Digital Elevation Model to use. Defaults to SRTM.
+/*
+  topographic_correction:
+  (image, dem)
+  
+  Applies Topographic Illumination Correction to optical images using the Cosine correction method. This is extremely useful for removing terrain shadows in mountainous areas, relying on the solar elevation and azimuth stored in the image's metadata.
+*/
+var topographic_correction = function(img, dem) {
+    if (dem === undefined) { dem = ee.Image('USGS/SRTMGL1_003'); }
+    
+    var sunAzimuth = ee.Algorithms.If(
+        img.get('SUN_AZIMUTH'),
+        ee.Number(img.get('SUN_AZIMUTH')),
+        ee.Algorithms.If(
+            img.get('MEAN_SOLAR_AZIMUTH_ANGLE'),
+            ee.Number(img.get('MEAN_SOLAR_AZIMUTH_ANGLE')),
+            ee.Number(45)
+        )
+    );
+    
+    var sunZenith = ee.Algorithms.If(
+        img.get('SUN_ELEVATION'),
+        ee.Number(90).subtract(ee.Number(img.get('SUN_ELEVATION'))),
+        ee.Algorithms.If(
+            img.get('MEAN_SOLAR_ZENITH_ANGLE'),
+            ee.Number(img.get('MEAN_SOLAR_ZENITH_ANGLE')),
+            ee.Number(45)
+        )
+    );
+
+    var slope = ee.Terrain.slope(dem).multiply(Math.PI / 180.0);
+    var aspect = ee.Terrain.aspect(dem).multiply(Math.PI / 180.0);
+    var sz = ee.Number(sunZenith).multiply(Math.PI / 180.0);
+    var sa = ee.Number(sunAzimuth).multiply(Math.PI / 180.0);
+
+    var cosZ = sz.cos();
+    var sinZ = sz.sin();
+    var cosS = slope.cos();
+    var sinS = slope.sin();
+    
+    // Number - Image requires ee.Image.constant(Number)
+    var cosAzAs = ee.Image.constant(sa).subtract(aspect).cos();
+    
+    // Image.multiply(Number)
+    var term1 = cosS.multiply(cosZ);
+    var term2 = sinS.multiply(sinZ).multiply(cosAzAs);
+    var IC = term1.add(term2).rename('IC');
+
+    var correction = ee.Image.constant(cosZ).divide(IC);
+    var mask = IC.gte(0.1); // Avoid extreme values in complete shadow
+    
+    // Apply correction to bands that are typically optical (not QA)
+    var opticalBands = img.select(['^(B.*|SR.*|BLUE|GREEN|RED|NIR.*|SWIR.*)$']);
+    var corrected = opticalBands.multiply(correction).updateMask(mask);
+    
+    return img.addBands(corrected, null, true);
+};
+
+/*
+  calculate_twi:
+  Calculates the Topographic Wetness Index (TWI) based on slope and flow accumulation.
+
+  Params:
+  (ee.Geometry) roi - (optional) the region of interest to clip the outputs.
+/*
+  calculate_twi:
+  (roi)
+  
+  Calculates the Topographic Wetness Index (TWI). This index combines local slope and flow accumulation to quantify topographic control on hydrological processes, making it excellent for identifying wetlands, springs, and water accumulation zones.
+*/
+var calculate_twi = function(roi) {
+    var dem = ee.Image('USGS/SRTMGL1_003');
+    var acc = ee.Image('WWF/HydroSHEDS/15ACC');
+    
+    if (roi !== undefined) {
+        dem = dem.clip(roi);
+        acc = acc.clip(roi);
+    }
+    
+    var slope = ee.Terrain.slope(dem).multiply(Math.PI / 180.0);
+    var pixelArea = ee.Image.pixelArea();
+    var catchmentArea = acc.multiply(pixelArea);
+    var twi = catchmentArea.divide(slope.tan().add(0.00001)).log().rename('TWI');
+    
+    return twi;
+};
+
+/*
+  calculate_tpi_tri:
+  Calculates Topographic Position Index (TPI) and Terrain Ruggedness Index (TRI) based on focal operations.
+
+  Params:
+  (ee.Geometry) roi - (optional) the region of interest to clip the outputs.
+/*
+  calculate_tpi_tri:
+  (roi)
+  
+  Calculates the Topographic Position Index (TPI) and Terrain Ruggedness Index (TRI) based on focal mean and focal standard deviation. TPI is used to classify valleys and ridges, while TRI is used to map terrain unevenness.
+*/
+var calculate_tpi_tri = function(roi) {
+    var dem = ee.Image('USGS/SRTMGL1_003');
+    if (roi !== undefined) {
+        dem = dem.clip(roi);
+    }
+    
+    var kernel = ee.Kernel.square({radius: 3, units: 'pixels'});
+    var focalMean = dem.reduceNeighborhood({reducer: ee.Reducer.mean(), kernel: kernel});
+    var tpi = dem.subtract(focalMean).rename('TPI');
+    var tri = dem.reduceNeighborhood({reducer: ee.Reducer.stdDev(), kernel: kernel}).rename('TRI');
+    
+    return ee.Image([tpi, tri]);
+};
+
+/*
+  extract_drainage:
+  Extracts a drainage/stream network based on a flow accumulation threshold.
+
+  Params:
+  (ee.Geometry) roi - (optional) the region of interest.
+  (number) threshold - (optional) the flow accumulation threshold (in pixels) to define a stream. Defaults to 500.
+/*
+  extract_drainage:
+  (roi, threshold)
+  
+  Automatically extracts the drainage/stream network based on a flow accumulation threshold using the HydroSHEDS dataset.
+*/
+var extract_drainage = function(roi, threshold) {
+    threshold = typeof threshold !== 'undefined' ? threshold : 500;
+    
+    var acc = ee.Image('WWF/HydroSHEDS/15ACC');
+    if (roi !== undefined) {
+        acc = acc.clip(roi);
+    }
+    
+    var drainage = acc.gt(threshold).rename('Drainage');
+    return drainage.updateMask(drainage);
+};
+
 
 
 
@@ -3878,7 +4299,7 @@ function radcalbatch(current, prev) {
 
 /* ------------------------  EXPORTS  ------------------------ */
 
-// 1. Machine Learning & Classification
+// Machine Learning & Classification
 exports.svm = svm;
 exports.cart = cart;
 exports.rf = rf;
@@ -3886,7 +4307,7 @@ exports.naive_bayes = naive_bayes;
 exports.max_ent = max_ent;
 exports.kmeans = kmeans;
 
-// 2. Spectral Indices & Transformations
+// Spectral Indices & Transformations
 exports.landsat_indices = landsat_indices;
 exports.sentinel2_indices = sentinel2_indices;
 exports.water_indices = water_indices;
@@ -3894,13 +4315,13 @@ exports.tasseled_cap = tasseled_cap;
 exports.pca = pca;
 exports.ndviS2 = ndvi_s2;
 
-// 3. Change Detection
+// Change Detection
 exports.burn_severity = burn_severity;
 exports.ndvi_change_detection = ndvi_change_detection;
 exports.ndwi_change_detection = ndwi_change_detection;
 exports.ndbi_change_detection = ndbi_change_detection;
 
-// 4. Time Series & Mosaics
+// Time Series & Mosaics
 exports.harmonic_trend = harmonic_trend;
 exports.create_mosaic = create_mosaic;
 exports.smooth_timeseries = smooth_timeseries;
@@ -3910,12 +4331,18 @@ exports.landsat_timeseries = landsat_timeseries;
 exports.landsat_timeseries_by_pathrow = landsat_timeseries_by_pathrow;
 exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi;
 
-// 5. Radar & Topography
+// Radar
 exports.s1_preprocess = s1_preprocess;
 exports.speckle_filter = speckle_filter;
-exports.terrain_analysis = terrain_analysis;
 
-// 6. Pre-Processing & Calibration
+// Topography
+exports.terrain_analysis = terrain_analysis;
+exports.topographic_correction = topographic_correction;
+exports.calculate_twi = calculate_twi;
+exports.calculate_tpi_tri = calculate_tpi_tri;
+exports.extract_drainage = extract_drainage;
+
+// Pre-Processing & Calibration
 exports.harmonize_sensors = harmonize_sensors;
 exports.toa_radiance = toa_radiance;
 exports.toa_reflectance = toa_reflectance;
@@ -3933,7 +4360,7 @@ exports.resample = resample;
 exports.resample_band = resample_band;
 exports.geom_filter = geom_filter;
 
-// 7. Statistics & Math
+// Statistics & Math
 exports.zonal_statistics = zonal_statistics;
 exports.reduce_image = reduce_image;
 exports.spearmans_correlation = spearmans_correlation;
@@ -3942,7 +4369,7 @@ exports.texture = texture;
 exports.majority = majority;
 exports.prop_veg = prop_veg;
 
-// 8. Visualization, Utilities & Export
+// Visualization, Utilities & Export
 exports.plot = plot;
 exports.color = color;
 exports.export_image = export_image;
@@ -3950,8 +4377,7 @@ exports.load_image = load_image;
 exports.load_id_s2 = load_id_s2;
 exports.collection2image = collection2image;
 
-
-// 9. Object-Based Image Analysis (GEOBIA)
+// Object-Based Image Analysis (GEOBIA)
 exports.segmentation_snic = segmentation_snic;
 exports.obia_classification = obia_classification;
 exports.filter_small_objects = filter_small_objects;
