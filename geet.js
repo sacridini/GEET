@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 0.8.3
+ * Version: 1.0.0
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -1153,6 +1153,16 @@ var toa_reflectance_l9 = function (image, band, _solarAngle) {
 /*
   brightness_temp:
   Generic function to convert the Top of Atmosphere image to Brightness Temperature.
+
+  Params:
+  (ee.Image) image - the TOA Radiance image to convert.
+  (string) sensor - 'L5', 'L7', 'L8' or 'L9'
+  (string) unit - 'K' (Kelvin) or 'C' (Celsius)
+  optional (bool) two_channel - for L8/L9 only, if true, processes both B10 and B11. Default is true.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var bt_img = geet.brightness_temp(toa_rad_image, 'L8', 'C');
 */
 var brightness_temp = function (image, sensor, unit, two_channel) {
     if (image === undefined) error('brightness_temp', 'You need to specify an input image.');
@@ -1795,6 +1805,17 @@ var ls9_timeseries_by_pathrow = function (type, path, row) {
 /*
   create_mosaic:
   Generic function to build a cloud free mosaic.
+
+  Params:
+  (ee.Date) startDate - the start date of the dataset.
+  (ee.Date) endDate - the end date of the dataset.
+  optional (ee.Geometry) roi - the Region of Interest to filter the dataset.
+  optional (bool) showMosaic - set to false if you dont want to display the mosaic. Default is true.
+  (string) sensor - 'L5', 'L7', 'L8', 'L9' or 'S2'.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var mosaic = geet.create_mosaic('2023-01-01', '2023-12-31', roi, true, 'L8');
 */
 var create_mosaic = function(startDate, endDate, roi, showMosaic, sensor) {
     if (startDate === undefined) error('create_mosaic', 'You need to specify the start date.');
@@ -3026,9 +3047,170 @@ var tasseledcap_s2 = function (image) {
 }
 
 
+/*
+  smooth_timeseries:
+  Function to apply a simple moving average (smoothing) to an ImageCollection.
 
-// var sensor_info = ee.String(image.get('SATELLITE'));
-// if (sensor_info.getInfo() === 'LANDSAT_8') {
+  Params:
+  (ee.ImageCollection) collection - the input image collection to smooth.
+  optional (number) windowSize - the moving window size in days. Default is 30.
+  optional (string) timeUnit - the time unit. Default is 'day'.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var smoothed_ndvi = geet.smooth_timeseries(ndvi_collection, 45); 
+*/
+var smooth_timeseries = function(collection, windowSize, timeUnit) {
+    if (collection === undefined) error('smooth_timeseries', 'You need to specify an input ImageCollection.');
+    
+    windowSize = typeof windowSize !== 'undefined' ? windowSize : 30; // default 30 days
+    timeUnit = typeof timeUnit !== 'undefined' ? timeUnit : 'day';
+    
+    var join = ee.Join.saveAll('matches');
+    
+    var diffFilter = ee.Filter.maxDifference({
+      difference: windowSize * 24 * 60 * 60 * 1000, // convert days to milliseconds (approx)
+      leftField: 'system:time_start',
+      rightField: 'system:time_start'
+    });
+    
+    // Instead of raw ms, better use ee.Filter.maxDifference with time matching, or a simpler approach:
+    // Earth Engine usually does it via a join on system:time_start
+    var diffFilter2 = ee.Filter.maxDifference({
+      difference: windowSize * 1000 * 60 * 60 * 24, // milliseconds
+      leftField: 'system:time_start',
+      rightField: 'system:time_start'
+    });
+    
+    var smoothCollection = join.apply({
+      primary: collection,
+      secondary: collection,
+      condition: diffFilter2
+    }).map(function(image) {
+      var matchCollection = ee.ImageCollection.fromImages(image.get('matches'));
+      var meanImage = matchCollection.mean();
+      return meanImage.copyProperties(image, ['system:time_start', 'system:time_end']);
+    });
+    
+    return ee.ImageCollection(smoothCollection);
+};
+
+
+/*
+  water_indices:
+  Calculates NDTI (Turbidity) and NDCI (Chlorophyll) for Sentinel-2 or Landsat 8.
+
+  Params:
+  (ee.Image) image - the input image.
+  (string) sensor - 'L8', 'L9' or 'S2'.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var water_img = geet.water_indices(s2_image, 'S2'); 
+*/
+var water_indices = function(image, sensor) {
+    if (image === undefined) error('water_indices', 'You need to specify an input image.');
+    if (sensor === undefined) error('water_indices', 'You need to specify the sensor name (L8 or S2).');
+    
+    var ndti, ndci;
+    if (sensor === 'L8' || sensor === 'L9') {
+        ndti = image.normalizedDifference(['B4', 'B3']).rename('NDTI'); // Red / Green
+        ndci = image.normalizedDifference(['B5', 'B4']).rename('NDCI'); // NIR / Red
+    } else if (sensor === 'S2') {
+        ndti = image.normalizedDifference(['B4', 'B3']).rename('NDTI');
+        ndci = image.normalizedDifference(['B5', 'B4']).rename('NDCI'); // Red Edge 1 / Red
+    } else {
+        print('Error: Sensor not supported for Water Indices. Use L8, L9 or S2.');
+        return image;
+    }
+    
+    return image.addBands([ndti, ndci]);
+};
+
+/*
+  s1_preprocess:
+  Function to load and preprocess Sentinel-1 GRD Data.
+
+  Params:
+  (ee.Date) startDate - the start date of the dataset.
+  (ee.Date) endDate - the end date of the dataset.
+  optional (ee.Geometry) roi - the Region of Interest.
+  optional (string) polarization - 'VV', 'VH', 'HH', 'HV'. Default is 'VV'.
+  optional (string) orbit - 'DESCENDING' or 'ASCENDING'. Default is 'DESCENDING'.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var radar_img = geet.s1_preprocess('2023-01-01', '2023-12-31', roi, 'VV', 'DESCENDING'); 
+*/
+var s1_preprocess = function(startDate, endDate, roi, polarization, orbit) {
+    if (startDate === undefined) error('s1_preprocess', 'You need to specify the start date.');
+    if (endDate === undefined) error('s1_preprocess', 'You need to specify the end date.');
+    
+    polarization = typeof polarization !== 'undefined' ? polarization : 'VV';
+    orbit = typeof orbit !== 'undefined' ? orbit : 'DESCENDING';
+    
+    var s1 = ee.ImageCollection('COPERNICUS/S1_GRD')
+               .filter(ee.Filter.listContains('transmitterReceiverPolarisation', polarization))
+               .filter(ee.Filter.eq('instrumentMode', 'IW'))
+               .filter(ee.Filter.eq('orbitProperties_pass', orbit))
+               .filterDate(ee.Date(startDate), ee.Date(endDate));
+               
+    if (roi !== undefined) {
+        s1 = s1.filterBounds(roi);
+    }
+    
+    var mosaic = s1.mosaic();
+    if (roi !== undefined) {
+        mosaic = mosaic.clip(roi);
+    }
+    
+    return mosaic;
+};
+
+/*
+  speckle_filter:
+  Function to apply a focal median filter to reduce SAR speckle noise.
+
+  Params:
+  (ee.Image) image - the input SAR image.
+  optional (number) radius - the radius of the filter in meters. Default is 30.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var smooth_radar = geet.speckle_filter(radar_img, 50); 
+*/
+var speckle_filter = function(image, radius) {
+    if (image === undefined) error('speckle_filter', 'You need to specify an input image.');
+    radius = typeof radius !== 'undefined' ? radius : 30; // default 30 meters
+    
+    return image.focal_median(radius, 'circle', 'meters');
+};
+
+
+/*
+  terrain_analysis:
+  Function to generate Elevation, Slope, Aspect and Hillshade from SRTM DEM.
+
+  Params:
+  optional (ee.Geometry) roi - the Region of Interest to clip the DEM.
+
+  Usage:
+  var geet = require('users/eduardolacerdageo/geet:geet'); 
+  var terrain = geet.terrain_analysis(roi); 
+*/
+var terrain_analysis = function(roi) {
+    var dem = ee.Image('USGS/SRTMGL1_003');
+    if (roi !== undefined) {
+        dem = dem.clip(roi);
+    }
+    
+    var elevation = dem.rename('Elevation');
+    var slope = ee.Terrain.slope(dem).rename('Slope');
+    var aspect = ee.Terrain.aspect(dem).rename('Aspect');
+    var hillshade = ee.Terrain.hillshade(dem).rename('Hillshade');
+    
+    return ee.Image([elevation, slope, aspect, hillshade]);
+};
 
 
 /* ------------------------ TEST ZONE ------------------------ */
@@ -3277,6 +3459,9 @@ function radcalbatch(current, prev) {
 
 /* ------------------------ TEST ZONE ------------------------ */
 
+
+
+
 /* ------------------------  EXPORTS  ------------------------ */
 
 exports.svm = svm
@@ -3346,6 +3531,10 @@ exports.tasseledcap_oli = tasseledcap_oli
 exports.tasseledcap_s2 = tasseledcap_s2
 exports.tasseledcap_tm5 = tasseledcap_tm5
 exports.tasseledcap_tm7 = tasseledcap_tm7
-
 exports.brightness_temp = brightness_temp
 exports.create_mosaic = create_mosaic
+exports.s1_preprocess = s1_preprocess;
+exports.speckle_filter = speckle_filter;
+exports.terrain_analysis = terrain_analysis;
+exports.smooth_timeseries = smooth_timeseries;
+exports.water_indices = water_indices;
