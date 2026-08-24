@@ -10,7 +10,8 @@ var start_date = '2019-10-01';
 var end_date = '2019-10-31';
 
 print('Generating HLS composite for October 2019...');
-var hls_composite = geet.build_hls_composite(roi, start_date, end_date);
+// We pass 'NDVI' as the 4th parameter to exclusively process and return the NDVI band
+var hls_composite = geet.build_hls_composite(roi, start_date, end_date, 'NDVI');
 
 // The output composite has a median 'ndvi' band computed from all harmonized images
 var ndvi_vis = {min: 0, max: 1, palette: ['white', 'green']};

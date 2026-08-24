@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.12.0
+ * Version: 1.13.0
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@gmail.com>
  */
 
@@ -5012,7 +5012,7 @@ var add_millis = function(image) {
   return image.addBands(millis);
 };
 
-var build_hls_composite = function(roi, start_date, end_date) {
+var build_hls_composite = function(roi, start_date, end_date, band) {
     if (roi === undefined) error('build_hls_composite', 'You need to specify a region of interest (roi).');
     if (start_date === undefined) error('build_hls_composite', 'You need to specify a start_date.');
     if (end_date === undefined) error('build_hls_composite', 'You need to specify an end_date.');
@@ -5026,9 +5026,17 @@ var build_hls_composite = function(roi, start_date, end_date) {
 
     var clip_collection = function(image) { return image.clip(roi); };
 
-    var calc_ndvi = function(image) {
-        var ndvi = image.normalizedDifference(['nir', 'red']).rename('ndvi');
-        return image.addBands(ndvi);
+    var filter_bands = function(image) {
+        if (band === 'NDVI' || band === 'ndvi') {
+            var ndvi = image.normalizedDifference(['nir', 'red']).rename('ndvi');
+            return image.addBands(ndvi).select('ndvi');
+        } else if (band === undefined || band === null || band === 'ALL' || band === 'all') {
+            // Drop qa_band to avoid compositing flags
+            var bands_to_keep = image.bandNames().remove('qa_band');
+            return image.select(bands_to_keep);
+        } else {
+            return image.select(band);
+        }
     };
 
     var ls7_c = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
@@ -5079,31 +5087,29 @@ var build_hls_composite = function(roi, start_date, end_date) {
         .map(apply_brdf_sentinel)
         .map(band_adjustment_sentinel2); // SBA for S2 -> L8!
 
-    var s2_cs_brdf_ndvi_c = s2_cs_brdf_c.map(calc_ndvi).select('ndvi');
-    var ls9_with_index_c = ls9_c.map(calc_ndvi).select('ndvi');
-    var ls8_with_index_c = ls8_c.map(calc_ndvi).select('ndvi');
-    var ls7_with_index_c = ls7_c.map(calc_ndvi).select('ndvi');
+    var s2_final_c = s2_cs_brdf_c.map(filter_bands);
+    var ls9_final_c = ls9_c.map(filter_bands);
+    var ls8_final_c = ls8_c.map(filter_bands);
+    var ls7_final_c = ls7_c.map(filter_bands);
 
     // Sentinel 2 Reprojection to Landsat scale/CRS
-    var s2_cs_brdf_reproj_c = ee.Algorithms.If(
+    var s2_reproj_c = ee.Algorithms.If(
         ls8_c.size().gt(0),
-        s2_cs_brdf_ndvi_c.map(function (image) { return reproject_sen2ls(image, ee.Image(ls8_c.first())); }),
-        s2_cs_brdf_ndvi_c.map(function (image) { 
+        s2_final_c.map(function (image) { return reproject_sen2ls(image, ee.Image(ls8_c.first())); }),
+        s2_final_c.map(function (image) { 
             return image.resample('bicubic').reproject({ crs: 'EPSG:4326', scale: 30 }).set('system:time_start', image.date()); 
         })
     );
-    s2_cs_brdf_reproj_c = ee.ImageCollection(s2_cs_brdf_reproj_c);
+    s2_reproj_c = ee.ImageCollection(s2_reproj_c);
 
-    var merged = s2_cs_brdf_reproj_c.map(clip_collection)
-                 .merge(ls9_with_index_c.map(clip_collection))
-                 .merge(ls8_with_index_c.map(clip_collection))
-                 .merge(ls7_with_index_c.map(clip_collection));
+    var merged = s2_reproj_c.map(clip_collection)
+                 .merge(ls9_final_c.map(clip_collection))
+                 .merge(ls8_final_c.map(clip_collection))
+                 .merge(ls7_final_c.map(clip_collection));
 
     var median_composite = merged.median();
     return median_composite;
 };
-
-
 var remove_outliers = function(collection, window_days, std_multi, bands) {
   var window_milli = window_days * 24 * 60 * 60 * 1000;
   
@@ -5228,6 +5234,80 @@ var phenology_metrics = function(collection, band) {
   return ee.Image([sos_doy, pos_doy, magnitude]);
 };
 
+var s1_lee_filter = function(image, kernel_size) {
+  var bandNames = image.bandNames().remove('angle');
+  var angle = image.select('angle');
+  
+  // Convert dB to linear
+  var linear = ee.Image(10.0).pow(image.select(bandNames).divide(10.0));
+  
+  var result = bandNames.map(function(b) {
+    var img_b = linear.select([ee.String(b)]);
+    var mean3 = img_b.reduceNeighborhood(ee.Reducer.mean(), ee.Kernel.square(kernel_size, 'pixels'));
+    var var3 = img_b.reduceNeighborhood(ee.Reducer.variance(), ee.Kernel.square(kernel_size, 'pixels'));
+    var ENL = 5.0; // Equivalent Number of Looks
+    var ci = var3.divide(mean3.pow(2));
+    var cu = 1.0 / ENL;
+    var w = ee.Image().expression('max(0, 1 - (cu / ci))', {cu: cu, ci: ci});
+    var filtered = mean3.add(w.multiply(img_b.subtract(mean3)));
+    return filtered.rename([ee.String(b)]);
+  });
+  
+  var filteredLinear = ee.ImageCollection(result).toBands().rename(bandNames);
+  // Convert back to dB
+  var filteredDb = ee.Image(10.0).multiply(filteredLinear.log10());
+  
+  return filteredDb.addBands(angle).copyProperties(image, image.propertyNames());
+};
+
+var s1_terrain_flattening = function(image) {
+  var angle = image.select('angle');
+  var theta_iRad = angle.multiply(Math.PI / 180.0);
+  var dem = ee.Image('COPERNICUS/DEM/GLO30').select('DEM');
+  var terrain = ee.Algorithms.Terrain(dem);
+  var slope = terrain.select('slope').multiply(Math.PI / 180.0);
+  var aspect = terrain.select('aspect').multiply(Math.PI / 180.0);
+  var heading = ee.Number(image.get('platform_heading')).multiply(Math.PI / 180.0);
+  
+  var alpha_r = ee.Image().expression(
+    'acos(cos(slope) * cos(theta_i) + sin(slope) * sin(theta_i) * cos(aspect - heading))',
+    {
+      'slope': slope,
+      'theta_i': theta_iRad,
+      'aspect': aspect,
+      'heading': heading
+    }
+  );
+  
+  var mask = alpha_r.gt(0).and(alpha_r.lt(Math.PI / 2));
+  var gamma0_factor = ee.Image().expression(
+    'tan(alpha_r) / tan(theta_i)',
+    {
+      'alpha_r': alpha_r,
+      'theta_i': theta_iRad
+    }
+  );
+  
+  var bandNames = image.bandNames().remove('angle');
+  var linear = ee.Image(10.0).pow(image.select(bandNames).divide(10.0));
+  var corrected = linear.multiply(gamma0_factor);
+  var correctedDb = ee.Image(10.0).multiply(corrected.log10()).updateMask(mask);
+  
+  return correctedDb.addBands(angle).copyProperties(image, image.propertyNames());
+};
+
+var s1_flood_mapping = function(image_before, image_after, threshold, smoothing_radius, band) {
+  var diff = image_after.select(band).subtract(image_before.select(band));
+  var smoothed = diff.focal_mean(smoothing_radius, 'circle', 'meters');
+  var flood = smoothed.lt(threshold); 
+  
+  var jrc = ee.Image("JRC/GSW1_4/GlobalSurfaceWater").select("seasonality");
+  var permanentWater = jrc.gte(10).unmask(0);
+  var flooded_only = flood.updateMask(permanentWater.not());
+  
+  return flooded_only.rename('flood_mask').set('system:time_start', image_after.get('system:time_start'));
+};
+
 /* ------------------------  EXPORTS  ------------------------ */
 
 // Machine Learning & Classification
@@ -5271,10 +5351,16 @@ exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi;
 exports.stm_features = stm_features;
 exports.add_doy = add_doy;
 exports.add_millis = add_millis;
+exports.remove_outliers = remove_outliers;
+exports.tsi_rbf = tsi_rbf;
+exports.phenology_metrics = phenology_metrics;
 
 // Radar
 exports.s1_preprocess = s1_preprocess;
 exports.speckle_filter = speckle_filter;
+exports.s1_lee_filter = s1_lee_filter;
+exports.s1_terrain_flattening = s1_terrain_flattening;
+exports.s1_flood_mapping = s1_flood_mapping;
 
 // Topography
 exports.terrain_analysis = terrain_analysis;
@@ -5320,12 +5406,6 @@ exports.collection2image = collection2image;
 exports.segmentation_snic = segmentation_snic;
 exports.obia_classification = obia_classification;
 exports.filter_small_objects = filter_small_objects;
-
-// Exports for Advanced Time Series
-exports.remove_outliers = remove_outliers;
-exports.tsi_rbf = tsi_rbf;
-exports.phenology_metrics = phenology_metrics;
-
 
 // Exports for HLS Harmonization
 exports.build_hls_composite = build_hls_composite;

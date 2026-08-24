@@ -21,7 +21,7 @@ GEET using Landsat Collection 2 will be available soon!
 ![ndvi](https://user-images.githubusercontent.com/7756611/28606761-031da9b8-71af-11e7-8e4a-3a716e8a9886.jpg)
 
 ## Documentation: 
-All functions implemented (Version 1.12.0):
+All functions implemented (Version 1.13.0):
 
 ### Machine Learning & Classification
 - [svm](#svm)
@@ -70,6 +70,9 @@ All functions implemented (Version 1.12.0):
 ### Radar
 - [s1_preprocess](#s1_preprocess)
 - [speckle_filter](#speckle_filter)
+- [s1_lee_filter](#s1_lee_filter)
+- [s1_terrain_flattening](#s1_terrain_flattening)
+- [s1_flood_mapping](#s1_flood_mapping)
 
 ### Topography
 - [terrain_analysis](#terrain_analysis)
@@ -894,6 +897,8 @@ _Adds a milliseconds timestamp band to the image, keeping the original pixel mas
 
 _Applies a moving average and standard deviation filter to remove outliers from a time series._  
 
+**How it works:** Cloud and shadow masking algorithms often fail to detect thin cirrus or small cloud edges, leaving anomalous "spikes" in the data. This function applies an `ee.Join.saveAll` to gather a rolling window (e.g., 30 days) of imagery around each target pixel. It calculates the temporal mean and standard deviation for that pixel. If the pixel's value falls outside the expected range (e.g., beyond ±3 standard deviations), it is classified as a noisy outlier and masked out, leaving a clean time series trajectory.
+
 ##### Params:
   (ee.ImageCollection) collection - The input image collection.    
   (number) window_days - The rolling window size in days (e.g. 30).      
@@ -906,6 +911,42 @@ _Applies a moving average and standard deviation filter to remove outliers from 
 ```
 
 ------------------------------------------------------------------------------
+
+#### tsi_rbf
+(collection, window_days, sigma) 
+
+_Gap-fills and smooths a time series using a Radial Basis Function (RBF) Gaussian kernel over a temporal window._  
+
+**How it works:** Once clouds, shadows, and outliers are removed, a time series is full of data gaps (masked pixels). This function interpolates those gaps using neighboring observations in time. It scans a `window_days` neighborhood (using `ee.Join.saveAll` to compute the temporal delta between images) and assigns a Gaussian weight based on the time distance (`sigma`). Observations closer in time to the gap get a higher weight. It then performs a weighted average to smoothly fill the missing data, rebuilding a continuous, high-quality temporal profile.
+
+##### Params:
+  (ee.ImageCollection) collection - The input image collection to gap-fill.    
+  (number) window_days - The rolling window size in days to search for valid pixels.      
+  (number) sigma - The standard deviation of the RBF kernel in days (e.g. 16).      
+  
+##### Usage:
+```js 
+    var rbf_col = geet.tsi_rbf(collection, 60, 16);   
+```
+
+------------------------------------------------------------------------------
+
+#### phenology_metrics
+(collection, band) 
+
+_Extracts Land Surface Phenology (LSP) metrics (Start of Season, Peak of Season, and Magnitude) by converting a time series to Polar Vectors._  
+
+**How it works:** Extracting phenology in Earth Engine using curve-fitting (like double logistics) is computationally prohibitive on a pixel basis. This function bypasses curve fitting by projecting the time series into a Polar Coordinate system. It translates the Day of Year (DOY) into an angular coordinate, and uses the vegetation index (e.g., NDVI) as the radius. By averaging these polar vectors, the resulting angle (θ) natively points to the Start of Season (SOS), while the opposite angle points to the Peak of Season (POS). The magnitude of the vector indicates the strength of the seasonal amplitude.
+
+##### Params:
+  (ee.ImageCollection) collection - The input image collection containing a full seasonal cycle.    
+  (string) band - The index or band to use for phenology extraction (e.g. 'NDVI').      
+  
+##### Usage:
+```js 
+    var lsp_img = geet.phenology_metrics(collection, 'NDVI');   
+```
+------
 
 #### tsi_rbf
 (collection, window_days, sigma) 
@@ -982,6 +1023,62 @@ _Function to apply a focal median filter to reduce SAR speckle noise._
 ##### Usage:
 ```js  
     var smooth_radar = geet.speckle_filter(radar_img, 50); 
+```
+
+------------------------------------------------------------------------------
+
+#### s1_lee_filter
+(image, kernel_size)
+
+_Applies an adaptive Speckle Filter based on the Lee algorithm to Sentinel-1 images. It preserves edges while smoothing homogeneous areas by computing directional variances._
+
+**How it works:** The filter converts the radar backscatter from logarithmic (dB) to linear scale. It calculates the local mean and variance within the specified kernel. By using the Equivalent Number of Looks (ENL) and the local coefficient of variation, it creates a dynamic weighting factor. In homogeneous areas (low variance), it heavily applies the local mean to reduce granular noise. Near edges (high variance), it preserves the original pixel values to maintain structural sharpness, before converting the data back to dB.
+
+##### Params:
+  (ee.Image) image - The input SAR image.
+  (number) kernel_size - The size of the kernel in pixels (e.g. 3 or 5).
+
+##### Usage:
+```js  
+    var smooth_radar = geet.s1_lee_filter(radar_img, 3); 
+```
+
+------------------------------------------------------------------------------
+
+#### s1_terrain_flattening
+(image)
+
+_Performs Radiometric Terrain Flattening on Sentinel-1. Converts Sigma0 backscatter to Gamma0, removing topography-induced distortions (like foreshortening) using local incidence angles from the Copernicus 30m DEM._
+
+**How it works:** Traditional SAR imagery is provided in Sigma Naught (σ°), which assumes the Earth is completely flat. In mountainous areas, slopes facing the radar reflect too much energy (appearing artificially bright), while slopes facing away appear dark. This function calculates the local slope, aspect, and the satellite's specific heading angle. It computes the true local incidence angle for each pixel and calculates a trigonometric flattening factor (tan(α) / tan(θ)) to correct the signal into Gamma Naught (γ°), which is the radiometrically true physical reflectance of the surface regardless of terrain.
+
+##### Params:
+  (ee.Image) image - The input SAR image containing an 'angle' band.
+
+##### Usage:
+```js  
+    var flat_radar = geet.s1_terrain_flattening(radar_img); 
+```
+
+------------------------------------------------------------------------------
+
+#### s1_flood_mapping
+(image_before, image_after, threshold, smoothing_radius, band)
+
+_Detects flooded areas by comparing a pre-flood and post-flood Sentinel-1 image using a thresholding approach. Automatically masks out permanent water bodies using the JRC Global Surface Water dataset._
+
+**How it works:** Smooth water surfaces act like mirrors (specular reflection), scattering radar pulses away from the satellite, which causes flooded areas to appear very dark in SAR imagery. This function subtracts the pre-flood image from the post-flood image. It applies a focal mean spatial smoothing (to reduce salt-and-pepper noise) and isolates pixels where the backscatter dropped by more than the user-defined `threshold` (e.g., a drop of -3.0 dB). Finally, it queries the high-resolution JRC Global Surface Water database to subtract historically permanent rivers and lakes from the result, leaving only the newly flooded anomalous areas.
+
+##### Params:
+  (ee.Image) image_before - The SAR image before the flood event.
+  (ee.Image) image_after - The SAR image during the flood event.
+  (number) threshold - The backscatter drop threshold in dB (e.g., -3.0).
+  (number) smoothing_radius - The radius in meters to smooth the difference image (e.g., 50).
+  (string) band - The polarization band to use, typically 'VV' or 'VH'.
+
+##### Usage:
+```js  
+    var flood_mask = geet.s1_flood_mapping(img_pre, img_post, -3.0, 50, 'VV'); 
 ```
 
 ------------------------------------------------------------------------------
@@ -1515,18 +1612,25 @@ _Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR), and Burn Severity
 ------------------------------------------------------------------------------
 
 #### build_hls_composite
-(roi, start_date, end_date) 
+(roi, start_date, end_date, band) 
 
 _Generates a Harmonized Landsat Sentinel-2 (HLS) median composite for the given region and time period. Uses Landsat 7, 8, 9 (Collection 2 Level 2) and Sentinel-2 (SR) images. Implements state-of-the-art NASA HLS algorithms including cloud/shadow masking, reflectance rescaling, BRDF normalization, spectral band adjustment (SBA), and spatial coregistration._  
+
+**How it works:** This is a monolithic "all-in-one" function that integrates data from four different satellite constellations (L7, L8, L9, S2). First, it queries all datasets and applies rigorous cloud/shadow masking (combining QA_PIXEL, Sentinel SCL, Sentinel Cloud Probability, and TDOM2). Then it applies BRDF (Bidirectional Reflectance Distribution Function) corrections using the c-factor method to normalize illumination angles across seasons and latitudes. Since Landsat and Sentinel have slightly different spectral response functions, it applies Spectral Band Adjustment (SBA) equations to match S2 and L7 radiometry to Landsat 8/9. Finally, it reprojects S2 to 30m, merges everything into a massive hyper-collection, and calculates the temporal median to yield a seamless, cloud-free, and radiometrically uniform composite.
 
 ##### Params:
   (ee.Geometry) roi - The region of interest.    
   (string) start_date - Start date of the composite (e.g. '2019-10-01').      
   (string) end_date - End date of the composite (e.g. '2019-10-31').      
+  **optional** (string) band - The specific band to process and return (e.g. 'NDVI', 'red'). Pass 'ALL' or leave empty to process all multispectral bands.
   
 ##### Usage:
 ```js 
+    // Generates a full multi-band composite
     var hls_composite = geet.build_hls_composite(roi, '2022-01-01', '2022-12-31');   
+    
+    // Processes exclusively the NDVI to save computation time
+    var hls_ndvi = geet.build_hls_composite(roi, '2022-01-01', '2022-12-31', 'NDVI');
 ```
 
 ------------------------------------------------------------------------------
