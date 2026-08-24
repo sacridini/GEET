@@ -1,8 +1,8 @@
 var geet = require('users/eduardolacerdageo/geet:geet');
 
-// Define a Region of Interest (e.g., a region in Rio Grande do Sul, Brazil)
-var roi = ee.Geometry.Point([-51.2, -29.8]).buffer(15000);
-Map.centerObject(roi, 11);
+// Define a Region of Interest (e.g., Houston, Texas - Hurricane Harvey 2017)
+var roi = ee.Geometry.Point([-95.3, 29.8]).buffer(50000);
+Map.centerObject(roi, 10);
 Map.addLayer(roi, {color: 'red'}, 'ROI', false);
 
 // ==============================================================================
@@ -13,7 +13,7 @@ print('Applying Terrain Flattening and Lee Speckle Filter...');
 // Load a single Sentinel-1 image over a mountainous region
 var s1_mountain = ee.ImageCollection('COPERNICUS/S1_GRD')
   .filterBounds(roi)
-  .filterDate('2023-01-01', '2023-12-31')
+  .filterDate('2017-01-01', '2017-12-31')
   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
   .filter(ee.Filter.eq('instrumentMode', 'IW'))
   .select(['VV', 'angle'])
@@ -36,27 +36,27 @@ Map.addLayer(s1_lee.select('VV'), {min: -20, max: 0}, '3. Lee Filtered (Smoothed
 // ==============================================================================
 print('Running Flood Detection Algorithm...');
 
-// Let's map the historical floods in Rio Grande do Sul (Brazil) in May 2024
+// Let's map the catastrophic floods of Hurricane Harvey in Texas (August 2017)
 var pre_flood = ee.ImageCollection('COPERNICUS/S1_GRD')
   .filterBounds(roi)
-  .filterDate('2023-01-01', '2024-04-20') // Massive baseline to guarantee data
+  .filterDate('2017-08-01', '2017-08-20') // Before floods
   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
   .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  .filter(ee.Filter.eq('orbitProperties_pass', 'DESCENDING')) // CRITICAL to avoid false positives!
   .select('VV')
-  .median();
+  .mosaic(); 
 
 var post_flood = ee.ImageCollection('COPERNICUS/S1_GRD')
   .filterBounds(roi)
-  .filterDate('2024-05-01', '2024-06-30') // Expanded flood peak window
+  .filterDate('2017-08-25', '2017-09-05') // Peak floods (Hurricane Harvey)
   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
   .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  .filter(ee.Filter.eq('orbitProperties_pass', 'DESCENDING')) // CRITICAL to avoid false positives!
   .select('VV')
-  .median();
+  .mosaic(); 
 
-// Run the Flood Mapping function
-// We look for a -3.0 dB drop in backscatter, apply a 50m smoothing radius, using 'VV' band
-// It automatically masks out permanent rivers and lakes using the JRC Global Surface Water dataset!
-var flooded_area = geet.s1_flood_mapping(pre_flood, post_flood, -3.0, 50, 'VV');
+// Run the Flood Mapping function using 'VV' band
+var flooded_area = geet.s1_flood_mapping(pre_flood, post_flood, -4.0, 50, 'VV');
 
 Map.addLayer(pre_flood, {min: -20, max: 0}, '4. Pre-Flood SAR', false);
 Map.addLayer(post_flood, {min: -20, max: 0}, '5. Post-Flood SAR', false);

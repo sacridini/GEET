@@ -5306,9 +5306,12 @@ var s1_flood_mapping = function(image_before, image_after, threshold, smoothing_
   var smoothed = diff.focal_mean(smoothing_radius, 'circle', 'meters');
   var flood = smoothed.lt(threshold); 
   
-  var jrc = ee.Image("JRC/GSW1_4/GlobalSurfaceWater").select("seasonality");
-  var permanentWater = jrc.gte(10).unmask(0);
-  var flooded_only = flood.updateMask(permanentWater.not());
+  // Mask out permanent water using JRC occurrence > 80%
+  var jrc = ee.Image("JRC/GSW1_4/GlobalSurfaceWater").select('occurrence');
+  var permanentWater = jrc.gte(80).unmask(0);
+  
+  // selfMask() ensures 0s (non-flooded areas) become transparent
+  var flooded_only = flood.selfMask().updateMask(permanentWater.not());
   
   var time_start = image_after.get('system:time_start');
   time_start = ee.Algorithms.If(time_start, time_start, ee.Date(Date.now()).millis());
