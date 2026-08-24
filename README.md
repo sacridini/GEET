@@ -1,4 +1,4 @@
-﻿# GEET (Google Earth Engine Toolbox)
+# GEET (Google Earth Engine Toolbox)
 
 [![DOI](https://zenodo.org/badge/105400884.svg)](https://zenodo.org/badge/latestdoi/105400884)
 
@@ -1121,9 +1121,9 @@ _Generates a Harmonized Landsat Sentinel-2 (HLS) median composite for the given 
   (string) end_date - End date of the composite (e.g. '2019-10-31').      
   
 ##### Usage:
-`js 
+```js 
     var hls_composite = geet.build_hls_composite(roi, '2022-01-01', '2022-12-31');   
-`
+```
 
 ------------------------------------------------------------------------------
 
@@ -1134,6 +1134,11 @@ _Applies scale factors for Landsat Collection 2 Level 2 SR to compute physical r
 
 ##### Params:
   (ee.Image) image - The input Landsat Collection 2 image.    
+  
+##### Usage:
+`js
+    var rescaled_l8 = geet.rescale_landsat_c2(raw_l8_image);
+`
 
 ------------------------------------------------------------------------------
 
@@ -1145,6 +1150,11 @@ _Applies scale factors for Sentinel-2 SR to compute physical reflectance [0, 1].
 ##### Params:
   (ee.Image) image - The input Sentinel-2 image.    
 
+##### Usage:
+`js
+    var rescaled_s2 = geet.rescale_sentinel2(raw_s2_image);
+`
+
 ------------------------------------------------------------------------------
 
 #### apply_brdf_landsat
@@ -1154,6 +1164,11 @@ _Normalizes Landsat image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) 
 
 ##### Params:
   (ee.Image) image - The input Landsat image. Must contain the date property.   
+
+##### Usage:
+`js
+    var brdf_l8 = geet.apply_brdf_landsat(rescaled_l8);
+`
 
 ------------------------------------------------------------------------------
 
@@ -1165,6 +1180,11 @@ _Normalizes Sentinel-2 image reflectance to Nadir BRDF-Adjusted Reflectance (NBA
 ##### Params:
   (ee.Image) image - The input Sentinel-2 image. Must contain the date property.    
 
+##### Usage:
+`js
+    var brdf_s2 = geet.apply_brdf_sentinel(rescaled_s2);
+`
+
 ------------------------------------------------------------------------------
 
 #### band_adjustment_landsat7
@@ -1175,6 +1195,11 @@ _Applies Spectral Band Adjustment (SBA) to Landsat 7 ETM+ to align its spectral 
 ##### Params:
   (ee.Image) landsat_image - The input Landsat 7 image.    
 
+##### Usage:
+`js
+    var adjusted_l7 = geet.band_adjustment_landsat7(brdf_l7);
+`
+
 ------------------------------------------------------------------------------
 
 #### band_adjustment_sentinel2
@@ -1184,3 +1209,8 @@ _Applies Spectral Band Adjustment (SBA) to Sentinel-2 MSI to align its spectral 
 
 ##### Params:
   (ee.Image) s2_image - The input Sentinel-2 image.    
+
+##### Usage:
+`js
+    var adjusted_s2 = geet.band_adjustment_sentinel2(brdf_s2);
+`
