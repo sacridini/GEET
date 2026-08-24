@@ -32,7 +32,28 @@ All functions implemented (Version 1.9.1):
 - [kmeans](#kmeans)
 - [unmix](#unmix)
 
-### Spectral Indices & Transformations
+#
+------------------------------------------------------------------------------
+
+#### unmix
+(image, bands, endmembers, names, sumToOne, nonNegative)  
+
+_Function to apply Linear Spectral Unmixing (LSU) to an image._
+
+##### Params:
+  (ee.Image) image - The input image.       
+  (array of strings) bands - The bands to be unmixed.     
+  (list of lists) endmembers - The endmember spectral signatures.  
+  (array of strings) names - The names for the output fraction bands.         
+  **optional** (boolean) sumToOne - Constrain fractions to sum to one. Default is false.
+  **optional** (boolean) nonNegative - Constrain fractions to be non-negative. Default is true.
+  
+##### Usage:
+`js 
+    var unmixed = geet.unmix(image, ['red', 'nir', 'swir1'], [[0.1, 0.2, 0.1], [0.8, 0.9, 0.3]], ['soil', 'veg']);
+`
+
+## Spectral Indices & Transformations
 - [landsat_indices](#landsat_indices)
 - [sentinel2_indices](#sentinel2_indices)
 - [water_indices](#water_indices)
@@ -42,7 +63,43 @@ All functions implemented (Version 1.9.1):
 - [kndvi](#kndvi)
 - [fvc](#fvc)
 
-### Change Detection
+#
+------------------------------------------------------------------------------
+
+#### kndvi
+(image, nir_band, red_band) 
+
+_Function to calculate the Kernelized Normalized Difference Vegetation Index (kNDVI)._  
+
+##### Params:
+  (ee.Image) image - The input image.    
+  (string) nir_band - Name of the NIR band.      
+  (string) red_band - Name of the Red band.      
+  
+##### Usage:
+`js 
+    var img_kndvi = geet.kndvi(image, 'B4', 'B3');   
+`
+
+------------------------------------------------------------------------------
+
+#### fvc
+(image, ndvi_band, ndvi_soil, ndvi_veg) 
+
+_Function to calculate Fractional Vegetation Cover (FVC) based on NDVI endmembers._  
+
+##### Params:
+  (ee.Image) image - The input image.    
+  (string) ndvi_band - Name of the NDVI band.      
+  **optional** (number) ndvi_soil - NDVI value for bare soil. Default is 0.15.      
+  **optional** (number) ndvi_veg - NDVI value for dense vegetation. Default is 0.90.      
+  
+##### Usage:
+`js 
+    var img_fvc = geet.fvc(image, 'NDVI', 0.10, 0.85);   
+`
+
+## Change Detection
 - [ndvi_change_detection](#ndvi_change_detection)
 - [anomaly](#anomaly)
 - [imad](#imad)
@@ -64,7 +121,39 @@ All functions implemented (Version 1.9.1):
 - [add_doy](#add_doy)
 - [add_millis](#add_millis)
 
-### Radar
+#
+------------------------------------------------------------------------------
+
+#### stm_features
+(collection, reducers) 
+
+_Generates Spectral-Temporal-Metrics (STM) by applying statistical reducers over an image collection._  
+
+##### Params:
+  (ee.ImageCollection) collection - The input image collection.    
+  **optional** (ee.Reducer) reducers - Custom ee.Reducer. If omitted, applies p10, p50, p90, min, max, and stdDev.      
+  
+##### Usage:
+`js 
+    var stm = geet.stm_features(my_collection);   
+`
+
+------------------------------------------------------------------------------
+
+#### add_millis
+(image) 
+
+_Adds a milliseconds timestamp band to the image, keeping the original pixel mask._  
+
+##### Params:
+  (ee.Image) image - The input image.    
+  
+##### Usage:
+`js 
+    var img_millis = geet.add_millis(image);   
+`
+
+## Radar
 - [s1_preprocess](#s1_preprocess)
 - [speckle_filter](#speckle_filter)
 
@@ -262,7 +351,7 @@ _Function to apply the GMO Maximum Entropy classification to an image._
 
 ------------------------------------------------------------------------------
 
-#### kmeans 
+#### kmeans
 (image, roi, numClusters, resolution, numPixels)  
 
 _Function to apply RandomForest classification to an image._  
@@ -291,7 +380,7 @@ _Function to apply RandomForest classification to an image._
 ## Spectral Indices & Transformations
 ------------------------------------------------------------------------------
 
-#### landsat_indices  
+#### landsat_indices
 (image, sensor, index)  
 
 _Function to take an input image and generate indices like: NDVI, NDWI, NDBI..._   
@@ -574,7 +663,7 @@ _Automatically extracts the drainage/stream network based on a flow accumulation
 
 _Function to build an annual Landsat MSS (Landsat 1, 2, 3, 4, 5) timeseries from 1972 to 1999. The function normalizes the distinct bands of older satellites into 'GREEN', 'RED', 'NIR1', 'NIR2', masks clouds using QA_PIXEL, calculates NDVI, and generates median annual mosaics._  
 
-##### Params:  
+##### Params:
   (ee.Point) roi - the region of interest that will define the study area  
                         
   
@@ -590,7 +679,7 @@ _Function to build an annual Landsat MSS (Landsat 1, 2, 3, 4, 5) timeseries from
 
 _Function to build an annual Landsat (5, 7, 8, and 9) TOA time series from 1985 to 2030. The function also masks clouds and shadows, normalizes bands to standard English names, and generates all indices (NDVI, NDWI, SAVI, Tasseled Cap)._  
 
-##### Params:  
+##### Params:
   (ee.Point) roi - the region of interest that will define the study area and the Landsat path row  
                         
   
@@ -1220,3 +1309,20 @@ _Applies Spectral Band Adjustment (SBA) to Sentinel-2 MSI to align its spectral 
 ```js
     var adjusted_s2 = geet.band_adjustment_sentinel2(brdf_s2);
 ```
+
+
+------------------------------------------------------------------------------
+
+#### add_doy
+(image) 
+
+_Adds a Day of Year (DOY) band to the image, keeping the original pixel mask._  
+
+##### Params:
+  (ee.Image) image - The input image.    
+  
+##### Usage:
+`js 
+    var img_doy = geet.add_doy(image);   
+`
+

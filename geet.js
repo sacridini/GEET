@@ -2,7 +2,7 @@
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
  * Version: 1.11.0
- * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
+ * Eduardo Ribeiro Lacerda <eduardolacerdageo@gmail.com>
  */
 
 // Error Handling function
