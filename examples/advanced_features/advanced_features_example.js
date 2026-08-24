@@ -76,3 +76,39 @@ print('STM Image (Dozens of bands/Features for Machine Learning):', s2_stm);
 
 // Visualizing the 90th Percentile of the NIR band (which indicates maximum cloud-free summer vigor)
 Map.addLayer(s2_stm.select('B8_p90').clip(roi), {min: 1000, max: 4000, palette: ['black', 'lightgreen']}, '5. STM: NIR Percentil 90');
+
+
+// ==============================================================================
+// TEST 5: Time Series Gap-Filling & Outlier Removal (RBF)
+// ==============================================================================
+
+// Let's first calculate NDVI for our collection
+var calculate_ndvi = function(img) {
+  var ndvi = img.normalizedDifference(['B8', 'B4']).rename('NDVI');
+  return img.addBands(ndvi);
+};
+
+var s2_ndvi_col = s2_col_time.map(calculate_ndvi);
+
+// Remove outliers using a 30-day window and 3 standard deviations
+var s2_clean_col = geet.remove_outliers(s2_ndvi_col, 30, 3, ['NDVI']);
+print('Cleaned Collection (Outliers Removed):', s2_clean_col);
+
+// Gap fill the series using a Radial Basis Function (RBF)
+// Search for valid pixels within a 60-day window, with a Gaussian standard deviation of 16 days
+var s2_gap_filled = geet.tsi_rbf(s2_clean_col, 60, 16);
+print('Gap Filled Collection (RBF Interpolated):', s2_gap_filled);
+
+
+// ==============================================================================
+// TEST 6: Land Surface Phenology (Polar Vectors)
+// ==============================================================================
+
+// Extract Phenology Metrics (Start of Season, Peak of Season, Magnitude) from the gap-filled NDVI series
+var phenology = geet.phenology_metrics(s2_gap_filled, 'NDVI');
+
+print('Land Surface Phenology (LSP) Metrics:', phenology);
+
+// The Start of Season (SOS_DOY) returns the day of year!
+Map.addLayer(phenology.select('SOS_DOY').clip(roi), {min: 90, max: 270, palette: ['blue', 'green', 'yellow', 'red']}, '6. Phenology: Start of Season (DOY)');
+

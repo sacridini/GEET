@@ -1,4 +1,4 @@
-﻿# GEET (Google Earth Engine Toolbox)
+# GEET (Google Earth Engine Toolbox)
 
 [![DOI](https://zenodo.org/badge/105400884.svg)](https://zenodo.org/badge/latestdoi/105400884)
 
@@ -63,6 +63,9 @@ All functions implemented (Version 1.9.1):
 - [stm_features](#stm_features)
 - [add_doy](#add_doy)
 - [add_millis](#add_millis)
+- [remove_outliers](#remove_outliers)
+- [tsi_rbf](#tsi_rbf)
+- [phenology_metrics](#phenology_metrics)
 
 ### Radar
 - [s1_preprocess](#s1_preprocess)
@@ -882,6 +885,57 @@ _Adds a milliseconds timestamp band to the image, keeping the original pixel mas
 ##### Usage:
 ```js 
     var img_millis = geet.add_millis(image);   
+```
+
+------------------------------------------------------------------------------
+
+#### remove_outliers
+(collection, window_days, std_multi, bands) 
+
+_Applies a moving average and standard deviation filter to remove outliers from a time series._  
+
+##### Params:
+  (ee.ImageCollection) collection - The input image collection.    
+  (number) window_days - The rolling window size in days (e.g. 30).      
+  (number) std_multi - The standard deviation multiplier (e.g. 3).      
+  **optional** (array of strings) bands - The specific bands to mask.      
+  
+##### Usage:
+```js 
+    var clean_col = geet.remove_outliers(collection, 30, 3, ['NDVI']);   
+```
+
+------------------------------------------------------------------------------
+
+#### tsi_rbf
+(collection, window_days, sigma) 
+
+_Gap-fills and smooths a time series using a Radial Basis Function (RBF) Gaussian kernel over a temporal window._  
+
+##### Params:
+  (ee.ImageCollection) collection - The input image collection to gap-fill.    
+  (number) window_days - The rolling window size in days to search for valid pixels.      
+  (number) sigma - The standard deviation of the RBF kernel in days (e.g. 16).      
+  
+##### Usage:
+```js 
+    var rbf_col = geet.tsi_rbf(collection, 60, 16);   
+```
+
+------------------------------------------------------------------------------
+
+#### phenology_metrics
+(collection, band) 
+
+_Extracts Land Surface Phenology (LSP) metrics (Start of Season, Peak of Season, and Magnitude) by converting a time series to Polar Vectors._  
+
+##### Params:
+  (ee.ImageCollection) collection - The input image collection containing a full seasonal cycle.    
+  (string) band - The index or band to use for phenology extraction (e.g. 'NDVI').      
+  
+##### Usage:
+```js 
+    var lsp_img = geet.phenology_metrics(collection, 'NDVI');   
 ```
 
 ## Radar & Topography

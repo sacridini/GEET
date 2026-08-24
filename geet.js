@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.11.0
+ * Version: 1.12.0
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@gmail.com>
  */
 
@@ -5103,6 +5103,131 @@ var build_hls_composite = function(roi, start_date, end_date) {
     return median_composite;
 };
 
+
+var remove_outliers = function(collection, window_days, std_multi, bands) {
+  var window_milli = window_days * 24 * 60 * 60 * 1000;
+  
+  var maxDiffFilter = ee.Filter.maxDifference({
+    difference: window_milli,
+    leftField: 'system:time_start',
+    rightField: 'system:time_start'
+  });
+  
+  var saveAllJoin = ee.Join.saveAll({
+    matchesKey: 'window',
+    ordering: 'system:time_start',
+    ascending: true
+  });
+  
+  var joined = saveAllJoin.apply(collection, collection, maxDiffFilter);
+  
+  var filterOutliers = function(img) {
+    img = ee.Image(img);
+    var windowCol = ee.ImageCollection.fromImages(img.get('window'));
+    if (bands) {
+      windowCol = windowCol.select(bands);
+    }
+    
+    var mean = windowCol.reduce(ee.Reducer.mean());
+    var std = windowCol.reduce(ee.Reducer.stdDev());
+    
+    var upper = mean.add(std.multiply(std_multi));
+    var lower = mean.subtract(std.multiply(std_multi));
+    
+    var mask = img.gte(lower).and(img.lte(upper));
+    
+    return img.updateMask(mask).copyProperties(img, ['system:time_start', 'system:index']);
+  };
+  
+  return ee.ImageCollection(joined).map(filterOutliers);
+};
+
+var tsi_rbf = function(collection, window_days, sigma) {
+  var window_milli = window_days * 24 * 60 * 60 * 1000;
+  
+  var maxDiffFilter = ee.Filter.maxDifference({
+    difference: window_milli,
+    leftField: 'system:time_start',
+    rightField: 'system:time_start'
+  });
+  
+  var saveAllJoin = ee.Join.saveAll({
+    matchesKey: 'window',
+    measureKey: 'delta_milli',
+    ordering: 'system:time_start',
+    ascending: true
+  });
+  
+  var joined = ee.ImageCollection(saveAllJoin.apply(collection, collection, maxDiffFilter));
+  
+  var rbfInterpolate = function(img) {
+    img = ee.Image(img);
+    var windowCol = ee.ImageCollection.fromImages(img.get('window'));
+    var bandNames = img.bandNames();
+    
+    var applyWeight = function(windowImg) {
+      windowImg = ee.Image(windowImg);
+      var delta = ee.Number(windowImg.get('delta_milli'));
+      
+      var rbf_weight = ee.Image().expression(
+        'exp(-0.5 * pow(((delta / 86400000) / sigma), 2))', {
+          'delta': delta,
+          'sigma': sigma
+        }
+      );
+      
+      rbf_weight = rbf_weight.updateMask(windowImg.select(0).mask());
+      var weighted = windowImg.multiply(rbf_weight);
+      return weighted.addBands(rbf_weight.rename('rbf_weight'));
+    };
+    
+    var weightedCol = windowCol.map(applyWeight);
+    
+    var sumWeighted = weightedCol.select(bandNames).reduce(ee.Reducer.sum());
+    var sumWeights = weightedCol.select(['rbf_weight']).reduce(ee.Reducer.sum());
+    
+    var result = sumWeighted.divide(sumWeights).rename(bandNames);
+    
+    // Gap fill existing image
+    var filled = img.unmask(result);
+    return filled.copyProperties(img, ['system:time_start', 'system:index']);
+  };
+  
+  return joined.map(rbfInterpolate);
+};
+
+var phenology_metrics = function(collection, band) {
+  var addPolarBands = function(img) {
+    var doy = img.date().getRelative('day', 'year');
+    var doy_rad = ee.Image(doy).divide(365).multiply(2 * Math.PI);
+    var val = img.select(band);
+    
+    var ts_x = val.multiply(doy_rad.cos()).rename('POL_X');
+    var ts_y = val.multiply(doy_rad.sin()).rename('POL_Y');
+    
+    return img.addBands([ts_x, ts_y]);
+  };
+  
+  var polarCol = collection.map(addPolarBands);
+  
+  var meanX = polarCol.select('POL_X').mean();
+  var meanY = polarCol.select('POL_Y').mean();
+  
+  var theta = meanX.atan2(meanY); 
+  
+  theta = theta.where(theta.lte(0), theta.add(2 * Math.PI));
+  
+  var sos_doy = theta.multiply(365).divide(2 * Math.PI).int16().rename('SOS_DOY');
+  
+  var pos_rad = theta.add(Math.PI);
+  pos_rad = pos_rad.where(pos_rad.gte(2 * Math.PI), pos_rad.subtract(2 * Math.PI));
+  var pos_doy = pos_rad.multiply(365).divide(2 * Math.PI).int16().rename('POS_DOY');
+  
+  var magnitude = meanX.multiply(meanX).add(meanY.multiply(meanY)).sqrt().rename('MAGNITUDE');
+  
+  return ee.Image([sos_doy, pos_doy, magnitude]);
+};
+
 /* ------------------------  EXPORTS  ------------------------ */
 
 // Machine Learning & Classification
@@ -5195,6 +5320,11 @@ exports.collection2image = collection2image;
 exports.segmentation_snic = segmentation_snic;
 exports.obia_classification = obia_classification;
 exports.filter_small_objects = filter_small_objects;
+
+// Exports for Advanced Time Series
+exports.remove_outliers = remove_outliers;
+exports.tsi_rbf = tsi_rbf;
+exports.phenology_metrics = phenology_metrics;
 
 
 // Exports for HLS Harmonization
