@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.10.0
+ * Version: 1.10.2
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -4653,18 +4653,17 @@ function _apply_sentinel(image, kvol, kvol0){
   var f_iso = 0;
   var f_geo = 0;
   var f_vol = 0;
-	// var blue = _correct_band(image, 'blue', kvol, kvol0, f_iso=0.0774, f_geo=0.0079, f_vol=0.0372);
-	// var green = _correct_band(image, 'green', kvol, kvol0, f_iso=0.1306, f_geo=0.0178, f_vol=0.0580);
+	var blue = _correct_band(image, 'blue', kvol, kvol0, f_iso=0.0774, f_geo=0.0079, f_vol=0.0372);
+	var green = _correct_band(image, 'green', kvol, kvol0, f_iso=0.1306, f_geo=0.0178, f_vol=0.0580);
 	var red = _correct_band(image, 'red', kvol, kvol0, f_iso=0.1690, f_geo=0.0227, f_vol=0.0574);
-	// var re1 = _correct_band(image, 're1', kvol, kvol0, f_iso=0.2085, f_geo=0.0256, f_vol=0.0845);
-	// var re2 = _correct_band(image, 're2', kvol, kvol0, f_iso=0.2316, f_geo=0.0273, f_vol=0.1003);
-	// var re3 = _correct_band(image, 're3', kvol, kvol0, f_iso=0.2599, f_geo=0.0294, f_vol=0.1197);
-  var nir = _correct_band(image, 'nir', kvol, kvol0, f_iso=0.3093, f_geo=0.0330, f_vol=0.1535);
-  // var re4 = _correct_band(image, 're4', kvol, kvol0, f_iso=0.2907, f_geo=0.0410, f_vol=0.1611);
-  // var swir1 = _correct_band(image, 'swir1', kvol, kvol0, f_iso=0.3430, f_geo=0.0453, f_vol=0.1154);   
-  // var swir2 = _correct_band(image, 'swir2', kvol, kvol0, f_iso=0.2658, f_geo=0.0387, f_vol=0.0639);
-  // return image.select([]).addBands([blue, green, red, nir,re1,re2,re3,nir,re4,swir1, swir2]);
-	return image.select([]).addBands([red, nir]);
+	var re1 = _correct_band(image, 're1', kvol, kvol0, f_iso=0.2085, f_geo=0.0256, f_vol=0.0845);
+	var re2 = _correct_band(image, 're2', kvol, kvol0, f_iso=0.2316, f_geo=0.0273, f_vol=0.1003);
+	var re3 = _correct_band(image, 're3', kvol, kvol0, f_iso=0.2599, f_geo=0.0294, f_vol=0.1197);
+    var nir = _correct_band(image, 'nir', kvol, kvol0, f_iso=0.3093, f_geo=0.0330, f_vol=0.1535);
+    var re4 = _correct_band(image, 're4', kvol, kvol0, f_iso=0.2907, f_geo=0.0410, f_vol=0.1611);
+    var swir1 = _correct_band(image, 'swir1', kvol, kvol0, f_iso=0.3430, f_geo=0.0453, f_vol=0.1154);   
+    var swir2 = _correct_band(image, 'swir2', kvol, kvol0, f_iso=0.2658, f_geo=0.0387, f_vol=0.0639);
+	return image.select([]).addBands([blue, green, red, re1, re2, re3, nir, re4, swir1, swir2]);
 }
 
 function _apply_landsat(image, kvol, kvol0){
@@ -4874,20 +4873,47 @@ function illumination_condition_sentinel(img){
 }
 
 
-function band_adjustment_landsat(landsat_image) {
+// Scales Landsat Collection 2 SR to [0, 1] reflectance
+function rescale_landsat_c2(image) {
+    var optical = image.select(['blue', 'green', 'red', 'nir', 'swir1', 'swir2'])
+                       .multiply(0.0000275).add(-0.2);
+    return image.addBands(optical, null, true);
+}
 
-    var interceptsL8 = [-0.0107,0.0026,-0.0015,0.0033,0.0065,0.0046];
-    var slopesL8 = [1.0946,1.0043,1.0524,0.8954,1.0049,1.0002];
+// Scales Sentinel-2 SR to [0, 1] reflectance
+function rescale_sentinel2(image) {
+    var optical = image.select(['blue', 'green', 'red', 're1', 're2', 're3', 'nir', 're4', 'swir1', 'swir2'])
+                       .multiply(0.0001);
+    return image.addBands(optical, null, true);
+}
+
+// Harmonizes Landsat 7 (ETM+) to Landsat 8 (OLI)
+function band_adjustment_landsat7(landsat_image) {
+    var interceptsL8 = [-0.0107, 0.0026, -0.0015, 0.0033, 0.0065, 0.0046];
+    var slopesL8 = [1.0946, 1.0043, 1.0524, 0.8954, 1.0049, 1.0002];
   
-    var imgL8SR_bandadj = ee.Image(landsat_image
+    var img_adjusted = ee.Image(landsat_image.select(['blue', 'green', 'red', 'nir', 'swir1', 'swir2'])
                             .multiply(slopesL8)
-                            .add(interceptsL8).float()
-                            .copyProperties(landsat_image))
-                            .set('system:time_start',landsat_image.get('system:time_start'));
-    return(imgL8SR_bandadj);
-  }
+                            .add(interceptsL8).float());
+    return landsat_image.addBands(img_adjusted, null, true);
+}
+
+// Harmonizes Sentinel-2 to Landsat 8 (OLI)
+function band_adjustment_sentinel2(s2_image) {
+    // Coefficients from Chastain et al. (2019) / HLS
+    var interceptsL8 = [-0.004, -0.0009, 0.0009, -0.0003, -0.0004, -0.0019];
+    var slopesL8 = [0.977, 1.005, 0.977, 1.000, 0.996, 0.976];
+    
+    var img_adjusted = ee.Image(s2_image.select(['blue', 'green', 'red', 'nir', 'swir1', 'swir2'])
+                            .multiply(slopesL8)
+                            .add(interceptsL8).float());
+    return s2_image.addBands(img_adjusted, null, true);
+}
   
-  exports.band_adjustment_landsat = band_adjustment_landsat;
+  exports.band_adjustment_landsat7 = band_adjustment_landsat7;
+exports.band_adjustment_sentinel2 = band_adjustment_sentinel2;
+exports.rescale_landsat_c2 = rescale_landsat_c2;
+exports.rescale_sentinel2 = rescale_sentinel2;
 function reproject_sen2ls(sentinel_image, landsat_image) {
   var sentinel_30m = sentinel_image.resample('bicubic').reproject({
   crs: landsat_image.select('red').projection().crs(),
@@ -4953,25 +4979,26 @@ var build_hls_composite = function(roi, start_date, end_date) {
         .filterBounds(roi)
         .filterDate(start_date, end_date)
         .select(names_band_in_landsat7, names_band_out_landsat7)
-        .map(function (image) { return cs_mask_landsat(image, image.select('qa_band')); })
+        .map(function (img) { return cs_mask_landsat(img, img.select('qa_band')); })
+        .map(rescale_landsat_c2)
         .map(apply_brdf_landsat)
-        .map(band_adjustment_landsat);
+        .map(band_adjustment_landsat7); // SBA only for L7!
 
     var ls8_c = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
         .filterBounds(roi)
         .filterDate(start_date, end_date)
         .select(names_band_in_landsat8, names_band_out_landsat8)
-        .map(function (image) { return cs_mask_landsat(image, image.select('qa_band')); })
-        .map(apply_brdf_landsat)
-        .map(band_adjustment_landsat);
+        .map(function (img) { return cs_mask_landsat(img, img.select('qa_band')); })
+        .map(rescale_landsat_c2)
+        .map(apply_brdf_landsat); // L8 is the anchor, no SBA!
 
     var ls9_c = ee.ImageCollection('LANDSAT/LC09/C02/T1_L2')
         .filterBounds(roi)
         .filterDate(start_date, end_date)
         .select(names_band_in_landsat8, names_band_out_landsat8)
-        .map(function (image) { return cs_mask_landsat(image, image.select('qa_band')); })
-        .map(apply_brdf_landsat)
-        .map(band_adjustment_landsat);
+        .map(function (img) { return cs_mask_landsat(img, img.select('qa_band')); })
+        .map(rescale_landsat_c2)
+        .map(apply_brdf_landsat); // L9 acts identical to L8, no SBA!
 
     var s2_c = ee.ImageCollection('COPERNICUS/S2_SR')
         .filterBounds(roi)
@@ -4991,12 +5018,15 @@ var build_hls_composite = function(roi, start_date, end_date) {
 
     var s2_cloud_masked_c = ee.ImageCollection(s2_and_s2_cloud_c).map(cloudmask_sr_sentinel);
     var s2_cs_masked_c = simple_TDOM2(s2_cloud_masked_c);
-    var s2_cs_brdf_c = s2_cs_masked_c.map(apply_brdf_sentinel);
+    var s2_cs_brdf_c = s2_cs_masked_c
+        .map(rescale_sentinel2)
+        .map(apply_brdf_sentinel)
+        .map(band_adjustment_sentinel2); // SBA for S2 -> L8!
 
     var s2_cs_brdf_ndvi_c = s2_cs_brdf_c.map(calc_ndvi).select('ndvi');
+    var ls9_with_index_c = ls9_c.map(calc_ndvi).select('ndvi');
     var ls8_with_index_c = ls8_c.map(calc_ndvi).select('ndvi');
     var ls7_with_index_c = ls7_c.map(calc_ndvi).select('ndvi');
-    var ls9_with_index_c = ls9_c.map(calc_ndvi).select('ndvi');
 
     // Sentinel 2 Reprojection to Landsat scale/CRS
     var s2_cs_brdf_reproj_c = ee.Algorithms.If(
@@ -5016,7 +5046,6 @@ var build_hls_composite = function(roi, start_date, end_date) {
     var median_composite = merged.median();
     return median_composite;
 };
-
 
 /* ------------------------  EXPORTS  ------------------------ */
 
@@ -5113,7 +5142,10 @@ exports.apply_brdf_sentinel = apply_brdf_sentinel;
 exports.illumination_condition_landsat = illumination_condition_landsat;
 exports.illumination_condition_sentinel = illumination_condition_sentinel;
 exports.illumination_correction = illumination_correction;
-exports.band_adjustment_landsat = band_adjustment_landsat;
+exports.band_adjustment_landsat7 = band_adjustment_landsat7;
+exports.band_adjustment_sentinel2 = band_adjustment_sentinel2;
+exports.rescale_landsat_c2 = rescale_landsat_c2;
+exports.rescale_sentinel2 = rescale_sentinel2;
 exports.co_registration_landsat = co_registration_landsat;
 exports.reproject_sen2ls = reproject_sen2ls;
 exports.cs_mask_landsat = cs_mask_landsat;

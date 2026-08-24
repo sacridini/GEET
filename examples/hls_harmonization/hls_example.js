@@ -29,13 +29,13 @@ var ls8_c = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
   .filterDate(start_date, end_date)
   .select(names_band_in_landsat8, names_band_out_landsat8)
   .map(function(img) { return geet.cs_mask_landsat(img, img.select('qa_band')); })
-  .map(geet.apply_brdf_landsat)
-  .map(geet.band_adjustment_landsat);
+  .map(geet.rescale_landsat_c2) // Rescale to [0, 1] reflectance
+  .map(geet.apply_brdf_landsat); // L8 is the anchor, so no band adjustment needed!
 
 // Take the temporal median to guarantee valid pixels across the ROI
 var ls8_adjusted = ls8_c.median();
 
 print('Pre-processed L8 Image Collection (Cloud Mask + BRDF + Band Adjusted):', ls8_c);
 
-// Use GEETs smart plot to show the independent Landsat 8 median
-geet.plot(ls8_adjusted, 'rgb', 'L8 Harmonized (RGB)', {sensor: 'L8', bands: ['red', 'green', 'blue'], min: 7272, max: 18181});
+// Use GEET's smart plot to show the independent Landsat 8 median
+geet.plot(ls8_adjusted, 'rgb', 'L8 Harmonized (RGB)', {sensor: 'L8', bands: ['red', 'green', 'blue'], min: 0.0, max: 0.3});

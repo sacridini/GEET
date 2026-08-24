@@ -107,6 +107,15 @@ All functions implemented (Version 1.9.1):
 - [obia_classification](#obia_classification)
 - [filter_small_objects](#filter_small_objects)
 
+### Harmonized Landsat Sentinel-2 (HLS)
+- [build_hls_composite](#build_hls_composite)
+- [rescale_landsat_c2](#rescale_landsat_c2)
+- [rescale_sentinel2](#rescale_sentinel2)
+- [apply_brdf_landsat](#apply_brdf_landsat)
+- [apply_brdf_sentinel](#apply_brdf_sentinel)
+- [band_adjustment_landsat7](#band_adjustment_landsat7)
+- [band_adjustment_sentinel2](#band_adjustment_sentinel2)
+
 ------------------------------------------------------------------------------
 
 ### Quickstart Guide:
@@ -1096,3 +1105,82 @@ _The following functions have been deprecated to streamline the GEET library. Th
 - `landsat5_timeseries`, `landsat7_timeseries`, `landsat8_timeseries` -> **Replaced by:** `landsat_timeseries(sensor, type)`
 
 _If your legacy scripts use any of these old functions, please update them to use the new integrated functions, which offer better performance, Collection 2 compliance, and support for newer sensors like Landsat 9._
+
+------------------------------------------------------------------------------
+## Harmonized Landsat Sentinel-2 (HLS)
+------------------------------------------------------------------------------
+
+#### build_hls_composite
+(roi, start_date, end_date) 
+
+_Generates a Harmonized Landsat Sentinel-2 (HLS) median composite for the given region and time period. Uses Landsat 7, 8, 9 (Collection 2 Level 2) and Sentinel-2 (SR) images. Implements state-of-the-art NASA HLS algorithms including cloud/shadow masking, reflectance rescaling, BRDF normalization, spectral band adjustment (SBA), and spatial coregistration._  
+
+##### Params:
+  (ee.Geometry) roi - The region of interest.    
+  (string) start_date - Start date of the composite (e.g. '2019-10-01').      
+  (string) end_date - End date of the composite (e.g. '2019-10-31').      
+  
+##### Usage:
+`js 
+    var hls_composite = geet.build_hls_composite(roi, '2022-01-01', '2022-12-31');   
+`
+
+------------------------------------------------------------------------------
+
+#### rescale_landsat_c2
+(image) 
+
+_Applies scale factors for Landsat Collection 2 Level 2 SR to compute physical reflectance [0, 1]._  
+
+##### Params:
+  (ee.Image) image - The input Landsat Collection 2 image.    
+
+------------------------------------------------------------------------------
+
+#### rescale_sentinel2
+(image) 
+
+_Applies scale factors for Sentinel-2 SR to compute physical reflectance [0, 1]._  
+
+##### Params:
+  (ee.Image) image - The input Sentinel-2 image.    
+
+------------------------------------------------------------------------------
+
+#### apply_brdf_landsat
+(image) 
+
+_Normalizes Landsat image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) using the c-factor approach and Roy et al. (2016) parameters._  
+
+##### Params:
+  (ee.Image) image - The input Landsat image. Must contain the date property.   
+
+------------------------------------------------------------------------------
+
+#### apply_brdf_sentinel
+(image) 
+
+_Normalizes Sentinel-2 image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) using the c-factor approach and Roy et al. (2016) parameters._  
+
+##### Params:
+  (ee.Image) image - The input Sentinel-2 image. Must contain the date property.    
+
+------------------------------------------------------------------------------
+
+#### band_adjustment_landsat7
+(landsat_image) 
+
+_Applies Spectral Band Adjustment (SBA) to Landsat 7 ETM+ to align its spectral response with Landsat 8 OLI, based on Roy et al. (2016)._  
+
+##### Params:
+  (ee.Image) landsat_image - The input Landsat 7 image.    
+
+------------------------------------------------------------------------------
+
+#### band_adjustment_sentinel2
+(s2_image) 
+
+_Applies Spectral Band Adjustment (SBA) to Sentinel-2 MSI to align its spectral response with Landsat 8 OLI, based on Chastain et al. (2019)._  
+
+##### Params:
+  (ee.Image) s2_image - The input Sentinel-2 image.    
