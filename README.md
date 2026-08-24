@@ -9,7 +9,7 @@ Python API: https://developers.google.com/earth-engine/python_install
 
 #### Development Info
 **Author**: Eduardo Ribeiro Lacerda - eduardolacerdageo@gmail.com
-* Researcher @ Humboldt Universität zu Berlin
+* Researcher @ Humboldt Universit├ñt zu Berlin
 
 ## Introduction:
 The Google Earth Engine Toolbox (GEET) is a JavaScript single-file library to help developers write small codebase applications with the Google Earth Engine (GEE) platform.
@@ -135,10 +135,10 @@ After adding the library, you can call its functions using the function **_requi
     var image = geet.load_image('TOA', 2015); // Returns and loads an image on the map.
 ```
 
-### (Português)
-Para utilizar a biblioteca, é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionará automaticamente todo o código da biblioteca à sua conta pessoal do Google Earth Engine. Só é necessário realizar este procedimento uma única vez. Lembre-se que para adicionar a biblioteca é necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
+### (Portugu├¬s)
+Para utilizar a biblioteca, ├® preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionar├í automaticamente todo o c├│digo da biblioteca ├á sua conta pessoal do Google Earth Engine. S├│ ├® necess├írio realizar este procedimento uma ├║nica vez. Lembre-se que para adicionar a biblioteca ├® necess├írio j├í possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
-Depois de adicionar a biblioteca é possível chamar suas funções utilizando a função **_require_** e armazenando o conteúdo em uma variável. Neste caso, criaremos uma variável chamada **_geet_** que contém todo o conteúdo da biblioteca. Depois, podemos utilizá-la para chamar as funções da biblioteca:
+Depois de adicionar a biblioteca ├® poss├¡vel chamar suas fun├º├Áes utilizando a fun├º├úo **_require_** e armazenando o conte├║do em uma vari├ível. Neste caso, criaremos uma vari├ível chamada **_geet_** que cont├®m todo o conte├║do da biblioteca. Depois, podemos utiliz├í-la para chamar as fun├º├Áes da biblioteca:
 
 ```js 
     var geet = require('users/eduardolacerdageo/geet:geet'); 
@@ -156,7 +156,12 @@ Depois de adicionar a biblioteca é possível chamar suas funções utilizando a
 
 _Function to apply SVM classification to an image._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.svm(image, trainingData, fieldName, kernelType, resolution);   
+```
+#### Params:
   (ee.Image) image - The input image to classify.    
   (FeatureCollection) trainingData - Training data (samples).      
   **optional** (string) fieldName - The name of the column that contains the class names.      
@@ -175,7 +180,12 @@ _Function to apply SVM classification to an image._
 
 _Function to apply CART classification to an image._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.cart(image, trainingData, fieldName, resolution);   
+```
+#### Params:
   (ee.Image) image - The input image to classify.       
   (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.  
@@ -193,7 +203,12 @@ _Function to apply CART classification to an image._
 
 _Function to apply Random Forest classification to an image._ 
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.rf(image, trainingData, fieldName, numOfTrees, resolution, cv_split);   
+```
+#### Params:
   (ee.Image) image - The input image to classify.  
   (array of strings) bands - The input band names that will be chosen to train the model.  
   (FeatureCollection) trainingData - All the training data (samples).  
@@ -219,7 +234,12 @@ or
 
 _Function to apply the Fast Naive Bayes classification to an image._ 
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.naive_bayes(image, trainingData, fieldName, resolution);   
+```
+#### Params:
   (ee.Image) image - The input image to classify.       
   (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.    
@@ -243,7 +263,12 @@ _Function to apply the Fast Naive Bayes classification to an image._
 
 _Function to apply the GMO Maximum Entropy classification to an image._ 
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.max_ent(image, trainingData, fieldName, resolution);   
+```
+#### Params:
   (ee.Image) image - The input image to classify.       
   (FeatureCollection) trainingData - Training data (samples).     
   **optional** (string) fieldName - The name of the column that contains the class names.    
@@ -267,7 +292,12 @@ _Function to apply the GMO Maximum Entropy classification to an image._
 
 _Function to apply RandomForest classification to an image._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.kmeans(image, roi, numClusters, resolution, numPixels);   
+```
+#### Params:
   (ee.Image) image - The input image to classify.     
   (Feature/Geometry) roi - A polygon containing the study area.
   **optional** (number) _numClusters - the number of clusters that will be used. Default is 15.  
@@ -287,7 +317,7 @@ _Function to apply RandomForest classification to an image._
 
 ------------------------------------------------------------------------------
 
-
+------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 
 #### unmix
@@ -304,11 +334,10 @@ _Function to apply Linear Spectral Unmixing (LSU) to an image._
   **optional** (boolean) nonNegative - Constrain fractions to be non-negative. Default is true.
   
 ##### Usage:
-`js 
+```js 
     var unmixed = geet.unmix(image, ['red', 'nir', 'swir1'], [[0.1, 0.2, 0.1], [0.8, 0.9, 0.3]], ['soil', 'veg']);
-`
+```
 
-------------------------------------------------------------------------------
 ## Spectral Indices & Transformations
 ------------------------------------------------------------------------------
 
@@ -319,7 +348,12 @@ _Function to take an input image and generate indices like: NDVI, NDWI, NDBI..._
 More indices and features will be added in the future!  
 Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.landsat_indices(image, sensor, index);   
+```
+#### Params:
   (ee.Image) image - the image to process.  
   (string) sensor - the sensor that you are working on: Landsat 5 ('L5'), 7 ('L7'), and 8 ('L8').  
   **optional** (string or string array) index  - you can specify the index that you want
@@ -350,14 +384,24 @@ Supported indices: NDVI, NDWI, NDBI, NRVI, EVI, SAVI and GOSAVI
 
 _Function to take an input image and generate indices using the Sentinel 2 dataset._
 
-------------------------------------------------------------------------------
+---------------------------------------------
+##### Usage:
+```js 
+    var result = geet.sentinel2_indices(image, index);   
+```
+---------------------------------
 
 #### water_indices
 (image, sensor)
 
 _Function to generate advanced water quality indices: NDTI (Normalized Difference Turbidity Index) and NDCI (Normalized Difference Chlorophyll Index)._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.water_indices(image, sensor);   
+```
+#### Params:
   (ee.Image) image - the input image.
   (string) sensor - 'L8', 'L9' or 'S2'.
 
@@ -373,7 +417,12 @@ _Function to generate advanced water quality indices: NDTI (Normalized Differenc
 
 _Generic function to create a Tasseled Cap image._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.tasseled_cap(image, sensor);   
+```
+#### Params:
   (ee.Image) image - the input image.
   (string) sensor - 'L5', 'L7', 'L8', 'L9', or 'S2'.
 
@@ -389,7 +438,12 @@ _Generic function to create a Tasseled Cap image._
 
 _Function produces the principal components analysis of an image._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.pca(image, nbands, scale, maxPixels);   
+```
+#### Params:
   (ee.Image) image - the input image.  
   **optional** (number) nBands - the number of bands of the image. Default is 12.  
   **optional** (number) scale - the scale number. The scale relates to the image's spatial resolution. Landsat is 30, so the default is 30 also.  
@@ -409,7 +463,12 @@ _Function produces the principal components analysis of an image._
 
 _Function that calculates the normalized difference vegetation index (NDVI) from Sentinel 2 data._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.ndviS2(image);   
+```
+#### Params:
   (ee.Image) image - the input image.                               
   
 ##### Usage:
@@ -419,7 +478,7 @@ _Function that calculates the normalized difference vegetation index (NDVI) from
 
 ------------------------------------------------------------------------------
 
-
+------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 
 #### kndvi
@@ -433,9 +492,9 @@ _Function to calculate the Kernelized Normalized Difference Vegetation Index (kN
   (string) red_band - Name of the Red band.      
   
 ##### Usage:
-`js 
+```js 
     var img_kndvi = geet.kndvi(image, 'B4', 'B3');   
-`
+```
 
 ------------------------------------------------------------------------------
 
@@ -451,11 +510,10 @@ _Function to calculate Fractional Vegetation Cover (FVC) based on NDVI endmember
   **optional** (number) ndvi_veg - NDVI value for dense vegetation. Default is 0.90.      
   
 ##### Usage:
-`js 
+```js 
     var img_fvc = geet.fvc(image, 'NDVI', 0.10, 0.85);   
-`
+```
 
-------------------------------------------------------------------------------
 ## Change Detection
 ------------------------------------------------------------------------------
 
@@ -464,7 +522,12 @@ _Function to calculate Fractional Vegetation Cover (FVC) based on NDVI endmember
 
 _Function to detect changes between two input images using the NDVI index and a threshold parameter. The function adds the two masked indices and returns the sum of the two. It's a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndviChange, 3, 'change_detection');_ 
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.ndvi_change_detection(img1, img2, sensor, threshold);   
+```
+#### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
   (ee.Image) img2 = The second input image.  
@@ -484,7 +547,12 @@ _Function to detect changes between two input images using the NDVI index and a 
 
 _Function to detect changes between two input images using the NDWI index and a threshold parameter. The function adds the two masked indices and returns the sum of the two. It's a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndwiChange, 3, 'change_detection');_ 
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.ndwi_change_detection(img1, img2, sensor, threshold);   
+```
+#### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
   (ee.Image) img2 = The second input image.  
@@ -504,7 +572,12 @@ _Function to detect changes between two input images using the NDWI index and a 
 
 _Function to detect changes between two input images using the NDBI index and a threshold parameter. The function adds the two masked indices and returns the sum. It's a good choice to call the plot_class function to visualize the result. Ex: geet.plot_class(ndbiChange, 3, 'change_detection');_ 
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.ndbi_change_detection(img1, img2, sensor, threshold);   
+```
+#### Params:
   (string) sensor = The name of the sensor that will be used. 'L5' or 'L8.  
   (ee.Image) img1 = The first input image.  
   (ee.Image) img2 = The second input image.  
@@ -528,7 +601,12 @@ _Function to detect changes between two input images using the NDBI index and a 
 
 _Generic function to build a cloud-free mosaic for Landsat 5, 7, 8, 9, or Sentinel-2._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.create_mosaic(startDate, endDate, roi, showMosaic, sensor);   
+```
+#### Params:
   (ee.Date) startDate - the start date of the dataset.
   (ee.Date) endDate - the end date of the dataset.
   **optional** (ee.Geometry) roi - the Region of Interest to filter the dataset.
@@ -547,7 +625,12 @@ _Generic function to build a cloud-free mosaic for Landsat 5, 7, 8, 9, or Sentin
 
 _Function to apply a moving average filter to smooth a time series of images (e.g., NDVI series)._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.smooth_timeseries(collection, windowSize);   
+```
+#### Params:
   (ee.ImageCollection) collection - the input image collection to smooth.
   **optional** (number) windowSize - the moving window size in days. Default is 30.
 
@@ -565,7 +648,12 @@ _Function to apply a moving average filter to smooth a time series of images (e.
 
 _Applies Topographic Illumination Correction to optical images using the Cosine correction method. This is extremely useful for removing terrain shadows in mountainous areas, relying on the solar elevation and azimuth stored in the image's metadata._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.topographic_correction(image, dem);   
+```
+#### Params:
   (ee.Image) image - the optical image to correct (e.g., Landsat or Sentinel).
   (ee.Image) dem - (optional) the Digital Elevation Model to use. Defaults to SRTM.
 
@@ -581,7 +669,12 @@ _Applies Topographic Illumination Correction to optical images using the Cosine 
 
 _Calculates the Topographic Wetness Index (TWI). This index combines local slope and flow accumulation to quantify topographic control on hydrological processes, making it excellent for identifying wetlands, springs, and water accumulation zones._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.calculate_twi(roi);   
+```
+#### Params:
   (ee.Geometry) roi - (optional) the region of interest to clip the outputs.
 
 ##### Usage:
@@ -597,7 +690,12 @@ _Calculates the Topographic Wetness Index (TWI). This index combines local slope
 
 _Calculates the Topographic Position Index (TPI) and Terrain Ruggedness Index (TRI) based on focal mean and focal standard deviation. TPI is used to classify valleys and ridges, while TRI is used to map terrain unevenness._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.calculate_tpi_tri(roi);   
+```
+#### Params:
   (ee.Geometry) roi - (optional) the region of interest to clip the outputs.
 
 ##### Usage:
@@ -614,7 +712,12 @@ _Calculates the Topographic Position Index (TPI) and Terrain Ruggedness Index (T
 
 _Automatically extracts the drainage/stream network based on a flow accumulation threshold using the HydroSHEDS dataset._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.extract_drainage(roi, threshold);   
+```
+#### Params:
   (ee.Geometry) roi - (optional) the region of interest.
   (number) threshold - (optional) the flow accumulation threshold (in pixels) to define a stream. Defaults to 500.
 
@@ -631,7 +734,12 @@ _Automatically extracts the drainage/stream network based on a flow accumulation
 
 _Function to build an annual Landsat MSS (Landsat 1, 2, 3, 4, 5) timeseries from 1972 to 1999. The function normalizes the distinct bands of older satellites into 'GREEN', 'RED', 'NIR1', 'NIR2', masks clouds using QA_PIXEL, calculates NDVI, and generates median annual mosaics._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.build_annual_mss_timeseries(roi);   
+```
+#### Params:
   (ee.Point) roi - the region of interest that will define the study area  
                         
   
@@ -647,7 +755,12 @@ _Function to build an annual Landsat MSS (Landsat 1, 2, 3, 4, 5) timeseries from
 
 _Function to build an annual Landsat (5, 7, 8, and 9) TOA time series from 1985 to 2030. The function also masks clouds and shadows, normalizes bands to standard English names, and generates all indices (NDVI, NDWI, SAVI, Tasseled Cap)._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.build_annual_landsat_timeseries(roi);   
+```
+#### Params:
   (ee.Point) roi - the region of interest that will define the study area and the Landsat path row  
                         
   
@@ -663,7 +776,12 @@ _Function to build an annual Landsat (5, 7, 8, and 9) TOA time series from 1985 
 
 _Generic function to build an annual Landsat timeseries for a specific sensor._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.landsat_timeseries(sensor, type, path, row);   
+```
+#### Params:
   (string) sensor - 'L5', 'L7', 'L8', 'L9'.
   (string) type - 'TOA' or 'SR'.
   (number) path - the WRS-2 path.
@@ -681,7 +799,12 @@ _Generic function to build an annual Landsat timeseries for a specific sensor._
 
 _Function that return a image collection with all landsat images (5 and 8) from a defined path row. Remember to specify the type of the collection (raw, toa or sr)._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.landsat_timeseries_by_pathrow(type, path, row);   
+```
+#### Params:
   (string) type - the type of the collection (RAW, TOA or SR)  
   (number) path - the path number of the image  
   (number) row - the row number of the image                              
@@ -698,7 +821,12 @@ _Function that return a image collection with all landsat images (5 and 8) from 
 
 _Function that returns an image collection with all Landsat images (5 and 8) from a defined roi. Remember to specify the type of the collection (raw, toa or sr)._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.landsat_timeseries_by_roi(type, path, row);   
+```
+#### Params:
   (string) type - the type of the collection (RAW, TOA, or SR)  
   (ee.Geometry) roi - the Region of Interest to filter the dataset                                
   
@@ -709,7 +837,7 @@ _Function that returns an image collection with all Landsat images (5 and 8) fro
 
 ------------------------------------------------------------------------------
 
-
+------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 
 #### stm_features
@@ -722,9 +850,9 @@ _Generates Spectral-Temporal-Metrics (STM) by applying statistical reducers over
   **optional** (ee.Reducer) reducers - Custom ee.Reducer. If omitted, applies p10, p50, p90, min, max, and stdDev.      
   
 ##### Usage:
-`js 
+```js 
     var stm = geet.stm_features(my_collection);   
-`
+```
 
 ------------------------------------------------------------------------------
 
@@ -737,9 +865,9 @@ _Adds a Day of Year (DOY) band to the image, keeping the original pixel mask._
   (ee.Image) image - The input image.    
   
 ##### Usage:
-`js 
+```js 
     var img_doy = geet.add_doy(image);   
-`
+```
 
 ------------------------------------------------------------------------------
 
@@ -752,11 +880,10 @@ _Adds a milliseconds timestamp band to the image, keeping the original pixel mas
   (ee.Image) image - The input image.    
   
 ##### Usage:
-`js 
+```js 
     var img_millis = geet.add_millis(image);   
-`
+```
 
-------------------------------------------------------------------------------
 ## Radar & Topography
 ------------------------------------------------------------------------------
 
@@ -765,7 +892,12 @@ _Adds a milliseconds timestamp band to the image, keeping the original pixel mas
 
 _Function to load and preprocess Sentinel-1 SAR (Radar) GRD Data._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.s1_preprocess(startDate, endDate, roi, polarization, orbit);   
+```
+#### Params:
   (ee.Date) startDate - the start date of the dataset.
   (ee.Date) endDate - the end date of the dataset.
   **optional** (ee.Geometry) roi - the Region of Interest.
@@ -784,7 +916,12 @@ _Function to load and preprocess Sentinel-1 SAR (Radar) GRD Data._
 
 _Function to apply a focal median filter to reduce SAR speckle noise._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.speckle_filter(image, radius);   
+```
+#### Params:
   (ee.Image) image - the input SAR image.
   **optional** (number) radius - the radius of the filter in meters. Default is 30.
 
@@ -800,7 +937,12 @@ _Function to apply a focal median filter to reduce SAR speckle noise._
 
 _Function to generate Elevation, Slope, Aspect, and Hillshade bands from the SRTM 30m DEM._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.terrain_analysis(roi);   
+```
+#### Params:
   **optional** (ee.Geometry) roi - the Region of Interest to clip the DEM.
 
 ##### Usage:
@@ -820,7 +962,12 @@ _Function to generate Elevation, Slope, Aspect, and Hillshade bands from the SRT
 
 _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (TOA) Radiance._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.toa_radiance(image, band);   
+```
+#### Params:
   (ee.Image) image - The image to process.  
   (number) band - The number of the band that you want to process.                        
   
@@ -836,7 +983,12 @@ _Function to do a band conversion of digital numbers (DN) to Top of Atmosphere (
 
 _Generic function to calculate TOA Reflectance from raw DN._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.toa_reflectance(image, band, sensor, solarAngle);   
+```
+#### Params:
   (ee.Image) image - the input raw image.
   (string) band - the band name to process.
   (string) sensor - 'L5', 'L7', 'L8', or 'L9'.
@@ -854,7 +1006,12 @@ _Generic function to calculate TOA Reflectance from raw DN._
 
 _Generic function to convert the Top of Atmosphere (TOA Radiance) image to Brightness Temperature._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.brightness_temp(image, sensor, unit, two_channel);   
+```
+#### Params:
   (ee.Image) image - the TOA Radiance image to convert.
   (string) sensor - 'L5', 'L7', 'L8' or 'L9'
   (string) unit - 'K' (Kelvin) or 'C' (Celsius)
@@ -872,7 +1029,12 @@ _Generic function to convert the Top of Atmosphere (TOA Radiance) image to Brigh
 
 _Function calculate the surface emissifity._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.surface_emissivity(image);   
+```
+#### Params:
   (ee.Image) image - input image with the proportional vegetation band.                            
   
 ##### Usage:
@@ -887,7 +1049,12 @@ _Function calculate the surface emissifity._
 
 _Function that calculates the land surface temperature (Landsat 5)._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.surface_temperature_tm(image);   
+```
+#### Params:
   (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
                      NDVI, prop_veg, and LSE bands.                            
   
@@ -903,7 +1070,12 @@ _Function that calculates the land surface temperature (Landsat 5)._
 
 _Function calculate the land surface temperature (Landsat 8)._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.surface_temperature_oli(image);   
+```
+#### Params:
   (ee.Image) image - the input image with the TOA_Radiance, Brightness_Temperature,
                      NDVI, prop_veg, and LSE bands.                            
   
@@ -919,7 +1091,12 @@ _Function calculate the land surface temperature (Landsat 8)._
 
 _Unified function to calculate Land Surface Temperature (LST) using the Single-Channel algorithm. It dynamically detects the sensor (Landsat 5, 7, 8, or 9) from the image metadata and applies the correct calibration constants and thermal wavelengths. It supports processing a single image or mapping over an entire ImageCollection (e.g., a time series). Output LST is in Celsius._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.calculate_lst(input);   
+```
+#### Params:
   (ee.Image | ee.ImageCollection) input - The input image or image collection.
 
 ##### Usage:
@@ -939,7 +1116,12 @@ _Unified function to calculate Land Surface Temperature (LST) using the Single-C
 
 _Function to export an image to your Google Drive account._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.export_image(image, scale);   
+```
+#### Params:
   (ee.Image) image - the input image.  
   **optional** (number) _scale - the scale number.The scale relates to the image's spatial resolution. Landsat is 30, so the default is 30 also.                             
   
@@ -961,7 +1143,12 @@ or
 
 _Function to get an example image to debug or test some code._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.load_image(collection, year, roi, cloudfree);   
+```
+#### Params:
   **optional** (string) collection - the type of the collection that will be filtered: RAW, TOA, or SR.  
   **optional** (number) year - the year of the image that you want to get.  
   **optional** (list) roi - the latitude and longitude of a roi.  
@@ -986,7 +1173,12 @@ _Function to get an example image to debug or test some code._
 
 _Function to filter the Sentinel-2 collection by Product ID obtained from the Copernicus Open Access Hub._     
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.load_id_s2(id);   
+```
+#### Params:
   (string) id - the ID of the Sentinel-2 image.                            
   
 ##### Usage:
@@ -1001,7 +1193,12 @@ _Function to filter the Sentinel-2 collection by Product ID obtained from the Co
 
 _Function to merge all images of one image collection into a single band._       
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.collection2image(image, previous);   
+```
+#### Params:
   (ee.Image) image - The image of the image collection to add as a band.  
   (ee.Image) previous - The output image.                              
   
@@ -1018,7 +1215,12 @@ _Function to merge all images of one image collection into a single band._
 
 _Calculates the Z-Score Anomaly of an image compared to a historical reference collection. Great for finding extreme events like droughts, heatwaves, or deforestation spikes._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.anomaly(image, reference_collection, band);   
+```
+#### Params:
   (ee.Image) image - The target image.
   (ee.ImageCollection) reference_collection - The historical baseline.
   (string) band - The name of the band to calculate the anomaly for (e.g. 'NDVI' or 'LST').
@@ -1035,7 +1237,12 @@ _Calculates the Z-Score Anomaly of an image compared to a historical reference c
 
 _Iteratively Reweighted Multivariate Alteration Detection (iMAD) algorithm. Developed by Dr. Allan Nielsen and implemented in GEE by Dr. Mort Canty. This is a highly advanced statistical algorithm for detecting changes between two images and finding Pseudo-Invariant Features (PIFs) that didn't change._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.imad(current, prev);   
+```
+#### Params:
   (ee.Image) current - The target image.
   (ee.Dictionary) prev - The iteration dictionary containing state.
 
@@ -1048,7 +1255,12 @@ _Iteratively Reweighted Multivariate Alteration Detection (iMAD) algorithm. Deve
 
 _Iterator function for orthogonal regression and interactive radiometric normalization. Called internally by radcalbatch._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.radcal(current, prev);   
+```
+#### Params:
   (ee.Image) current - The current band index.
   (ee.Dictionary) prev - The dictionary containing image and coeffs.
 
@@ -1059,7 +1271,12 @@ _Iterator function for orthogonal regression and interactive radiometric normali
 
 _Performs Relative Radiometric Normalization using orthogonal regression on the invariant pixels discovered by the iMAD algorithm. Crucial for harmonizing a time series of images to a single reference image._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.radcalbatch(current, prev);   
+```
+#### Params:
   (ee.Image) current - The image to normalize.
   (ee.Dictionary) prev - The dictionary containing the reference image.
 
@@ -1070,7 +1287,12 @@ _Performs Relative Radiometric Normalization using orthogonal regression on the 
 
 _Function to segment an image using the SNIC (Simple Non-Iterative Clustering) algorithm._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.segmentation_snic(image, size, compactness);   
+```
+#### Params:
   (ee.Image) image - the input image.
   **optional** (number) size - The superpixel seed location spacing (default 10).
   **optional** (number) compactness - The compactness factor (default 1).
@@ -1088,7 +1310,12 @@ _Function to segment an image using the SNIC (Simple Non-Iterative Clustering) a
 _Function to perform a complete Object-Based Image Analysis (GEOBIA) classification._
 _It automatically generates superpixels (SNIC), extracts spectral, spatial (geometry), and textural (GLCM) features per object, and classifies them using Machine Learning._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.obia_classification(image, trainingData, fieldName, options);   
+```
+#### Params:
   (ee.Image) image - The raw input image to segment and classify.
   (ee.FeatureCollection) trainingData - The training samples.
   (string) fieldName - The class column name.
@@ -1122,7 +1349,12 @@ _It automatically generates superpixels (SNIC), extracts spectral, spatial (geom
 
 _Eliminates small patches in a classified image (Minimum Mapping Unit filter) by replacing them with the most common neighboring class._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.filter_small_objects(image, minArea, maxSize);   
+```
+#### Params:
   (ee.Image) image - The classified image (single band).
   (number) minArea - The minimum area in square meters (e.g., 10000 for 1 hectare).
   **optional** (number) maxSize - The focal mode radius to fill gaps (default 50).
@@ -1140,7 +1372,12 @@ _Eliminates small patches in a classified image (Minimum Mapping Unit filter) by
 
 _Generates a Fourier Harmonic Trend model for a time-series to extract Seasonality (Phase and Amplitude) and Linear Trend. It now supports multiple harmonics for modeling complex phenological cycles (e.g., double-cropping systems)._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.harmonic_trend(timeseries, dependent_band, num_harmonics);   
+```
+#### Params:
   (ee.ImageCollection) timeseries - The input time-series collection.
   (string) dependent_band - The name of the band to model (e.g., 'NDVI').
   **optional** (number) num_harmonics - The number of cycles per year to model (default: 1).
@@ -1157,7 +1394,12 @@ _Generates a Fourier Harmonic Trend model for a time-series to extract Seasonali
 
 _Extracts zonal statistics from an image using polygons._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.zonal_statistics(image, featureCollection, reducerType, scale);   
+```
+#### Params:
   (ee.Image) image - the input image.
   (ee.FeatureCollection) featureCollection - the polygon regions.
   (string) reducerType - 'max', 'min', 'mean', 'median', 'mode', 'sd', 'variance', 'sum'.
@@ -1175,7 +1417,12 @@ _Extracts zonal statistics from an image using polygons._
 
 _Harmonizes spectral values between Sentinel-2 and Landsat-8 using OLS regression coefficients._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.harmonize_sensors(image, source, target);   
+```
+#### Params:
   (ee.Image) image - the input image.
   (string) source - 'S2' or 'L8'.
   (string) target - 'S2' or 'L8'.
@@ -1192,7 +1439,12 @@ _Harmonizes spectral values between Sentinel-2 and Landsat-8 using OLS regressio
 
 _Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR), and Burn Severity Classes._
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.burn_severity(pre_fire, post_fire, sensor);   
+```
+#### Params:
   (ee.Image) pre_fire - the pre-fire image.
   (ee.Image) post_fire - the post-fire image.
   **optional** (string) sensor - 'L8', 'L9', 'S2', etc. (default 'L8').
@@ -1205,7 +1457,6 @@ _Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR), and Burn Severity
 ------------------------------------------------------------------------------
 
 
-------------------------------------------------------------------------------
 ## Harmonized Landsat Sentinel-2 (HLS)
 ------------------------------------------------------------------------------
 
@@ -1231,7 +1482,12 @@ _Generates a Harmonized Landsat Sentinel-2 (HLS) median composite for the given 
 
 _Applies scale factors for Landsat Collection 2 Level 2 SR to compute physical reflectance [0, 1]._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.rescale_landsat_c2(image);   
+```
+#### Params:
   (ee.Image) image - The input Landsat Collection 2 image.    
   
 ##### Usage:
@@ -1246,7 +1502,12 @@ _Applies scale factors for Landsat Collection 2 Level 2 SR to compute physical r
 
 _Applies scale factors for Sentinel-2 SR to compute physical reflectance [0, 1]._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.rescale_sentinel2(image);   
+```
+#### Params:
   (ee.Image) image - The input Sentinel-2 image.    
 
 ##### Usage:
@@ -1261,7 +1522,12 @@ _Applies scale factors for Sentinel-2 SR to compute physical reflectance [0, 1].
 
 _Normalizes Landsat image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) using the c-factor approach and Roy et al. (2016) parameters._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.apply_brdf_landsat(image);   
+```
+#### Params:
   (ee.Image) image - The input Landsat image. Must contain the date property.   
 
 ##### Usage:
@@ -1276,7 +1542,12 @@ _Normalizes Landsat image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) 
 
 _Normalizes Sentinel-2 image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) using the c-factor approach and Roy et al. (2016) parameters._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.apply_brdf_sentinel(image);   
+```
+#### Params:
   (ee.Image) image - The input Sentinel-2 image. Must contain the date property.    
 
 ##### Usage:
@@ -1291,7 +1562,12 @@ _Normalizes Sentinel-2 image reflectance to Nadir BRDF-Adjusted Reflectance (NBA
 
 _Applies Spectral Band Adjustment (SBA) to Landsat 7 ETM+ to align its spectral response with Landsat 8 OLI, based on Roy et al. (2016)._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.band_adjustment_landsat7(landsat_image);   
+```
+#### Params:
   (ee.Image) landsat_image - The input Landsat 7 image.    
 
 ##### Usage:
@@ -1306,123 +1582,18 @@ _Applies Spectral Band Adjustment (SBA) to Landsat 7 ETM+ to align its spectral 
 
 _Applies Spectral Band Adjustment (SBA) to Sentinel-2 MSI to align its spectral response with Landsat 8 OLI, based on Chastain et al. (2019)._  
 
-##### Params:
+#
+##### Usage:
+```js 
+    var result = geet.band_adjustment_sentinel2(s2_image);   
+```
+#### Params:
   (ee.Image) s2_image - The input Sentinel-2 image.    
 
 ##### Usage:
 ```js
     var adjusted_s2 = geet.band_adjustment_sentinel2(brdf_s2);
 ```
-
-
-------------------------------------------------------------------------------
-## Harmonized Landsat Sentinel-2 (HLS)
-------------------------------------------------------------------------------
-
-#### build_hls_composite
-(roi, start_date, end_date) 
-
-_Generates a Harmonized Landsat Sentinel-2 (HLS) median composite for the given region and time period. Uses Landsat 7, 8, 9 (Collection 2 Level 2) and Sentinel-2 (SR) images. Implements state-of-the-art NASA HLS algorithms including cloud/shadow masking, reflectance rescaling, BRDF normalization, spectral band adjustment (SBA), and spatial coregistration._  
-
-##### Params:
-  (ee.Geometry) roi - The region of interest.    
-  (string) start_date - Start date of the composite (e.g. '2019-10-01').      
-  (string) end_date - End date of the composite (e.g. '2019-10-31').      
-  
-##### Usage:
-`js 
-    var hls_composite = geet.build_hls_composite(roi, '2022-01-01', '2022-12-31');   
-`
-
-------------------------------------------------------------------------------
-
-#### rescale_landsat_c2
-(image) 
-
-_Applies scale factors for Landsat Collection 2 Level 2 SR to compute physical reflectance [0, 1]._  
-
-##### Params:
-  (ee.Image) image - The input Landsat Collection 2 image.    
-  
-##### Usage:
-`js
-    var rescaled_l8 = geet.rescale_landsat_c2(raw_l8_image);
-`
-
-------------------------------------------------------------------------------
-
-#### rescale_sentinel2
-(image) 
-
-_Applies scale factors for Sentinel-2 SR to compute physical reflectance [0, 1]._  
-
-##### Params:
-  (ee.Image) image - The input Sentinel-2 image.    
-
-##### Usage:
-`js
-    var rescaled_s2 = geet.rescale_sentinel2(raw_s2_image);
-`
-
-------------------------------------------------------------------------------
-
-#### apply_brdf_landsat
-(image) 
-
-_Normalizes Landsat image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) using the c-factor approach and Roy et al. (2016) parameters._  
-
-##### Params:
-  (ee.Image) image - The input Landsat image. Must contain the date property.   
-
-##### Usage:
-`js
-    var brdf_l8 = geet.apply_brdf_landsat(rescaled_l8);
-`
-
-------------------------------------------------------------------------------
-
-#### apply_brdf_sentinel
-(image) 
-
-_Normalizes Sentinel-2 image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) using the c-factor approach and Roy et al. (2016) parameters._  
-
-##### Params:
-  (ee.Image) image - The input Sentinel-2 image. Must contain the date property.    
-
-##### Usage:
-`js
-    var brdf_s2 = geet.apply_brdf_sentinel(rescaled_s2);
-`
-
-------------------------------------------------------------------------------
-
-#### band_adjustment_landsat7
-(landsat_image) 
-
-_Applies Spectral Band Adjustment (SBA) to Landsat 7 ETM+ to align its spectral response with Landsat 8 OLI, based on Roy et al. (2016)._  
-
-##### Params:
-  (ee.Image) landsat_image - The input Landsat 7 image.    
-
-##### Usage:
-`js
-    var adjusted_l7 = geet.band_adjustment_landsat7(brdf_l7);
-`
-
-------------------------------------------------------------------------------
-
-#### band_adjustment_sentinel2
-(s2_image) 
-
-_Applies Spectral Band Adjustment (SBA) to Sentinel-2 MSI to align its spectral response with Landsat 8 OLI, based on Chastain et al. (2019)._  
-
-##### Params:
-  (ee.Image) s2_image - The input Sentinel-2 image.    
-
-##### Usage:
-`js
-    var adjusted_s2 = geet.band_adjustment_sentinel2(brdf_s2);
-`
 
 ------------------------------------------------------------------------------
 
@@ -1435,3 +1606,4 @@ _The following functions have been deprecated to streamline the GEET library. Th
 
 _If your legacy scripts use any of these old functions, please update them to use the new integrated functions, which offer better performance, Collection 2 compliance, and support for newer sensors like Landsat 9._
 
+------------------------------------------------------------------------------
