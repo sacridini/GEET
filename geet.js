@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.13.0
+ * Version: 1.13.1
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@gmail.com>
  */
 
@@ -5235,11 +5235,12 @@ var phenology_metrics = function(collection, band) {
 };
 
 var s1_lee_filter = function(image, kernel_size) {
+  image = ee.Image(image);
   var bandNames = image.bandNames().remove('angle');
   var angle = image.select('angle');
   
-  // Convert dB to linear
-  var linear = ee.Image(10.0).pow(image.select(bandNames).divide(10.0));
+  // Convert dB to linear and preserve band names
+  var linear = ee.Image(10.0).pow(image.select(bandNames).divide(10.0)).rename(bandNames);
   
   var result = bandNames.map(function(b) {
     var img_b = linear.select([ee.String(b)]);
@@ -5254,20 +5255,22 @@ var s1_lee_filter = function(image, kernel_size) {
   });
   
   var filteredLinear = ee.ImageCollection(result).toBands().rename(bandNames);
-  // Convert back to dB
-  var filteredDb = ee.Image(10.0).multiply(filteredLinear.log10());
+  // Convert back to dB (linear.log10() * 10 preserves names)
+  var filteredDb = filteredLinear.log10().multiply(10.0);
   
-  return filteredDb.addBands(angle).copyProperties(image, image.propertyNames());
+  return ee.Image(filteredDb.addBands(angle).copyProperties(image, image.propertyNames()));
 };
 
 var s1_terrain_flattening = function(image) {
+  image = ee.Image(image);
   var angle = image.select('angle');
   var theta_iRad = angle.multiply(Math.PI / 180.0);
-  var dem = ee.Image('COPERNICUS/DEM/GLO30').select('DEM');
+  var dem = ee.ImageCollection('COPERNICUS/DEM/GLO30').select('DEM').mosaic();
   var terrain = ee.Algorithms.Terrain(dem);
   var slope = terrain.select('slope').multiply(Math.PI / 180.0);
   var aspect = terrain.select('aspect').multiply(Math.PI / 180.0);
-  var heading = ee.Number(image.get('platform_heading')).multiply(Math.PI / 180.0);
+  var pass = ee.String(image.get('orbitProperties_pass'));
+  var heading = ee.Number(ee.Algorithms.If(pass.equals('ASCENDING'), 347.95, 192.05)).multiply(Math.PI / 180.0);
   
   var alpha_r = ee.Image().expression(
     'acos(cos(slope) * cos(theta_i) + sin(slope) * sin(theta_i) * cos(aspect - heading))',
@@ -5289,14 +5292,16 @@ var s1_terrain_flattening = function(image) {
   );
   
   var bandNames = image.bandNames().remove('angle');
-  var linear = ee.Image(10.0).pow(image.select(bandNames).divide(10.0));
+  var linear = ee.Image(10.0).pow(image.select(bandNames).divide(10.0)).rename(bandNames);
   var corrected = linear.multiply(gamma0_factor);
-  var correctedDb = ee.Image(10.0).multiply(corrected.log10()).updateMask(mask);
+  var correctedDb = corrected.log10().multiply(10.0).updateMask(mask);
   
-  return correctedDb.addBands(angle).copyProperties(image, image.propertyNames());
+  return ee.Image(correctedDb.addBands(angle).copyProperties(image, image.propertyNames()));
 };
 
 var s1_flood_mapping = function(image_before, image_after, threshold, smoothing_radius, band) {
+  image_before = ee.Image(image_before);
+  image_after = ee.Image(image_after);
   var diff = image_after.select(band).subtract(image_before.select(band));
   var smoothed = diff.focal_mean(smoothing_radius, 'circle', 'meters');
   var flood = smoothed.lt(threshold); 
@@ -5305,7 +5310,9 @@ var s1_flood_mapping = function(image_before, image_after, threshold, smoothing_
   var permanentWater = jrc.gte(10).unmask(0);
   var flooded_only = flood.updateMask(permanentWater.not());
   
-  return flooded_only.rename('flood_mask').set('system:time_start', image_after.get('system:time_start'));
+  var time_start = image_after.get('system:time_start');
+  time_start = ee.Algorithms.If(time_start, time_start, ee.Date(Date.now()).millis());
+  return ee.Image(flooded_only.rename('flood_mask').set('system:time_start', time_start));
 };
 
 /* ------------------------  EXPORTS  ------------------------ */
