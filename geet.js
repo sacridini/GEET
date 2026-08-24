@@ -1,7 +1,7 @@
 /** 
  * Google Earth Engine Toolbox (GEET)
  * Description: Lib to write small EE apps or big/complex apps with a lot less code.
- * Version: 1.10.2
+ * Version: 1.11.0
  * Eduardo Ribeiro Lacerda <eduardolacerdageo@id.uff.br>
  */
 
@@ -4956,6 +4956,62 @@ function co_registration_landsat(landsat_image, sentinel_image) {
   Returns:
   (ee.Image) Median composite of the harmonized images containing the 'ndvi' band.
 */
+
+// kNDVI (Kernelized NDVI) - Camps-Valls et al., 2021
+var kndvi = function(image, nir_band, red_band) {
+  var ndvi = image.normalizedDifference([nir_band, red_band]);
+  var kndvi_img = ee.Image(ndvi.pow(2).tanh()).rename('kNDVI');
+  return image.addBands(kndvi_img);
+};
+
+// FVC (Fractional Vegetation Cover) - Jimenez-Munoz et al., 2009
+var fvc = function(image, ndvi_band, ndvi_soil, ndvi_veg) {
+  var n_soil = ndvi_soil || 0.15;
+  var n_veg = ndvi_veg || 0.90;
+  var fvc_img = image.expression(
+    '((NDVI - NDVI_s) / (NDVI_v - NDVI_s)) ** 2', {
+      'NDVI': image.select(ndvi_band),
+      'NDVI_s': n_soil,
+      'NDVI_v': n_veg
+  });
+  // Clamp between 0 and 1
+  fvc_img = fvc_img.where(fvc_img.lt(0), 0).where(fvc_img.gt(1), 1).rename('FVC');
+  return image.addBands(fvc_img);
+};
+
+// Linear Spectral Unmixing Wrapper
+var unmix = function(image, bands, endmembers, names, sumToOne, nonNegative) {
+  var s1 = sumToOne !== undefined ? sumToOne : false;
+  var nn = nonNegative !== undefined ? nonNegative : true;
+  var unmixed = image.select(bands).unmix(endmembers, s1, nn).rename(names);
+  return image.addBands(unmixed);
+};
+
+// Spectral-Temporal-Metrics (STM) Reducer
+var stm_features = function(collection, reducers) {
+  var default_reducers = ee.Reducer.percentile([10, 50, 90])
+                           .combine(ee.Reducer.stdDev(), '', true)
+                           .combine(ee.Reducer.minMax(), '', true);
+  var r = reducers || default_reducers;
+  var stm = collection.reduce(r);
+  return stm;
+};
+
+// Day of Year (DOY) Time Band
+var add_doy = function(image) {
+  var doy = image.date().getRelative('day', 'year');
+  var doy_band = ee.Image(doy).uint16().rename('DOY');
+  doy_band = doy_band.updateMask(image.select(0).mask());
+  return image.addBands(doy_band);
+};
+
+// Milliseconds Time Band
+var add_millis = function(image) {
+  var millis = ee.Image(image.date().millis()).toInt64().rename('MILLIS');
+  millis = millis.updateMask(image.select(0).mask());
+  return image.addBands(millis);
+};
+
 var build_hls_composite = function(roi, start_date, end_date) {
     if (roi === undefined) error('build_hls_composite', 'You need to specify a region of interest (roi).');
     if (start_date === undefined) error('build_hls_composite', 'You need to specify a start_date.');
@@ -5056,6 +5112,7 @@ exports.rf = rf;
 exports.naive_bayes = naive_bayes;
 exports.max_ent = max_ent;
 exports.kmeans = kmeans;
+exports.unmix = unmix;
 
 // Spectral Indices & Transformations
 exports.landsat_indices = landsat_indices;
@@ -5064,6 +5121,8 @@ exports.water_indices = water_indices;
 exports.tasseled_cap = tasseled_cap;
 exports.pca = pca;
 exports.ndviS2 = ndvi_s2;
+exports.kndvi = kndvi;
+exports.fvc = fvc;
 
 // Change Detection
 exports.imad = imad;
@@ -5084,6 +5143,9 @@ exports.build_annual_mss_timeseries = build_annual_mss_timeseries;
 exports.landsat_timeseries = landsat_timeseries;
 exports.landsat_timeseries_by_pathrow = landsat_timeseries_by_pathrow;
 exports.landsat_timeseries_by_roi = landsat_timeseries_by_roi;
+exports.stm_features = stm_features;
+exports.add_doy = add_doy;
+exports.add_millis = add_millis;
 
 // Radar
 exports.s1_preprocess = s1_preprocess;

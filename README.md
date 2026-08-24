@@ -30,6 +30,7 @@ All functions implemented (Version 1.9.1):
 - [naive_bayes](#naive_bayes)
 - [max_ent](#max_ent)
 - [kmeans](#kmeans)
+- [unmix](#unmix)
 
 ### Spectral Indices & Transformations
 - [landsat_indices](#landsat_indices)
@@ -38,6 +39,8 @@ All functions implemented (Version 1.9.1):
 - [tasseled_cap](#tasseled_cap)
 - [pca](#pca)
 - [ndviS2](#ndviS2)
+- [kndvi](#kndvi)
+- [fvc](#fvc)
 
 ### Change Detection
 - [ndvi_change_detection](#ndvi_change_detection)
@@ -57,6 +60,9 @@ All functions implemented (Version 1.9.1):
 - [landsat_timeseries_by_pathrow](#landsat_timeseries_by_pathrow)
 - [landsat_timeseries_by_roi](#landsat_timeseries_by_roi)
 - [harmonic_trend](#harmonic_trend)
+- [stm_features](#stm_features)
+- [add_doy](#add_doy)
+- [add_millis](#add_millis)
 
 ### Radar
 - [s1_preprocess](#s1_preprocess)
