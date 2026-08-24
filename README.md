@@ -1,4 +1,4 @@
-# GEET (Google Earth Engine Toolbox)
+﻿# GEET (Google Earth Engine Toolbox)
 
 [![DOI](https://zenodo.org/badge/105400884.svg)](https://zenodo.org/badge/latestdoi/105400884)
 
@@ -32,28 +32,7 @@ All functions implemented (Version 1.9.1):
 - [kmeans](#kmeans)
 - [unmix](#unmix)
 
-#
-------------------------------------------------------------------------------
-
-#### unmix
-(image, bands, endmembers, names, sumToOne, nonNegative)  
-
-_Function to apply Linear Spectral Unmixing (LSU) to an image._
-
-##### Params:
-  (ee.Image) image - The input image.       
-  (array of strings) bands - The bands to be unmixed.     
-  (list of lists) endmembers - The endmember spectral signatures.  
-  (array of strings) names - The names for the output fraction bands.         
-  **optional** (boolean) sumToOne - Constrain fractions to sum to one. Default is false.
-  **optional** (boolean) nonNegative - Constrain fractions to be non-negative. Default is true.
-  
-##### Usage:
-`js 
-    var unmixed = geet.unmix(image, ['red', 'nir', 'swir1'], [[0.1, 0.2, 0.1], [0.8, 0.9, 0.3]], ['soil', 'veg']);
-`
-
-## Spectral Indices & Transformations
+### Spectral Indices & Transformations
 - [landsat_indices](#landsat_indices)
 - [sentinel2_indices](#sentinel2_indices)
 - [water_indices](#water_indices)
@@ -63,43 +42,7 @@ _Function to apply Linear Spectral Unmixing (LSU) to an image._
 - [kndvi](#kndvi)
 - [fvc](#fvc)
 
-#
-------------------------------------------------------------------------------
-
-#### kndvi
-(image, nir_band, red_band) 
-
-_Function to calculate the Kernelized Normalized Difference Vegetation Index (kNDVI)._  
-
-##### Params:
-  (ee.Image) image - The input image.    
-  (string) nir_band - Name of the NIR band.      
-  (string) red_band - Name of the Red band.      
-  
-##### Usage:
-`js 
-    var img_kndvi = geet.kndvi(image, 'B4', 'B3');   
-`
-
-------------------------------------------------------------------------------
-
-#### fvc
-(image, ndvi_band, ndvi_soil, ndvi_veg) 
-
-_Function to calculate Fractional Vegetation Cover (FVC) based on NDVI endmembers._  
-
-##### Params:
-  (ee.Image) image - The input image.    
-  (string) ndvi_band - Name of the NDVI band.      
-  **optional** (number) ndvi_soil - NDVI value for bare soil. Default is 0.15.      
-  **optional** (number) ndvi_veg - NDVI value for dense vegetation. Default is 0.90.      
-  
-##### Usage:
-`js 
-    var img_fvc = geet.fvc(image, 'NDVI', 0.10, 0.85);   
-`
-
-## Change Detection
+### Change Detection
 - [ndvi_change_detection](#ndvi_change_detection)
 - [anomaly](#anomaly)
 - [imad](#imad)
@@ -121,39 +64,7 @@ _Function to calculate Fractional Vegetation Cover (FVC) based on NDVI endmember
 - [add_doy](#add_doy)
 - [add_millis](#add_millis)
 
-#
-------------------------------------------------------------------------------
-
-#### stm_features
-(collection, reducers) 
-
-_Generates Spectral-Temporal-Metrics (STM) by applying statistical reducers over an image collection._  
-
-##### Params:
-  (ee.ImageCollection) collection - The input image collection.    
-  **optional** (ee.Reducer) reducers - Custom ee.Reducer. If omitted, applies p10, p50, p90, min, max, and stdDev.      
-  
-##### Usage:
-`js 
-    var stm = geet.stm_features(my_collection);   
-`
-
-------------------------------------------------------------------------------
-
-#### add_millis
-(image) 
-
-_Adds a milliseconds timestamp band to the image, keeping the original pixel mask._  
-
-##### Params:
-  (ee.Image) image - The input image.    
-  
-##### Usage:
-`js 
-    var img_millis = geet.add_millis(image);   
-`
-
-## Radar
+### Radar
 - [s1_preprocess](#s1_preprocess)
 - [speckle_filter](#speckle_filter)
 
@@ -376,6 +287,27 @@ _Function to apply RandomForest classification to an image._
 
 ------------------------------------------------------------------------------
 
+
+------------------------------------------------------------------------------
+
+#### unmix
+(image, bands, endmembers, names, sumToOne, nonNegative)  
+
+_Function to apply Linear Spectral Unmixing (LSU) to an image._
+
+##### Params:
+  (ee.Image) image - The input image.       
+  (array of strings) bands - The bands to be unmixed.     
+  (list of lists) endmembers - The endmember spectral signatures.  
+  (array of strings) names - The names for the output fraction bands.         
+  **optional** (boolean) sumToOne - Constrain fractions to sum to one. Default is false.
+  **optional** (boolean) nonNegative - Constrain fractions to be non-negative. Default is true.
+  
+##### Usage:
+`js 
+    var unmixed = geet.unmix(image, ['red', 'nir', 'swir1'], [[0.1, 0.2, 0.1], [0.8, 0.9, 0.3]], ['soil', 'veg']);
+`
+
 ------------------------------------------------------------------------------
 ## Spectral Indices & Transformations
 ------------------------------------------------------------------------------
@@ -486,6 +418,42 @@ _Function that calculates the normalized difference vegetation index (NDVI) from
 ```
 
 ------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+
+#### kndvi
+(image, nir_band, red_band) 
+
+_Function to calculate the Kernelized Normalized Difference Vegetation Index (kNDVI)._  
+
+##### Params:
+  (ee.Image) image - The input image.    
+  (string) nir_band - Name of the NIR band.      
+  (string) red_band - Name of the Red band.      
+  
+##### Usage:
+`js 
+    var img_kndvi = geet.kndvi(image, 'B4', 'B3');   
+`
+
+------------------------------------------------------------------------------
+
+#### fvc
+(image, ndvi_band, ndvi_soil, ndvi_veg) 
+
+_Function to calculate Fractional Vegetation Cover (FVC) based on NDVI endmembers._  
+
+##### Params:
+  (ee.Image) image - The input image.    
+  (string) ndvi_band - Name of the NDVI band.      
+  **optional** (number) ndvi_soil - NDVI value for bare soil. Default is 0.15.      
+  **optional** (number) ndvi_veg - NDVI value for dense vegetation. Default is 0.90.      
+  
+##### Usage:
+`js 
+    var img_fvc = geet.fvc(image, 'NDVI', 0.10, 0.85);   
+`
 
 ------------------------------------------------------------------------------
 ## Change Detection
@@ -740,6 +708,53 @@ _Function that returns an image collection with all Landsat images (5 and 8) fro
 ```
 
 ------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+
+#### stm_features
+(collection, reducers) 
+
+_Generates Spectral-Temporal-Metrics (STM) by applying statistical reducers over an image collection._  
+
+##### Params:
+  (ee.ImageCollection) collection - The input image collection.    
+  **optional** (ee.Reducer) reducers - Custom ee.Reducer. If omitted, applies p10, p50, p90, min, max, and stdDev.      
+  
+##### Usage:
+`js 
+    var stm = geet.stm_features(my_collection);   
+`
+
+------------------------------------------------------------------------------
+
+#### add_doy
+(image) 
+
+_Adds a Day of Year (DOY) band to the image, keeping the original pixel mask._  
+
+##### Params:
+  (ee.Image) image - The input image.    
+  
+##### Usage:
+`js 
+    var img_doy = geet.add_doy(image);   
+`
+
+------------------------------------------------------------------------------
+
+#### add_millis
+(image) 
+
+_Adds a milliseconds timestamp band to the image, keeping the original pixel mask._  
+
+##### Params:
+  (ee.Image) image - The input image.    
+  
+##### Usage:
+`js 
+    var img_millis = geet.add_millis(image);   
+`
 
 ------------------------------------------------------------------------------
 ## Radar & Topography
@@ -1191,17 +1206,6 @@ _Calculates the Normalized Burn Ratio (NBR), Delta NBR (dNBR), and Burn Severity
 
 
 ------------------------------------------------------------------------------
-
-### Deprecated Functions (Legacy Support)
-
-_The following functions have been deprecated to streamline the GEET library. They are still exported as "stubs" that will throw an informative error if called, guiding legacy code users to the new, integrated functions._
-
-- `build_annual_ls5_timeseries`, `build_annual_ls7_timeseries`, `build_annual_ls8_timeseries` -> **Replaced by:** `build_annual_landsat_timeseries(roi)`
-- `landsat5_timeseries`, `landsat7_timeseries`, `landsat8_timeseries` -> **Replaced by:** `landsat_timeseries(sensor, type)`
-
-_If your legacy scripts use any of these old functions, please update them to use the new integrated functions, which offer better performance, Collection 2 compliance, and support for newer sensors like Landsat 9._
-
-------------------------------------------------------------------------------
 ## Harmonized Landsat Sentinel-2 (HLS)
 ------------------------------------------------------------------------------
 
@@ -1312,17 +1316,122 @@ _Applies Spectral Band Adjustment (SBA) to Sentinel-2 MSI to align its spectral 
 
 
 ------------------------------------------------------------------------------
+## Harmonized Landsat Sentinel-2 (HLS)
+------------------------------------------------------------------------------
 
-#### add_doy
-(image) 
+#### build_hls_composite
+(roi, start_date, end_date) 
 
-_Adds a Day of Year (DOY) band to the image, keeping the original pixel mask._  
+_Generates a Harmonized Landsat Sentinel-2 (HLS) median composite for the given region and time period. Uses Landsat 7, 8, 9 (Collection 2 Level 2) and Sentinel-2 (SR) images. Implements state-of-the-art NASA HLS algorithms including cloud/shadow masking, reflectance rescaling, BRDF normalization, spectral band adjustment (SBA), and spatial coregistration._  
 
 ##### Params:
-  (ee.Image) image - The input image.    
+  (ee.Geometry) roi - The region of interest.    
+  (string) start_date - Start date of the composite (e.g. '2019-10-01').      
+  (string) end_date - End date of the composite (e.g. '2019-10-31').      
   
 ##### Usage:
 `js 
-    var img_doy = geet.add_doy(image);   
+    var hls_composite = geet.build_hls_composite(roi, '2022-01-01', '2022-12-31');   
 `
+
+------------------------------------------------------------------------------
+
+#### rescale_landsat_c2
+(image) 
+
+_Applies scale factors for Landsat Collection 2 Level 2 SR to compute physical reflectance [0, 1]._  
+
+##### Params:
+  (ee.Image) image - The input Landsat Collection 2 image.    
+  
+##### Usage:
+`js
+    var rescaled_l8 = geet.rescale_landsat_c2(raw_l8_image);
+`
+
+------------------------------------------------------------------------------
+
+#### rescale_sentinel2
+(image) 
+
+_Applies scale factors for Sentinel-2 SR to compute physical reflectance [0, 1]._  
+
+##### Params:
+  (ee.Image) image - The input Sentinel-2 image.    
+
+##### Usage:
+`js
+    var rescaled_s2 = geet.rescale_sentinel2(raw_s2_image);
+`
+
+------------------------------------------------------------------------------
+
+#### apply_brdf_landsat
+(image) 
+
+_Normalizes Landsat image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) using the c-factor approach and Roy et al. (2016) parameters._  
+
+##### Params:
+  (ee.Image) image - The input Landsat image. Must contain the date property.   
+
+##### Usage:
+`js
+    var brdf_l8 = geet.apply_brdf_landsat(rescaled_l8);
+`
+
+------------------------------------------------------------------------------
+
+#### apply_brdf_sentinel
+(image) 
+
+_Normalizes Sentinel-2 image reflectance to Nadir BRDF-Adjusted Reflectance (NBAR) using the c-factor approach and Roy et al. (2016) parameters._  
+
+##### Params:
+  (ee.Image) image - The input Sentinel-2 image. Must contain the date property.    
+
+##### Usage:
+`js
+    var brdf_s2 = geet.apply_brdf_sentinel(rescaled_s2);
+`
+
+------------------------------------------------------------------------------
+
+#### band_adjustment_landsat7
+(landsat_image) 
+
+_Applies Spectral Band Adjustment (SBA) to Landsat 7 ETM+ to align its spectral response with Landsat 8 OLI, based on Roy et al. (2016)._  
+
+##### Params:
+  (ee.Image) landsat_image - The input Landsat 7 image.    
+
+##### Usage:
+`js
+    var adjusted_l7 = geet.band_adjustment_landsat7(brdf_l7);
+`
+
+------------------------------------------------------------------------------
+
+#### band_adjustment_sentinel2
+(s2_image) 
+
+_Applies Spectral Band Adjustment (SBA) to Sentinel-2 MSI to align its spectral response with Landsat 8 OLI, based on Chastain et al. (2019)._  
+
+##### Params:
+  (ee.Image) s2_image - The input Sentinel-2 image.    
+
+##### Usage:
+`js
+    var adjusted_s2 = geet.band_adjustment_sentinel2(brdf_s2);
+`
+
+------------------------------------------------------------------------------
+
+### Deprecated Functions (Legacy Support)
+
+_The following functions have been deprecated to streamline the GEET library. They are still exported as "stubs" that will throw an informative error if called, guiding legacy code users to the new, integrated functions._
+
+- `build_annual_ls5_timeseries`, `build_annual_ls7_timeseries`, `build_annual_ls8_timeseries` -> **Replaced by:** `build_annual_landsat_timeseries(roi)`
+- `landsat5_timeseries`, `landsat7_timeseries`, `landsat8_timeseries` -> **Replaced by:** `landsat_timeseries(sensor, type)`
+
+_If your legacy scripts use any of these old functions, please update them to use the new integrated functions, which offer better performance, Collection 2 compliance, and support for newer sensors like Landsat 9._
 
