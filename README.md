@@ -9,7 +9,7 @@ Python API: https://developers.google.com/earth-engine/python_install
 
 #### Development Info
 **Author**: Eduardo Ribeiro Lacerda - eduardolacerdageo@gmail.com
-* Researcher @ Humboldt Universit├ñt zu Berlin
+* Researcher @ Humboldt-Universität zu Berlin
 
 ## Introduction:
 The Google Earth Engine Toolbox (GEET) is a JavaScript single-file library to help developers write small codebase applications with the Google Earth Engine (GEE) platform.
@@ -141,14 +141,14 @@ After adding the library, you can call its functions using the function **_requi
     var image = geet.load_image('TOA', 2015); // Returns and loads an image on the map.
 ```
 
-### (Portugu├¬s)
-Para utilizar a biblioteca, ├® preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionar├í automaticamente todo o c├│digo da biblioteca ├á sua conta pessoal do Google Earth Engine. S├│ ├® necess├írio realizar este procedimento uma ├║nica vez. Lembre-se que para adicionar a biblioteca ├® necess├írio j├í possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
+### (Português)
+Para utilizar a biblioteca, é preciso clicar neste [link](https://code.earthengine.google.com/?accept_repo=users/eduardolacerdageo/geet). Ele adicionará automaticamente todo o código da biblioteca à sua conta pessoal do Google Earth Engine. Só é® necessário realizar este procedimento uma única vez. Lembre-se de que para adicionar a biblioteca é® necessário já possuir uma conta na plataforma do Earth Engine. Para saber mais, visite o site oficial da plataforma: https://earthengine.google.com/  
 
-Depois de adicionar a biblioteca ├® poss├¡vel chamar suas fun├º├Áes utilizando a fun├º├úo **_require_** e armazenando o conte├║do em uma vari├ível. Neste caso, criaremos uma vari├ível chamada **_geet_** que cont├®m todo o conte├║do da biblioteca. Depois, podemos utiliz├í-la para chamar as fun├º├Áes da biblioteca:
+Depois de adicionar a biblioteca ├® poss├¡vel chamar suas fun├º├Áes utilizando a fun├º├úo **_require_** e armazenando o conte├║do em uma vari├ível. Neste caso, criaremos uma variável chamada **_geet_** que conterá todo o conteúdo da biblioteca. Depois, podemos utilizá-la para chamar as funções da biblioteca:
 
 ```js 
     var geet = require('users/eduardolacerdageo/geet:geet'); 
-    var image = geet.load_image('TOA', 2015); // Retorna e carrega no mapa uma imagem.
+    var image = geet.load_image('TOA', 2015); // Carrega uma imagem no mapa.
 ```
 
 -------------------------------------------------------------------------
